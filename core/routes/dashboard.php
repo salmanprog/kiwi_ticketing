@@ -18,6 +18,7 @@ use App\Http\Controllers\Dashboard\MenusController;
 use App\Http\Controllers\Dashboard\FileManagerController;
 use App\Http\Controllers\Dashboard\TagController;
 use App\Http\Controllers\Dashboard\PopupController;
+use App\Http\Controllers\Dashboard\KabanaSettingController;
 use Illuminate\Support\Facades\Route;
 
 // Admin Home
@@ -252,6 +253,14 @@ Route::get('/permissions-links/edit/{id?}/{p_id?}', [UsersController::class, 'li
 Route::get('/permissions-links/destroy/{id?}/{p_id?}', [UsersController::class, 'links_destroy'])->name('customLinksDestroy');
 Route::get('/permissions-links/list/{p_id?}', [UsersController::class, 'links_list'])->name('customLinksList');
 
+// Kabana Setting
+Route::get('/kabanasetting', [KabanaSettingController::class, 'index'])->name('kabanasetting');
+Route::get('/kabanasetting/create/', [KabanaSettingController::class, 'create'])->name('kabanasettingCreate');
+Route::post('/kabanasetting/store', [KabanaSettingController::class, 'store'])->name('kabanasettingStore');
+Route::get('/kabanasetting/{id}/edit', [KabanaSettingController::class, 'edit'])->name('kabanasettingEdit');
+Route::post('/kabanasetting/{id}/update', [KabanaSettingController::class, 'update'])->name('kabanasettingUpdate');
+Route::get('/kabanasetting/destroy/{id}', [KabanaSettingController::class, 'destroy'])->name('kabanasettingDestroy');
+Route::post('/kabanasetting/updateAll', [KabanaSettingController::class, 'updateAll'])->name('kabanasettingUpdateAll');
 
 // Menus
 Route::post('/menus/store/parent', [MenusController::class, 'storeMenu'])->name('parentMenusStore');

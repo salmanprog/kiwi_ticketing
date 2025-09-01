@@ -68,6 +68,9 @@ Route::post('/contact-submit', [HomeController::class, 'contact_submit'])->name(
 // - Tags
 Route::get('/tag/{tag_slug?}', [HomeController::class, 'tag'])->name('tag');
 
+// - KabanaSetting
+Route::resource('kabanasetting', KabanaSettingController::class);
+
 // - All Other slugs
 Route::get('/{part1?}/{part2?}/{part3?}/{part4?}/{part5?}/{part6?}', [HomeController::class, 'seo'])->name("frontendRoute");
 // End of Frontend Route

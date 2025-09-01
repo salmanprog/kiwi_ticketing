@@ -10,11 +10,11 @@
 
         <!-- navbar right -->
         <ul class="nav navbar-nav pull-right">
-            <li class="nav-item pa-13">
+            <!-- <li class="nav-item pa-13">
                 <a class="btn btn info" href="{{ route("frontendRoute") }}" target="_blank">
                     <i class="material-icons">&#xe895;</i> <small>{{ __('backend.sitePreview') }}</small>
                 </a>
-            </li>
+            </li> -->
             <?php
             $webmailsAlerts = Helper::webmailsAlerts();
             $eventsAlerts = Helper::eventsAlerts();
@@ -82,12 +82,12 @@
                 <div class="dropdown-menu pull-right dropdown-menu-scale ">
                     @if(Helper::GeneralWebmasterSettings("inbox_status"))
                         @if(@Auth::user()->permissionsGroup->inbox_status)
-                            <a class="dropdown-item"
+                            <!-- <a class="dropdown-item"
                                href="{{ route('webmails') }}"><span>{{ __('backend.siteInbox') }}</span>
                                 @if( @$webmailsNewCount >0)
                                     <span class="label warn m-l-xs">{{ @$webmailsNewCount }}</span>
                                 @endif
-                            </a>
+                            </a> -->
                         @endif
                     @endif
                     @if(Auth::user()->permissions ==0 || Auth::user()->permissions ==1)
@@ -123,7 +123,7 @@
 
             @if(Helper::GeneralWebmasterSettings("license") && Helper::GeneralWebmasterSettings("purchase_code")!="")
                 @if(@Auth::user()->permissionsGroup->add_status)
-                    <ul class="nav navbar-nav">
+                    <!-- <ul class="nav navbar-nav">
                         <li class="nav-item dropdown pa-13">
                             <a class="btn light" data-toggle="dropdown">
                                 <i class="material-icons">&#xe145;</i>
@@ -209,7 +209,7 @@
 
                             </div>
                         </li>
-                    </ul>
+                    </ul> -->
                 @endif
             @else
                 <ul class="nav navbar-nav">

@@ -46,7 +46,7 @@
             @endforeach
         </div>
         <hr>
-        <div class="form-group row">
+        <!-- <div class="form-group row">
             <div class="col-sm-6">
                 <label for="style_fav">{!!  __('backend.favicon') !!}</label>
                 @if($Setting->style_fav!="")
@@ -126,8 +126,8 @@
                 </small>
             </div>
         </div>
-        <hr>
-        <div class="row">
+        <hr> -->
+        <!-- <div class="row">
             <div class="col-sm-6">
                 <h5 class="m-t m-b">{!!  __('backend.setThemeColors') !!}</h5>
                 <div class="form-group row">
@@ -214,8 +214,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row m-t">
+        </div> -->
+        <!-- <div class="row m-t">
             <div class="col-sm-6">
                 <label>{{ __('backend.appearance') }} : </label>
                 <div class="radio">
@@ -249,8 +249,8 @@
                 </div>
             </div>
         </div>
-        <hr>
-        <div class="form-group">
+        <hr> -->
+        <!-- <div class="form-group">
             <div class="row">
                 <div class="col-sm-6">
                     <label>{{ __('backend.fixedHeader') }} : </label>
@@ -375,6 +375,6 @@
                     {{ __('backend.notActive') }}
                 </label>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>

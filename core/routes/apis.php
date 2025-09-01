@@ -35,3 +35,8 @@ Route::post('/subscribe', 'APIsController@subscribeSubmit');
 Route::post('/comment', 'APIsController@commentSubmit');
 Route::post('/order', 'APIsController@orderSubmit');
 Route::post('/contact', 'APIsController@ContactPageSubmit');
+//General Settings
+Route::get('/general/settings', 'GeneralController@website_setting');
+//Cabana Settings
+Route::get('/cabana/featured/product', 'CabanaController@index');
+Route::post('/cabana/featured/product', 'CabanaController@store');

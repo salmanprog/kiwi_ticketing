@@ -177,9 +177,15 @@ class Helper
 
     static function SaveVisitorInfo($PageTitle)
     {
+        if (app()->runningInConsole()) {
+        return; // Skip logging in CLI environment
+        }
+
         if (config('smartend.geoip_status')) {
-            $visitor_ip = $_SERVER['REMOTE_ADDR'];
-            $current_page_full_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+            // $visitor_ip = $_SERVER['REMOTE_ADDR'];
+            // $current_page_full_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+            $visitor_ip = request()->ip();
+            $current_page_full_link = url()->full();
             $page_load_time = round((microtime(true) - LARAVEL_START), 8);
 
             // Check is it already saved today to visitors?

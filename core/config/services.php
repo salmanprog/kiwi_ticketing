@@ -61,4 +61,8 @@ return [
         'client_secret' => env('BITBUCKET_SECRET'),
         'redirect' => env('APP_URL') . '/oauth/bitbucket/callback',
     ],
+    'dynamic_pricing' => [
+        'base_url' => env('API_BASE_URL'),
+        'auth_code' => env('API_AUTHCODE'),
+    ],
 ];

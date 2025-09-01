@@ -137,26 +137,26 @@ class MenusSeeder extends Seeder
         $Menu->save();
 
         // News
-        $Menu = new Menu();
-        $Menu->row_no = 5;
-        $Menu->father_id = $Menu1->id;
-        $Menu->title_ar = "أخبارنا";
-        $Menu->title_en = "News";
-        $Menu->title_ch = "新闻";
-        $Menu->title_hi = "समाचार";
-        $Menu->title_es = "Noticias";
-        $Menu->title_ru = "Новости";
-        $Menu->title_pt = "Notícia";
-        $Menu->title_fr = "Nouvelles";
-        $Menu->title_de = "News";
-        $Menu->title_th = "ข่าว";
-        $Menu->title_br = "Notícias";
-        $Menu->status = 1;
-        $Menu->type = 2;
-        $Menu->cat_id = 3;
-        $Menu->link = "";
-        $Menu->created_by = 1;
-        $Menu->save();
+        // $Menu = new Menu();
+        // $Menu->row_no = 5;
+        // $Menu->father_id = $Menu1->id;
+        // $Menu->title_ar = "أخبارنا";
+        // $Menu->title_en = "News";
+        // $Menu->title_ch = "新闻";
+        // $Menu->title_hi = "समाचार";
+        // $Menu->title_es = "Noticias";
+        // $Menu->title_ru = "Новости";
+        // $Menu->title_pt = "Notícia";
+        // $Menu->title_fr = "Nouvelles";
+        // $Menu->title_de = "News";
+        // $Menu->title_th = "ข่าว";
+        // $Menu->title_br = "Notícias";
+        // $Menu->status = 1;
+        // $Menu->type = 2;
+        // $Menu->cat_id = 3;
+        // $Menu->link = "";
+        // $Menu->created_by = 1;
+        // $Menu->save();
 
         // Photos
         $Menu = new Menu();
@@ -692,26 +692,26 @@ class MenusSeeder extends Seeder
         $Menu->save();
 
         // news
-        $Menu = new Menu();
-        $Menu->row_no = 3;
-        $Menu->father_id = $Menu2sub2->id;
-        $Menu->title_ar = "أخبارنا";
-        $Menu->title_en = "News";
-        $Menu->title_ch = "新闻";
-        $Menu->title_hi = "समाचार";
-        $Menu->title_es = "Noticias";
-        $Menu->title_ru = "Новости";
-        $Menu->title_pt = "Notícia";
-        $Menu->title_fr = "Nouvelles";
-        $Menu->title_de = "News";
-        $Menu->title_th = "ข่าว";
-        $Menu->title_br = "Notícias";
-        $Menu->status = 1;
-        $Menu->type = 2;
-        $Menu->cat_id = 3;
-        $Menu->link = "";
-        $Menu->created_by = 1;
-        $Menu->save();
+        // $Menu = new Menu();
+        // $Menu->row_no = 3;
+        // $Menu->father_id = $Menu2sub2->id;
+        // $Menu->title_ar = "أخبارنا";
+        // $Menu->title_en = "News";
+        // $Menu->title_ch = "新闻";
+        // $Menu->title_hi = "समाचार";
+        // $Menu->title_es = "Noticias";
+        // $Menu->title_ru = "Новости";
+        // $Menu->title_pt = "Notícia";
+        // $Menu->title_fr = "Nouvelles";
+        // $Menu->title_de = "News";
+        // $Menu->title_th = "ข่าว";
+        // $Menu->title_br = "Notícias";
+        // $Menu->status = 1;
+        // $Menu->type = 2;
+        // $Menu->cat_id = 3;
+        // $Menu->link = "";
+        // $Menu->created_by = 1;
+        // $Menu->save();
 
         // Blog
         $Menu = new Menu();

@@ -45,7 +45,7 @@
                                         class="material-icons">&#xe80d;</i>
                                     &nbsp; {!!  __('backend.siteSocialSettings') !!}</a>
                             </li>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a class="nav-link block {{  ( Session::get('active_tab') == 'codeTab') ? 'active' : '' }}"
                                    href="#"
                                    data-toggle="tab" data-target="#tab-7"
@@ -69,7 +69,7 @@
                                    onclick="document.getElementById('active_tab').value='statusTab'"><i
                                         class="material-icons">&#xe8c6;</i>
                                     &nbsp; {!!  __('backend.siteStatusSettings') !!}</a>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                 </div>
