@@ -232,7 +232,7 @@
             };
 
             $.ajax({
-                url: "http://localhost/kiwi_ticketing/api/v1/cabana/featured/product",
+                url: "http://admin.wildrivers.com/api/v1/cabana/featured/product",
                 type: 'POST',
                 data: insertData,
                 success: function (response) {

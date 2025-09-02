@@ -9,7 +9,11 @@ class CabanaResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'venueId' => $this->venueId,
+            'ticketType' => $this->ticketType,
+            'ticketSlug' => $this->ticketSlug,
+            'ticketCategory' => $this->ticketCategory,
+            'price' => $this->price,
         ];
     }
 }
