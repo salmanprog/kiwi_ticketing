@@ -1,23 +1,23 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Cabana Setting'))
+@section('title', __('Featured Cabana'))
 @section('content')
 <div class="padding">
 <div class="box">
     <div class="box-header dker">
-        <h3>{{ __('Cabana Setting') }}</h3>
+        <h3>{{ __('Featured Cabana') }}</h3>
         <small>
             <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-            <a href="">{{ __('CabanaSetting') }}</a>
+            <a href="">{{ __('Featuredcabana') }}</a>
         </small>
     </div>
-     <div class="row p-a pull-right" style="margin-top: -70px;">
+     <!-- <div class="row p-a pull-right" style="margin-top: -70px;">
         <div class="col-sm-12">
             <a class="btn btn-fw primary" href="#">
                 <i class="material-icons">&#xe7fe;</i>
                 &nbsp; {{ __('Add New Cabana') }}
             </a>
         </div>
-    </div>
+    </div> -->
     @if(count($paginated) > 0)
         <div class="table-responsive">
                     <table class="table table-bordered m-a-0">
@@ -33,7 +33,6 @@
                             <th>{{ __('Slug') }}</th>
                             <th>{{ __('Category') }}</th>
                             <th>{{ __('Price') }}</th>
-                            <th>{{ __('Featured') }}</th>
                             <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
                         </tr>
                         </thead>
@@ -63,22 +62,18 @@
                                     <small>{{ $ticket['price'] }}</small>
                                 </td>
                                 <td class="text-center">
-                                    <small>{{ $ticket['is_featured'] }}</small>
-                                </td>
-                                <td class="text-center">
-                                    <button type="button"
-                                            class="btn btn-sm success open-edit-modal"
-                                            data-toggle="modal"
-                                            data-target="#editCabanaModal"
-                                            data-venueid="{{ $ticket['venueId'] }}"
-                                            data-type="{{ $ticket['ticketType'] }}"
-                                            data-slug="{{ $ticket['ticketSlug'] }}"
-                                            data-category="{{ $ticket['ticketCategory'] }}"
-                                            data-price="{{ $ticket['price'] }}"
-                                            data-featured="{{ $ticket['is_featured'] }}">
-                                        {{ __('backend.edit') }}
-                                    </button>
-
+                                    <div class="dropdown">
+                                        <button type="button" class="btn btn-sm light dk dropdown-toggle"
+                                                data-toggle="dropdown"><i class="material-icons">&#xe5d4;</i>
+                                            {{ __('backend.options') }}
+                                        </button>
+                                        <div class="dropdown-menu pull-right">
+                                            <a class="dropdown-item"
+                                                href="{{ route('kabanaaddonEdit',$ticket['ticketSlug']) }}"><i
+                                                    class="material-icons">&#xe3c9;</i> {{ __('backend.edit') }}
+                                            </a>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach
@@ -97,28 +92,8 @@
                                     <div class="modal-body">
                                         <form id="editCabanaForm">
                                             <div class="form-group">
-                                                <label for="venueId">Venue ID</label>
-                                                <input type="text" class="form-control" id="modalVenueId" readonly>
-                                            </div>
-                                            <div class="form-group">
                                                 <label for="ticketType">Ticket Type</label>
                                                 <input type="text" class="form-control" id="modalTicketType" readonly>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="ticketSlug">Ticket Slug</label>
-                                                <input type="text" class="form-control" id="modalTicketSlug" readonly>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="ticketCategory">Ticket Category</label>
-                                                <input type="text" class="form-control" id="modalTicketCategory" readonly>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="ticketPrice">Price</label>
-                                                <input type="text" class="form-control" id="modalTicketPrice" readonly>
-                                            </div>
-                                            <div class="form-group form-check">
-                                                <input type="checkbox" class="form-check-input" id="isfeatured">
-                                                <label class="form-check-label" for="isfeatured">Featured</label>
                                             </div>
                                         </form>
                                     </div>

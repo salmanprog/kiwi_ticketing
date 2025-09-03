@@ -65,4 +65,7 @@ return [
         'base_url' => env('API_BASE_URL'),
         'auth_code' => env('API_AUTHCODE'),
     ],
+    'dynamic_url' => [
+        'site_url' => env('APP_URL'),
+    ],
 ];
