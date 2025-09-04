@@ -51,7 +51,7 @@ class KabanaSettingController extends Controller
             $fillter_arr = [];
             if(count($tickets) > 0){
                 for($i=0;$i<count($tickets);$i++){
-                    if($tickets[$i]['ticketCategory'] == 'Cabana'){
+                    if($tickets[$i]['ticketCategory'] == 'Cabanas'){
                         array_push($fillter_arr,$tickets[$i]);
                     }
                 }
