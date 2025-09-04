@@ -264,7 +264,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <span class="nav-icon">
                             <i class="material-icons">&#xe7fb;</i>
                             </span>
-                            <span class="nav-text">{{ __('Cabana Setting') }}</span>
+                            <span class="nav-text">{{ __('Cabana Managment') }}</span>
                         </a>
 
                         <ul class="nav-sub">
@@ -284,6 +284,40 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
                                 <a href="{{ route('kabanaddons') }}">
                                     <span class="nav-text">{{ __('Cabana Addon') }}</span>
+                                </a>
+                            </li>
+                            <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
+                                <a href="#">
+                                    <span class="nav-text">{{ __('Cabana Orders') }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
+                        <!-- <a href="{{ route('kabanasetting') }}">
+                            <span class="nav-icon">
+                            <i class="material-icons">&#xe7fb;</i>
+                            </span>
+                            <span class="nav-text">{{ __('Cabana Setting') }}</span>
+                        </a> -->
+                        <a>
+                            <span class="nav-caret">
+                            <i class="fa fa-caret-down"></i>
+                            </span>
+                            <span class="nav-icon">
+                            <i class="material-icons">&#xe7fb;</i>
+                            </span>
+                            <span class="nav-text">{{ __('Birthday Managment') }}</span>
+                        </a>
+
+                        <ul class="nav-sub">
+                            <?php
+                                $currentFolder = "birthday_packages"; // Put folder name here
+                                $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
+                            ?>
+                            <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
+                                <a href="{{ route('birthdaypackages') }}">
+                                    <span class="nav-text">{{ __('Birthday Packages') }}</span>
                                 </a>
                             </li>
                         </ul>

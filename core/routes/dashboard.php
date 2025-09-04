@@ -20,6 +20,7 @@ use App\Http\Controllers\Dashboard\TagController;
 use App\Http\Controllers\Dashboard\PopupController;
 use App\Http\Controllers\Dashboard\KabanaSettingController;
 use App\Http\Controllers\Dashboard\KabanaAddonsController;
+use App\Http\Controllers\Dashboard\BirthdayPackagesController;
 use Illuminate\Support\Facades\Route;
 
 // Admin Home
@@ -267,6 +268,15 @@ Route::post('/kabanasetting/updateAll', [KabanaSettingController::class, 'update
 
 //Kabana Addons
 Route::post('/cabana/store', [KabanaAddonsController::class, 'store'])->name('cabanaStore');
+
+// Birthday Packages
+Route::get('/birthday_packages', [BirthdayPackagesController::class, 'index'])->name('birthdaypackages');
+Route::get('/birthday_packages/{id}/edit', [BirthdayPackagesController::class, 'edit'])->name('birthdaypackagesEdit');
+Route::get('/birthday_packages/create/', [BirthdayPackagesController::class, 'create'])->name('birthdaypackagesCreate');
+Route::post('/birthday_packages/store', [BirthdayPackagesController::class, 'store'])->name('birthdaypackagesStore');
+Route::post('/birthday_packages/{id}/update', [BirthdayPackagesController::class, 'update'])->name('birthdaypackagesUpdate');
+Route::get('/birthday_packages/destroy/{id}', [BirthdayPackagesController::class, 'destroy'])->name('birthdaypackagesDestroy');
+Route::post('/birthday_packages/updateAll', [BirthdayPackagesController::class, 'updateAll'])->name('birthdaypackagesUpdateAll');
 
 // Menus
 Route::post('/menus/store/parent', [MenusController::class, 'storeMenu'])->name('parentMenusStore');

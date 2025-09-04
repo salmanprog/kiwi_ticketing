@@ -10,14 +10,14 @@
             <a href="">{{ __('CabanaSetting') }}</a>
         </small>
     </div>
-     <div class="row p-a pull-right" style="margin-top: -70px;">
+     <!-- <div class="row p-a pull-right" style="margin-top: -70px;">
         <div class="col-sm-12">
             <a class="btn btn-fw primary" href="#">
                 <i class="material-icons">&#xe7fe;</i>
                 &nbsp; {{ __('Add New Cabana') }}
             </a>
         </div>
-    </div>
+    </div> -->
     @if(count($paginated) > 0)
         <div class="table-responsive">
                     <table class="table table-bordered m-a-0">
