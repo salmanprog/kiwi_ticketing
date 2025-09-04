@@ -40,3 +40,6 @@ Route::get('/general/settings', 'GeneralController@website_setting');
 //Cabana Settings
 Route::get('/cabana/featured/product', 'CabanaController@index');
 Route::post('/cabana/featured/product', 'CabanaController@store');
+//Cabana Addon
+Route::get('/cabana/addon', 'CabanaAddonController@index');
+Route::get('/cabana/addon/{lang}', 'CabanaAddonController@show');

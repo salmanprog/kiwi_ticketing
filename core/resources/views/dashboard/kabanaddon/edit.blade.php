@@ -54,12 +54,13 @@
                     <div class="form-group row">
                         <label for="link_status" class="col-sm-2 form-control-label">Addons</label>
                         <div class="col-sm-10">
+                            
                                 @if(count($tickets) > 0)
                                     @foreach($tickets as $ticket)
                                         @if($ticket['ticketSlug'] != $cabana->ticketSlug)
                                             <div class="radio">
                                                 <label class="ui-check ui-check-md">
-                                                    <input id="ticket_active_{{ $ticket['ticketSlug'] }}"" class="has-value" name="ticket[]" type="checkbox" value="{{ $ticket['ticketSlug'] }}">
+                                                    <input id="ticket_active_{{ $ticket['ticketSlug'] }}" class="has-value" name="ticket[]" type="checkbox" value="{{ $ticket['ticketSlug'] }}" {{ in_array($ticket['ticketSlug'], array_column($cabana_addon, 'ticketSlug')) ? 'checked' : '' }}>
                                                     <i class="dark-white"></i>
                                                     {{ $ticket['ticketType'] }}
                                                 </label>

@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Models\Section;
 use App\Models\Topic;
 use App\Models\Cabana;
+use App\Models\CabanaAddon;
 use App\Models\WebmasterSection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Auth;
@@ -140,12 +141,13 @@ class KabanaSettingController extends Controller
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
         $cabana = Cabana::where('ticketSlug', $id)->first();
+        $cabana_addon = CabanaAddon::select('ticketSlug')->where('cabanaSlug', $id)->get()->toArray();
         $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
         if ($response->successful()) {
             $apiData = $response->json();
             $tickets = $apiData['getAllProductPrice']['data'] ?? [];
         }
-        return view("dashboard.kabanaddon.edit", compact("cabana", "tickets", "GeneralWebmasterSections"));
+        return view("dashboard.kabanaddon.edit", compact("cabana", "tickets","cabana_addon" ,"GeneralWebmasterSections"));
     }
 
     public function update(Request $request, $webmasterId, $id)
