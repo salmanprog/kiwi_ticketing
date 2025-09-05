@@ -320,6 +320,16 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                     <span class="nav-text">{{ __('Birthday Packages') }}</span>
                                 </a>
                             </li>
+                            <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
+                                <a href="{{ route('birthdayaddon') }}">
+                                    <span class="nav-text">{{ __('Birthday Addon') }}</span>
+                                </a>
+                            </li>
+                            <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
+                                <a href="#">
+                                    <span class="nav-text">{{ __('Birthday Orders') }}</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     @if(@Auth::user()->permissionsGroup->roles_status || (Helper::GeneralWebmasterSettings("settings_status") && @Auth::user()->permissionsGroup->settings_status) || @Auth::user()->permissionsGroup->webmaster_status)

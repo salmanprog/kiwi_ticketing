@@ -60,30 +60,53 @@ class BirthdayPackagesController extends Controller
     {
         $this->validate($request, [
             'title' => 'required',
-            'description' => 'required'
+            'description' => 'required',
+            'price' => 'required',
+            'map_link' => 'required'
         ]);
 
-        // Start of Upload Files
+        // Upload photo
         $formFileName = "photo";
         $fileFinalName = "";
         if ($request->$formFileName != "") {
-            $fileFinalName = time() . rand(1111,
-                    9999) . '.' . $request->file($formFileName)->getClientOriginalExtension();
+            $fileFinalName = time() . rand(1111, 9999) . '.' . $request->file($formFileName)->getClientOriginalExtension();
             $path = $this->uploadPath;
-            $request->file($formFileName)->move($path, $fileFinalName);
 
-            // resize & optimize
+            if (!file_exists($path)) {
+                mkdir($path, 0755, true);
+            }
+
+            $request->file($formFileName)->move($path, $fileFinalName);
             Helper::imageResize($path . $fileFinalName);
             Helper::imageOptimize($path . $fileFinalName);
         }
-        // End of Upload Files
 
+        // Upload banner_image
+        $formFileName2 = "banner_image";
+        $fileFinalName2 = "";
+        if ($request->$formFileName2 != "") {
+            $fileFinalName2 = time() . rand(1111, 9999) . '.' . $request->file($formFileName2)->getClientOriginalExtension();
+            $path = $this->uploadPath;
+
+            if (!file_exists($path)) {
+                mkdir($path, 0755, true);
+            }
+
+            $request->file($formFileName2)->move($path, $fileFinalName2);
+            Helper::imageResize($path . $fileFinalName2);
+            Helper::imageOptimize($path . $fileFinalName2);
+        }
         $birthdayPackages = new BirthdayPackages;
         $birthdayPackages->title  = $request->title;
         $birthdayPackages->description = $request->description;
         if ($fileFinalName != "") {
             $birthdayPackages->image_url = $fileFinalName;
         }
+        if ($fileFinalName2 != "") {
+            $birthdayPackages->banner_image = $fileFinalName2;
+        }
+        $birthdayPackages->price  = $request->price;
+        $birthdayPackages->map_link = $request->map_link;
         $birthdayPackages->status = $request->status;
         $birthdayPackages->save();
 
@@ -109,7 +132,9 @@ class BirthdayPackagesController extends Controller
        if (!empty($birthdayPackages)) {
             $this->validate($request, [
                 'title' => 'required',
-                'description' => 'required'
+                'description' => 'required',
+                'price' => 'required',
+                'map_link' => 'required'
             ]);
 
             // Start of Upload Files
@@ -130,6 +155,22 @@ class BirthdayPackagesController extends Controller
                 Helper::imageResize($path . $fileFinalName);
                 Helper::imageOptimize($path . $fileFinalName);
             }
+
+            // Upload banner_image
+            $formFileName2 = "banner_image";
+            $fileFinalName2 = "";
+            if ($request->$formFileName2 != "") {
+                $fileFinalName2 = time() . rand(1111, 9999) . '.' . $request->file($formFileName2)->getClientOriginalExtension();
+                $path = $this->uploadPath;
+
+                if (!file_exists($path)) {
+                    mkdir($path, 0755, true);
+                }
+
+                $request->file($formFileName2)->move($path, $fileFinalName2);
+                Helper::imageResize($path . $fileFinalName2);
+                Helper::imageOptimize($path . $fileFinalName2);
+            }
             // End of Upload Files
 
             $birthdayPackages->title  = $request->title;
@@ -137,6 +178,11 @@ class BirthdayPackagesController extends Controller
             if ($fileFinalName != "") {
                 $birthdayPackages->image_url = $fileFinalName;
             }
+            if ($fileFinalName2 != "") {
+                $birthdayPackages->banner_image = $fileFinalName2;
+            }
+            $birthdayPackages->price  = $request->price;
+            $birthdayPackages->map_link = $request->map_link;
             $birthdayPackages->status = $request->status;
             $birthdayPackages->save();
             return redirect()->action('Dashboard\BirthdayPackagesController@edit', [$id])->with('doneMessage',

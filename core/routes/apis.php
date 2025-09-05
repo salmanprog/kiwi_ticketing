@@ -43,3 +43,6 @@ Route::post('/cabana/featured/product', 'CabanaController@store');
 //Cabana Addon
 Route::get('/cabana/addon', 'CabanaAddonController@index');
 Route::get('/cabana/addon/{lang}', 'CabanaAddonController@show');
+//Birthday
+Route::get('/birthday/packages', 'BirthdayController@index');
+Route::get('/birthday/addon/{slug}', 'BirthdayAddonController@show');

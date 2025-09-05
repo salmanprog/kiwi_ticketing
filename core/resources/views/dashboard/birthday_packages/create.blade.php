@@ -27,14 +27,14 @@
             </div>
             <div class="box-body p-a-2">
                 {{Form::open(['route'=>['birthdaypackagesStore'],'method'=>'POST', 'files' => true])}}
-                <div class="form-group row">
-                    <label for="title"
-                            class="col-sm-3 form-control-label">{!!  __('Title') !!}
-                    </label>
-                    <div class="col-sm-9">
-                        {!! Form::text('title','', array('placeholder' => '','class' => 'form-control','id'=>'title','required'=>'')) !!}
+                    <div class="form-group row">
+                        <label for="title"
+                                class="col-sm-3 form-control-label">{!!  __('Title') !!}
+                        </label>
+                        <div class="col-sm-9">
+                            {!! Form::text('title','', array('placeholder' => '','class' => 'form-control','id'=>'title','required'=>'')) !!}
+                        </div>
                     </div>
-                </div>
                     <div class="form-group row">
                         <label for="details"
                             class="col-sm-3 form-control-label">{!!  __('Description') !!}
@@ -76,6 +76,39 @@
                                 <i class="material-icons">&#xe8fd;</i>
                                 {!!  __('backend.imagesTypes') !!}
                             </small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="banner"
+                            class="col-sm-2 form-control-label">{!!  __('Cover Image') !!}</label>
+                        <div class="col-sm-10">
+                            {!! Form::file('banner_image', array('class' => 'form-control','id'=>'banner_image','accept'=>'image/*')) !!}
+                        </div>
+                    </div>
+
+                    <div class="form-group row m-t-md" style="margin-top: 0 !important;">
+                        <div class="offset-sm-2 col-sm-10">
+                            <small>
+                                <i class="material-icons">&#xe8fd;</i>
+                                {!!  __('backend.imagesTypes') !!}
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="title"
+                                class="col-sm-3 form-control-label">{!!  __('Price') !!}
+                        </label>
+                        <div class="col-sm-9">
+                            {!! Form::text('price','', array('placeholder' => '','class' => 'form-control','id'=>'price','required'=>'')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="title"
+                                class="col-sm-3 form-control-label">{!!  __('Map Link') !!}
+                        </label>
+                        <div class="col-sm-9">
+                            {!! Form::text('map_link','', array('placeholder' => '','class' => 'form-control','id'=>'map_link','required'=>'')) !!}
                         </div>
                     </div>
                     <div class="form-group row">

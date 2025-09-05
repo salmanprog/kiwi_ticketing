@@ -17,6 +17,9 @@ class BirthdayPackages extends Model
         'title',
         'description',
         'image_url',
+        'banner_image',
+        'price',
+        'map_link',
         'status'
     ];
 

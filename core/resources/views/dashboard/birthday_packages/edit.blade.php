@@ -92,6 +92,52 @@
                                 </small>
                             </div>
                         </div>
+                         <div class="form-group row">
+                                <label for="photo"
+                                        class="col-sm-2 form-control-label">{!!  __('Cover Image') !!}</label>
+                                <div class="col-sm-10">
+                                    @if($birthday_packages->banner_image!="")
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div id="section_photo" class="col-sm-4 box p-a-xs">
+                                                    <a target="_blank"
+                                                        href="{{ asset('uploads/sections/'.$birthday_packages->banner_image) }}"><img
+                                                            src="{{ asset('uploads/sections/'.$birthday_packages->banner_image) }}"
+                                                            class="img-responsive" height="200px" width="200px">
+                                                    </a>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    @endif
+                                    {!! Form::file('banner_image', array('class' => 'form-control','id'=>'banner_image','accept'=>'image/*')) !!}
+                                </div>
+                            </div>
+                            <div class="form-group row m-t-md" style="margin-top: 0 !important;">
+                                    <div class="offset-sm-2 col-sm-10">
+                                        <small>
+                                            <i class="material-icons">&#xe8fd;</i>
+                                            {!!  __('backend.imagesTypes') !!}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                            <label for="title"
+                                    class="col-sm-3 form-control-label">{!!  __('Price') !!}
+                            </label>
+                            <div class="col-sm-9">
+                                {!! Form::text('price',old('price', $birthday_packages->price ?? ''), array('placeholder' => '','class' => 'form-control','id'=>'price','required'=>'')) !!}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="title"
+                                    class="col-sm-3 form-control-label">{!!  __('Map Link') !!}
+                            </label>
+                            <div class="col-sm-9">
+                                {!! Form::text('map_link',old('map_link', $birthday_packages->map_link ?? ''), array('placeholder' => '','class' => 'form-control','id'=>'map_link','required'=>'')) !!}
+                            </div>
+                        </div>
                     <div class="form-group row">
                         <label for="link_status"
                                 class="col-sm-2 form-control-label">{!!  __('backend.status') !!}</label>
@@ -117,7 +163,7 @@
                         class="btn dark-white p-x-md"
                         data-dismiss="modal">{{ __('backend.cancel') }}</button>
                 <button type="submit"
-                        class="btn btn-primary p-x-md">{!! __('backend.add') !!}</button>
+                        class="btn btn-primary p-x-md">{!! __('backend.update') !!}</button>
             </div>
                 {{Form::close()}}
             
