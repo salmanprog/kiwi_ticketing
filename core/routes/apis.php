@@ -46,3 +46,9 @@ Route::get('/cabana/addon/{lang}', 'CabanaAddonController@show');
 //Birthday
 Route::get('/birthday/packages', 'BirthdayController@index');
 Route::get('/birthday/addon/{slug}', 'BirthdayAddonController@show');
+
+Route::middleware('apiAuth')->group(function () {
+    Route::get('/secure-data', function () {
+        return response()->json(['data' => 'Authorized Access!']);
+    });
+});

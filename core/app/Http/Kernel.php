@@ -66,4 +66,8 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'LanguageSwitcher' => \App\Http\Middleware\LanguageSwitcher::class,
     ];
+
+    protected $routeMiddleware = [
+    'apiAuth' => \App\Http\Middleware\ApiTokenMiddleware::class,
+];
 }
