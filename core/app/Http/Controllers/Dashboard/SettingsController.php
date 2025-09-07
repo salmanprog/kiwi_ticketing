@@ -206,6 +206,15 @@ class SettingsController extends Controller
                 $Setting->style_footer_bg = $fileFinalName5;
             }
             $Setting->style_preload = $request->style_preload;
+
+            $Setting->external_api_link_en = $request->external_api_link_en;
+            $Setting->auth_code_en = $request->auth_code_en;
+            $Setting->stripe_live_pk_en = $request->stripe_live_pk_en;
+            $Setting->stripe_live_sk_en = $request->stripe_live_sk_en;
+            $Setting->stripe_test_pk_en = $request->stripe_test_pk_en;
+            $Setting->stripe_test_sk_en = $request->stripe_test_sk_en;
+            $Setting->stripe_live_activate_en = $request->stripe_live_activate_en;
+
             $Setting->css = $request->css_code;
             $Setting->js = $request->js_code;
             $Setting->body = $request->body_code;

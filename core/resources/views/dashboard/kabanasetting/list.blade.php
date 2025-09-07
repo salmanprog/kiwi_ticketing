@@ -1,13 +1,13 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Cabana Setting'))
+@section('title', __('Cabanas'))
 @section('content')
 <div class="padding">
 <div class="box">
     <div class="box-header dker">
-        <h3>{{ __('Cabana Setting') }}</h3>
+        <h3>{{ __('All Cabanas') }}</h3>
         <small>
             <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-            <a href="">{{ __('CabanaSetting') }}</a>
+            <a href="">{{ __('Cabanas') }}</a>
         </small>
     </div>
      <!-- <div class="row p-a pull-right" style="margin-top: -70px;">
@@ -57,13 +57,13 @@
                                     <small>{{ $ticket['ticketSlug'] }}</small>
                                 </td>
                                 <td>
-                                    <small>{{ $ticket['ticketCategory'] }}</small>
+                                    <span class="label green"><i class="material-icons"></i>  {{ $ticket['ticketCategory'] }}</span>
                                 </td>
                                 <td class="text-center">
                                     <small>{{ $ticket['price'] }}</small>
                                 </td>
                                 <td class="text-center">
-                                    <small>{{ $ticket['is_featured'] }}</small>
+                                    <i class="fa {{ $ticket['is_featured'] == 1 ? 'fa-check text-success' : 'fa-times text-danger' }} inline"></i>
                                 </td>
                                 <td class="text-center">
                                     <button type="button"
@@ -76,7 +76,9 @@
                                             data-category="{{ $ticket['ticketCategory'] }}"
                                             data-price="{{ $ticket['price'] }}"
                                             data-featured="{{ $ticket['is_featured'] }}">
-                                        {{ __('backend.edit') }}
+                                             <small><i class="material-icons"></i> {{ __('backend.edit') }}
+                                        </small>
+                                        
                                     </button>
 
                                 </td>
@@ -158,7 +160,7 @@
                             </div>
                             <!-- / .modal -->
                             @if(@Auth::user()->permissionsGroup->settings_status)
-                                <select name="action" id="action" class="form-control c-select w-sm inline v-middle"
+                                <!-- <select name="action" id="action" class="form-control c-select w-sm inline v-middle"
                                         required>
                                     <option value="">{{ __('backend.bulkAction') }}</option>
                                     <option value="activate">{{ __('backend.activeSelected') }}</option>
@@ -171,7 +173,7 @@
                                         style="display: none"
                                         data-target="#m-all" ui-toggle-class="bounce"
                                         ui-target="#animate">{{ __('backend.apply') }}
-                                </button>
+                                </button> -->
                             @endif
                         </div>
                             <div class="col-sm-3 text-center">

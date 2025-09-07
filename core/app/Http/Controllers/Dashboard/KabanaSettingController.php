@@ -32,8 +32,8 @@ class KabanaSettingController extends Controller
 
     public function index()
     {
-        $baseUrl = config('services.dynamic_pricing.base_url');
-        $authCode = config('services.dynamic_pricing.auth_code');
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
@@ -88,8 +88,8 @@ class KabanaSettingController extends Controller
 
     public function cabanAddon()
     {
-        $baseUrl = config('services.dynamic_pricing.base_url');
-        $authCode = config('services.dynamic_pricing.auth_code');
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
@@ -135,8 +135,8 @@ class KabanaSettingController extends Controller
 
     public function edit($id)
     {
-        $baseUrl = config('services.dynamic_pricing.base_url');
-        $authCode = config('services.dynamic_pricing.auth_code');
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
@@ -146,6 +146,14 @@ class KabanaSettingController extends Controller
         if ($response->successful()) {
             $apiData = $response->json();
             $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+            $fillter_arr = [];
+            if(count($tickets) > 0){
+                for($i=0;$i<count($tickets);$i++){
+                    if($tickets[$i]['venueId'] == 0){
+                        array_push($fillter_arr,$tickets[$i]);
+                    }
+                }
+            }
         }
         return view("dashboard.kabanaddon.edit", compact("cabana", "tickets","cabana_addon" ,"GeneralWebmasterSections"));
     }

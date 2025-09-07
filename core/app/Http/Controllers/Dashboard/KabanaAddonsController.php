@@ -49,8 +49,8 @@ class KabanaAddonsController extends Controller
     {
         $params = $request->all();
         $cabanaSlug = $params['cabanaSlug'];
-        $baseUrl = config('services.dynamic_pricing.base_url');
-        $authCode = config('services.dynamic_pricing.auth_code');
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
         $cabanaResponse = Http::get($baseUrl . '/Pricing/GetAllProductPrice?authcode=' . $authCode . '&date=' . $date);
         if (isset($params['ticket']) && count($params['ticket']) > 0) {

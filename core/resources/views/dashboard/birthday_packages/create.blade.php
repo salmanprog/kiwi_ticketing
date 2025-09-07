@@ -28,18 +28,35 @@
             <div class="box-body p-a-2">
                 {{Form::open(['route'=>['birthdaypackagesStore'],'method'=>'POST', 'files' => true])}}
                     <div class="form-group row">
-                        <label for="title"
-                                class="col-sm-3 form-control-label">{!!  __('Title') !!}
+                        <label for="section_id" class="col-sm-2 form-control-label">
+                            {!! __('Cabanas') !!}
                         </label>
-                        <div class="col-sm-9">
+                        <div class="col-sm-10">
+                            <select name="cabanas[]" id="cabanas"
+                                    class="form-control select2-multiple" multiple
+                                    ui-jp="select2" ui-options="{theme: 'bootstrap'}" required>
+                                    @foreach ($cabanas as $cabana)
+                                        <option value="{{ $cabana['ticketSlug'] }}"
+                                            @if(!empty($selectedSections) && in_array($cabana['ticketSlug'], $selectedSections)) selected @endif>
+                                            {!! $cabana['ticketType'] !!}
+                                        </option>
+                                    @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="title"
+                                class="col-sm-2 form-control-label">{!!  __('Title') !!}
+                        </label>
+                        <div class="col-sm-10">
                             {!! Form::text('title','', array('placeholder' => '','class' => 'form-control','id'=>'title','required'=>'')) !!}
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="details"
-                            class="col-sm-3 form-control-label">{!!  __('Description') !!}
+                            class="col-sm-2 form-control-label">{!!  __('Description') !!}
                         </label>
-                        <div class="col-sm-9">
+                        <div class="col-sm-10">
                                 @foreach(Helper::languagesList() as $ActiveLanguage)
                                 @if($ActiveLanguage->box_status)
                                     <div class="m-b-1">
@@ -66,7 +83,7 @@
                         <label for="photo"
                             class="col-sm-2 form-control-label">{!!  __('Image') !!}</label>
                         <div class="col-sm-10">
-                            {!! Form::file('photo', array('class' => 'form-control','id'=>'photo','accept'=>'image/*')) !!}
+                            {!! Form::file('photo[]', array('class' => 'form-control','id'=>'photo','accept'=>'image/*','multiple' => 'multiple')) !!}
                         </div>
                     </div>
 
@@ -97,17 +114,17 @@
 
                     <div class="form-group row">
                         <label for="title"
-                                class="col-sm-3 form-control-label">{!!  __('Price') !!}
+                                class="col-sm-2 form-control-label">{!!  __('Price') !!}
                         </label>
-                        <div class="col-sm-9">
+                        <div class="col-sm-10">
                             {!! Form::text('price','', array('placeholder' => '','class' => 'form-control','id'=>'price','required'=>'')) !!}
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="title"
-                                class="col-sm-3 form-control-label">{!!  __('Map Link') !!}
+                                class="col-sm-2 form-control-label">{!!  __('Map Link') !!}
                         </label>
-                        <div class="col-sm-9">
+                        <div class="col-sm-10">
                             {!! Form::text('map_link','', array('placeholder' => '','class' => 'form-control','id'=>'map_link','required'=>'')) !!}
                         </div>
                     </div>

@@ -19,7 +19,7 @@
                                    data-toggle="tab" data-target="#tab-5"
                                    onclick="document.getElementById('active_tab').value='styleTab'"><i
                                         class="material-icons">&#xe41d;</i>
-                                    &nbsp; {!!  __('backend.styleSettings') !!}</a>
+                                    &nbsp; {!!  __('Logo') !!}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link block {{ ( Session::get('active_tab') == 'infoTab') ? 'active' : '' }}"
@@ -27,7 +27,7 @@
                                    data-toggle="tab" data-target="#tab-1"
                                    onclick="document.getElementById('active_tab').value='infoTab'"><i
                                         class="material-icons">&#xe30c;</i>
-                                    &nbsp; {!!  __('backend.siteInfoSettings') !!}</a>
+                                    &nbsp; {!!  __('Account Info') !!}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link block {{  ( Session::get('active_tab') == 'contactsTab') ? 'active' : '' }}"
@@ -45,16 +45,16 @@
                                         class="material-icons">&#xe80d;</i>
                                     &nbsp; {!!  __('backend.siteSocialSettings') !!}</a>
                             </li>
-                            <!-- <li class="nav-item">
+                            <li class="nav-item">
                                 <a class="nav-link block {{  ( Session::get('active_tab') == 'codeTab') ? 'active' : '' }}"
                                    href="#"
                                    data-toggle="tab" data-target="#tab-7"
                                    onclick="document.getElementById('active_tab').value='codeTab'"><i
                                         class="material-icons">&#xe86f;</i>
-                                    &nbsp; {!!  __('backend.customCode') !!}</a>
+                                    &nbsp; {!!  __('Payment Setting') !!}</a>
                             </li>
 
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a class="nav-link block {{  ( Session::get('active_tab') == 'emailTab') ? 'active' : '' }}"
                                    href="#"
                                    data-toggle="tab" data-target="#tab-6"
@@ -86,7 +86,7 @@
                     @include('dashboard.settings.general')
                     @include('dashboard.settings.contacts')
                     @include('dashboard.settings.social')
-                    @include('dashboard.settings.custom')
+                    @include('dashboard.settings.stripe')
                     @include('dashboard.settings.notifications')
                     @include('dashboard.settings.site_status')
                 </div>

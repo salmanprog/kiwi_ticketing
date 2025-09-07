@@ -28,7 +28,7 @@ class BirthdayPackages extends Model
     protected $casts = [];
 
     protected $appends = [];
-
+    
     /**
      * Boot the model.
      */
@@ -48,6 +48,22 @@ class BirthdayPackages extends Model
         // });
     }
 
+    public function media_slider()
+    {
+        return $this->hasMany(Media::class, 'module_id')->where('module','birthday_packages');
+    }
+    public function media_cover()
+    {
+        return $this->hasMany(Media::class, 'module_id')->where('module','birthday_cover_photo');
+    }
+    public function cabanas()
+    {
+        return $this->hasMany(BirthdayCabanas::class, 'birthday_package_id');
+    }
+    public function addons()
+    {
+        return $this->hasMany(BirthdayAddon::class, 'birthday_slug', 'slug');
+    }
     /**
      * Generate a unique slug for the birthday package.
      */

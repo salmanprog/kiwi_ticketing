@@ -7,6 +7,8 @@ use App\Http\Requests;
 use App\Models\Section;
 use App\Models\BirthdayPackages;
 use App\Models\WebmasterSection;
+use App\Models\Media;
+use App\Models\BirthdayCabanas;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Auth;
 use File;
@@ -32,7 +34,7 @@ class BirthdayPackagesController extends Controller
     {
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-        $birthday_packages = BirthdayPackages::get();
+        $birthday_packages = BirthdayPackages::with(['cabanas','media_slider','media_cover'])->get();
          // Paginate
         $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
@@ -53,7 +55,50 @@ class BirthdayPackagesController extends Controller
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
         // General END
 
-        return view("dashboard.birthday_packages.create",compact("GeneralWebmasterSections"));
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $date = Carbon::today()->toDateString();
+
+        try {
+            $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+
+            if ($response->successful()) {
+            $apiData = $response->json();
+            $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+            $fillter_arr = [];
+            if(count($tickets) > 0){
+                for($i=0;$i<count($tickets);$i++){
+                    if($tickets[$i]['ticketCategory'] == 'Cabanas'){
+                        array_push($fillter_arr,$tickets[$i]);
+                    }
+                }
+            }
+            // Paginate
+            $perPage = 100;
+            $currentPage = LengthAwarePaginator::resolveCurrentPage();
+            $collection = collect($fillter_arr);
+
+            $cabanas = new LengthAwarePaginator(
+                $collection->forPage($currentPage, $perPage),
+                $collection->count(),
+                $perPage,
+                $currentPage,
+                ['path' => url()->current(), 'query' => request()->query()]
+            );
+
+            return view("dashboard.birthday_packages.create", compact("cabanas", "GeneralWebmasterSections"));
+            } else {
+                // Handle failed response
+                dd([
+                    'status' => $response->status(),
+                    'error' => $response->body(),
+                ]);
+            }
+
+        } catch (\Exception $e) {
+            // Handle connection or request exceptions
+            dd('Exception: ' . $e->getMessage());
+        }
     }
 
     public function store(Request $request)
@@ -64,21 +109,29 @@ class BirthdayPackagesController extends Controller
             'price' => 'required',
             'map_link' => 'required'
         ]);
-
-        // Upload photo
+        // Upload multiple photos
         $formFileName = "photo";
-        $fileFinalName = "";
-        if ($request->$formFileName != "") {
-            $fileFinalName = time() . rand(1111, 9999) . '.' . $request->file($formFileName)->getClientOriginalExtension();
-            $path = $this->uploadPath;
+        $uploadedFileNames = []; // To store all uploaded file names
 
-            if (!file_exists($path)) {
-                mkdir($path, 0755, true);
+        if ($request->hasFile($formFileName)) {
+            foreach ($request->file($formFileName) as $file) {
+                if ($file && $file->isValid()) {
+                    $fileFinalName = time() . rand(1111, 9999) . '.' . $file->getClientOriginalExtension();
+                    $path = $this->uploadPath;
+
+                    if (!file_exists($path)) {
+                        mkdir($path, 0755, true);
+                    }
+
+                    $file->move($path, $fileFinalName);
+
+                    // Optional: Resize & Optimize
+                    Helper::imageResize($path . $fileFinalName);
+                    Helper::imageOptimize($path . $fileFinalName);
+
+                    $uploadedFileNames[] = $fileFinalName; // Store for reference (DB, etc.)
+                }
             }
-
-            $request->file($formFileName)->move($path, $fileFinalName);
-            Helper::imageResize($path . $fileFinalName);
-            Helper::imageOptimize($path . $fileFinalName);
         }
 
         // Upload banner_image
@@ -96,19 +149,48 @@ class BirthdayPackagesController extends Controller
             Helper::imageResize($path . $fileFinalName2);
             Helper::imageOptimize($path . $fileFinalName2);
         }
+        
         $birthdayPackages = new BirthdayPackages;
         $birthdayPackages->title  = $request->title;
         $birthdayPackages->description = $request->description;
-        if ($fileFinalName != "") {
-            $birthdayPackages->image_url = $fileFinalName;
-        }
-        if ($fileFinalName2 != "") {
-            $birthdayPackages->banner_image = $fileFinalName2;
-        }
         $birthdayPackages->price  = $request->price;
         $birthdayPackages->map_link = $request->map_link;
         $birthdayPackages->status = $request->status;
         $birthdayPackages->save();
+
+        if ($request->has('cabanas') && is_array($request->cabanas)) {
+            foreach ($request->cabanas as $ticketSlug) {
+                BirthdayCabanas::create([
+                    'birthday_package_id' => $birthdayPackages->id,
+                    'ticketSlug' => $ticketSlug,
+                ]);
+            }
+        }
+
+        if(count($uploadedFileNames) > 0){
+            for($i=0;$i<count($uploadedFileNames);$i++){
+                $media = new Media;
+                $media->module  = 'birthday_packages';
+                $media->module_id = $birthdayPackages->id;
+                $media->filename  = $uploadedFileNames[$i];
+                $media->original_name = $uploadedFileNames[$i];
+                $media->file_url = $this->uploadPath.$uploadedFileNames[$i];
+                $media->mime_type = '';
+                $media->file_type  = 'image';
+                $media->save();
+            }
+        }
+        if ($fileFinalName2 != "") {
+            $media = new Media;
+            $media->module  = 'birthday_cover_photo';
+            $media->module_id = $birthdayPackages->id;
+            $media->filename  = $fileFinalName2;
+            $media->original_name = $fileFinalName2;
+            $media->file_url = $this->uploadPath.$fileFinalName2;
+            $media->mime_type = '';
+            $media->file_type  = 'image';
+            $media->save();
+        }
 
         return redirect()->action('Dashboard\BirthdayPackagesController@index')->with('doneMessage', __('backend.addDone'));
     }
@@ -120,10 +202,54 @@ class BirthdayPackagesController extends Controller
 
     public function edit($slug)
     {
-        // General for all pages
-        $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-        $birthday_packages = BirthdayPackages::where('slug',$slug)->first();
-        return view("dashboard.birthday_packages.edit", compact("birthday_packages", "GeneralWebmasterSections"));
+        
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $date = Carbon::today()->toDateString();
+
+        try {
+            $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
+            $birthday_packages = BirthdayPackages::with(['cabanas','media_slider','media_cover'])->where('slug',$slug)->first();
+            $selectedcabanas = $birthday_packages->cabanas->pluck('ticketSlug')->toArray();
+            $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+
+            if ($response->successful()) {
+            $apiData = $response->json();
+            $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+            $fillter_arr = [];
+            if(count($tickets) > 0){
+                for($i=0;$i<count($tickets);$i++){
+                    if($tickets[$i]['ticketCategory'] == 'Cabanas'){
+                        array_push($fillter_arr,$tickets[$i]);
+                    }
+                }
+            }
+            // Paginate
+            $perPage = 100;
+            $currentPage = LengthAwarePaginator::resolveCurrentPage();
+            $collection = collect($fillter_arr);
+
+            $cabanas = new LengthAwarePaginator(
+                $collection->forPage($currentPage, $perPage),
+                $collection->count(),
+                $perPage,
+                $currentPage,
+                ['path' => url()->current(), 'query' => request()->query()]
+            );
+
+            return view("dashboard.birthday_packages.edit", compact("birthday_packages", "selectedcabanas", "cabanas", "GeneralWebmasterSections"));
+            } else {
+                // Handle failed response
+                dd([
+                    'status' => $response->status(),
+                    'error' => $response->body(),
+                ]);
+            }
+
+        } catch (\Exception $e) {
+            // Handle connection or request exceptions
+            dd('Exception: ' . $e->getMessage());
+        }
     }
 
     public function update(Request $request, $id)
@@ -137,23 +263,51 @@ class BirthdayPackagesController extends Controller
                 'map_link' => 'required'
             ]);
 
-            // Start of Upload Files
-            $formFileName = "photo";
-            $fileFinalName = "";
-            if ($request->$formFileName != "") {
-                // Delete a Section photo
-                if ($birthdayPackages->photo != "") {
-                    File::delete($this->uploadPath . $birthdayPackages->photo);
+            if ($request->has('cabanas') && is_array($request->cabanas)) {
+                BirthdayCabanas::where('birthday_package_id',$birthdayPackages->id)->delete();
+                foreach ($request->cabanas as $ticketSlug) {
+                    BirthdayCabanas::create([
+                        'birthday_package_id' => $birthdayPackages->id,
+                        'ticketSlug' => $ticketSlug,
+                    ]);
                 }
+            }
+            if ($request->has('media_delete')) {
+                foreach ($request->input('media_delete') as $mediaId => $shouldDelete) {
+                    if ($shouldDelete == '1') {
+                        $media = Media::find($mediaId);
+                        if ($media) {
+                            $filePath = public_path('uploads/sections/' . $media->filename);
+                            if (file_exists($filePath)) {
+                                unlink($filePath);
+                            }
+                            $media->delete();
+                        }
+                    }
+                }
+            }
+            $formFileName = "photo";
+            $uploadedFileNames = []; // To store all uploaded file names
 
-                $fileFinalName = time() . rand(1111,
-                        9999) . '.' . $request->file($formFileName)->getClientOriginalExtension();
-                $path = $this->uploadPath;
-                $request->file($formFileName)->move($path, $fileFinalName);
+            if ($request->hasFile($formFileName)) {
+                foreach ($request->file($formFileName) as $file) {
+                    if ($file && $file->isValid()) {
+                        $fileFinalName = time() . rand(1111, 9999) . '.' . $file->getClientOriginalExtension();
+                        $path = $this->uploadPath;
 
-                // resize & optimize
-                Helper::imageResize($path . $fileFinalName);
-                Helper::imageOptimize($path . $fileFinalName);
+                        if (!file_exists($path)) {
+                            mkdir($path, 0755, true);
+                        }
+
+                        $file->move($path, $fileFinalName);
+
+                        // Optional: Resize & Optimize
+                        Helper::imageResize($path . $fileFinalName);
+                        Helper::imageOptimize($path . $fileFinalName);
+
+                        $uploadedFileNames[] = $fileFinalName; // Store for reference (DB, etc.)
+                    }
+                }
             }
 
             // Upload banner_image
@@ -175,16 +329,34 @@ class BirthdayPackagesController extends Controller
 
             $birthdayPackages->title  = $request->title;
             $birthdayPackages->description = $request->description;
-            if ($fileFinalName != "") {
-                $birthdayPackages->image_url = $fileFinalName;
-            }
-            if ($fileFinalName2 != "") {
-                $birthdayPackages->banner_image = $fileFinalName2;
-            }
             $birthdayPackages->price  = $request->price;
             $birthdayPackages->map_link = $request->map_link;
             $birthdayPackages->status = $request->status;
             $birthdayPackages->save();
+            if(count($uploadedFileNames) > 0){
+                for($i=0;$i<count($uploadedFileNames);$i++){
+                    $media = new Media;
+                    $media->module  = 'birthday_packages';
+                    $media->module_id = $birthdayPackages->id;
+                    $media->filename  = $uploadedFileNames[$i];
+                    $media->original_name = $uploadedFileNames[$i];
+                    $media->file_url = $this->uploadPath.$uploadedFileNames[$i];
+                    $media->mime_type = '';
+                    $media->file_type  = 'image';
+                    $media->save();
+                }
+            }
+            if ($fileFinalName2 != "") {
+                $media = new Media;
+                $media->module  = 'birthday_cover_photo';
+                $media->module_id = $birthdayPackages->id;
+                $media->filename  = $fileFinalName2;
+                $media->original_name = $fileFinalName2;
+                $media->file_url = $this->uploadPath.$fileFinalName2;
+                $media->mime_type = '';
+                $media->file_type  = 'image';
+                $media->save();
+            }
             return redirect()->action('Dashboard\BirthdayPackagesController@edit', [$id])->with('doneMessage',
                 __('backend.saveDone'));
 

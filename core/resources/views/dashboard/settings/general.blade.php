@@ -2,7 +2,7 @@
     class="tab-pane {{ ( Session::get('active_tab') == 'infoTab') ? 'active' : '' }}"
     id="tab-1">
     <div class="p-a-md"><h5><i class="material-icons">&#xe30c;</i>
-            &nbsp; {!!  __('backend.siteInfoSettings') !!}</h5></div>
+            &nbsp; {!!  __('Account Setting') !!}</h5></div>
     <div class="p-a-md col-md-12">
         @foreach(Helper::languagesList() as $ActiveLanguage)
             <div class="form-group">
@@ -13,22 +13,25 @@
         @endforeach
         @foreach(Helper::languagesList() as $ActiveLanguage)
             <div class="form-group">
-                <label>{!!  __('backend.metaDescription') !!}
+                <label>{!!  __('Description') !!}
                 </label> {!! @Helper::languageName($ActiveLanguage) !!}
                 {!! Form::textarea('site_desc_'.@$ActiveLanguage->code,$Setting->{'site_desc_'.@$ActiveLanguage->code}, array('placeholder' => '','class' => 'form-control','maxlength'=>191, 'dir'=>@$ActiveLanguage->direction,'rows'=>'2')) !!}
             </div>
         @endforeach
-        @foreach(Helper::languagesList() as $ActiveLanguage)
+       @foreach(Helper::languagesList() as $ActiveLanguage)
             <div class="form-group">
-                <label>{!!  __('backend.metaKeywords') !!}
+                <label>{!!  __('External API Url') !!}
                 </label> {!! @Helper::languageName($ActiveLanguage) !!}
-                {!! Form::textarea('site_keywords_'.@$ActiveLanguage->code,$Setting->{'site_keywords_'.@$ActiveLanguage->code}, array('placeholder' => '','class' => 'form-control', 'dir'=>@$ActiveLanguage->direction,'rows'=>'2')) !!}
+                {!! Form::text('external_api_link_'.@$ActiveLanguage->code,$Setting->{'external_api_link_'.@$ActiveLanguage->code}, array('placeholder' => '','class' => 'form-control','maxlength'=>191, 'dir'=>@$ActiveLanguage->direction)) !!}
             </div>
         @endforeach
-        <div class="form-group">
-            <label>{!!  __('backend.websiteUrl') !!}</label>
-            {!! Form::text('site_url',$Setting->site_url, array('placeholder' => 'http//:www.sitename.com/','class' => 'form-control', 'dir'=>'ltr')) !!}
-        </div>
+        @foreach(Helper::languagesList() as $ActiveLanguage)
+            <div class="form-group">
+                <label>{!!  __('Auth-Code') !!}
+                </label> {!! @Helper::languageName($ActiveLanguage) !!}
+                {!! Form::text('auth_code_'.@$ActiveLanguage->code,$Setting->{'auth_code_'.@$ActiveLanguage->code}, array('placeholder' => '','class' => 'form-control','maxlength'=>191, 'dir'=>@$ActiveLanguage->direction)) !!}
+            </div>
+        @endforeach
     </div>
 
 </div>

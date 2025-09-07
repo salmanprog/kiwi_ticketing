@@ -32,14 +32,14 @@ class BirthdayAddonsController extends Controller
 
     public function index()
     {
-        $baseUrl = config('services.dynamic_pricing.base_url');
-        $authCode = config('services.dynamic_pricing.auth_code');
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
         try {
             
-            $getFeaturedCabana = BirthdayPackages::where('status', '=', '1')->orderby('id', 'asc')->get();
+            $getFeaturedCabana = BirthdayPackages::with(['cabanas','addons','media_slider','media_cover'])->where('status', '=', '1')->orderby('id', 'asc')->get();
             // Paginate
             $perPage = 10;
             $currentPage = LengthAwarePaginator::resolveCurrentPage();
@@ -74,8 +74,8 @@ class BirthdayAddonsController extends Controller
     {
         $params = $request->all();
         $cabanaSlug = $params['cabanaSlug'];
-        $baseUrl = config('services.dynamic_pricing.base_url');
-        $authCode = config('services.dynamic_pricing.auth_code');
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
         $cabanaResponse = Http::get($baseUrl . '/Pricing/GetAllProductPrice?authcode=' . $authCode . '&date=' . $date);
         if (isset($params['ticket']) && count($params['ticket']) > 0) {
@@ -135,8 +135,8 @@ class BirthdayAddonsController extends Controller
 
     public function edit($id)
     {
-       $baseUrl = config('services.dynamic_pricing.base_url');
-        $authCode = config('services.dynamic_pricing.auth_code');
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en'); 
         $date = Carbon::today()->toDateString();
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
@@ -146,6 +146,14 @@ class BirthdayAddonsController extends Controller
         if ($response->successful()) {
             $apiData = $response->json();
             $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+            $fillter_arr = [];
+            if(count($tickets) > 0){
+                for($i=0;$i<count($tickets);$i++){
+                    if($tickets[$i]['venueId'] == 0){
+                        array_push($fillter_arr,$tickets[$i]);
+                    }
+                }
+            }
         }
         return view("dashboard.birthdayaddon.edit", compact("cabana", "tickets","cabana_addon" ,"GeneralWebmasterSections"));
     }

@@ -1,13 +1,13 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Featured Cabana'))
+@section('title', __('Cabana Addon'))
 @section('content')
 <div class="padding">
 <div class="box">
     <div class="box-header dker">
-        <h3>{{ __('Featured Cabana') }}</h3>
+        <h3>{{ __('Cabana') }}</h3>
         <small>
             <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-            <a href="">{{ __('Featuredcabana') }}</a>
+            <a href="">{{ __('Addon') }}</a>
         </small>
     </div>
      <!-- <div class="row p-a pull-right" style="margin-top: -70px;">

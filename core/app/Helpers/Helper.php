@@ -45,14 +45,26 @@ class Helper
         return @$_Loader_WebmasterSettings->$var;
     }
 
-    static function GeneralSiteSettings($var)
+    // static function GeneralSiteSettings($var)
+    // {
+    //     $_Loader_Web_Settings = session('_Loader_Web_Settings', []);
+    //     if (empty($_Loader_Web_Settings)) {
+    //         $_Loader_Web_Settings = Setting::find(1);
+    //         session(['_Loader_Web_Settings' => $_Loader_Web_Settings]);
+    //     }
+    //     return @$_Loader_Web_Settings->$var;
+    // }
+
+    static function GeneralSiteSettings($var, $refresh = false)
     {
-        $_Loader_Web_Settings = session('_Loader_Web_Settings', []);
-        if (empty($_Loader_Web_Settings)) {
+        if ($refresh || !session()->has('_Loader_Web_Settings')) {
             $_Loader_Web_Settings = Setting::find(1);
             session(['_Loader_Web_Settings' => $_Loader_Web_Settings]);
+        } else {
+            $_Loader_Web_Settings = session('_Loader_Web_Settings');
         }
-        return @$_Loader_Web_Settings->$var;
+
+        return $_Loader_Web_Settings->$var ?? null;
     }
 
     static function eventsAlerts()

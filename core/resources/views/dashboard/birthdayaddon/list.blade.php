@@ -31,6 +31,8 @@
                             <th>{{ __('Package Title') }}</th>
                             <th>{{ __('Slug') }}</th>
                             <th>{{ __('Price') }}</th>
+                            <th>{{ __('Total Addon') }}</th>
+                            <th>{{ __('Status') }}</th>
                             <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
                         </tr>
                         </thead>
@@ -44,7 +46,17 @@
                                     </label>
                                 </td>
                                 <td>
-                                   <small>{{ $ticket['title'] }}</small>
+                                   <div class="">
+                                        <a href="{{ route('birthdayaddonEdit',$ticket['slug']) }}"> 
+                                            <div class="pull-right">
+                                                 @foreach($ticket->media_cover as $media_cover)
+                                                <img src="{{ asset('uploads/sections/' . $media_cover->filename) }}" style="height: 40px;width:150px" alt="Curabitur vitae leo vitae ipsum varius laoreet">
+                                                @endforeach
+                                            </div>
+                                            <div class="h6 m-b-0">{{ $ticket['title'] }}</div>
+                                           
+                                        </a>
+                                    </div>
                                 </td>
 
                                 <td>
@@ -52,6 +64,13 @@
                                 </td>
                                 <td class="text-center">
                                     <small>{{ $ticket['price'] }}</small>
+                                </td>
+                                <td class="text-center">
+                                    <small>{{ count($ticket['addons']) }}</small>
+                                </td>
+                                <td class="text-center">
+                                    <i class="fa fa-check text-success inline"></i>
+                                </td>
                                 </td>
                                 <td class="text-center">
                                     <div class="dropdown">
@@ -78,7 +97,7 @@
                         <div class="col-sm-3 hidden-xs">
                          
                             @if(@Auth::user()->permissionsGroup->settings_status)
-                                <select name="action" id="action" class="form-control c-select w-sm inline v-middle"
+                                <!-- <select name="action" id="action" class="form-control c-select w-sm inline v-middle"
                                         required>
                                     <option value="">{{ __('backend.bulkAction') }}</option>
                                     <option value="activate">{{ __('backend.activeSelected') }}</option>
@@ -91,7 +110,7 @@
                                         style="display: none"
                                         data-target="#m-all" ui-toggle-class="bounce"
                                         ui-target="#animate">{{ __('backend.apply') }}
-                                </button>
+                                </button> -->
                             @endif
                         </div>
                             <div class="col-sm-3 text-center">

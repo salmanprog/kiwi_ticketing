@@ -42,5 +42,4 @@ class Cabana extends Model
     protected $appends = [
     ];
 
-  
 }
