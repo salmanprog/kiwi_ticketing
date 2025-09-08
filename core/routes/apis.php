@@ -47,9 +47,9 @@ Route::get('/cabana/addon/{lang}', 'CabanaAddonController@show');
 Route::get('/birthday/packages', 'BirthdayController@index');
 Route::get('/birthday/addon/{slug}', 'BirthdayAddonController@show');
 //Tickets
-Route::post('/ticket/hold', 'TicketController@ticketHold');
+Route::post('/ticket-hold', 'TicketController@ticketHold');
 //Stripe
-Route::post('/order/pay', 'StripeController@createPaymentIntent');
+Route::post('/order-payment', 'StripeController@createPaymentIntent');
 Route::middleware('apiAuth')->group(function () {
     Route::get('/secure-data', function () {
         return response()->json(['data' => 'Authorized Access!']);
