@@ -10,9 +10,9 @@ use Helper;
 
 class TicketController extends BaseAPIController
 {
-    public function index()
+    public function index(Request $request)
     {
-        
+        dd($request->all());
     }
 
     public function ticketHold(Request $request)
