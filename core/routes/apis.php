@@ -50,9 +50,9 @@ Route::get('/birthday/addon/{slug}', 'BirthdayAddonController@show');
 Route::post('/ticket-hold', 'TicketController@ticketHold');
 Route::any('/debug-post', function (Request $request) {
     return response()->json([
-        'method' => $request->method(),
-        'input' => $request->all(),
-        'headers' => $request->headers->all(),
+        'method' => 'check',
+        'input' => 'input type',
+        'headers' => 'head',
     ]);
 });
 //Stripe
