@@ -47,7 +47,7 @@ Route::get('/cabana/addon/{lang}', 'CabanaAddonController@show');
 Route::get('/birthday/packages', 'BirthdayController@index');
 Route::get('/birthday/addon/{slug}', 'BirthdayAddonController@show');
 //Tickets
-Route::post('/ticket-hold', 'TicketController@ticketHold');
+Route::post('/avc', 'TicketController@ticketHold');
 //Stripe
 Route::post('/order-payment', 'StripeController@createPaymentIntent');
 Route::middleware('apiAuth')->group(function () {
