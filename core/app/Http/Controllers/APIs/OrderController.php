@@ -4,6 +4,7 @@ namespace App\Http\Controllers\APIs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
+use Helper;
 
 class OrderController extends BaseAPIController
 {
@@ -21,8 +22,8 @@ class OrderController extends BaseAPIController
             return $this->sendResponse(400, 'Validation Error', $validator->errors());
         }
 
-        $baseUrl = config('services.dynamic_pricing.base_url');
-        $authCode = config('services.dynamic_pricing.auth_code');
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
 
         try {
@@ -54,7 +55,5 @@ class OrderController extends BaseAPIController
         } catch (\Exception $e) {
              return $this->sendResponse(401, 'Server Error', $e->getMessage());
         }
-
-        
     }
 }
