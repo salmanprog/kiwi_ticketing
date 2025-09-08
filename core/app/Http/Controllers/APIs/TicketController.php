@@ -28,6 +28,8 @@ class TicketController extends BaseAPIController
             return $this->sendResponse(400, 'Validation Error', $validator->errors());
         }
 
+        print_r($request->all());
+        die();
         $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
