@@ -47,7 +47,7 @@ Route::get('/cabana/addon/{lang}', 'CabanaAddonController@show');
 Route::get('/birthday/packages', 'BirthdayController@index');
 Route::get('/birthday/addon/{slug}', 'BirthdayAddonController@show');
 //Tickets
-Route::post('/ticket-hold', 'TicketController@ticketHold');
+Route::any('/ticket-hold', 'TicketController@ticketHold');
 Route::any('/debug-post', function (Request $request) {
     return response()->json([
         'method' => 'check',
