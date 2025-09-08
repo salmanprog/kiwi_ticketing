@@ -17,7 +17,6 @@ class TicketController extends BaseAPIController
 
     public function ticketHold(Request $request)
     {
-        dd($request->all());
         $validator = Validator::make($request->all(), [
             'ticketType' => 'required|string|max:255',
             'quantity' => 'required|integer|max:255',
