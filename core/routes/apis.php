@@ -48,12 +48,6 @@ Route::get('/birthday/packages', 'BirthdayController@index');
 Route::get('/birthday/addon/{slug}', 'BirthdayAddonController@show');
 //Tickets
 Route::post('/ticket-hold', 'TicketController@ticketHold');
-Route::post('/debug', function (Request $request) {
-    return response()->json([
-        'msg' => 'Post received',
-        'data' => $request->all()
-    ]);
-});
 //Stripe
 Route::post('/order-payment', 'StripeController@createPaymentIntent');
 Route::middleware('apiAuth')->group(function () {
