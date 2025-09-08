@@ -1,4 +1,7 @@
 <?php
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\APIs\TicketController;
 
 Route::get('/', 'APIsController@api')->name('apiURL');
 // general
@@ -47,7 +50,8 @@ Route::get('/cabana/addon/{lang}', 'CabanaAddonController@show');
 Route::get('/birthday/packages', 'BirthdayController@index');
 Route::get('/birthday/addon/{slug}', 'BirthdayAddonController@show');
 //Tickets
-Route::post('/ticket-hold', 'TicketController@index');
+Route::post('/ticket-hold', [TicketController::class, 'ticketHold']);
+//Route::post('/ticket-hold', 'TicketController@index');
 Route::any('/debug-post', function (Request $request) {
     return response()->json([
         'method' => 'check',
