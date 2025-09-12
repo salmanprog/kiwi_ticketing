@@ -19,7 +19,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
             <!-- brand -->
             <a class="navbar-brand" href="{{ route('adminHome') }}">
                 <img src="{{ asset('assets/dashboard/images/logo.png') }}" alt="Control">
-                <span class="hidden-folded inline">{{ __('backend.control') }}</span>
+                <span class="hidden-folded inline">{{ __('Kiwi Ticketing') }}</span>
             </a>
             <!-- / brand -->
         </div>
@@ -38,213 +38,8 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <span class="nav-text">{{ __('backend.dashboard') }}</span>
                         </a>
                     </li>
-
-
-                   
-                    
-
-                   
-                    
                     <li class="nav-header hidden-folded m-t-sm">
-                        <small class="text-muted">{{ __('backend.siteData') }}</small>
-                    </li>
-
-                    <?php
-                    $data_sections_arr = explode(",", Auth::user()->permissionsGroup->data_sections);
-                    ?>
-                    @foreach($GeneralWebmasterSections as $GeneralWebmasterSection)
-                        @if(in_array($GeneralWebmasterSection->id,$data_sections_arr))
-                            <?php
-                            if ($GeneralWebmasterSection->$mnu_title_var != "") {
-                                $GeneralWebmasterSectionTitle = $GeneralWebmasterSection->$mnu_title_var;
-                            } else {
-                                $GeneralWebmasterSectionTitle = $GeneralWebmasterSection->$mnu_title_var2;
-                            }
-
-                            $LiIcon = "&#xe2c8;";
-                            if ($GeneralWebmasterSection->type == 3) {
-                                $LiIcon = "&#xe050;";
-                            }
-                            if ($GeneralWebmasterSection->type == 2) {
-                                $LiIcon = "&#xe63a;";
-                            }
-                            if ($GeneralWebmasterSection->type == 1) {
-                                $LiIcon = "&#xe251;";
-                            }
-                            if ($GeneralWebmasterSection->type == 0) {
-                                $LiIcon = "&#xe2c8;";
-                            }
-                            if ($GeneralWebmasterSection->id == 1) {
-                                $LiIcon = "&#xe3e8;";
-                            }
-                            if ($GeneralWebmasterSection->id == 7) {
-                                $LiIcon = "&#xe02f;";
-                            }
-                            if ($GeneralWebmasterSection->id == 2) {
-                                $LiIcon = "&#xe540;";
-                            }
-                            if ($GeneralWebmasterSection->id == 3) {
-                                $LiIcon = "&#xe307;";
-                            }
-                            if ($GeneralWebmasterSection->id == 8) {
-                                $LiIcon = "&#xe8f6;";
-                            }
-
-                            // get 9 char after root url to check if is "webmaster"
-                            $is_webmaster = substr($urlAfterRoot, 0, 9);
-                            ?>
-                            @if($GeneralWebmasterSection->sections_status > 0 && @Auth::user()->permissionsGroup->view_status == 0)
-                                <li {{ ($GeneralWebmasterSection->id == @$WebmasterSection->id && $is_webmaster != "webmaster") ? 'class=active' : '' }}>
-                                    <a>
-                  <span class="nav-caret">
-                    <i class="fa fa-caret-down"></i>
-                  </span>
-                                        <span class="nav-icon">
-                    <i class="material-icons">{!! $LiIcon !!}</i>
-                  </span>
-                                        <span
-                                            class="nav-text">{!! $GeneralWebmasterSectionTitle !!}</span>
-                                    </a>
-                                    <ul class="nav-sub">
-                                        @if($GeneralWebmasterSection->sections_status > 0)
-
-                                            <?php
-                                            $currentFolder = "categories"; // Put folder name here
-                                            $PathCurrentFolder = substr($urlAfterRoot,
-                                                (strlen($GeneralWebmasterSection->id) + 1), strlen($currentFolder));
-                                            ?>
-                                            <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
-                                                <a href="{{ route('categories',$GeneralWebmasterSection->id) }}">
-                                                    <span
-                                                        class="nav-text">{{ __('backend.sectionsOf') }} {{ $GeneralWebmasterSectionTitle }}</span>
-                                                </a>
-                                            </li>
-                                        @endif
-
-                                        <?php
-                                        $currentFolder = "topics"; // Put folder name here
-                                        $PathCurrentFolder = substr($urlAfterRoot,
-                                            (strlen($GeneralWebmasterSection->id) + 1), strlen($currentFolder));
-                                        ?>
-                                        <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
-                                            <a href="{{ route('topics',$GeneralWebmasterSection->id) }}">
-                                                <span
-                                                    class="nav-text">{!! $GeneralWebmasterSectionTitle !!}</span>
-                                            </a>
-                                        </li>
-
-                                    </ul>
-                                </li>
-
-                            @else
-                                <li {{ ($GeneralWebmasterSection->id== @$WebmasterSection->id) ? 'class=active' : '' }}>
-                                    <a href="{{ route('topics',$GeneralWebmasterSection->id) }}">
-                  <span class="nav-icon">
-                    <i class="material-icons">{!! $LiIcon !!}</i>
-                  </span>
-                                        <span
-                                            class="nav-text">{!! $GeneralWebmasterSectionTitle !!}</span>
-                                    </a>
-                                </li>
-                            @endif
-                        @endif
-                    @endforeach
-
-
-                    @if((Helper::GeneralWebmasterSettings("banners_status") && @Auth::user()->permissionsGroup->banners_status) || (Helper::GeneralWebmasterSettings("tags_status") && @Auth::user()->permissionsGroup->tags_status) || (Helper::GeneralWebmasterSettings("popups_status") && @Auth::user()->permissionsGroup->popups_status) || (Helper::GeneralWebmasterSettings("menus_status") && @Auth::user()->permissionsGroup->menus_status) || (Helper::GeneralWebmasterSettings("file_manager_status") && @Auth::user()->permissionsGroup->file_manager_status))
-                        <!-- <li class="nav-header hidden-folded m-t-sm">
-                            <small class="text-muted">{{ __('backend.extra') }}</small>
-                        </li> -->
-                    @endif
-
-                    @if(Helper::GeneralWebmasterSettings("banners_status"))
-                        @if(@Auth::user()->permissionsGroup->banners_status)
-                            <?php
-                            $currentFolder = "banners"; // Put folder name here
-                            $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
-                            ?>
-                            <!-- <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
-                                <a href="{{ route('Banners') }}">
-<span class="nav-icon">
-<i class="material-icons">&#xe433;</i>
-</span>
-                                    <span class="nav-text">{{ __('backend.adsBanners') }}</span>
-                                </a>
-                            </li> -->
-                        @endif
-                    @endif
-
-                    @if(Helper::GeneralWebmasterSettings("popups_status"))
-                        @if(@Auth::user()->permissionsGroup->popups_status)
-                            <?php
-                            $currentFolder = "popups"; // Put folder name here
-                            $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
-                            ?>
-                            <!-- <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
-                                <a href="{{ route('popups') }}">
-<span class="nav-icon">
-<i class="material-icons">&#xe8d9;</i>
-</span>
-                                    <span class="nav-text">{{ __('backend.popups') }}</span>
-                                </a>
-                            </li> -->
-
-                        @endif
-                    @endif
-
-                    @if(Helper::GeneralWebmasterSettings("tags_status"))    
-                        @if(@Auth::user()->permissionsGroup->tags_status)
-                            <?php
-                            $currentFolder = "tags"; // Put folder name here
-                            $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
-                            ?>
-                            <!-- <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
-                                <a href="{{ route('tags') }}">
-<span class="nav-icon">
-<i class="material-icons">&#xe53b;</i>
-</span>
-                                    <span class="nav-text">{{ __('backend.tags') }}</span>
-                                </a>
-                            </li> -->
-
-                        @endif
-                    @endif
-                    @if(Helper::GeneralWebmasterSettings("menus_status"))
-                        @if(@Auth::user()->permissionsGroup->menus_status)
-                            <?php
-                            $currentFolder = "menus"; // Put folder name here
-                            $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
-                            ?>
-                            <!-- <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
-                                <a href="{{ route('menus') }}">
-<span class="nav-icon">
-<i class="material-icons">&#xe241;</i>
-</span>
-                                    <span class="nav-text">{{ __('backend.siteMenus') }}</span>
-                                </a>
-                            </li> -->
-
-                        @endif
-                    @endif
-                    @if(Helper::GeneralWebmasterSettings("file_manager_status"))
-                        @if(@Auth::user()->permissionsGroup->file_manager_status)
-                            <?php
-                            $currentFolder = "file-manager"; // Put folder name here
-                            $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
-                            ?>
-                            <!-- <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
-                                <a href="{{ route('FileManager') }}">
-<span class="nav-icon">
-<i class="material-icons">&#xe2c7;</i>
-</span>
-                                    <span class="nav-text">{{ __('backend.fileManager') }}</span>
-                                </a>
-                            </li> -->
-
-                        @endif
-                    @endif
-                    <li class="nav-header hidden-folded m-t-sm">
-                        <small class="text-muted">{{ __('Featured Products') }}</small>
+                        <small class="text-muted">{{ __('Tickets Managment') }}</small>
                     </li>
                      <?php
                         $currentFolder = "kabanasetting"; // Put folder name here
@@ -287,7 +82,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 </a>
                             </li>
                             <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
-                                <a href="#">
+                                <a href="{{ route('kabanaorders') }}">
                                     <span class="nav-text">{{ __('Cabana Orders') }}</span>
                                 </a>
                             </li>
@@ -343,14 +138,14 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         $currentFolder = "users"; // Put folder name here
                         $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
                         ?>
-                        <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
+                        <!-- <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
                             <a href="{{ route('users') }}">
 <span class="nav-icon">
 <i class="material-icons">&#xe7fb;</i>
 </span>
                                 <span class="nav-text">{{ __('backend.usersPermissions') }}</span>
                             </a>
-                        </li>
+                        </li> -->
 
                     @endif
                     @if(Helper::GeneralWebmasterSettings("settings_status"))
@@ -361,9 +156,9 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             ?>
                             <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
                                 <a href="{{ route('settings') }}">
-<span class="nav-icon">
-<i class="material-icons">&#xe8b8;</i>
-</span>
+                                <span class="nav-icon">
+                                <i class="material-icons">&#xe8b8;</i>
+                                </span>
                                     <span class="nav-text">{{ __('backend.generalSiteSettings') }}</span>
                                 </a>
                             </li>
@@ -372,9 +167,9 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                     @endif
 
                     @if(@Auth::user()->permissionsGroup->webmaster_status || @Auth::user()->permissionsGroup->modules_status)
-                        <li class="nav-header hidden-folded m-t-sm">
+                        <!-- <li class="nav-header hidden-folded m-t-sm">
                             <small class="text-muted">{{ __('backend.webmasterTools') }}</small>
-                        </li>
+                        </li> -->
                     @endif
 
                     @if(@Auth::user()->permissionsGroup->modules_status)
@@ -382,14 +177,14 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         $currentFolder = "modules"; // Put folder name here
                         $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
                         ?>
-                        <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
+                        <!-- <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
                             <a href="{{ route('WebmasterSections') }}">
 <span class="nav-icon">
 <i class="material-icons">&#xe30d;</i>
 </span>
                                 <span class="nav-text">{{ __('backend.siteSectionsSettings') }}</span>
                             </a>
-                        </li>
+                        </li> -->
 
                     @endif
 

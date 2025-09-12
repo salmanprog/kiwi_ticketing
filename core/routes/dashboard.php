@@ -22,6 +22,7 @@ use App\Http\Controllers\Dashboard\KabanaSettingController;
 use App\Http\Controllers\Dashboard\KabanaAddonsController;
 use App\Http\Controllers\Dashboard\BirthdayPackagesController;
 use App\Http\Controllers\Dashboard\BirthdayAddonsController;
+use App\Http\Controllers\Dashboard\OrderController;
 use Illuminate\Support\Facades\Route;
 
 // Admin Home
@@ -266,7 +267,8 @@ Route::get('/kabanasetting/{id}/edit', [KabanaSettingController::class, 'edit'])
 Route::post('/kabanasetting/{id}/update', [KabanaSettingController::class, 'update'])->name('kabanasettingUpdate');
 Route::get('/kabanasetting/destroy/{id}', [KabanaSettingController::class, 'destroy'])->name('kabanasettingDestroy');
 Route::post('/kabanasetting/updateAll', [KabanaSettingController::class, 'updateAll'])->name('kabanasettingUpdateAll');
-
+Route::get('/kabana-orders', [OrderController::class, 'getCabanaOrders'])->name('kabanaorders');
+Route::get('/kabana-orders-detail/{slug}', [OrderController::class, 'getByOrderSlug'])->name('kabanaordersdetail');
 //Kabana Addons
 Route::post('/cabana/store', [KabanaAddonsController::class, 'store'])->name('cabanaStore');
 
