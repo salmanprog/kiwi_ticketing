@@ -50,6 +50,7 @@ Route::get('/birthday/addon/{slug}', 'BirthdayAddonController@show');
 Route::post('/ticket-hold', 'TicketController@ticketHold');
 //Stripe
 Route::post('/order-payment', 'StripeController@createPaymentIntent');
+Route::post('/create-order', 'ExternalOrderController@addOrder');
 Route::middleware('apiAuth')->group(function () {
     Route::get('/secure-data', function () {
         return response()->json(['data' => 'Authorized Access!']);
