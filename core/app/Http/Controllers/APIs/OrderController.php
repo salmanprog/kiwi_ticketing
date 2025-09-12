@@ -9,6 +9,7 @@ use App\Models\OrderItem;
 use App\Models\Transaction;
 use App\Http\Resources\OrderResource;
 use Carbon\Carbon;
+use App\Helpers\OrdersHelper;
 use Helper;
 
 class OrderController extends BaseAPIController
@@ -91,6 +92,7 @@ class OrderController extends BaseAPIController
         $date = Carbon::today()->toDateString();
 
         try {
+            
             $order = new Order;
             $order->auth_code  = Helper::GeneralSiteSettings('auth_code_en',true);
             $order->type = $request->type;

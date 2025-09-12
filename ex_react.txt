@@ -1,0 +1,121 @@
+import React, { Component } from "react";
+import { render } from "react-dom";
+import * as CryptoJS from "crypto-js";
+import "./style.css";
+
+class App extends Component {
+  state = {
+    inputText: "Abc123",
+    inputKey: "my-secret-key-16",   // EXACT 16 chars for AES-128
+    encryptedBase64Input: "",
+    encryptedBase64: "",
+    decryptKey: "my-secret-key-16",
+    outputText: ""
+  };
+
+  // AES-128-ECB + PKCS7
+  encryptAES = (text, keyStr) => {
+    const key = CryptoJS.enc.Utf8.parse(keyStr); // bytes, not passphrase
+    const plaintext = CryptoJS.enc.Utf8.parse(text);
+    const encrypted = CryptoJS.AES.encrypt(plaintext, key, {
+      mode: CryptoJS.mode.ECB,
+      padding: CryptoJS.pad.Pkcs7,
+    });
+    return encrypted.toString(); // Base64
+  };
+
+  decryptAES = (encryptedBase64, keyStr) => {
+    try {
+      const key = CryptoJS.enc.Utf8.parse(keyStr);
+      const decrypted = CryptoJS.AES.decrypt(
+        { ciphertext: CryptoJS.enc.Base64.parse(encryptedBase64) },
+        key,
+        { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7 }
+      );
+      const str = decrypted.toString(CryptoJS.enc.Utf8);
+      return str.length ? str : "error: empty";
+    } catch {
+      return "error: decrypt failed";
+    }
+  };
+
+  handleInputTextChange = (e) =>
+    this.setState({ inputText: e.target.value }, this.encryptInputText);
+
+  handleInputKeyChange = (e) =>
+    this.setState({ inputKey: e.target.value }, this.encryptInputText);
+
+  encryptInputText = () => {
+    const { inputText, inputKey } = this.state;
+    this.setState({
+      encryptedBase64Input: this.encryptAES(inputText, inputKey),
+    });
+  };
+
+  handleDecryptKeyChange = (e) =>
+    this.setState({ decryptKey: e.target.value }, this.decryptOutputText);
+
+  handleMsgChange = (e) =>
+    this.setState({ encryptedBase64: e.target.value }, this.decryptOutputText);
+
+  decryptOutputText = () => {
+    const { encryptedBase64, decryptKey } = this.state;
+    this.setState({
+      outputText: this.decryptAES(encryptedBase64, decryptKey),
+    });
+  };
+
+  componentDidMount() {
+    this.encryptInputText();
+  }
+
+  render() {
+    return (
+      <>
+        <h1>CryptoJS AES-128-ECB Demo</h1>
+
+        <h3>Encrypt</h3>
+        <div className="form-group">
+          <input
+            className="form-control"
+            value={this.state.inputText}
+            onChange={this.handleInputTextChange}
+            style={{ width: "40%", height: 40, marginRight: 20 }}
+            placeholder="Input Text"
+          />
+          <input
+            className="form-control"
+            value={this.state.inputKey}
+            onChange={this.handleInputKeyChange}
+            style={{ width: "40%", height: 40 }}
+            placeholder="16-char Key"
+          />
+        </div>
+        <pre className="output"><code>{this.state.encryptedBase64Input}</code></pre>
+
+        <h3>Decrypt (client-side test)</h3>
+        <div className="form-group">
+          <input
+            className="form-control"
+            value={this.state.encryptedBase64}
+            onChange={this.handleMsgChange}
+            style={{ width: "40%", height: 40, marginRight: 20 }}
+            placeholder="Encrypted Base64"
+          />
+          <input
+            className="form-control"
+            value={this.state.decryptKey}
+            onChange={this.handleDecryptKeyChange}
+            style={{ width: "40%", height: 40 }}
+            placeholder="16-char Key"
+          />
+        </div>
+        <pre className="output"><code>{this.state.outputText}</code></pre>
+      </>
+    );
+  }
+}
+
+render(<App />, document.getElementById("root"));
+
+https://stackblitz.com/edit/cryptojs-aes-encrypt-decrypt?file=index.js
