@@ -18,9 +18,12 @@
             </a>
         </div>
     </div> -->
-    @if(count($paginated) > 0)
+    <div class="box-tool box-tool-lg">
+                
+            </div>
+            <div>
         <div class="table-responsive">
-                    <table class="table table-bordered m-a-0">
+                    <table class="table table table-bordered">
                         <thead class="dker">
                         <tr>
                             <th  class="width20 dker">
@@ -28,16 +31,19 @@
                                     <input id="checkAll" type="checkbox"><i></i>
                                 </label>
                             </th>
+                            <th>{{ __('Order No') }}</th>
                             <th>{{ __('Name') }}</th>
                             <th>{{ __('Email') }}</th>
                             <th>{{ __('Phone') }}</th>
-                            <th>{{ __('Order Type') }}</th>
+                            <th>{{ __('Transaction-Id') }}</th>
                             <th>{{ __('Total') }}</th>
-                            <th>{{ __('Status') }}</th>
+                            <th>{{ __('Paid') }}</th>
+                            <th>{{ __('Date') }}</th>
                             <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
                         </tr>
                         </thead>
                         <tbody>
+                            @if(count($paginated) > 0)
                             @foreach ($paginated as $order)
                              <tr>
                                 <td class="dker"><label class="ui-check m-a-0">
@@ -45,6 +51,9 @@
                                             class="dark-white"></i>
                                         {!! Form::hidden('row_ids[]',$order['id'], array('class' => 'form-control row_no')) !!}
                                     </label>
+                                </td>
+                                <td>
+                                   <small>{{$order->slug }}</small>
                                 </td>
                                 <td class="h6">
                                     {{ $order->customer->name }}
@@ -57,13 +66,16 @@
                                     <small>{{ $order->customer->phone }}</small>
                                 </td>
                                 <td>
-                                    <small>{{ $order['type'] }}</small>
+                                    <small>{{ $order['transactionId'] }}</small>
                                 </td>
                                 <td>
-                                    <small>${{ $order['totalAmount'] }}</small>
+                                    <small>${{ $order['orderTotal'] }}</small>
                                 </td>
                                 <td class="text-center">
                                     <i class="fa fa-check text-success inline"></i>
+                                </td>
+                                <td>
+                                    <small>{{ date('Y-m-d', strtotime($order['orderDate'])) }}</small>
                                 </td>
                                 <td class="text-center">
                                     <div class="dropdown">
@@ -81,6 +93,7 @@
                                 </td>
                             </tr>
                             @endforeach
+                            @endif
                         </tbody>
                     </table>
 
@@ -139,7 +152,7 @@
                        
                     </div>
                 </footer>
-    @endif
+    
 </div>
 </div>
 

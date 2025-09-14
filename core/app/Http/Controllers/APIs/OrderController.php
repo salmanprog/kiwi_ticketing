@@ -5,8 +5,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
 use App\Models\Order;
-use App\Models\OrderItem;
+use App\Models\OrderTickets;
 use App\Models\Transaction;
+use App\Models\User;
 use App\Http\Resources\OrderResource;
 use Carbon\Carbon;
 use App\Helpers\OrdersHelper;
@@ -14,55 +15,6 @@ use Helper;
 
 class OrderController extends BaseAPIController
 {
-
-    public function ticketHold(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'ticketType' => 'required|string|max:255',
-            'quantity' => 'required|integer|max:255',
-            'seat' => 'required|integer|max:255',
-            'date' => 'required|string|max:255'
-        ]);
-
-        if ($validator->fails()) {
-            return $this->sendResponse(400, 'Validation Error', $validator->errors());
-        }
-
-        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en',true);
-        $authCode = Helper::GeneralSiteSettings('auth_code_en',true);
-        $date = Carbon::today()->toDateString();
-
-        try {
-            $response = Http::post($baseUrl.'/Pricing/TicketHold?authcode='.$authCode.'&date='.$request->date, [
-                'SessionId' => '',
-                'TicketHoldItem' => [
-                    [
-                        'ticketType' => $request->ticketType,
-                        'quantity' => $request->quantity,
-                        'seat' => $request->seat
-                    ]
-                ]
-            ]);
-            if ($response->successful()) {
-                $apiData = $response->json();
-                $sessionId = $apiData['sessionId'] ?? 0;
-                $tickets = $apiData['data'] ?? [];
-                $tickets = collect($tickets)->map(function ($ticket) use ($sessionId) {
-                    $ticket['sessionId'] = $sessionId;
-                    return $ticket;
-                })->all();
-            }
-            if(count($tickets) > 0){
-                return $this->sendResponse(200, 'Ticket hold successfully', $tickets);
-            }else{
-                return $this->sendResponse(400, 'Validation Error', ['seat' => ['No ticket available for this date occupancy is full']]);
-            }
-
-        } catch (\Exception $e) {
-             return $this->sendResponse(401, 'Server Error', $e->getMessage());
-        }
-    }
-
     public function OrderCreate(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -92,59 +44,101 @@ class OrderController extends BaseAPIController
         $date = Carbon::today()->toDateString();
 
         try {
-            
-            $order = new Order;
-            $order->auth_code  = Helper::GeneralSiteSettings('auth_code_en',true);
-            $order->type = $request->type;
-            $order->isterminalPayment  = $request->isterminalPayment;
-            $order->staffDiscount = $request->staffDiscount;
-            $order->sessionId = $request->sessionId;
-            $order->orderCreationWithScript = $request->orderCreationWithScript;
-            $order->isOfficeUse  = $request->isOfficeUse;
-            $order->orderSource  = $request->orderSource;
-            $order->posStaffIdentity = $request->posStaffIdentity;
-            $order->dateNightPass  = $request->dateNightPass;
-            $order->orderCreationDate = $date;
-            $order->transactionId = $request->transactionId;
-            $order->saleFormName = $request->saleFormName;
-            $order->notes  = $request->notes;
-            $order->user_id  = $request->user_id;
-            $order->totalAmount = $request->totalAmount;
-            $order->save();
+            $store_order =  OrdersHelper::birthDayOrder($request->all());
+            $data = $store_order->json();
+            if (isset($data['status']['errorCode']) && $data['status']['errorCode'] == 1) {
+                return $this->sendResponse(400, 'Order Error', ['error' => $data['status']['errorMessage']]);
+            }else{
+                $get_order = Http::get($baseUrl.'/Pricing/QueryOrder2?orderId='.$data['data'][0]['orderNumber'].'&authcode='.$authCode);
+                $get_order = $get_order->json();
+                $orderData = $data['data'][0];
+                $get_user = User::where('id',$request->user_id)->first();
+                $nameParts = explode(' ', trim($get_user->name));
+                $order = new Order;
+                $order->auth_code  = Helper::GeneralSiteSettings('auth_code_en',true);
+                $order->type = $request->type;
+                $order->slug  = $orderData['orderNumber'];
+                $order->firstName  = $nameParts[0];
+                $order->lastName = isset($nameParts[1]) ? implode(' ', array_slice($nameParts, 1)) : '';
+                $order->email = $get_user->email;
+                $order->phone = $get_user->phone;
+                $order->orderTotal = $orderData['orderTotal'];
+                $order->tax = $orderData['tax'];
+                $order->serviceCharges = $orderData['serviceCharges'];
+                $order->orderTip  = $orderData['orderTip'];
+                $order->orderDate  = $orderData['orderDate'];
+                $order->slotTime = $orderData['slotTime'];
+                $order->orderSource = $orderData['orderSource'];
+                $order->posStaffIdentity = $orderData['posStaffIdentity'];
+                $order->isOrderFraudulent  = $orderData['isOrderFraudulent'];
+                $order->orderFraudulentTimeStamp  = $orderData['orderFraudulentTimeStamp'];
+                $order->customerAddress = $orderData['customerAddress'];
+                $order->transactionId = $orderData['transactionId'];
+                $order->totalOrderRefundedAmount = $orderData['totalOrderRefundedAmount'];
+                $order->user_id  = $request->user_id;
+                $order->save();
+               // return $this->sendResponse(200, 'Generate Order', $get_order);
 
-            if ($request->purchases) {
-                foreach ($request->purchases as $purchase) {
-                    $decoded = json_decode($purchase, true);
-                    if (json_last_error() !== JSON_ERROR_NONE) {
-                        continue; 
+                if (isset($get_order['data']['tickets']) && is_array($get_order['data']['tickets'])) {
+                    foreach ($get_order['data']['tickets'] as $ticket) {
+                        
+                        $ordertickets = new OrderTickets;
+                        $ordertickets->order_id = $order->id;
+                        $ordertickets->visualId = $ticket['visualId'];
+                        $ordertickets->childVisualId = $ticket['childVisualId'];
+                        $ordertickets->parentVisualId = $ticket['parentVisualId'];
+                        $ordertickets->description = $ticket['description'];
+                        $ordertickets->seat = $ticket['seat'];
+                        $ordertickets->price = $ticket['price'];
+                        $ordertickets->ticketDate = $ticket['ticketDate'];
+                        $ordertickets->ticketDisplayDate = $ticket['ticketDisplayDate'];
+                        $ordertickets->quantity = $ticket['quantity'];
+                        $ordertickets->slotTime = $ticket['slotTime'];
+                        $ordertickets->isRefundedOrder = $ticket['isRefundedOrder'];
+                        $ordertickets->checkInStatus = $ticket['checkInStatus'];
+                        $ordertickets->totalRefundedAmount = $ticket['totalRefundedAmount'];
+                        $ordertickets->isWavierFormSubmitted = $ticket['isWavierFormSubmitted'];
+                        $ordertickets->isQrCodeBurn = $ticket['isQrCodeBurn'];
+                        $ordertickets->wavierSubmittedDateTime = $ticket['wavierSubmittedDateTime'];
+                        $ordertickets->refundedDateTime = $ticket['refundedDateTime'];
+                        $ordertickets->isTicketUpgraded = $ticket['isTicketUpgraded'];
+                        $ordertickets->ticketUpgradedFrom = $ticket['ticketUpgradedFrom'];
+                        $ordertickets->isSearchParentRecord = $ticket['isSearchParentRecord'];
+                        $ordertickets->validUntil = $ticket['validUntil'];
+                        $ordertickets->isSeasonPassRenewal = $ticket['isSeasonPassRenewal'];
+                        $ordertickets->isSeasonPass = $ticket['isSeasonPass'];
+                        $ordertickets->totalOrderRefundedAmount = $ticket['totalOrderRefundedAmount'];
+                        $ordertickets->save();
                     }
-                    $item = new OrderItem;
-                    $item->order_id = $order->id;
-                    $item->ticketType = $decoded['ticketType'];
-                    $item->sectionId = $decoded['sectionId'];
-                    $item->capacityId = $decoded['capacityId'];
-                    $item->quantity = $decoded['quantity'];
-                    $item->amount = $decoded['amount'];
-                    $item->save();
                 }
-            }
 
-            $total_item_quantity = OrderItem::where('order_id',$order->id)->sum('quantity');
-            $transaction = new Transaction;
-            $transaction->auth_code  = Helper::GeneralSiteSettings('auth_code_en',true);
-            $transaction->order_id = $order->id;
-            $transaction->transactionId = $order->transactionId;
-            $transaction->totalItem = count($request->purchases);
-            $transaction->quantity = $total_item_quantity;
-            $transaction->transactionDate = $date;
-            $transaction->amount = $decoded['amount'];
-            $transaction->save();
-            $get_order = Order::with(['customer','purchases','transaction'])->where('id',$order->id)->first();
-            $resource = OrderResource::make($get_order);
-            return $this->sendResponse(200, 'Your Order has been successfully created', $resource);
+                $total_item_quantity = OrderTickets::where('order_id',$order->id)->sum('quantity');
+                $transaction = new Transaction;
+                $transaction->auth_code  = Helper::GeneralSiteSettings('auth_code_en',true);
+                $transaction->order_id = $order->id;
+                $transaction->transactionId = $order->transactionId;
+                $transaction->totalItem = count($request->purchases);
+                $transaction->quantity = $total_item_quantity;
+                $transaction->transactionDate = $date;
+                $transaction->amount = $data['data'][0]['orderTotal'];
+                $transaction->save();
+                $get_order = Order::with(['customer','purchases','transaction'])->where('id',$order->id)->first();
+                $resource = OrderResource::make($get_order);
+                return $this->sendResponse(200, 'Your Order has been successfully created', $resource);
+            }
 
         } catch (\Exception $e) {
              return $this->sendResponse(400, 'Server Error', $e->getMessage());
         }
+    }
+
+    public function getBySlug($slug)
+    {
+        $get_order = Order::with(['customer','purchases','transaction'])->where('slug',$slug)->first();
+        if (!isset($get_order)) {
+            return $this->sendResponse(200, 'Order retrive successfully', []);
+        }
+        $resource = OrderResource::make($get_order);
+        return $this->sendResponse(200, 'Order retrive successfully', $resource);
     }
 }

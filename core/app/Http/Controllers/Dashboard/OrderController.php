@@ -31,8 +31,8 @@ class OrderController extends Controller
     public function getCabanaOrders()
     {
         // General for all pages
-        $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-        $get_cabana_orders = Order::with(['customer','purchases','transaction'])->get();
+        $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'desc')->get();
+        $get_cabana_orders = Order::with(['customer','purchases','transaction'])->where('type','cabana')->get();
         
          // Paginate
         $perPage = 10;

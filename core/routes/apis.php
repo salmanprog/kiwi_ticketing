@@ -48,9 +48,11 @@ Route::get('/birthday/packages', 'BirthdayController@index');
 Route::get('/birthday/addon/{slug}', 'BirthdayAddonController@show');
 //Tickets
 Route::post('/ticket-hold', 'TicketController@ticketHold');
+Route::post('/cabana-occupancy', 'TicketController@GetCabanaOccupancy');
 //Stripe
 Route::post('/order-payment', 'StripeController@createPaymentIntent');
 Route::post('/order-create', 'OrderController@OrderCreate');
+Route::get('/order/{slug}', 'OrderController@getBySlug');
 Route::middleware('apiAuth')->group(function () {
     Route::get('/secure-data', function () {
         return response()->json(['data' => 'Authorized Access!']);

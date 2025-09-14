@@ -12,21 +12,25 @@ class Order extends Model
     protected $fillable = [
         'slug',
         'auth_code',
+        'user_id',
         'type',
-        'isterminalPayment',
-        'staffDiscount',
-        'sessionId',
-        'orderCreationWithScript',
-        'isOfficeUse',
+        'firstName',
+        'lastName',
+        'email',
+        'phone',
+        'customerAddress',
+        'orderTotal',
+        'tax',
+        'serviceCharges',
+        'orderTip',
+        'orderDate',
+        'slotTime',
         'orderSource',
         'posStaffIdentity',
-        'dateNightPass',
-        'orderCreationDate',
+        'isOrderFraudulent',
+        'orderFraudulentTimeStamp',
         'transactionId',
-        'saleFormName',
-        'notes',
-        'user_id',
-        'totalAmount'
+        'totalOrderRefundedAmount'
     ];
 
     /**
@@ -54,7 +58,7 @@ class Order extends Model
 
     public function purchases()
     {
-        return $this->hasMany(OrderItem::class, 'order_id');
+        return $this->hasMany(OrderTickets::class, 'order_id');
     }
 
     public function transaction()
@@ -71,12 +75,12 @@ class Order extends Model
     {
         parent::boot();
 
-        static::creating(function ($model) {
-            $model->slug = $model->generateUniqueSlug('od_'.$model->type);
-        });
+        // static::creating(function ($model) {
+        //     $model->slug = $model->generateUniqueSlug('bd_'.date('Y') . rand(10000, 99999));
+        // });
     }
 
-    public function generateUniqueSlug($title)
+    public static function generateUniqueSlug($title)
     {
         $slug = Str::slug($title);
         $originalSlug = $slug;

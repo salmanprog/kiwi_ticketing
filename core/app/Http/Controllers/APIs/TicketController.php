@@ -10,9 +10,32 @@ use Helper;
 
 class TicketController extends BaseAPIController
 {
-    public function index(Request $request)
+    public function GetCabanaOccupancy(Request $request)
     {
+         $validator = Validator::make($request->all(), [
+            'cabanaType' => 'required|string|max:255',
+            'date' => 'required|string|max:255'
+        ]);
 
+        if ($validator->fails()) {
+            return $this->sendResponse(400, 'Validation Error', $validator->errors());
+        }
+
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $date = Carbon::today()->toDateString();
+
+        try {
+            $response = Http::get($baseUrl.'/Pricing/GetCabanaOccupancy?cabanaType='.$request->cabanaType.'&authcode='.$authCode.'&date='.$request->date);
+            $data = $response->json();
+            if (isset($data['status']['errorCode']) && $data['status']['errorCode'] == 1) {
+                return $this->sendResponse(400, 'Cabana occupancy Error', ['error' => $data['status']['errorMessage']]);
+            }
+            return $this->sendResponse(200, 'Cabana occupancy fetched successfully', $data['data']);
+
+        } catch (\Exception $e) {
+             return $this->sendResponse(401, 'Server Error', $e->getMessage());
+        }
     }
 
     public function ticketHold(Request $request)
@@ -35,6 +58,8 @@ class TicketController extends BaseAPIController
         try {
             $response = Http::post($baseUrl.'/Pricing/TicketHold?authcode='.$authCode.'&date='.$request->date, [
                 'SessionId' => '',
+                'OrderId' => '',
+                "OrderSource" => null,
                 'TicketHoldItem' => [
                     [
                         'ticketType' => $request->ticketType,
@@ -43,20 +68,13 @@ class TicketController extends BaseAPIController
                     ]
                 ]
             ]);
-            if ($response->successful()) {
-                $apiData = $response->json();
-                $sessionId = $apiData['sessionId'] ?? 0;
-                $tickets = $apiData['data'] ?? [];
-                $tickets = collect($tickets)->map(function ($ticket) use ($sessionId) {
-                    $ticket['sessionId'] = $sessionId;
-                    return $ticket;
-                })->all();
+            $data = $response->json();
+            if (isset($data['status']['errorCode']) && $data['status']['errorCode'] == 1) {
+                return $this->sendResponse(400, 'Ticket Error', ['error' => $data['status']['errorMessage']]);
             }
-            if(count($tickets) > 0){
-                return $this->sendResponse(200, 'Ticket hold successfully', $tickets);
-            }else{
-                return $this->sendResponse(400, 'Validation Error', ['seat' => ['No ticket available for this date occupancy is full']]);
-            }
+            $ticketData = $data['data'][0];
+            $ticketData['sessionId'] = $data['sessionId'];
+            return $this->sendResponse(200, 'Ticket Hold successfully', $ticketData);
 
         } catch (\Exception $e) {
              return $this->sendResponse(401, 'Server Error', $e->getMessage());

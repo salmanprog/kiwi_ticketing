@@ -3,7 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\OrderItemResource;
+use App\Http\Resources\OrderTicketsResource;
 use App\Http\Resources\TransactionResource;
 use App\Http\Resources\UserResource;
 
@@ -14,24 +14,28 @@ class OrderResource extends JsonResource
         return [
             'id' => $this->id,
             'slug' => $this->slug,
-            'auth_code' => $this->auth_code,
+            'orderNumber'  => $this->slug,
             'type' => $this->type,
-            'isterminalPayment' => $this->isterminalPayment,
-            'staffDiscount' => $this->staffDiscount,
-            'sessionId' => $this->sessionId,
-            'orderCreationWithScript' => $this->orderCreationWithScript,
-            'isOfficeUse' => $this->isOfficeUse,
+            'visualId' => $this->visualId,
+            'firstName' => $this->firstName,
+            'lastName' => $this->lastName,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'customerAddress' => $this->customerAddress,
+            'orderTotal' => $this->orderTotal,
+            'tax' => $this->tax,
+            'serviceCharges' => $this->serviceCharges,
+            'orderTip' => $this->orderTip,
+            'orderDate' => $this->orderDate,
+            'slotTime' => $this->slotTime,
             'orderSource' => $this->orderSource,
             'posStaffIdentity' => $this->posStaffIdentity,
-            'dateNightPass' => $this->dateNightPass,
-            'orderCreationDate' => $this->orderCreationDate,
+            'isOrderFraudulent' => $this->isOrderFraudulent,
+            'orderFraudulentTimeStamp' => $this->orderFraudulentTimeStamp,
             'transactionId' => $this->transactionId,
-            'saleFormName' => $this->saleFormName,
-            'notes' => $this->notes,
-            'user_id' => $this->user_id,
-            'totalAmount' => $this->totalAmount,
+            'totalOrderRefundedAmount' => $this->totalOrderRefundedAmount,
             'customer' => UserResource::make($this->customer),
-            'purchase_items' => OrderItemResource::collection($this->purchases),
+            'tickets' => OrderTicketsResource::collection($this->purchases),
             'transaction' => TransactionResource::make($this->transaction),
         ];
     }

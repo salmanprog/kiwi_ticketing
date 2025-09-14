@@ -6,18 +6,38 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 
-class OrderItem extends Model
+class OrderTickets extends Model
 {
     use HasFactory;
-    protected $table = 'order_items';
+    protected $table = 'order_tickets';
     protected $fillable = [
         'slug',
         'order_id',
+        'visualId',
+        'parentVisualId',
+        'childVisualId',
         'ticketType',
-        'sectionId',
-        'capacityId',
+        'description',
+        'seat',
+        'price',
+        'ticketDate',
+        'ticketDisplayDate',
         'quantity',
-        'amount'
+        'slotTime',
+        'isRefundedOrder',
+        'checkInStatus',
+        'totalRefundedAmount',
+        'isWavierFormSubmitted',
+        'isQrCodeBurn',
+        'wavierSubmittedDateTime',
+        'refundedDateTime',
+        'isTicketUpgraded',
+        'ticketUpgradedFrom',
+        'isSearchParentRecord',
+        'validUntil',
+        'isSeasonPassRenewal',
+        'isSeasonPass',
+        'totalOrderRefundedAmount',
     ];
 
     /**
