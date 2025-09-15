@@ -45,7 +45,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         <small class="text-muted">{{ __('Tickets Managment') }}</small>
                     </li>
                      <?php
-                        $currentFolder = "kabanasetting"; // Put folder name here
+                        $currentFolder = "kabanasetting";
                         $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
                         $cabanaActive = in_array($current, ['kabanasetting', 'kabanaddons', 'kabanaorders', 'kabanaaddonEdit','kabanaordersdetail']);
                         $birthdayActive = in_array($current, ['birthdaypackages', 'birthdaypackagesCreate', 'birthdaypackagesEdit', 'birthdaypackagesStore','birthdaypackagesUpdate','birthdayorders','birthdayordersdetail','birthdayaddon','birthdayaddonEdit']);
