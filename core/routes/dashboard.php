@@ -280,7 +280,8 @@ Route::post('/birthday_packages/store', [BirthdayPackagesController::class, 'sto
 Route::post('/birthday_packages/{id}/update', [BirthdayPackagesController::class, 'update'])->name('birthdaypackagesUpdate');
 Route::get('/birthday_packages/destroy/{id}', [BirthdayPackagesController::class, 'destroy'])->name('birthdaypackagesDestroy');
 Route::post('/birthday_packages/updateAll', [BirthdayPackagesController::class, 'updateAll'])->name('birthdaypackagesUpdateAll');
-
+Route::get('/birthday-orders', [OrderController::class, 'getBirthdayOrders'])->name('birthdayorders');
+Route::get('/birthday-orders-detail/{slug}', [OrderController::class, 'getByOrderSlug'])->name('birthdayordersdetail');
 // Birthday Addons
 Route::get('/birthday_addons', [BirthdayAddonsController::class, 'index'])->name('birthdayaddon');
 Route::get('/birthday_addons/{id}/edit', [BirthdayAddonsController::class, 'edit'])->name('birthdayaddonEdit');

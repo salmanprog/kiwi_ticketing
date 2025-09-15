@@ -1,6 +1,9 @@
 <?php
 // Current Full URL
 $fullPagePath = Request::url();
+use Illuminate\Support\Str;
+    $current = Route::currentRouteName();
+    $path = Request::path();
 // Char Count of Backend folder Plus 1
 $envAdminCharCount = strlen(config('smartend.backend_path')) + 1;
 // URL after Root Path EX: admin/home
@@ -44,14 +47,10 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                      <?php
                         $currentFolder = "kabanasetting"; // Put folder name here
                         $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
+                        $cabanaActive = in_array($current, ['kabanasetting', 'kabanaddons', 'kabanaorders', 'kabanaaddonEdit','kabanaordersdetail']);
+                        $birthdayActive = in_array($current, ['birthdaypackages', 'birthdaypackagesCreate', 'birthdaypackagesEdit', 'birthdaypackagesStore','birthdaypackagesUpdate','birthdayorders','birthdayordersdetail','birthdayaddon','birthdayaddonEdit']);
                         ?>
-                    <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
-                        <!-- <a href="{{ route('kabanasetting') }}">
-                            <span class="nav-icon">
-                            <i class="material-icons">&#xe7fb;</i>
-                            </span>
-                            <span class="nav-text">{{ __('Cabana Setting') }}</span>
-                        </a> -->
+                    <li class="{{ $cabanaActive ? 'active' : '' }}" >
                         <a>
                             <span class="nav-caret">
                             <i class="fa fa-caret-down"></i>
@@ -61,40 +60,40 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             </span>
                             <span class="nav-text">{{ __('Cabana Managment') }}</span>
                         </a>
-
                         <ul class="nav-sub">
-                            <?php
-                                $currentFolder = "kabanasetting"; // Put folder name here
-                                $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
-                            ?>
-                            <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
+                            <li class="{{ 
+                                $current === 'kabanasetting' 
+                                || Str::startsWith($current, 'kabanasetting') 
+                                ? 'active' : '' 
+                            }}">
                                 <a href="{{ route('kabanasetting') }}">
                                     <span class="nav-text">{{ __('All Cabana') }}</span>
                                 </a>
                             </li>
-                            <?php
-                                $currentFolder = "kabanaddon"; // Put folder name here
-                                $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
-                            ?>
-                            <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
+
+                            <li class="{{ 
+                                $current === 'kabanaddons' 
+                                || Str::startsWith($current, 'kabanaaddonEdit') 
+                                || Str::startsWith($current, 'kabanaddons') 
+                                ? 'active' : '' 
+                            }}">
                                 <a href="{{ route('kabanaddons') }}">
                                     <span class="nav-text">{{ __('Cabana Addon') }}</span>
                                 </a>
                             </li>
-                            <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
+
+                            <li class="{{ 
+                                $current === 'kabanaorders' 
+                                || Str::startsWith($current, 'kabanaorders') 
+                                ? 'active' : '' 
+                            }}">
                                 <a href="{{ route('kabanaorders') }}">
                                     <span class="nav-text">{{ __('Cabana Orders') }}</span>
                                 </a>
                             </li>
                         </ul>
                     </li>
-                    <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
-                        <!-- <a href="{{ route('kabanasetting') }}">
-                            <span class="nav-icon">
-                            <i class="material-icons">&#xe7fb;</i>
-                            </span>
-                            <span class="nav-text">{{ __('Cabana Setting') }}</span>
-                        </a> -->
+                    <li class="{{ $birthdayActive ? 'active' : '' }}" >
                         <a>
                             <span class="nav-caret">
                             <i class="fa fa-caret-down"></i>
@@ -106,22 +105,32 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         </a>
 
                         <ul class="nav-sub">
-                            <?php
-                                $currentFolder = "birthday_packages"; // Put folder name here
-                                $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
-                            ?>
-                            <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
+                            <li class="{{ 
+                                $current === 'birthdaypackages' || 
+                                Str::startsWith($current, 'birthdaypackages') 
+                                ? 'active' : '' 
+                            }}">
                                 <a href="{{ route('birthdaypackages') }}">
                                     <span class="nav-text">{{ __('Birthday Packages') }}</span>
                                 </a>
                             </li>
-                            <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
+
+                            <li class="{{ 
+                                $current === 'birthdayaddon' || 
+                                Str::startsWith($current, 'birthdayaddon') 
+                                ? 'active' : '' 
+                            }}">
                                 <a href="{{ route('birthdayaddon') }}">
                                     <span class="nav-text">{{ __('Birthday Addon') }}</span>
                                 </a>
                             </li>
-                            <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
-                                <a href="#">
+
+                            <li class="{{ 
+                                $current === 'birthdayorders' || 
+                                Str::startsWith($current, 'birthdayorders') 
+                                ? 'active' : '' 
+                            }}">
+                                <a href="{{ route('birthdayorders') }}">
                                     <span class="nav-text">{{ __('Birthday Orders') }}</span>
                                 </a>
                             </li>

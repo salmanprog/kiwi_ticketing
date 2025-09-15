@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Cabana Order Detail'))
+@section('title', __('Birthday Order Detail'))
 @push("after-styles")
     <link href="{{ asset("assets/dashboard/js/iconpicker/fontawesome-iconpicker.min.css") }}" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -13,7 +13,7 @@
             <h3><i class="material-icons"></i> {{ __('Order Detail') }}</h3>
             <small>
                 <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-                <a>Cabana</a> /
+                <a>Birthday</a> /
                 <a>Order Details</a>
             </small>
         </div>
@@ -24,7 +24,7 @@
                         <i class="material-icons md-18">&#xe5d4;</i> {{  __('backend.options') }}
                     </a>
                     <div class="dropdown-menu dropdown-menu-scale pull-right">
-                        <a class="dropdown-item" href="{{ route('kabanaorders') }}"><i
+                        <a class="dropdown-item" href="{{ route('birthdayorders') }}"><i
                                 class="material-icons">&#xe31b;</i> {{ __('backend.back') }}</a>
                     </div>
                 </li>
