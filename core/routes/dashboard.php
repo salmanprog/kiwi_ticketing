@@ -23,6 +23,7 @@ use App\Http\Controllers\Dashboard\KabanaAddonsController;
 use App\Http\Controllers\Dashboard\BirthdayPackagesController;
 use App\Http\Controllers\Dashboard\BirthdayAddonsController;
 use App\Http\Controllers\Dashboard\OrderController;
+use App\Http\Controllers\Dashboard\GeneralTicketController;
 use Illuminate\Support\Facades\Route;
 
 // Admin Home
@@ -287,6 +288,10 @@ Route::get('/birthday_addons', [BirthdayAddonsController::class, 'index'])->name
 Route::get('/birthday_addons/{id}/edit', [BirthdayAddonsController::class, 'edit'])->name('birthdayaddonEdit');
 Route::post('/birthday_addons/store', [BirthdayAddonsController::class, 'store'])->name('birthdayaddonStore');
 
+// General Tickets
+Route::get('/general-tickets', [GeneralTicketController::class, 'index'])->name('generaltickets');
+Route::get('/general-tickets/{slug}/edit', [GeneralTicketController::class, 'edit'])->name('generalticketsEdit');
+Route::post('/general-tickets/store', [GeneralTicketController::class, 'store'])->name('generalticketsStore');
 // Menus
 Route::post('/menus/store/parent', [MenusController::class, 'storeMenu'])->name('parentMenusStore');
 Route::get('/menus/parent/{id}/edit', [MenusController::class, 'editMenu'])->name('parentMenusEdit');
