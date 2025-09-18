@@ -24,6 +24,7 @@ use App\Http\Controllers\Dashboard\BirthdayPackagesController;
 use App\Http\Controllers\Dashboard\BirthdayAddonsController;
 use App\Http\Controllers\Dashboard\OrderController;
 use App\Http\Controllers\Dashboard\GeneralTicketController;
+use App\Http\Controllers\Dashboard\GeneralTicketAddonController;
 use Illuminate\Support\Facades\Route;
 
 // Admin Home
@@ -292,6 +293,9 @@ Route::post('/birthday_addons/store', [BirthdayAddonsController::class, 'store']
 Route::get('/general-tickets', [GeneralTicketController::class, 'index'])->name('generaltickets');
 Route::get('/general-tickets/{slug}/edit', [GeneralTicketController::class, 'edit'])->name('generalticketsEdit');
 Route::post('/general-tickets/store', [GeneralTicketController::class, 'store'])->name('generalticketsStore');
+// General Tickets Addons
+Route::get('/general-tickets-addon', [GeneralTicketAddonController::class, 'index'])->name('generalticketsaddon');
+Route::get('/general-tickets-addon/create/', [GeneralTicketAddonController::class, 'create'])->name('generalticketsaddonCreate');
 // Menus
 Route::post('/menus/store/parent', [MenusController::class, 'storeMenu'])->name('parentMenusStore');
 Route::get('/menus/parent/{id}/edit', [MenusController::class, 'editMenu'])->name('parentMenusEdit');

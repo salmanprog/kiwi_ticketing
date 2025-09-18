@@ -49,7 +49,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
                         $cabanaActive = in_array($current, ['kabanasetting', 'kabanaddons', 'kabanaorders', 'kabanaaddonEdit','kabanaordersdetail']);
                         $birthdayActive = in_array($current, ['birthdaypackages', 'birthdaypackagesCreate', 'birthdaypackagesEdit', 'birthdaypackagesStore','birthdaypackagesUpdate','birthdayorders','birthdayordersdetail','birthdayaddon','birthdayaddonEdit']);
-                        $generalTicketActive = in_array($current, ['generaltickets','generalticketsEdit','generalticketsStore']);
+                        $generalTicketActive = in_array($current, ['generaltickets','generalticketsEdit','generalticketsStore','generalticketsaddon','generalticketsaddonCreate']);
                         ?>
                     <li class="{{ $cabanaActive ? 'active' : '' }}" >
                         <a>
@@ -158,18 +158,17 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 </a>
                             </li>
 
-                            <!-- <li class="{{ 
-                                $current === 'kabanaddons' 
-                                || Str::startsWith($current, 'kabanaaddonEdit') 
-                                || Str::startsWith($current, 'kabanaddons') 
+                           <li class="{{ 
+                                $current === 'generalticketsaddon' 
+                                || Str::startsWith($current, 'generalticketsaddon') 
                                 ? 'active' : '' 
                             }}">
-                                <a href="{{ route('kabanaddons') }}">
-                                    <span class="nav-text">{{ __('Cabana Addon') }}</span>
+                                <a href="{{ route('generalticketsaddon') }}">
+                                    <span class="nav-text">{{ __('General Tickets Addon') }}</span>
                                 </a>
                             </li>
 
-                            <li class="{{ 
+                             <!-- <li class="{{ 
                                 $current === 'kabanaorders' 
                                 || Str::startsWith($current, 'kabanaorders') 
                                 ? 'active' : '' 
