@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('General Ticket Addon'))
+@section('title', __('General Ticket Cabana'))
 @push("after-styles")
     <link href="{{ asset("assets/dashboard/js/iconpicker/fontawesome-iconpicker.min.css") }}" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -13,7 +13,7 @@
                 <h3><i class="material-icons">&#xe02e;</i> {{ __('New General') }}</h3>
                 <small>
                     <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-                    <a>{{__('Ticket Addon')}}</a> 
+                    <a>{{__('Ticket Cabana')}}</a> 
                 </small>
             </div>
             <div class="box-tool">
@@ -26,7 +26,7 @@
                 </ul>
             </div>
             <div class="box-body p-a-2">
-                {{Form::open(['route'=>['generalticketsaddonStore'],'method'=>'POST', 'files' => true])}}
+                {{Form::open(['route'=>['generalticketscabanaStore'],'method'=>'POST', 'files' => true])}}
                     <div class="form-group row">
                         <label for="section_id" class="col-sm-2 form-control-label">
                             {!! __('Tickets') !!}
@@ -42,11 +42,11 @@
                     </div>
                     <div class="form-group row">
                         <label for="section_id" class="col-sm-2 form-control-label">
-                            {!! __('Ticket Addon') !!}
+                            {!! __('Ticket Cabana') !!}
                         </label>
                         <div class="col-sm-10">
                            <select name="ticketSlug" class="form-control">
-                                <option value="">- - {!!  __('Select Ticket Addon') !!} - -</option>
+                                <option value="">- - {!!  __('Select Ticket Cabana') !!} - -</option>
                                 @foreach($tickets_arr['ticket_addon'] as $ticket_addon)
                                     <option value="{{ $ticket_addon['ticketSlug'] }}">{{ $ticket_addon['ticketType'] }}</option>
                                 @endforeach

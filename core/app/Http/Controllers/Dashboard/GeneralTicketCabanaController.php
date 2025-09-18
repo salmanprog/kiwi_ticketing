@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Models\Section;
-use App\Models\GeneralTicketAddon;
+use App\Models\GeneralTicketCabana;
 use App\Models\WebmasterSection;
 use App\Models\Media;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -19,7 +19,7 @@ use Carbon\Carbon;
 
 
 
-class GeneralTicketAddonController extends Controller
+class GeneralTicketCabanaController extends Controller
 {
     private $uploadPath = "uploads/sections/";
 
@@ -33,10 +33,10 @@ class GeneralTicketAddonController extends Controller
     {
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-        $general_ticket_addon = GeneralTicketAddon::with(['media_slider'])->where('auth_code',$authCode)->get();
+        $general_ticket_cabana = GeneralTicketCabana::with(['media_slider'])->where('auth_code',$authCode)->get();
         $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
-        $collection = collect($general_ticket_addon);
+        $collection = collect($general_ticket_cabana);
         $paginated = new LengthAwarePaginator(
             $collection->forPage($currentPage, $perPage),
             $collection->count(),
@@ -44,7 +44,7 @@ class GeneralTicketAddonController extends Controller
             $currentPage,
             ['path' => url()->current(), 'query' => request()->query()]
         );
-        return view("dashboard.general_ticket_addon.list", compact("paginated", "GeneralWebmasterSections"));
+        return view("dashboard.general_ticket_cabana.list", compact("paginated", "GeneralWebmasterSections"));
     }
 
     public function create()
@@ -65,8 +65,7 @@ class GeneralTicketAddonController extends Controller
 
             if (!empty($tickets)) {
                 foreach ($tickets as $ticket) {
-                    if ($ticket['venueId'] == 0 && 
-                        ($ticket['ticketCategory'] === 'Tickets' || $ticket['ticketCategory'] === 'Food Addons')) {
+                    if ($ticket['ticketCategory'] === 'Cabanas') {
                         $tickets_arr['ticket_addon'][] = $ticket;
                     } elseif ($ticket['ticketCategory'] === 'Ticket') {
                         $tickets_arr['ticket'][] = $ticket;
@@ -74,7 +73,7 @@ class GeneralTicketAddonController extends Controller
                 }
             }
 
-            return view("dashboard.general_ticket_addon.create", compact("tickets_arr", "GeneralWebmasterSections"));
+            return view("dashboard.general_ticket_cabana.create", compact("tickets_arr", "GeneralWebmasterSections"));
             } else {
                 dd([
                     'status' => $response->status(),
@@ -99,10 +98,10 @@ class GeneralTicketAddonController extends Controller
         $date = Carbon::today()->toDateString();
 
         try {
-            $ticketAddonCheck = GeneralTicketAddon::where('generalTicketSlug',$request->generalTicketSlug)->where('ticketSlug',$request->ticketSlug)->where('auth_code',$authCode)->first();
+            $ticketAddonCheck = GeneralTicketCabana::where('generalTicketSlug',$request->generalTicketSlug)->where('ticketSlug',$request->ticketSlug)->where('auth_code',$authCode)->first();
 
             if (!empty($ticketAddonCheck)) {
-                return redirect()->action('Dashboard\GeneralTicketAddonController@create')->with('errorMessage', 'This ticket addon already exists.');
+                return redirect()->action('Dashboard\GeneralTicketCabanaController@create')->with('errorMessage', 'This ticket cabana already exists.');
             }
 
             $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
@@ -144,7 +143,7 @@ class GeneralTicketAddonController extends Controller
                     }
                 }
 
-                $ticketAddon = new GeneralTicketAddon;
+                $ticketAddon = new GeneralTicketCabana;
                 $ticketAddon->auth_code  = Helper::GeneralSiteSettings('auth_code_en');
                 $ticketAddon->generalTicketType  = $tickets_arr['ticket'][0]['ticketType'];
                 $ticketAddon->generalTicketSlug  = $tickets_arr['ticket'][0]['ticketSlug'];
@@ -160,7 +159,7 @@ class GeneralTicketAddonController extends Controller
                 if(count($uploadedFileNames) > 0){
                     for($i=0;$i<count($uploadedFileNames);$i++){
                         $media = new Media;
-                        $media->module  = 'general_ticket_addon';
+                        $media->module  = 'general_ticket_cabana';
                         $media->module_id = $ticketAddon->id;
                         $media->filename  = $uploadedFileNames[$i];
                         $media->original_name = $uploadedFileNames[$i];
@@ -171,7 +170,7 @@ class GeneralTicketAddonController extends Controller
                     }
                 }
 
-                return redirect()->action('Dashboard\GeneralTicketAddonController@index')->with('doneMessage', __('backend.addDone'));
+                return redirect()->action('Dashboard\GeneralTicketCabanaController@index')->with('doneMessage', __('backend.addDone'));
             } else {
                 dd([
                     'status' => $response->status(),
@@ -202,8 +201,8 @@ class GeneralTicketAddonController extends Controller
 
         try {
             $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-            $ticket_addon = GeneralTicketAddon::with(['media_slider'])->where('slug',$slug)->where('auth_code',$authCode)->first();
-            return view("dashboard.general_ticket_addon.edit", compact("ticket_addon", "GeneralWebmasterSections"));
+            $ticket_addon = GeneralTicketCabana::with(['media_slider'])->where('slug',$slug)->where('auth_code',$authCode)->first();
+            return view("dashboard.general_ticket_cabana.edit", compact("ticket_addon", "GeneralWebmasterSections"));
 
         } catch (\Exception $e) {
             dd('Exception: ' . $e->getMessage());
@@ -213,7 +212,7 @@ class GeneralTicketAddonController extends Controller
     public function update(Request $request, $id)
     {
        $authCode = Helper::GeneralSiteSettings('auth_code_en');
-       $ticketAddon = GeneralTicketAddon::where('slug',$id)->where('auth_code',$authCode)->first();
+       $ticketAddon = GeneralTicketCabana::where('slug',$id)->where('auth_code',$authCode)->first();
        if (!empty($ticketAddon)) {
             $this->validate($request, [
                 'description' => 'required',
@@ -260,7 +259,7 @@ class GeneralTicketAddonController extends Controller
             if(count($uploadedFileNames) > 0){
                 for($i=0;$i<count($uploadedFileNames);$i++){
                     $media = new Media;
-                    $media->module  = 'general_ticket_addon';
+                    $media->module  = 'general_ticket_cabana';
                     $media->module_id = $ticketAddon->id;
                     $media->filename  = $uploadedFileNames[$i];
                     $media->original_name = $uploadedFileNames[$i];
@@ -270,11 +269,11 @@ class GeneralTicketAddonController extends Controller
                     $media->save();
                 }
             }
-            return redirect()->action('Dashboard\GeneralTicketAddonController@edit', [$id])->with('doneMessage',
+            return redirect()->action('Dashboard\GeneralTicketCabanaController@edit', [$id])->with('doneMessage',
                 __('backend.saveDone'));
 
        }else{
-            return redirect()->action('Dashboard\GeneralTicketAddonController@index');
+            return redirect()->action('Dashboard\GeneralTicketCabanaController@index');
        }
     }
 
@@ -287,13 +286,13 @@ class GeneralTicketAddonController extends Controller
     {
         //
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
-        $ticketAddon = GeneralTicketAddon::with(['media_slider'])->where('id',$id)->where('auth_code',$authCode)->first();
+        $ticketAddon = GeneralTicketCabana::with(['media_slider'])->where('id',$id)->where('auth_code',$authCode)->first();
         if (!empty($ticketAddon)) {
-            GeneralTicketAddon::where('id',$id)->where('auth_code',$authCode)->delete();
-            return redirect()->action('Dashboard\GeneralTicketAddonController@index')->with('doneMessage',
+            GeneralTicketCabana::where('id',$id)->where('auth_code',$authCode)->delete();
+            return redirect()->action('Dashboard\GeneralTicketCabanaController@index')->with('doneMessage',
                 __('backend.deleteDone'));
         } else {
-            return redirect()->action('Dashboard\GeneralTicketAddonController@index');
+            return redirect()->action('Dashboard\GeneralTicketCabanaController@index');
         }
         
     }

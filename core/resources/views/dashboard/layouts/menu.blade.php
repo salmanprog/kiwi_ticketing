@@ -49,7 +49,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
                         $cabanaActive = in_array($current, ['kabanasetting', 'kabanaddons', 'kabanaorders', 'kabanaaddonEdit','kabanaordersdetail']);
                         $birthdayActive = in_array($current, ['birthdaypackages', 'birthdaypackagesCreate', 'birthdaypackagesEdit', 'birthdaypackagesStore','birthdaypackagesUpdate','birthdayorders','birthdayordersdetail','birthdayaddon','birthdayaddonEdit']);
-                        $generalTicketActive = in_array($current, ['generaltickets','generalticketsEdit','generalticketsStore','generalticketsaddon','generalticketsaddonCreate']);
+                        $generalTicketActive = in_array($current, ['generaltickets','generalticketsEdit','generalticketsStore','generalticketsaddon','generalticketsaddonCreate','generalticketsaddonEdit','generalticketscabana','generalticketscabanaCreate','generalticketscabanaStore','generalticketscabanaEdit','generalticketscabanaUpdate','generalticketscabanaDestroy']);
                         ?>
                     <li class="{{ $cabanaActive ? 'active' : '' }}" >
                         <a>
@@ -168,15 +168,15 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 </a>
                             </li>
 
-                             <!-- <li class="{{ 
-                                $current === 'kabanaorders' 
-                                || Str::startsWith($current, 'kabanaorders') 
+                            <li class="{{ 
+                                $current === 'generalticketscabana' 
+                                || Str::startsWith($current, 'generalticketscabana') 
                                 ? 'active' : '' 
                             }}">
-                                <a href="{{ route('kabanaorders') }}">
-                                    <span class="nav-text">{{ __('Cabana Orders') }}</span>
+                                <a href="{{ route('generalticketscabana') }}">
+                                    <span class="nav-text">{{ __('General Tickets Cabana') }}</span>
                                 </a>
-                            </li> -->
+                            </li>
                         </ul>
                     </li>
                     @if(@Auth::user()->permissionsGroup->roles_status || (Helper::GeneralWebmasterSettings("settings_status") && @Auth::user()->permissionsGroup->settings_status) || @Auth::user()->permissionsGroup->webmaster_status)

@@ -25,6 +25,7 @@ use App\Http\Controllers\Dashboard\BirthdayAddonsController;
 use App\Http\Controllers\Dashboard\OrderController;
 use App\Http\Controllers\Dashboard\GeneralTicketController;
 use App\Http\Controllers\Dashboard\GeneralTicketAddonController;
+use App\Http\Controllers\Dashboard\GeneralTicketCabanaController;
 use Illuminate\Support\Facades\Route;
 
 // Admin Home
@@ -296,6 +297,17 @@ Route::post('/general-tickets/store', [GeneralTicketController::class, 'store'])
 // General Tickets Addons
 Route::get('/general-tickets-addon', [GeneralTicketAddonController::class, 'index'])->name('generalticketsaddon');
 Route::get('/general-tickets-addon/create/', [GeneralTicketAddonController::class, 'create'])->name('generalticketsaddonCreate');
+Route::post('/general-tickets-addon/store', [GeneralTicketAddonController::class, 'store'])->name('generalticketsaddonStore');
+Route::get('/general-tickets-addon/{id}/edit', [GeneralTicketAddonController::class, 'edit'])->name('generalticketsaddonEdit');
+Route::post('/general-tickets-addon/{id}/update', [GeneralTicketAddonController::class, 'update'])->name('generalticketsaddonUpdate');
+Route::get('/general-tickets-addon/destroy/{id}', [GeneralTicketAddonController::class, 'destroy'])->name('generalticketsaddonDestroy');
+// General Tickets Cabanas
+Route::get('/general-tickets-cabana', [GeneralTicketCabanaController::class, 'index'])->name('generalticketscabana');
+Route::get('/general-tickets-cabana/create/', [GeneralTicketCabanaController::class, 'create'])->name('generalticketscabanaCreate');
+Route::post('/general-tickets-cabana/store', [GeneralTicketCabanaController::class, 'store'])->name('generalticketscabanaStore');
+Route::get('/general-tickets-cabana/{id}/edit', [GeneralTicketCabanaController::class, 'edit'])->name('generalticketscabanaEdit');
+Route::post('/general-tickets-cabana/{id}/update', [GeneralTicketCabanaController::class, 'update'])->name('generalticketscabanaUpdate');
+Route::get('/general-tickets-cabana/destroy/{id}', [GeneralTicketCabanaController::class, 'destroy'])->name('generalticketscabanaDestroy');
 // Menus
 Route::post('/menus/store/parent', [MenusController::class, 'storeMenu'])->name('parentMenusStore');
 Route::get('/menus/parent/{id}/edit', [MenusController::class, 'editMenu'])->name('parentMenusEdit');

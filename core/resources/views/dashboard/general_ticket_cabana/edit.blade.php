@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('General Ticket Addon'))
+@section('title', __('General Ticket Cabana'))
 @push("after-styles")
     <link href="{{ asset("assets/dashboard/js/iconpicker/fontawesome-iconpicker.min.css") }}" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -10,7 +10,7 @@
     <div class="padding">
         <div class="box">
             <div class="box-header dker">
-                <h3><i class="material-icons">&#xe02e;</i> {{ __('Edit Ticket Addon') }}</h3>
+                <h3><i class="material-icons">&#xe02e;</i> {{ __('Edit Ticket Cabana') }}</h3>
                 <small>
                     <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
                     <a>{{ $ticket_addon->ticketSlug }}</a> 
@@ -26,7 +26,7 @@
                 </ul>
             </div>
             <div class="box-body p-a-2">
-                {{Form::open(['route'=>['generalticketsaddonUpdate',"id"=>$ticket_addon->slug],'method'=>'POST', 'files' => true])}}
+                {{Form::open(['route'=>['generalticketscabanaUpdate',"id"=>$ticket_addon->slug],'method'=>'POST', 'files' => true])}}
                     
                     <div class="form-group row">
                         <label for="title"
@@ -38,7 +38,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="title"
-                                class="col-sm-2 form-control-label">{!!  __('Ticket Addon') !!}
+                                class="col-sm-2 form-control-label">{!!  __('Ticket Cabana') !!}
                         </label>
                         <div class="col-sm-10">
                             {!! Form::text('ticketSlug',old('ticketSlug', $ticket_addon->ticketType ?? ''), array('placeholder' => '','class' => 'form-control','id'=>'ticketSlug','required'=>'','readonly' => 'readonly')) !!}

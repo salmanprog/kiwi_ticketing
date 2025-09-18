@@ -1,20 +1,20 @@
 @extends('dashboard.layouts.master')
-@section('title', __('General Ticket Addon'))
+@section('title', __('General Ticket Cabana'))
 @section('content')
 <div class="padding">
 <div class="box">
     <div class="box-header dker">
-        <h3>{{ __('General Ticket Addon') }}</h3>
+        <h3>{{ __('General Ticket Cabana') }}</h3>
         <small>
             <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-            <a href="">{{ __('general-ticket-addon') }}</a>
+            <a href="">{{ __('general-ticket-cabana') }}</a>
         </small>
     </div>
      <div class="row p-a pull-right" style="margin-top: -70px;">
         <div class="col-sm-12">
-            <a class="btn btn-fw primary" href="{{route('generalticketsaddonCreate')}}">
+            <a class="btn btn-fw primary" href="{{route('generalticketscabanaCreate')}}">
                 <i class="material-icons">&#xe7fe;</i>
-                &nbsp; {{ __('Add Ticket Addon') }}
+                &nbsp; {{ __('Add Ticket Cabana') }}
             </a>
         </div>
     </div>
@@ -30,7 +30,7 @@
                             </th>
                             <th>{{ __('ID') }}</th>
                             <th>{{ __('General Ticket') }}</th>
-                            <th>{{ __('Addon') }}</th>
+                            <th>{{ __('Cabana') }}</th>
                             <th>{{ __('Category') }}</th>
                             <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
                         </tr>
@@ -66,7 +66,7 @@
                                         </button>
                                         <div class="dropdown-menu pull-right">
                                             <a class="dropdown-item"
-                                                href="{{ route('generalticketsaddonEdit',$packages['slug']) }}"><i
+                                                href="{{ route('generalticketscabanaEdit',$packages['slug']) }}"><i
                                                     class="material-icons">&#xe3c9;</i> {{ __('backend.edit') }}
                                             </a>
                                             <a class="dropdown-item text-danger"
@@ -178,7 +178,7 @@
             }
         });
         function DeleteTicketAddon(id) {
-            let url = '{{ route("generalticketsaddonDestroy", ":id") }}';
+            let url = '{{ route("generalticketscabanaDestroy", ":id") }}';
             url = url.replace(':id', id);
 
             $("#ticketaddon_delete_btn").attr("href", url);

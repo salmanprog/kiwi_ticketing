@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 
-class GeneralTicketAddon extends Model
+class GeneralTicketCabana extends Model
 {
     use HasFactory;
-    protected $table = 'general_ticket_addons';
+    protected $table = 'general_ticket_cabana';
     protected $fillable = [
         'slug',
         'auth_code',
