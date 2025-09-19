@@ -21,7 +21,13 @@ class OrdersHelper
             $requestPayload = json_decode($requestPayload, true);
         }
         $get_customer_obj = User::where('id',$requestPayload['user_id'])->first();
-        $order_number = Order::generateUniqueSlug('bd_'.date('Y') . rand(10000, 99999));
+        $prefixMap = [
+            'birthday' => 'bd_',
+            'cabana' => 'ca_',
+        ];
+
+        $prefix = $prefixMap[$requestPayload['type']] ?? 'gen_';
+        $order_number = Order::generateUniqueSlug($prefix . date('Y') . rand(10000, 99999));
         if (isset($get_customer_obj) && isset($get_customer_obj->name)) {
             $nameParts = explode(' ', trim($get_customer_obj->name));
             $customer = [
@@ -69,7 +75,13 @@ class OrdersHelper
                 return $item;
             }, $requestPayload['purchases']);
         }
-        $response = Http::post($baseUrl.'/Pricing/BirthdayPackageAddOrder',$requestPayload);
+        
+        if($requestPayload['type'] == 'general_ticket'){
+            $response = Http::post($baseUrl.'/Pricing/AddOrder',$requestPayload);
+        }else{  
+            $response = Http::post($baseUrl.'/Pricing/BirthdayPackageAddOrder',$requestPayload);
+        }
+        
         return $response;
     }
 

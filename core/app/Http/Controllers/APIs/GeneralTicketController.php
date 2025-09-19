@@ -4,7 +4,8 @@ namespace App\Http\Controllers\APIs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\GeneralTickets;
-use App\Models\BirthdayCabanas;
+use App\Models\GeneralTicketAddon;
+use App\Models\GeneralTicketCabana;
 use App\Http\Resources\GeneralTicketsResource;
 use Carbon\Carbon;
 use Helper;
@@ -51,6 +52,110 @@ class GeneralTicketController extends BaseAPIController
                                 $ticket['image_url'] =  url($generalTicket->media_slider->first()->file_url);
                             }
                         }
+                        $filteredTickets[] = $ticket;
+                    }
+                }
+            }
+            return $this->sendResponse(200, 'General Ticket fetched successfully', $filteredTickets);
+        } catch (\Exception $e) {
+            return $this->sendResponse(401, 'Server Error', $e->getMessage());
+        }
+    }
+
+    public function generalTicketAddon($slug)
+    {
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $date = Carbon::today()->toDateString();
+        $generalTicket = GeneralTicketAddon::with(['media_slider'])->where('generalTicketSlug', $slug)->where('auth_code',$authCode)->get();
+        
+        if ($generalTicket->isEmpty()) {
+            return $this->sendResponse(200, 'Retrieved General Tickets Listing', []);
+        }
+        try {
+            $response = Http::get("{$baseUrl}/Pricing/GetAllProductPrice", [
+                'authcode' => $authCode,
+                'date' => $date,
+            ]);
+            $data = $response->json();
+            if (isset($data['status']['errorCode']) && $data['status']['errorCode'] === 1) {
+                return $this->sendResponse(400, 'General Ticket Error', ['error' => $data['status']['errorMessage']]);
+            }
+            $tickets = $data['getAllProductPrice']['data'] ?? [];
+            $filteredTickets = [];
+            if (count($tickets) > 0) {
+                $ticketSlugs = array_column($tickets, 'ticketSlug');
+                $generalTickets = GeneralTicketAddon::with(['media_slider'])
+                    ->where('auth_code', $authCode)
+                    ->where('generalTicketSlug', $slug)
+                    ->whereIn('ticketSlug', $ticketSlugs)
+                    ->get()
+                    ->keyBy('ticketSlug');
+                
+                foreach ($tickets as &$ticket) {
+                    if (
+                        ($ticket['ticketCategory'] === 'Tickets' || $ticket['ticketCategory'] === 'Food Addons') &&
+                        isset($generalTickets[$ticket['ticketSlug']])
+                    ) {
+                        $generalTicket = $generalTickets[$ticket['ticketSlug']];
+                        $ticket['description'] = $generalTicket->description;
+
+                        if ($generalTicket->media_slider && $generalTicket->media_slider->isNotEmpty()) {
+                            $ticket['image_url'] = url($generalTicket->media_slider->first()->file_url);
+                        }
+
+                        $filteredTickets[] = $ticket;
+                    }
+                }
+            }
+            return $this->sendResponse(200, 'General Ticket fetched successfully', $filteredTickets);
+        } catch (\Exception $e) {
+            return $this->sendResponse(401, 'Server Error', $e->getMessage());
+        }
+    }
+
+    public function generalTicketCabana($slug)
+    {
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $date = Carbon::today()->toDateString();
+        $generalTicket = GeneralTicketCabana::with(['media_slider'])->where('generalTicketSlug', $slug)->where('auth_code',$authCode)->get();
+        
+        if ($generalTicket->isEmpty()) {
+            return $this->sendResponse(200, 'Retrieved General Tickets Listing', []);
+        }
+        try {
+            $response = Http::get("{$baseUrl}/Pricing/GetAllProductPrice", [
+                'authcode' => $authCode,
+                'date' => $date,
+            ]);
+            $data = $response->json();
+            if (isset($data['status']['errorCode']) && $data['status']['errorCode'] === 1) {
+                return $this->sendResponse(400, 'General Ticket Error', ['error' => $data['status']['errorMessage']]);
+            }
+            $tickets = $data['getAllProductPrice']['data'] ?? [];
+            $filteredTickets = [];
+            if (count($tickets) > 0) {
+                $ticketSlugs = array_column($tickets, 'ticketSlug');
+                $generalTickets = GeneralTicketCabana::with(['media_slider'])
+                    ->where('auth_code', $authCode)
+                    ->where('generalTicketSlug', $slug)
+                    ->whereIn('ticketSlug', $ticketSlugs)
+                    ->get()
+                    ->keyBy('ticketSlug');
+                
+                foreach ($tickets as &$ticket) {
+                    if (
+                        ($ticket['ticketCategory'] === 'Cabanas') &&
+                        isset($generalTickets[$ticket['ticketSlug']])
+                    ) {
+                        $generalTicket = $generalTickets[$ticket['ticketSlug']];
+                        $ticket['description'] = $generalTicket->description;
+
+                        if ($generalTicket->media_slider && $generalTicket->media_slider->isNotEmpty()) {
+                            $ticket['image_url'] = url($generalTicket->media_slider->first()->file_url);
+                        }
+
                         $filteredTickets[] = $ticket;
                     }
                 }

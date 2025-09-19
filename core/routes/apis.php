@@ -51,6 +51,8 @@ Route::post('/ticket-hold', 'TicketController@ticketHold');
 Route::post('/cabana-occupancy', 'TicketController@GetCabanaOccupancy');
 //General Ticket
 Route::get('/general-ticket', 'GeneralTicketController@index');
+Route::get('/general-ticket-addon/{slug}', 'GeneralTicketController@generalTicketAddon');
+Route::get('/general-ticket-cabana/{slug}', 'GeneralTicketController@generalTicketCabana');
 //Stripe
 Route::post('/order-payment', 'StripeController@createPaymentIntent');
 Route::post('/order-create', 'OrderController@OrderCreate');
