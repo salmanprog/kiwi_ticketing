@@ -17,41 +17,47 @@ class GeneralTicketController extends BaseAPIController
         $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
-        $generalTicket = GeneralTickets::with(['media_slider'])->where('auth_code',$authCode)->where('status','1')->get();
+        $generalTicket = GeneralTickets::with(['media_slider','addons','cabanas'])->where('auth_code',$authCode)->get();
         
         if ($generalTicket->isEmpty()) {
             return $this->sendResponse(200, 'Retrieved General Tickets Listing', []);
         }
 
-        $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
-        $filteredTickets = [];
-
-        if ($response->successful()) {
-            $apiData = $response->json();
-            $tickets = $apiData['getAllProductPrice']['data'] ?? [];
-
-            foreach ($generalTicket as $package) {
-                $ticketSlugs = BirthdayCabanas::where('birthday_package_id', $package->id)
-                    ->pluck('ticketSlug')
-                    ->toArray();
-                $matchedTickets = collect($tickets)->filter(function ($ticket) use ($ticketSlugs) {
-                    return in_array($ticket['ticketSlug'], $ticketSlugs);
-                })->values()->all();
-                $package->filteredTickets = $matchedTickets;
+        try {
+            $response = Http::get("{$baseUrl}/Pricing/GetAllProductPrice", [
+                'authcode' => $authCode,
+                'date' => $date,
+            ]);
+            $data = $response->json();
+            if (isset($data['status']['errorCode']) && $data['status']['errorCode'] === 1) {
+                return $this->sendResponse(400, 'General Ticket Error', ['error' => $data['status']['errorMessage']]);
             }
-        }
-
-        if (empty($filteredTickets)) {
+            $tickets = $data['getAllProductPrice']['data'] ?? [];
             $filteredTickets = [];
+            if (count($tickets) > 0) {
+                $ticketSlugs = array_column($tickets, 'ticketSlug');
+                $generalTickets = GeneralTickets::with(['media_slider','addons','cabanas'])
+                    ->where('auth_code', $authCode)
+                    ->whereIn('ticketSlug', $ticketSlugs)
+                    ->get()
+                    ->keyBy('ticketSlug');
+                
+                foreach ($tickets as &$ticket) {
+                    if ($ticket['ticketCategory'] === 'Ticket') {
+                        $generalTicket = $generalTickets->get($ticket['ticketSlug']);
+                        if ($generalTicket) {
+                            $ticket['description'] = $generalTicket->description;
+                            if ($generalTicket->media_slider && count($generalTicket->media_slider) > 0) {
+                                $ticket['image_url'] =  url($generalTicket->media_slider->first()->file_url);
+                            }
+                        }
+                        $filteredTickets[] = $ticket;
+                    }
+                }
+            }
+            return $this->sendResponse(200, 'General Ticket fetched successfully', $filteredTickets);
+        } catch (\Exception $e) {
+            return $this->sendResponse(401, 'Server Error', $e->getMessage());
         }
-
-        $resource = BirthdayPackagesResource::collection($birthday->load(['cabanas', 'media_slider', 'media_cover']))
-    ->additional(['tickets' => $filteredTickets]);
-        return $this->sendResponse(200, 'Retrieved Birthday Listing', $resource);
-        
-    }
-
-    public function store(Request $request)
-    {
     }
 }

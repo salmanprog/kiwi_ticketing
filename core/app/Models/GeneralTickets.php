@@ -41,6 +41,14 @@ class GeneralTickets extends Model
     {
         return $this->hasMany(Media::class, 'module_id')->where('module','general_ticket');
     }
+    public function cabanas()
+    {
+        return $this->hasMany(GeneralTicketCabana::class, 'generalTicketSlug', 'ticketSlug');
+    }
+    public function addons()
+    {
+        return $this->hasMany(GeneralTicketAddon::class, 'generalTicketSlug', 'ticketSlug');
+    }
     /**
      * Generate a unique slug for the birthday package.
      */

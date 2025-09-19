@@ -49,6 +49,8 @@ Route::get('/birthday/addon/{slug}', 'BirthdayAddonController@show');
 //Tickets
 Route::post('/ticket-hold', 'TicketController@ticketHold');
 Route::post('/cabana-occupancy', 'TicketController@GetCabanaOccupancy');
+//General Ticket
+Route::get('/general-ticket', 'GeneralTicketController@index');
 //Stripe
 Route::post('/order-payment', 'StripeController@createPaymentIntent');
 Route::post('/order-create', 'OrderController@OrderCreate');
