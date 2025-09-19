@@ -43,7 +43,7 @@ class TicketController extends BaseAPIController
         $validator = Validator::make($request->all(), [
             'ticketType' => 'required|string|max:255',
             'quantity' => 'required|integer|max:255',
-            'seat' => 'required|integer|max:255',
+            //'seat' => 'required|integer|max:255',
             'date' => 'required|string|max:255'
         ]);
 
@@ -64,7 +64,7 @@ class TicketController extends BaseAPIController
                     [
                         'ticketType' => $request->ticketType,
                         'quantity' => $request->quantity,
-                        'seat' => $request->seat
+                        'seat' => isset($request->seat) ? $request->seat : ""
                     ]
                 ]
             ]);
