@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Models\Section;
+use App\Models\GeneralTickets;
 use App\Models\GeneralTicketAddon;
 use App\Models\WebmasterSection;
 use App\Models\Media;
@@ -57,23 +58,21 @@ class GeneralTicketAddonController extends Controller
 
         try {
             $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
-
+            $getTicketGeneral = GeneralTickets::where('auth_code', $authCode)->get();
             if ($response->successful()) {
             $apiData = $response->json();
             $tickets = $apiData['getAllProductPrice']['data'] ?? [];
             $tickets_arr = ['ticket' => [], 'ticket_addon' => []];
-
+            $dbSlugs = $getTicketGeneral->pluck('ticketSlug')->toArray();
             if (!empty($tickets)) {
                 foreach ($tickets as $ticket) {
-                    if ($ticket['venueId'] == 0 && 
-                        ($ticket['ticketCategory'] === 'Tickets' || $ticket['ticketCategory'] === 'Food Addons')) {
+                    if ($ticket['ticketCategory'] !== 'Season Passes' && !in_array($ticket['ticketSlug'], $dbSlugs)){
                         $tickets_arr['ticket_addon'][] = $ticket;
-                    } elseif ($ticket['ticketCategory'] === 'Ticket') {
+                    } elseif (in_array($ticket['ticketSlug'], $dbSlugs)){
                         $tickets_arr['ticket'][] = $ticket;
                     }
                 }
             }
-
             return view("dashboard.general_ticket_addon.create", compact("tickets_arr", "GeneralWebmasterSections"));
             } else {
                 dd([
@@ -153,6 +152,7 @@ class GeneralTicketAddonController extends Controller
                 $ticketAddon->ticketSlug = $tickets_arr['ticket_addon'][0]['ticketSlug'];
                 $ticketAddon->ticketCategory = $tickets_arr['ticket_addon'][0]['ticketCategory'];
                 $ticketAddon->price = $tickets_arr['ticket_addon'][0]['price'];
+                $ticketAddon->new_price = $request->new_price;
                 $ticketAddon->description = $request->description;
                 $ticketAddon->save();
                 
@@ -254,7 +254,7 @@ class GeneralTicketAddonController extends Controller
                     }
                 }
             }
-            
+            $ticketAddon->new_price = $request->new_price;
             $ticketAddon->description = $request->description;
             $ticketAddon->save();
             if(count($uploadedFileNames) > 0){

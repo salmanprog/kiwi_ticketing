@@ -293,7 +293,11 @@ Route::post('/birthday_addons/store', [BirthdayAddonsController::class, 'store']
 // General Tickets
 Route::get('/general-tickets', [GeneralTicketController::class, 'index'])->name('generaltickets');
 Route::get('/general-tickets/{slug}/edit', [GeneralTicketController::class, 'edit'])->name('generalticketsEdit');
+Route::get('/general-tickets/create/', [GeneralTicketController::class, 'create'])->name('generalticketsCreate');
 Route::post('/general-tickets/store', [GeneralTicketController::class, 'store'])->name('generalticketsStore');
+Route::get('/general-tickets/destroy/{slug}', [GeneralTicketController::class, 'destroy'])->name('generalticketsDestroy');
+Route::get('/general-ticket-orders', [OrderController::class, 'getTicketingOrders'])->name('generalticketsorders');
+Route::get('/general-ticket-orders-detail/{slug}', [OrderController::class, 'getByOrderSlug'])->name('generalticketsordersdetail');
 // General Tickets Addons
 Route::get('/general-tickets-addon', [GeneralTicketAddonController::class, 'index'])->name('generalticketsaddon');
 Route::get('/general-tickets-addon/create/', [GeneralTicketAddonController::class, 'create'])->name('generalticketsaddonCreate');

@@ -24,6 +24,7 @@ class OrdersHelper
         $prefixMap = [
             'birthday' => 'bd_',
             'cabana' => 'ca_',
+            'general_ticket' => 'ge_',
         ];
 
         $prefix = $prefixMap[$requestPayload['type']] ?? 'gen_';

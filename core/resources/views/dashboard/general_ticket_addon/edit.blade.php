@@ -45,6 +45,14 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label for="title"
+                                class="col-sm-2 form-control-label">{!!  __('Ticket Addon Price') !!}
+                        </label>
+                        <div class="col-sm-10">
+                            {!! Form::text('new_price',old('new_price', $ticket_addon->new_price ?? ''), array('placeholder' => '','class' => 'form-control','id'=>'new_price','required'=>'')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label for="details"
                             class="col-sm-2 form-control-label">{!!  __('Description') !!}
                         </label>

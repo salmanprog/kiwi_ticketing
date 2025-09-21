@@ -1,26 +1,21 @@
 @extends('dashboard.layouts.master')
-@section('title', __('General Ticket Addon'))
+@section('title', __('General Ticket Orders'))
 @section('content')
 <div class="padding">
 <div class="box">
     <div class="box-header dker">
-        <h3>{{ __('General Ticket Addon') }}</h3>
+        <h3>{{ __('General Ticket') }}</h3>
         <small>
             <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-            <a href="">{{ __('general-ticket-addon') }}</a>
+            <a href="">{{ __('General Ticket') }}</a>
         </small>
     </div>
-     <div class="row p-a pull-right" style="margin-top: -70px;">
-        <div class="col-sm-12">
-            <a class="btn btn-fw primary" href="{{route('generalticketsaddonCreate')}}">
-                <i class="material-icons">&#xe7fe;</i>
-                &nbsp; {{ __('Add Ticket Addon') }}
-            </a>
-        </div>
-    </div>
-    
+    <div class="box-tool box-tool-lg">
+                
+            </div>
+            <div>
         <div class="table-responsive">
-                    <table class="table table-bordered m-a-0">
+                    <table class="table table table-bordered">
                         <thead class="dker">
                         <tr>
                             <th  class="width20 dker">
@@ -28,79 +23,72 @@
                                     <input id="checkAll" type="checkbox"><i></i>
                                 </label>
                             </th>
-                            <th>{{ __('venueId') }}</th>
-                            <th>{{ __('General Ticket') }}</th>
-                            <th>{{ __('Addon') }}</th>
-                            <th>{{ __('Category') }}</th>
-                            <th>{{ __('Price') }}</th>
-                            <th>{{ __('New Price') }}</th>
+                            <th>{{ __('Order No') }}</th>
+                            <th>{{ __('Name') }}</th>
+                            <th>{{ __('Email') }}</th>
+                            <th>{{ __('Phone') }}</th>
+                            <th>{{ __('Transaction-Id') }}</th>
+                            <th>{{ __('Total') }}</th>
+                            <th>{{ __('Paid') }}</th>
+                            <th>{{ __('Date') }}</th>
                             <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
                         </tr>
-                        </thead>    
+                        </thead>
                         <tbody>
                             @if(count($paginated) > 0)
-                            @foreach ($paginated as $packages)
+                            @foreach ($paginated as $order)
                              <tr>
                                 <td class="dker"><label class="ui-check m-a-0">
-                                        <input type="checkbox" name="ids[]" value="{{ $packages['id'] }}"><i
+                                        <input type="checkbox" name="ids[]" value="{{ $order['id'] }}"><i
                                             class="dark-white"></i>
-                                        {!! Form::hidden('row_ids[]',$packages['id'], array('class' => 'form-control row_no')) !!}
+                                        {!! Form::hidden('row_ids[]',$order['id'], array('class' => 'form-control row_no')) !!}
                                     </label>
                                 </td>
+                                <td>
+                                   <small>{{$order->slug }}</small>
+                                </td>
                                 <td class="h6">
-                                    {{ $packages['venueId'] }}
+                                    {{ $order->customer->name }}
                                 </td>
                                 <td>
-                                    <div class="">
-                                        <a href="{{ route('generalticketsaddonEdit',$packages['slug']) }}">
-                                            <div class="pull-right">
-                                                 @foreach($packages->media_slider as $media_cover)
-                                                <img src="{{ asset('uploads/sections/' . $media_cover->filename) }}" style="height: 30px;width:100px" alt="Curabitur vitae leo vitae ipsum varius laoreet">
-                                                @endforeach
-                                            </div> 
-                                            <div class="h6 m-b-0">{{ $packages['generalTicketType'] }}</div>
-                                           
-                                        </a>
-                                    </div>
+                                   <small>{{$order->customer->email }}</small>
                                 </td>
 
                                 <td>
-                                    <small>{{ $packages['ticketType'] }}</small>
+                                    <small>{{ $order->customer->phone }}</small>
                                 </td>
                                 <td>
-                                    <small>{{ $packages['ticketCategory'] }}</small>
+                                    <small>{{ $order['transactionId'] }}</small>
+                                </td>
+                                <td>
+                                    <small>${{ $order['orderTotal'] }}</small>
                                 </td>
                                 <td class="text-center">
-                                    <small>${{ number_format($packages['price'], 2) }}</small>
+                                    <i class="fa fa-check text-success inline"></i>
+                                </td>
+                                <td>
+                                    <small>{{ date('Y-m-d', strtotime($order['orderDate'])) }}</small>
                                 </td>
                                 <td class="text-center">
-                                    <small>${{ number_format($packages['new_price'], 2) }}</small>
-                                </td>
-                                <td class="text-center">
-                                   <div class="dropdown">
+                                    <div class="dropdown">
                                         <button type="button" class="btn btn-sm light dk dropdown-toggle"
                                                 data-toggle="dropdown"><i class="material-icons">&#xe5d4;</i>
                                             {{ __('backend.options') }}
                                         </button>
                                         <div class="dropdown-menu pull-right">
                                             <a class="dropdown-item"
-                                                href="{{ route('generalticketsaddonEdit',$packages['slug']) }}"><i
-                                                    class="material-icons">&#xe3c9;</i> {{ __('backend.edit') }}
-                                            </a>
-                                            <a class="dropdown-item text-danger"
-                                                onclick="DeleteTicketAddon({{ $packages['id'] }})"><i
-                                                    class="material-icons">&#xe872;</i> {{ __('backend.delete') }}
+                                                href="{{ route('birthdayordersdetail',$order['slug']) }}"><i
+                                                    class="material-icons"></i> {{ __('backend.preview') }}
                                             </a>
                                         </div>
                                     </div>
-
                                 </td>
                             </tr>
                             @endforeach
                             @endif
                         </tbody>
                     </table>
-                    
+
         </div>
         <footer class="dker p-a">
                     <div class="row">
@@ -128,7 +116,7 @@
                             </div>
                             <!-- / .modal -->
                             @if(@Auth::user()->permissionsGroup->settings_status)
-                                <!-- <select name="action" id="action" class="form-control c-select w-sm inline v-middle"
+                                <select name="action" id="action" class="form-control c-select w-sm inline v-middle"
                                         required>
                                     <option value="">{{ __('backend.bulkAction') }}</option>
                                     <option value="activate">{{ __('backend.activeSelected') }}</option>
@@ -141,7 +129,7 @@
                                         style="display: none"
                                         data-target="#m-all" ui-toggle-class="bounce"
                                         ui-target="#animate">{{ __('backend.apply') }}
-                                </button> -->
+                                </button>
                             @endif
                         </div>
                             <div class="col-sm-3 text-center">
@@ -159,27 +147,7 @@
     
 </div>
 </div>
- <!-- .modal -->
-    <div id="delete-ticketaddon" class="modal fade" data-backdrop="true">
-        <div class="modal-dialog" id="animate">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">{{ __('backend.confirmation') }}</h5>
-                </div>
-                <div class="modal-body text-center p-lg">
-                    <p>
-                        {{ __('backend.confirmationDeleteMsg') }}
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn dark-white p-x-md"
-                            data-dismiss="modal">{{ __('backend.no') }}</button>
-                    <a type="button" id="ticketaddon_delete_btn" href=""
-                       class="btn danger p-x-md">{{ __('backend.yes') }}</a>
-                </div>
-            </div><!-- /.modal-content -->
-        </div>
-    </div>
+
 @endsection
 @push("after-scripts")
     <script type="text/javascript">
@@ -195,13 +163,6 @@
                 $("#submit_show_msg").css("display", "none");
             }
         });
-        function DeleteTicketAddon(id) {
-            let url = '{{ route("generalticketsaddonDestroy", ":id") }}';
-            url = url.replace(':id', id);
-
-            $("#ticketaddon_delete_btn").attr("href", url);
-            $("#delete-ticketaddon").modal("show");
-        }
     </script>
 
 @endpush

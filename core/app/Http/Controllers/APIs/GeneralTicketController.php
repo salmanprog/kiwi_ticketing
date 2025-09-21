@@ -37,24 +37,43 @@ class GeneralTicketController extends BaseAPIController
             $filteredTickets = [];
             if (count($tickets) > 0) {
                 $ticketSlugs = array_column($tickets, 'ticketSlug');
-                $generalTickets = GeneralTickets::with(['media_slider','addons','cabanas'])
+                $generalTickets = GeneralTickets::with(['media_slider','addons.media_slider'])
                     ->where('auth_code', $authCode)
                     ->whereIn('ticketSlug', $ticketSlugs)
                     ->get()
                     ->keyBy('ticketSlug');
                 
                 foreach ($tickets as &$ticket) {
-                    if ($ticket['ticketCategory'] === 'Ticket') {
+                    if ($ticket['venueId'] != 0) {
                         $generalTicket = $generalTickets->get($ticket['ticketSlug']);
                         if ($generalTicket) {
                             $ticket['description'] = $generalTicket->description;
-                            if ($generalTicket->media_slider && count($generalTicket->media_slider) > 0) {
-                                $ticket['image_url'] =  url($generalTicket->media_slider->first()->file_url);
+
+                            if ($generalTicket->media_slider && $generalTicket->media_slider->count() > 0) {
+                                $ticket['image_url'] = url($generalTicket->media_slider->first()->file_url);
                             }
+
+                            // Add addons as array
+                            $ticket['addons'] = $generalTicket->addons->map(function($addon) {
+                                return [
+                                    'venueId' => $addon->venueId,
+                                    'ticketType' => $addon->ticketType,
+                                    'ticketSlug' => $addon->ticketSlug,
+                                    'ticketCategory' => $addon->ticketCategory,
+                                    'price' => $addon->price,
+                                    'new_price' => $addon->new_price,
+                                    'description' => $addon->description,
+                                    'image_url' => ($addon->media_slider && $addon->media_slider->count() > 0)
+                                                    ? url($addon->media_slider->first()->file_url)
+                                                    : null,
+                                ];
+                            })->toArray();
+
+                            $filteredTickets[] = $ticket;
                         }
-                        $filteredTickets[] = $ticket;
                     }
                 }
+
             }
             return $this->sendResponse(200, 'General Ticket fetched successfully', $filteredTickets);
         } catch (\Exception $e) {

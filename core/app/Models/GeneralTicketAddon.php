@@ -19,7 +19,8 @@ class GeneralTicketAddon extends Model
         'ticketType',
         'ticketSlug',
         'ticketCategory',
-        'price'
+        'price',
+        'new_price'
     ];
 
     /**

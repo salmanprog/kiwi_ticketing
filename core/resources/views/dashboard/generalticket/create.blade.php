@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('General Ticket Addon'))
+@section('title', __('General Product'))
 @push("after-styles")
     <link href="{{ asset("assets/dashboard/js/iconpicker/fontawesome-iconpicker.min.css") }}" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -10,10 +10,10 @@
     <div class="padding">
         <div class="box">
             <div class="box-header dker">
-                <h3><i class="material-icons">&#xe02e;</i> {{ __('New General') }}</h3>
+                <h3><i class="material-icons">&#xe02e;</i> {{ __('New Product') }}</h3>
                 <small>
                     <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-                    <a>{{__('Ticket Addon')}}</a> 
+                    <a>{{__('general-product')}}</a> 
                 </small>
             </div>
             <div class="box-tool">
@@ -26,39 +26,18 @@
                 </ul>
             </div>
             <div class="box-body p-a-2">
-                {{Form::open(['route'=>['generalticketsaddonStore'],'method'=>'POST', 'files' => true])}}
+                {{Form::open(['route'=>['generalticketsStore'],'method'=>'POST', 'files' => true])}}
                     <div class="form-group row">
                         <label for="section_id" class="col-sm-2 form-control-label">
-                            {!! __('Tickets') !!}
+                            {!! __('Product') !!}
                         </label>
                         <div class="col-sm-10">
-                           <select name="generalTicketSlug" class="form-control">
-                                <option value="">- - {!!  __('Select General Ticket') !!} - -</option>
-                                @foreach($tickets_arr['ticket'] as $ticket)
-                                    <option value="{{ $ticket['ticketSlug'] }}">{{ $ticket['ticketType'] }}</option>
+                           <select name="ticketSlug" class="form-control">
+                                <option value="">- - {!!  __('Select Product') !!} - -</option>
+                                @foreach($general_products as $general_product)
+                                    <option value="{{ $general_product['ticketSlug'] }}">{{ $general_product['ticketType'] }}</option>
                                 @endforeach
                             </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="section_id" class="col-sm-2 form-control-label">
-                            {!! __('Ticket Addon') !!}
-                        </label>
-                        <div class="col-sm-10">
-                           <select name="ticketSlug" id="ticketSlug" class="form-control">
-                                <option value="">- - {!!  __('Select Ticket Addon') !!} - -</option>
-                                @foreach($tickets_arr['ticket_addon'] as $ticket_addon)
-                                    <option value="{{ $ticket_addon['ticketSlug'] }}" data-price="{{ $ticket_addon['price'] ?? '0' }}">{{ $ticket_addon['ticketType'] }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="title"
-                                class="col-sm-2 form-control-label">{!!  __('Ticket Addon Price') !!}
-                        </label>
-                        <div class="col-sm-10">
-                            {!! Form::text('new_price','', array('placeholder' => '','class' => 'form-control','id'=>'new_price','required'=>'')) !!}
                         </div>
                     </div>
                     <div class="form-group row">
@@ -104,31 +83,14 @@
                             </small>
                         </div>
                     </div>
-                    <div class="form-group row">
-                            <label for="link_status" class="col-sm-2 form-control-label">Status</label>
-                            <div class="col-sm-10">
-                                <div class="radio">
-                                    <label class="ui-check ui-check-md">
-                                        <input id="status1" class="has-value" checked="checked" name="status" type="radio" value="1">
-                                        <i class="dark-white"></i>
-                                        Active
-                                    </label>
-                                    &nbsp; &nbsp;
-                                    <label class="ui-check ui-check-md">
-                                        <input id="status2" class="has-value" name="status" type="radio" value="0">
-                                        <i class="dark-white"></i>
-                                        Not Active
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+                    
                 </div>
                 <div class="modal-footer">
                 <button type="button"
                         class="btn dark-white p-x-md"
                         data-dismiss="modal">{{ __('backend.cancel') }}</button>
                 <button type="submit"
-                        class="btn btn-primary p-x-md">{!! __('backend.add') !!}</button>
+                        class="btn btn-primary p-x-md">{!! __('backend.update') !!}</button>
             </div>
                 {{Form::close()}}
             
@@ -141,13 +103,16 @@
         $(function () {
             $('.icp-auto').iconpicker({placement: '{{ (@Helper::currentLanguage()->direction=="rtl")?"topLeft":"topRight" }}'});
         });
-        const select = document.getElementById('ticketSlug');
-        const priceDisplay = document.getElementById('new_price');
+        function deleteMedia(id) {
+            document.getElementById('media_' + id).style.display = 'none';
+            document.getElementById('media_delete_' + id).value = '1';
+            document.getElementById('undo_' + id).style.display = 'block';
+        }
 
-        select.addEventListener('change', function() {
-            const selectedOption = this.options[this.selectedIndex];
-            const price = selectedOption.getAttribute('data-price');
-            priceDisplay.value = price ? price : '0';
-        });
+        function undoDelete(id) {
+            document.getElementById('media_' + id).style.display = 'block';
+            document.getElementById('media_delete_' + id).value = '0';
+            document.getElementById('undo_' + id).style.display = 'none';
+        }
     </script>
 @endpush

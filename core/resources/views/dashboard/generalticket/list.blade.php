@@ -10,14 +10,14 @@
             <a href="">{{ __('Tickets') }}</a>
         </small>
     </div>
-     <!-- <div class="row p-a pull-right" style="margin-top: -70px;">
+     <div class="row p-a pull-right" style="margin-top: -70px;">
         <div class="col-sm-12">
-            <a class="btn btn-fw primary" href="#">
+            <a class="btn btn-fw primary" href="{{route('generalticketsCreate')}}">
                 <i class="material-icons">&#xe7fe;</i>
-                &nbsp; {{ __('Add New Cabana') }}
+                &nbsp; {{ __('Add New Product') }}
             </a>
         </div>
-    </div> -->
+    </div>
     @if(count($paginated) > 0)
         <div class="table-responsive">
                     <table class="table table-bordered m-a-0">
@@ -33,6 +33,7 @@
                             <th>{{ __('Slug') }}</th>
                             <th>{{ __('Category') }}</th>
                             <th>{{ __('Price') }}</th>
+                            <th>{{ __('Add-on') }}</th>
                             <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
                         </tr>
                         </thead>
@@ -49,7 +50,17 @@
                                     {{ $ticket['venueId'] }}
                                 </td>
                                 <td>
-                                   <small>{{ $ticket['ticketType'] }}</small>
+                                    <div class="">
+                                        <a href="{{ route('generalticketsEdit',$ticket['ticketSlug']) }}"> 
+                                            <div class="pull-right">
+                                                 @foreach($ticket->media_slider as $media_cover)
+                                                <img src="{{ asset('uploads/sections/' . $media_cover->filename) }}" style="height: 30px;width:100px" alt="Curabitur vitae leo vitae ipsum varius laoreet">
+                                                @endforeach
+                                            </div>
+                                            <div class="h6 m-b-0">{{ $ticket['ticketType'] }}</div>
+                                           
+                                        </a>
+                                    </div>
                                 </td>
 
                                 <td>
@@ -62,6 +73,9 @@
                                     <small>${{ number_format($ticket['price'], 2) }}</small>
                                 </td>
                                 <td class="text-center">
+                                    <small>{{ count($ticket->addons) }}</small>
+                                </td>
+                                <td class="text-center">
                                     <div class="dropdown">
                                         <button type="button" class="btn btn-sm light dk dropdown-toggle"
                                                 data-toggle="dropdown"><i class="material-icons">&#xe5d4;</i>
@@ -71,6 +85,10 @@
                                             <a class="dropdown-item"
                                                 href="{{ route('generalticketsEdit',$ticket['ticketSlug']) }}"><i
                                                     class="material-icons">&#xe3c9;</i> {{ __('backend.edit') }}
+                                            </a>
+                                            <a class="dropdown-item text-danger"
+                                                onclick="DeleteTicket('{{ $ticket['ticketSlug'] }}')"><i
+                                                    class="material-icons">&#xe872;</i> {{ __('backend.delete') }}
                                             </a>
                                         </div>
                                     </div>
@@ -184,7 +202,27 @@
     @endif
 </div>
 </div>
-
+<!-- .modal -->
+    <div id="delete-tickets" class="modal fade" data-backdrop="true">
+        <div class="modal-dialog" id="animate">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ __('backend.confirmation') }}</h5>
+                </div>
+                <div class="modal-body text-center p-lg">
+                    <p>
+                        {{ __('backend.confirmationDeleteMsg') }}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn dark-white p-x-md"
+                            data-dismiss="modal">{{ __('backend.no') }}</button>
+                    <a type="button" id="ticketaddon_delete_btn" href=""
+                       class="btn danger p-x-md">{{ __('backend.yes') }}</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div>
+    </div>
 @endsection
 @push("after-scripts")
     <script type="text/javascript">
@@ -203,44 +241,12 @@
     </script>
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        $('.open-edit-modal').on('click', function () {
-            const button = $(this);
-            $('#modalVenueId').val(button.data('venueid'));
-            $('#modalTicketType').val(button.data('type'));
-            $('#modalTicketSlug').val(button.data('slug'));
-            $('#modalTicketCategory').val(button.data('category'));
-            $('#modalTicketPrice').val(button.data('price'));
-            const isFeatured = button.data('featured') == 1;
-            $('#isfeatured').prop('checked', isFeatured);
-        });
+    function DeleteTicket(slug) {
+        let url = '{{ route("generalticketsDestroy", ":slug") }}';
+        url = url.replace(':slug', slug);
 
-        $('#saveCabanaChanges').on('click', function () {
-            
-            const insertData = {
-                venueId: $('#modalVenueId').val(),
-                ticketType: $('#modalTicketType').val(),
-                ticketSlug: $('#modalTicketSlug').val(),
-                ticketCategory: $('#modalTicketCategory').val(),
-                price: $('#modalTicketPrice').val(),
-                featured: $('#isfeatured').is(':checked') ? 1 : 0,
-            };
-
-            $.ajax({
-                url: "https://admin.wildrivers.com/api/v1/cabana/featured/product",
-                type: 'POST',
-                data: insertData,
-                success: function (response) {
-                    alert(response.message);
-                    $('#editCabanaModal').modal('hide');
-                    location.reload();
-                },
-                error: function (xhr) {
-                    alert('Update failed');
-                    console.log(xhr.responseText);
-                }
-            });
-        });
-    });
+        $("#ticketaddon_delete_btn").attr("href", url);
+        $("#delete-tickets").modal("show");
+    }
 </script>
 @endpush

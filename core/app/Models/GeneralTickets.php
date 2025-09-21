@@ -15,7 +15,11 @@ class GeneralTickets extends Model
     protected $fillable = [
         'slug',
         'auth_code',
+        'venueId',
+        'ticketType',
         'ticketSlug',
+        'ticketCategory',
+        'price',
         'description',
     ];
 
