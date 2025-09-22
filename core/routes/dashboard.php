@@ -26,6 +26,7 @@ use App\Http\Controllers\Dashboard\OrderController;
 use App\Http\Controllers\Dashboard\GeneralTicketController;
 use App\Http\Controllers\Dashboard\GeneralTicketAddonController;
 use App\Http\Controllers\Dashboard\GeneralTicketCabanaController;
+use App\Http\Controllers\Dashboard\SeasonPassController;
 use Illuminate\Support\Facades\Route;
 
 // Admin Home
@@ -305,13 +306,13 @@ Route::post('/general-tickets-addon/store', [GeneralTicketAddonController::class
 Route::get('/general-tickets-addon/{id}/edit', [GeneralTicketAddonController::class, 'edit'])->name('generalticketsaddonEdit');
 Route::post('/general-tickets-addon/{id}/update', [GeneralTicketAddonController::class, 'update'])->name('generalticketsaddonUpdate');
 Route::get('/general-tickets-addon/destroy/{id}', [GeneralTicketAddonController::class, 'destroy'])->name('generalticketsaddonDestroy');
-// General Tickets Cabanas
-Route::get('/general-tickets-cabana', [GeneralTicketCabanaController::class, 'index'])->name('generalticketscabana');
-Route::get('/general-tickets-cabana/create/', [GeneralTicketCabanaController::class, 'create'])->name('generalticketscabanaCreate');
-Route::post('/general-tickets-cabana/store', [GeneralTicketCabanaController::class, 'store'])->name('generalticketscabanaStore');
-Route::get('/general-tickets-cabana/{id}/edit', [GeneralTicketCabanaController::class, 'edit'])->name('generalticketscabanaEdit');
-Route::post('/general-tickets-cabana/{id}/update', [GeneralTicketCabanaController::class, 'update'])->name('generalticketscabanaUpdate');
-Route::get('/general-tickets-cabana/destroy/{id}', [GeneralTicketCabanaController::class, 'destroy'])->name('generalticketscabanaDestroy');
+// Season Pass
+Route::get('/season-pass', [SeasonPassController::class, 'index'])->name('seasonpass');
+Route::get('/season-pass/{slug}/edit', [SeasonPassController::class, 'edit'])->name('seasonpassEdit');
+Route::get('/season-pass/create/', [SeasonPassController::class, 'create'])->name('seasonpassCreate');
+Route::post('/season-pass/store', [SeasonPassController::class, 'store'])->name('seasonpassStore');
+Route::post('/season-pass/{id}/update', [SeasonPassController::class, 'update'])->name('seasonpassUpdate');
+Route::get('/season-pass/destroy/{slug}', [SeasonPassController::class, 'destroy'])->name('seasonpassDestroy');
 // Menus
 Route::post('/menus/store/parent', [MenusController::class, 'storeMenu'])->name('parentMenusStore');
 Route::get('/menus/parent/{id}/edit', [MenusController::class, 'editMenu'])->name('parentMenusEdit');
