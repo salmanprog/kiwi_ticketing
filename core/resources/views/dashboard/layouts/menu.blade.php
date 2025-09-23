@@ -50,7 +50,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         $cabanaActive = in_array($current, ['kabanasetting', 'kabanaddons', 'kabanaorders', 'kabanaaddonEdit','kabanaordersdetail']);
                         $birthdayActive = in_array($current, ['birthdaypackages', 'birthdaypackagesCreate', 'birthdaypackagesEdit', 'birthdaypackagesStore','birthdaypackagesUpdate','birthdayorders','birthdayordersdetail','birthdayaddon','birthdayaddonEdit']);
                         $generalTicketActive = in_array($current, ['generaltickets','generalticketsCreate','generalticketsEdit','generalticketsStore','generalticketsaddon','generalticketsaddonCreate','generalticketsaddonEdit','generalticketscabana','generalticketscabanaCreate','generalticketscabanaStore','generalticketscabanaEdit','generalticketscabanaUpdate','generalticketscabanaDestroy','generalticketsorders','generalticketsordersdetail']);
-                        $seasonpassActive = in_array($current, ['seasonpass', 'seasonpassEdit', 'seasonpassCreate', 'seasonpassStore','seasonpassDestroy']);
+                        $seasonpassActive = in_array($current, ['seasonpass', 'seasonpassEdit', 'seasonpassCreate', 'seasonpassStore','seasonpassDestroy','seasonpassaddon','seasonpassaddonEdit','seasonpassaddonStore','seasonpassaddonCreate']);
                         ?>
                     <li class="{{ $cabanaActive ? 'active' : '' }}" >
                         <a>
@@ -188,7 +188,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <span class="nav-icon">
                             <i class="material-icons">&#xe7fb;</i>
                             </span>
-                            <span class="nav-text">{{ __('Season Pass') }}</span>
+                            <span class="nav-text">{{ __('SeasonPass Managment') }}</span>
                         </a>
                         <ul class="nav-sub">
                             <li class="{{ 
@@ -197,7 +197,16 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 ? 'active' : '' 
                             }}">
                                 <a href="{{ route('seasonpass') }}">
-                                    <span class="nav-text">{{ __('All Season Pass') }}</span>
+                                    <span class="nav-text">{{ __('All Season Pass Sale') }}</span>
+                                </a>
+                            </li>
+                            <li class="{{ 
+                                $current === 'seasonpass' 
+                                || Str::startsWith($current, 'seasonpass') 
+                                ? 'active' : '' 
+                            }}">
+                                <a href="{{ route('seasonpassaddon') }}">
+                                    <span class="nav-text">{{ __('Season Pass Sale Addon') }}</span>
                                 </a>
                             </li>
                         </ul>

@@ -14,7 +14,7 @@
         <div class="col-sm-12">
             <a class="btn btn-fw primary" href="{{route('seasonpassCreate')}}">
                 <i class="material-icons">&#xe7fe;</i>
-                &nbsp; {{ __('Add New Pass') }}
+                &nbsp; {{ __('Add New Sale') }}
             </a>
         </div>
     </div>
@@ -28,12 +28,9 @@
                                     <input id="checkAll" type="checkbox"><i></i>
                                 </label>
                             </th>
-                            <th>{{ __('Venu ID') }}</th>
-                            <th>{{ __('Ticket Type') }}</th>
+                            <th>{{ __('ID') }}</th>
+                            <th>{{ __('Title') }}</th>
                             <th>{{ __('Slug') }}</th>
-                            <th>{{ __('Category') }}</th>
-                            <th>{{ __('Price') }}</th>
-                            <th>{{ __('Parking Pass') }}</th>
                             <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
                         </tr>
                         </thead>
@@ -42,39 +39,30 @@
                             @foreach ($paginated as $ticket)
                              <tr>
                                 <td class="dker"><label class="ui-check m-a-0">
-                                        <input type="checkbox" name="ids[]" value="{{ $ticket['venueId'] }}"><i
+                                        <input type="checkbox" name="ids[]" value="{{ $ticket['id'] }}"><i
                                             class="dark-white"></i>
-                                        {!! Form::hidden('row_ids[]',$ticket['venueId'], array('class' => 'form-control row_no')) !!}
+                                        {!! Form::hidden('row_ids[]',$ticket['id'], array('class' => 'form-control row_no')) !!}
                                     </label>
                                 </td>
                                 <td class="h6">
-                                    {{ $ticket['venueId'] }}
+                                    {{ $ticket['id'] }}
                                 </td>
                                 <td>
                                     <div class="">
-                                        <a href="{{ route('seasonpassEdit',$ticket['ticketSlug']) }}"> 
+                                        <a href="{{ route('seasonpassEdit',$ticket['slug']) }}"> 
                                             <div class="pull-right">
                                                  @foreach($ticket->media_slider as $media_cover)
                                                 <img src="{{ asset('uploads/sections/' . $media_cover->filename) }}" style="height: 30px;width:100px" alt="Curabitur vitae leo vitae ipsum varius laoreet">
                                                 @endforeach
                                             </div>
-                                            <div class="h6 m-b-0">{{ $ticket['ticketType'] }}</div>
+                                            <div class="h6 m-b-0">{{ $ticket['title'] }}</div>
                                            
                                         </a>
                                     </div>
                                 </td>
 
                                 <td>
-                                    <small>{{ $ticket['ticketSlug'] }}</small>
-                                </td>
-                                <td>
-                                    <span class="label green"><i class="material-icons"></i>  {{ $ticket['ticketCategory'] }}</span>
-                                </td>
-                                <td class="text-center">
-                                    <small>${{ number_format($ticket['price'], 2) }}</small>
-                                </td>
-                                <td class="text-center">
-                                    <small>{{ $ticket['is_parking_pass'] }}</small>
+                                    <small>{{ $ticket['slug'] }}</small>
                                 </td>
                                 <td class="text-center">
                                     <div class="dropdown">
@@ -84,11 +72,11 @@
                                         </button>
                                         <div class="dropdown-menu pull-right">
                                             <a class="dropdown-item"
-                                                href="{{ route('seasonpassEdit',$ticket['ticketSlug']) }}"><i
+                                                href="{{ route('seasonpassEdit',$ticket['slug']) }}"><i
                                                     class="material-icons">&#xe3c9;</i> {{ __('backend.edit') }}
                                             </a>
                                             <a class="dropdown-item text-danger"
-                                                onclick="DeleteTicket('{{ $ticket['ticketSlug'] }}')"><i
+                                                onclick="DeleteTicket('{{ $ticket['slug'] }}')"><i
                                                     class="material-icons">&#xe872;</i> {{ __('backend.delete') }}
                                             </a>
                                         </div>

@@ -15,13 +15,9 @@ class SeasonPass extends Model
     protected $fillable = [
         'slug',
         'auth_code',
-        'venueId',
-        'ticketType',
-        'ticketSlug',
-        'ticketCategory',
-        'price',
+        'title',
         'description',
-        'is_parking_pass',
+        'price',
     ];
 
     protected $hidden = [];
@@ -38,7 +34,7 @@ class SeasonPass extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->slug = $model->generateUniqueSlug($model->ticketSlug);
+            $model->slug = $model->generateUniqueSlug($model->title);
         });
     }
 

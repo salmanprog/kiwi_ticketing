@@ -1,0 +1,249 @@
+<?php
+
+namespace App\Http\Controllers\Dashboard;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests;
+use App\Models\Section;
+use App\Models\Topic;
+use App\Models\SeasonPass;
+use App\Models\SeasonPassAddon;
+use App\Models\WebmasterSection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use App\Models\Media;
+use Auth;
+use File;
+use Helper;
+use Illuminate\Http\Request;
+use Redirect;
+use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
+
+
+
+class SeasonPassAddonsController extends Controller
+{
+    private $uploadPath = "uploads/sections/";
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+    }
+
+    public function index()
+    {
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $date = Carbon::today()->toDateString();
+        // General for all pages
+        $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
+        try {
+            
+            $getSeasonPass = SeasonPassAddon::with(['media_slider'])->where('auth_code', $authCode)->orderby('id', 'asc')->get();
+            // Paginate
+            $perPage = 10;
+            $currentPage = LengthAwarePaginator::resolveCurrentPage();
+            $collection = collect($getSeasonPass);
+            $paginated = new LengthAwarePaginator(
+                $collection->forPage($currentPage, $perPage),
+                $collection->count(),
+                $perPage,
+                $currentPage,
+                ['path' => url()->current(), 'query' => request()->query()]
+            );
+
+            return view("dashboard.seasonpassaddon.list", compact("paginated", "GeneralWebmasterSections"));
+
+        } catch (\Exception $e) {
+            // Handle connection or request exceptions
+            dd('Exception: ' . $e->getMessage());
+        }
+    }
+
+    public function cabanAddon()
+    {
+        
+    }
+
+    public function create()
+    {
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $date = Carbon::today()->toDateString();
+        $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
+        $getSeasonPass = SeasonPass::with(['media_slider'])->where('auth_code', $authCode)->orderby('id', 'asc')->get();
+        try {
+            $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+
+            if ($response->successful()) {
+            $apiData = $response->json();
+            $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+            $addon_arr = [];
+            if(count($tickets) > 0){
+                for($i=0;$i<count($tickets);$i++){
+                    if($tickets[$i]['ticketCategory'] == 'Season Passes'){
+                        array_push($addon_arr,$tickets[$i]);
+                    }
+                }
+            }
+
+            return view("dashboard.seasonpassaddon.create", compact("addon_arr","getSeasonPass","GeneralWebmasterSections"));
+            } else {
+                // Handle failed response
+                dd([
+                    'status' => $response->status(),
+                    'error' => $response->body(),
+                ]);
+            }
+
+        } catch (\Exception $e) {
+            // Handle connection or request exceptions
+            dd('Exception: ' . $e->getMessage());
+        }
+        
+    }
+
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'season_passes_slug' => 'required',
+            'ticketSlug' => 'required',
+            'description' => 'required',
+            'new_price' => 'required'
+        ]);
+
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $date = Carbon::today()->toDateString();
+        try {
+            $ticketGeneralCheck = SeasonPassAddon::where('ticketSlug',$request->ticketSlug)->where('auth_code',$authCode)->first();
+
+            if (!empty($ticketGeneralCheck)) {
+                return redirect()->action('Dashboard\SeasonPassAddonsController@create')->with('errorMessage', 'Season pass addon already exists.');
+            }
+
+            $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+
+            if ($response->successful()) {
+                $apiData = $response->json();
+                $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+                $tickets_arr = [];
+
+                if (!empty($tickets)) {
+                    foreach ($tickets as $ticket) {
+                        if ($ticket['ticketSlug'] == $request->ticketSlug ) {
+                            $tickets_arr[] = $ticket;
+                        }
+                    }
+                }
+
+                $formFileName = "photo";
+                $uploadedFileNames = [];
+
+                if ($request->hasFile($formFileName)) {
+                    foreach ($request->file($formFileName) as $file) {
+                        if ($file && $file->isValid()) {
+                            $fileFinalName = time() . rand(1111, 9999) . '.' . $file->getClientOriginalExtension();
+                            $path = $this->uploadPath;
+                            if (!file_exists($path)) {
+                                mkdir($path, 0755, true);
+                            }
+                            $file->move($path, $fileFinalName);
+                            Helper::imageResize($path . $fileFinalName);
+                            Helper::imageOptimize($path . $fileFinalName);
+                            $uploadedFileNames[] = $fileFinalName;
+                        }
+                    }
+                }
+                $seasonpassAddon = new SeasonPassAddon;
+                $seasonpassAddon->auth_code  = Helper::GeneralSiteSettings('auth_code_en');
+                $seasonpassAddon->season_passes_slug = $request->season_passes_slug;
+                $seasonpassAddon->venueId = $tickets_arr[0]['venueId'];
+                $seasonpassAddon->ticketType  = $tickets_arr[0]['ticketType'];
+                $seasonpassAddon->ticketSlug = $tickets_arr[0]['ticketSlug'];
+                $seasonpassAddon->ticketCategory = $tickets_arr[0]['ticketCategory'];
+                $seasonpassAddon->price = $tickets_arr[0]['price'];
+                $seasonpassAddon->description = $request->description;
+                $seasonpassAddon->new_price = $request->new_price;
+                $seasonpassAddon->save();
+
+                if(count($uploadedFileNames) > 0){
+                    for($i=0;$i<count($uploadedFileNames);$i++){
+                        $media = new Media;
+                        $media->module  = 'season_pass_addon';
+                        $media->module_id = $seasonpassAddon->id;
+                        $media->filename  = $uploadedFileNames[$i];
+                        $media->original_name = $uploadedFileNames[$i];
+                        $media->file_url = $this->uploadPath.$uploadedFileNames[$i];
+                        $media->mime_type = '';
+                        $media->file_type  = 'image';
+                        $media->save();
+                    }
+                }
+                return redirect()->action('Dashboard\SeasonPassAddonsController@index')->with('doneMessage', __('backend.addDone'));
+
+            } else {
+            dd([
+                'status' => $response->status(),
+                'error' => $response->body(),
+            ]);
+            }
+
+        } catch (\Exception $e) {
+            dd('Exception: ' . $e->getMessage());
+        }
+    }
+
+    public function clone($webmasterId, $id)
+    {
+        
+    }
+
+    public function edit($id)
+    {
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en'); 
+        $date = Carbon::today()->toDateString();
+        // General for all pages
+        $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
+        $seasonpassAddon = SeasonPassAddon::with(['media_slider'])->where('slug', $id)->first();
+        $getSeasonPass = SeasonPass::with(['media_slider'])->where('slug', $seasonpassAddon->season_passes_slug)->where('auth_code', $authCode)->first();
+        $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+        if ($response->successful()) {
+            $apiData = $response->json();
+            $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+            $fillter_arr = [];
+            if (!empty($tickets)) {
+                foreach ($tickets as $ticket) {
+                    if ($ticket['ticketSlug'] == $seasonpassAddon->ticketSlug ) {
+                        $tickets_arr[] = $ticket;
+                    }
+                }
+            }
+        }
+        return view("dashboard.seasonpassaddon.edit", compact("tickets_arr", "seasonpassAddon","getSeasonPass","GeneralWebmasterSections"));
+    }
+
+    public function update(Request $request, $webmasterId, $id)
+    {
+       
+    }
+
+    public function seo(Request $request, $webmasterId, $id)
+    {
+        
+    }
+
+    public function destroy($webmasterId, $id = 0)
+    {
+        
+    }
+
+    public function updateAll(Request $request, $webmasterId)
+    {
+       
+    }
+
+
+}

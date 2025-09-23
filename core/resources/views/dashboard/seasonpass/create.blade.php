@@ -28,16 +28,11 @@
             <div class="box-body p-a-2">
                 {{Form::open(['route'=>['seasonpassStore'],'method'=>'POST', 'files' => true])}}
                     <div class="form-group row">
-                        <label for="section_id" class="col-sm-2 form-control-label">
-                            {!! __('Season Pass') !!}
+                        <label for="title"
+                                class="col-sm-2 form-control-label">{!!  __('Title') !!}
                         </label>
                         <div class="col-sm-10">
-                           <select name="ticketSlug" class="form-control">
-                                <option value="">- - {!!  __('Select Season Pass') !!} - -</option>
-                                @foreach($general_products as $general_product)
-                                    <option value="{{ $general_product['ticketSlug'] }}">{{ $general_product['ticketType'] }}</option>
-                                @endforeach
-                            </select>
+                            {!! Form::text('title','', array('placeholder' => '','class' => 'form-control','id'=>'title','required'=>'')) !!}
                         </div>
                     </div>
                     <div class="form-group row">
@@ -68,6 +63,14 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label for="title"
+                                class="col-sm-2 form-control-label">{!!  __('Price') !!}
+                        </label>
+                        <div class="col-sm-10">
+                            {!! Form::text('price','', array('placeholder' => '','class' => 'form-control','id'=>'price','required'=>'')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label for="photo"
                             class="col-sm-2 form-control-label">{!!  __('Image') !!}</label>
                         <div class="col-sm-10">
@@ -83,32 +86,13 @@
                             </small>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="link_status" class="col-sm-2 form-control-label">Parking Pass</label>
-                        <div class="col-sm-10">
-                            <div class="radio">
-                                <label class="ui-check ui-check-md">
-                                    <input id="is_parking_pass1" class="has-value" checked="checked" name="is_parking_pass" type="radio" value="0">
-                                    <i class="dark-white"></i>
-                                    No
-                                </label>
-                                &nbsp; &nbsp;
-                                <label class="ui-check ui-check-md">
-                                    <input id="is_parking_pass2" class="has-value" name="is_parking_pass" type="radio" value="1">
-                                    <i class="dark-white"></i>
-                                    Yes
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    
                 </div>
                 <div class="modal-footer">
                 <button type="button"
                         class="btn dark-white p-x-md"
                         data-dismiss="modal">{{ __('backend.cancel') }}</button>
                 <button type="submit"
-                        class="btn btn-primary p-x-md">{!! __('backend.update') !!}</button>
+                        class="btn btn-primary p-x-md">{!! __('backend.add') !!}</button>
             </div>
                 {{Form::close()}}
             
