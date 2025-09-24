@@ -55,6 +55,7 @@ Route::get('/general-ticket-addon/{slug}', 'GeneralTicketController@generalTicke
 Route::get('/general-ticket-cabana/{slug}', 'GeneralTicketController@generalTicketCabana');
 //Season Pass
 Route::get('/season-pass', 'SeasonPassController@index');
+Route::get('/season-pass-product/{slug}', 'SeasonPassAddonController@getBySlug');
 //Stripe
 Route::post('/order-payment', 'StripeController@createPaymentIntent');
 Route::post('/order-create', 'OrderController@OrderCreate');

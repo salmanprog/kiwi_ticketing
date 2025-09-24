@@ -27,6 +27,7 @@ class Order extends Model
         'slotTime',
         'orderSource',
         'posStaffIdentity',
+        'promoCode',
         'isOrderFraudulent',
         'orderFraudulentTimeStamp',
         'transactionId',

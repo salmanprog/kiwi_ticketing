@@ -10,7 +10,7 @@
     <div class="padding">
         <div class="box">
             <div class="box-header dker">
-                <h3><i class="material-icons">&#xe02e;</i> {{ __('New Pass') }}</h3>
+                <h3><i class="material-icons">&#xe02e;</i> {{ __('Edit Pass') }}</h3>
                 <small>
                     <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
                     <a>{{__('season-pass')}}</a> 
@@ -26,13 +26,13 @@
                 </ul>
             </div>
             <div class="box-body p-a-2">
-                {{Form::open(['route'=>['seasonpassaddonEdit',"id"=>$seasonpass->slug],'method'=>'POST', 'files' => true])}}
+                {{Form::open(['route'=>['seasonpassaddonUpdate',"id"=>$seasonpassAddon->slug],'method'=>'POST', 'files' => true])}}
                     <div class="form-group row">
                         <label for="section_id" class="col-sm-2 form-control-label">
                             {!! __('Season Pass') !!}
                         </label>
                         <div class="col-sm-10">
-                             {!! Form::text('season_passes_slug',old('title', $seasonpass->season_passes_slug ?? ''), array('placeholder' => '','class' => 'form-control','id'=>'season_passes_slug','required'=>'')) !!}
+                             {!! Form::text('season_passes_slug',old('title', $getSeasonPass->title ?? ''), array('placeholder' => '','class' => 'form-control','id'=>'season_passes_slug','required'=>'','readonly' => 'readonly')) !!}
                         </div>
                         </div>
                     </div>
@@ -41,12 +41,7 @@
                             {!! __('Season Pass Addon') !!}
                         </label>
                         <div class="col-sm-10">
-                           <select name="ticketSlug" id="ticketSlug" class="form-control">
-                                <option value="">- - {!!  __('Select Season Pass Addon') !!} - -</option>
-                                @foreach($addon_arr as $addon)
-                                    <option value="{{ $addon['ticketSlug'] }}" data-price="{{ $addon['price'] ?? '0' }}">{{ $addon['ticketType'] }}</option>
-                                @endforeach
-                            </select>
+                            {!! Form::text('ticketSlug',old('title', $seasonpassAddon->ticketSlug ?? ''), array('placeholder' => '','class' => 'form-control','id'=>'ticketSlug','required'=>'','readonly' => 'readonly')) !!}
                         </div>
                     </div>
                     <div class="form-group row">
@@ -81,7 +76,7 @@
                                 class="col-sm-2 form-control-label">{!!  __('Price') !!}
                         </label>
                         <div class="col-sm-10">
-                            {!! Form::text('new_price','', array('placeholder' => '','class' => 'form-control','id'=>'new_price','required'=>'')) !!}
+                             {!! Form::text('new_price',old('title', $seasonpassAddon->new_price ?? ''), array('placeholder' => '','class' => 'form-control','id'=>'new_price','required'=>'')) !!}
                         </div>
                     </div>
                     <div class="form-group row">
@@ -130,13 +125,5 @@
             document.getElementById('media_delete_' + id).value = '0';
             document.getElementById('undo_' + id).style.display = 'none';
         }
-        const select = document.getElementById('ticketSlug');
-        const priceDisplay = document.getElementById('new_price');
-
-        select.addEventListener('change', function() {
-            const selectedOption = this.options[this.selectedIndex];
-            const price = selectedOption.getAttribute('data-price');
-            priceDisplay.value = price ? price : '0';
-        });
     </script>
 @endpush

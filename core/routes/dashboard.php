@@ -319,6 +319,7 @@ Route::get('/season-pass-addons', [SeasonPassAddonsController::class, 'index'])-
 Route::get('/season-pass-addons/create/', [SeasonPassAddonsController::class, 'create'])->name('seasonpassaddonCreate');
 Route::get('/season-pass-addons/{id}/edit', [SeasonPassAddonsController::class, 'edit'])->name('seasonpassaddonEdit');
 Route::post('/season-pass-addons/store', [SeasonPassAddonsController::class, 'store'])->name('seasonpassaddonStore');
+Route::post('/season-pass-addons/{id}/update', [SeasonPassAddonsController::class, 'update'])->name('seasonpassaddonUpdate');
 // Menus
 Route::post('/menus/store/parent', [MenusController::class, 'storeMenu'])->name('parentMenusStore');
 Route::get('/menus/parent/{id}/edit', [MenusController::class, 'editMenu'])->name('parentMenusEdit');

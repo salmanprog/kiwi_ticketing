@@ -130,6 +130,7 @@ ALTER TABLE `smartend_season_passes`
   `price` varchar(255) NOT NULL,
   `description` text NULL,
   `new_price` varchar(255) NOT NULL,
+  `is_featured` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -144,17 +145,50 @@ ALTER TABLE `smartend_season_passes_addon`
 
 
   
-                    <input name="venueId" type="hidden" value="{{$cabana->venueId}}">
-                    <input name="ticketType" type="hidden" value="{{$cabana->ticketType}}">
-                    <input name="ticketSlug" type="hidden" value="{{$cabana->ticketSlug}}">
-                    <input name="ticketCategory" type="hidden" value="{{$cabana->ticketCategory}}">
-                    <input name="price" type="hidden" value="{{$cabana->price}}">
+ALTER TABLE `smartend_order` ADD `promoCode` VARCHAR(255) NULL DEFAULT NULL AFTER `orderFraudulentTimeStamp`;
+ALTER TABLE `smartend_order_tickets` ADD `VisualIdStockCount` VARCHAR(255) NULL DEFAULT NULL AFTER `childVisualId`;
 
 
 
-                    ALTER TABLE `smartend_general_tickets` ADD `venueId` INT(11) NOT NULL AFTER `auth_code`;
-                    ALTER TABLE `smartend_general_tickets` ADD `ticketType` VARCHAR(255) NOT NULL AFTER `venueId`;
-                    ALTER TABLE `smartend_general_tickets` ADD `ticketCategory` VARCHAR(255) NOT NULL AFTER `ticketSlug`;
-                    ALTER TABLE `smartend_general_tickets` ADD `price` INT(11) NOT NULL AFTER `ticketCategory`;
 
-                    ALTER TABLE `smartend_general_ticket_addons` ADD `new_price` INT(255) NULL DEFAULT '0' AFTER `price`;
+
+
+
+
+
+
+
+
+
+{
+    "authCode":"d063d05b-fbb1-4bf0-b4d8-b2f603454858",
+    "orderId" : "sp-202515723",
+    "promoCode" : "",
+    "customer": {
+        "firstName" : "salman",
+        "lastName" : "rais",
+        "phone" : "1232131234",
+        "email" : "salman@yopmail.com"
+    },
+    "purchases":[
+        {
+            "ticketType": "team-member-season-pass-6757",
+            "sectionId": "0",
+            "capacityId": "0",
+            "VisualId": null,
+            "VisualIdStockCount":0,
+            "quantity": 1,
+            "amount": 12
+        }
+    ],
+    "payment" : {
+        "cardholderName" : "Success Status",
+        "billingStreet" : "street 123",
+        "billingZipCode" : "1234",
+        "cvn" : "Omitted",
+        "expDate" : "Omitted",
+        "ccNumber" : "Omitted",
+        "paymentCode" : "32",
+        "amount" : 12
+    }
+}
