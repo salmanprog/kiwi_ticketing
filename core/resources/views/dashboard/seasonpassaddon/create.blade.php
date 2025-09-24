@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Season Pass'))
+@section('title', __('Season Pass Product'))
 @push("after-styles")
     <link href="{{ asset("assets/dashboard/js/iconpicker/fontawesome-iconpicker.min.css") }}" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -10,10 +10,10 @@
     <div class="padding">
         <div class="box">
             <div class="box-header dker">
-                <h3><i class="material-icons">&#xe02e;</i> {{ __('New Pass') }}</h3>
+                <h3><i class="material-icons">&#xe02e;</i> {{ __('New Product') }}</h3>
                 <small>
                     <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-                    <a>{{__('season-pass')}}</a> 
+                    <a>{{__('season-pass-product')}}</a> 
                 </small>
             </div>
             <div class="box-tool">
@@ -42,11 +42,11 @@
                     </div>
                     <div class="form-group row">
                         <label for="section_id" class="col-sm-2 form-control-label">
-                            {!! __('Season Pass Addon') !!}
+                            {!! __('Season Pass Product') !!}
                         </label>
                         <div class="col-sm-10">
                            <select name="ticketSlug" id="ticketSlug" class="form-control">
-                                <option value="">- - {!!  __('Select Season Pass Addon') !!} - -</option>
+                                <option value="">- - {!!  __('Select Season Pass Product') !!} - -</option>
                                 @foreach($addon_arr as $addon)
                                     <option value="{{ $addon['ticketSlug'] }}" data-price="{{ $addon['price'] ?? '0' }}">{{ $addon['ticketType'] }}</option>
                                 @endforeach
@@ -102,6 +102,42 @@
                                 <i class="material-icons">&#xe8fd;</i>
                                 {!!  __('backend.imagesTypes') !!}
                             </small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="link_status" class="col-sm-2 form-control-label">Featured Product</label>
+                        <div class="col-sm-10">
+                            <div class="radio">
+                                <label class="ui-check ui-check-md">
+                                    <input id="is_featured1" class="has-value" checked="checked" name="is_featured" type="radio" value="1">
+                                    <i class="dark-white"></i>
+                                    Yes
+                                </label>
+                                &nbsp; &nbsp;
+                                <label class="ui-check ui-check-md">
+                                    <input id="is_featured2" class="has-value" name="is_featured" type="radio" value="0">
+                                    <i class="dark-white"></i>
+                                    No
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="link_status" class="col-sm-2 form-control-label">Status</label>
+                        <div class="col-sm-10">
+                            <div class="radio">
+                                <label class="ui-check ui-check-md">
+                                    <input id="status1" class="has-value" checked="checked" name="status" type="radio" value="1">
+                                    <i class="dark-white"></i>
+                                    Active
+                                </label>
+                                &nbsp; &nbsp;
+                                <label class="ui-check ui-check-md">
+                                    <input id="status2" class="has-value" name="status" type="radio" value="0">
+                                    <i class="dark-white"></i>
+                                    Not Active
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>

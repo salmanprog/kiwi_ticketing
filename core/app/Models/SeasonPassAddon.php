@@ -20,6 +20,8 @@ class SeasonPassAddon extends Model
         'price',
         'description',
         'new_price',
+        'is_featured',
+        'status',
     ];
 
     /**
@@ -57,6 +59,11 @@ class SeasonPassAddon extends Model
     public function media_slider()
     {
         return $this->hasMany(Media::class, 'module_id')->where('module','season_pass_addon');
+    }
+
+    public function season_pass()
+    {
+        return $this->hasOne(SeasonPass::class, 'slug','season_passes_slug')->where('status','1');
     }
 
     public function generateUniqueSlug($title)

@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Season Pass'))
+@section('title', __('Season Pass Product'))
 @push("after-styles")
     <link href="{{ asset("assets/dashboard/js/iconpicker/fontawesome-iconpicker.min.css") }}" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -10,10 +10,10 @@
     <div class="padding">
         <div class="box">
             <div class="box-header dker">
-                <h3><i class="material-icons">&#xe02e;</i> {{ __('Edit Pass') }}</h3>
+                <h3><i class="material-icons">&#xe02e;</i> {{ __('Edit Product') }}</h3>
                 <small>
                     <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-                    <a>{{__('season-pass')}}</a> 
+                    <a>{{$seasonpassAddon->slug}}</a> 
                 </small>
             </div>
             <div class="box-tool">
@@ -34,11 +34,10 @@
                         <div class="col-sm-10">
                              {!! Form::text('season_passes_slug',old('title', $getSeasonPass->title ?? ''), array('placeholder' => '','class' => 'form-control','id'=>'season_passes_slug','required'=>'','readonly' => 'readonly')) !!}
                         </div>
-                        </div>
                     </div>
                     <div class="form-group row">
                         <label for="section_id" class="col-sm-2 form-control-label">
-                            {!! __('Season Pass Addon') !!}
+                            {!! __('Season Pass Product') !!}
                         </label>
                         <div class="col-sm-10">
                             {!! Form::text('ticketSlug',old('title', $seasonpassAddon->ticketSlug ?? ''), array('placeholder' => '','class' => 'form-control','id'=>'ticketSlug','required'=>'','readonly' => 'readonly')) !!}
@@ -52,16 +51,16 @@
                                 @foreach(Helper::languagesList() as $ActiveLanguage)
                                 @if($ActiveLanguage->box_status)
                                     <div class="m-b-1">
-                                        {!!  __('backend.customFieldsType99') !!} {!! @Helper::languageName($ActiveLanguage) !!}
+                                        {!! __('backend.customFieldsType99') !!} {!! @Helper::languageName($ActiveLanguage) !!}
                                         <div class="box p-a-xs">
                                             {!! Form::textarea(
                                                 'description',
-                                                optional(Session::get('WebmasterSectionField'))->{'details_' . @$ActiveLanguage->code},
+                                                old('description', $seasonpassAddon->description ?? ''),
                                                 [
                                                     'ui-jp' => 'summernote',
                                                     'placeholder' => '',
-                                                    'class' => 'form-control summernote_' . @$ActiveLanguage->code,
-                                                    'dir' => @$ActiveLanguage->direction,
+                                                    'class' => 'form-control summernote_' . $ActiveLanguage->code,
+                                                    'dir' => $ActiveLanguage->direction,
                                                     'ui-options' => '{height: 150}'
                                                 ]
                                             ) !!}
@@ -81,8 +80,36 @@
                     </div>
                     <div class="form-group row">
                         <label for="photo"
-                            class="col-sm-2 form-control-label">{!!  __('Image') !!}</label>
+                                class="col-sm-2 form-control-label">{!!  __('Image') !!}</label>
                         <div class="col-sm-10">
+                            @if(count($seasonpassAddon->media_slider) > 0)
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        @foreach($seasonpassAddon->media_slider as $media)
+                                            <div id="media_{{ $media->id }}" class="col-sm-4 box p-a-xs">
+                                                <a target="_blank" href="{{ asset('uploads/sections/' . $media->filename) }}">
+                                                    <img src="{{ asset('uploads/sections/' . $media->filename) }}" class="col-sm-4">
+                                                </a>
+                                                <br>
+                                                <a onclick="deleteMedia({{ $media->id }})" class="btn btn-sm btn-default">
+                                                    {!! __('backend.delete') !!}
+                                                </a>
+                                            </div>
+
+                                            <div id="undo_{{ $media->id }}" class="col-sm-4 p-a-xs" style="display: none">
+                                                <a onclick="undoDelete({{ $media->id }})">
+                                                    <i class="material-icons">&#xe166;</i>
+                                                    {!! __('backend.undoDelete') !!}
+                                                </a>
+                                            </div>
+
+                                            {{-- Hidden field to mark for deletion --}}
+                                            {!! Form::hidden("media_delete[{$media->id}]", '0', ['id' => "media_delete_{$media->id}"]) !!}
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                            @endif
                             {!! Form::file('photo[]', array('class' => 'form-control','id'=>'photo','accept'=>'image/*','multiple' => 'multiple')) !!}
                         </div>
                     </div>
@@ -95,13 +122,51 @@
                             </small>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label for="link_status"
+                                class="col-sm-2 form-control-label">{!!  __('Featured Product') !!}</label>
+                        <div class="col-sm-10">
+                            <div class="radio">
+                                <label class="ui-check ui-check-md">
+                                    {!! Form::radio('is_featured','1',($seasonpassAddon->is_featured==1) ? true : false, array('id' => 'is_featured1','class'=>'has-value')) !!}
+                                    <i class="dark-white"></i>
+                                    {{ __('backend.yes') }}
+                                </label>
+                                &nbsp; &nbsp;
+                                <label class="ui-check ui-check-md">
+                                    {!! Form::radio('is_featured','0',($seasonpassAddon->is_featured==0) ? true : false, array('id' => 'is_featured2','class'=>'has-value')) !!}
+                                    <i class="dark-white"></i>
+                                    {{ __('backend.no') }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="link_status"
+                                class="col-sm-2 form-control-label">{!!  __('backend.status') !!}</label>
+                        <div class="col-sm-10">
+                            <div class="radio">
+                                <label class="ui-check ui-check-md">
+                                    {!! Form::radio('status','1',($seasonpassAddon->status==1) ? true : false, array('id' => 'status1','class'=>'has-value')) !!}
+                                    <i class="dark-white"></i>
+                                    {{ __('backend.active') }}
+                                </label>
+                                &nbsp; &nbsp;
+                                <label class="ui-check ui-check-md">
+                                    {!! Form::radio('status','0',($seasonpassAddon->status==0) ? true : false, array('id' => 'status2','class'=>'has-value')) !!}
+                                    <i class="dark-white"></i>
+                                    {{ __('backend.notActive') }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                 <button type="button"
                         class="btn dark-white p-x-md"
                         data-dismiss="modal">{{ __('backend.cancel') }}</button>
                 <button type="submit"
-                        class="btn btn-primary p-x-md">{!! __('backend.add') !!}</button>
+                        class="btn btn-primary p-x-md">{!! __('backend.update') !!}</button>
             </div>
                 {{Form::close()}}
             

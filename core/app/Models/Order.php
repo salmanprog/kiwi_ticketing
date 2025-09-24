@@ -14,6 +14,7 @@ class Order extends Model
         'auth_code',
         'user_id',
         'type',
+        'package_id',
         'firstName',
         'lastName',
         'email',
@@ -70,6 +71,26 @@ class Order extends Model
     public function customer()
     {
         return $this->hasOne(User::class, 'id','user_id');
+    }
+
+    public function birthday()
+    {
+        return $this->hasOne(BirthdayPackages::class, 'id','package_id');
+    }
+
+    public function cabana()
+    {
+        return $this->hasOne(SeasonPass::class, 'id','package_id');
+    }
+
+    public function general_ticket()
+    {
+        return $this->hasOne(SeasonPass::class, 'id','package_id');
+    }
+
+    public function season_pass()
+    {
+        return $this->hasOne(SeasonPass::class, 'id','package_id');
     }
 
     protected static function boot()

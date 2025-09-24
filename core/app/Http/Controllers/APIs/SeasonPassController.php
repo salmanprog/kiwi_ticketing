@@ -16,7 +16,7 @@ class SeasonPassController extends BaseAPIController
         $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
-        $seasonpass = SeasonPass::with(['media_slider'])->where('auth_code',$authCode)->get();
+        $seasonpass = SeasonPass::with(['media_slider'])->where('status','1')->where('auth_code',$authCode)->get();
         
         if ($seasonpass->isEmpty()) {
             return $this->sendResponse(200, 'Retrieved Season Pass Listing', []);

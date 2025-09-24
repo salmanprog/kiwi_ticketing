@@ -314,12 +314,15 @@ Route::get('/season-pass/create/', [SeasonPassController::class, 'create'])->nam
 Route::post('/season-pass/store', [SeasonPassController::class, 'store'])->name('seasonpassStore');
 Route::post('/season-pass/{id}/update', [SeasonPassController::class, 'update'])->name('seasonpassUpdate');
 Route::get('/season-pass/destroy/{slug}', [SeasonPassController::class, 'destroy'])->name('seasonpassDestroy');
+Route::get('/season-pass-orders', [OrderController::class, 'getSeasonPassOrders'])->name('seasonpassorders');
+Route::get('/season-pass-orders-detail/{slug}', [OrderController::class, 'getByOrderSlug'])->name('seasonpassordersdetail');
 // Season Pass Addons
 Route::get('/season-pass-addons', [SeasonPassAddonsController::class, 'index'])->name('seasonpassaddon');
 Route::get('/season-pass-addons/create/', [SeasonPassAddonsController::class, 'create'])->name('seasonpassaddonCreate');
 Route::get('/season-pass-addons/{id}/edit', [SeasonPassAddonsController::class, 'edit'])->name('seasonpassaddonEdit');
 Route::post('/season-pass-addons/store', [SeasonPassAddonsController::class, 'store'])->name('seasonpassaddonStore');
 Route::post('/season-pass-addons/{id}/update', [SeasonPassAddonsController::class, 'update'])->name('seasonpassaddonUpdate');
+Route::get('/season-pass-addons/destroy/{id}', [SeasonPassAddonsController::class, 'destroy'])->name('seasonpassaddonDestroy');
 // Menus
 Route::post('/menus/store/parent', [MenusController::class, 'storeMenu'])->name('parentMenusStore');
 Route::get('/menus/parent/{id}/edit', [MenusController::class, 'editMenu'])->name('parentMenusEdit');

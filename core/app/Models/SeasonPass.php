@@ -17,7 +17,7 @@ class SeasonPass extends Model
         'auth_code',
         'title',
         'description',
-        'price',
+        'status',
     ];
 
     protected $hidden = [];
@@ -41,6 +41,10 @@ class SeasonPass extends Model
     public function media_slider()
     {
         return $this->hasMany(Media::class, 'module_id')->where('module','season_pass');
+    }
+    public function products()
+    {
+        return $this->hasMany(SeasonPassAddon::class, 'season_passes_slug','slug')->where('status','1');
     }
     /**
      * Generate a unique slug for the birthday package.

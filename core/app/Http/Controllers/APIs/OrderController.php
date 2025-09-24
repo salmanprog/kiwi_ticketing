@@ -57,6 +57,7 @@ class OrderController extends BaseAPIController
                 $order = new Order;
                 $order->auth_code  = Helper::GeneralSiteSettings('auth_code_en',true);
                 $order->type = $request->type;
+                $order->package_id = $request->package_id;
                 $order->slug  = $orderData['orderNumber'];
                 $order->firstName  = $nameParts[0];
                 $order->lastName = isset($nameParts[1]) ? implode(' ', array_slice($nameParts, 1)) : '';
@@ -73,7 +74,7 @@ class OrderController extends BaseAPIController
                 $order->isOrderFraudulent  = isset($orderData['isOrderFraudulent']) ? $orderData['isOrderFraudulent'] : '0';
                 $order->orderFraudulentTimeStamp  = isset($orderData['orderFraudulentTimeStamp']) ? $orderData['orderFraudulentTimeStamp'] : '0';
                 $order->customerAddress = isset($orderData['customerAddress']) ? $orderData['customerAddress'] : '0';
-                $order->transactionId = isset($orderData['transactionId']) ? $orderData['transactionId'] : '0';
+                $order->transactionId = isset($orderData['transactionId']) ? $orderData['transactionId'] : $request->transactionId;
                 $order->totalOrderRefundedAmount = isset($orderData['totalOrderRefundedAmount']) ? $orderData['totalOrderRefundedAmount'] : '0';
                 $order->user_id  = $request->user_id;
                 $order->save();
@@ -122,6 +123,7 @@ class OrderController extends BaseAPIController
                 $transaction->transactionDate = $date;
                 $transaction->amount = $data['data'][0]['orderTotal'];
                 $transaction->save();
+                if($order->type == 'season_pass')
                 $get_order = Order::with(['customer','purchases','transaction'])->where('id',$order->id)->first();
                 $resource = OrderResource::make($get_order);
                 return $this->sendResponse(200, 'Your Order has been successfully created', $resource);
@@ -134,6 +136,8 @@ class OrderController extends BaseAPIController
 
     public function getBySlug($slug)
     {
+        // $order = Order::where('slug',$slug)->first();
+        // $order_type =  OrdersHelper::order_types($order->type);
         $get_order = Order::with(['customer','purchases','transaction'])->where('slug',$slug)->first();
         if (!isset($get_order)) {
             return $this->sendResponse(200, 'Order retrive successfully', []);

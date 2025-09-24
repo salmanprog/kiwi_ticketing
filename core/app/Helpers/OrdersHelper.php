@@ -94,6 +94,13 @@ class OrdersHelper
     {
         return '$ ' . number_format($amount, 2);
     }
+
+    public static function order_types($type)
+    {
+        $orderTypes = ['birthday', 'cabana', 'general_ticket', 'season_pass'];
+
+        return in_array($type, $orderTypes) ? $type : null;
+    }
 }
 
 ?>

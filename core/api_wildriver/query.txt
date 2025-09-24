@@ -116,6 +116,7 @@ ALTER TABLE `smartend_season_passes`
   ALTER TABLE `smartend_season_passes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1
 
+ALTER TABLE `smartend_season_passes` ADD `status` ENUM('0','1') NOT NULL DEFAULT '1' AFTER `description`;
 
 
   CREATE TABLE `smartend_season_passes_addon` (
@@ -143,7 +144,7 @@ ALTER TABLE `smartend_season_passes_addon`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1
 
 
-
+ALTER TABLE `smartend_season_passes_addon` ADD `status` ENUM('0','1') NOT NULL DEFAULT '1' AFTER `is_featured`;
   
 ALTER TABLE `smartend_order` ADD `promoCode` VARCHAR(255) NULL DEFAULT NULL AFTER `orderFraudulentTimeStamp`;
 ALTER TABLE `smartend_order_tickets` ADD `VisualIdStockCount` VARCHAR(255) NULL DEFAULT NULL AFTER `childVisualId`;

@@ -64,14 +64,6 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="title"
-                                class="col-sm-2 form-control-label">{!!  __('Price') !!}
-                        </label>
-                        <div class="col-sm-10">
-                            {!! Form::text('price',old('price', $get_ticket->price ?? ''), array('placeholder' => '','class' => 'form-control','id'=>'price','required'=>'')) !!}
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label for="photo"
                                 class="col-sm-2 form-control-label">{!!  __('Image') !!}</label>
                         <div class="col-sm-10">
@@ -112,6 +104,25 @@
                                 <i class="material-icons">&#xe8fd;</i>
                                 {!!  __('backend.imagesTypes') !!}
                             </small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="link_status"
+                                class="col-sm-2 form-control-label">{!!  __('backend.status') !!}</label>
+                        <div class="col-sm-10">
+                            <div class="radio">
+                                <label class="ui-check ui-check-md">
+                                    {!! Form::radio('status','1',($get_ticket->status==1) ? true : false, array('id' => 'status1','class'=>'has-value')) !!}
+                                    <i class="dark-white"></i>
+                                    {{ __('backend.active') }}
+                                </label>
+                                &nbsp; &nbsp;
+                                <label class="ui-check ui-check-md">
+                                    {!! Form::radio('status','0',($get_ticket->status==0) ? true : false, array('id' => 'status2','class'=>'has-value')) !!}
+                                    <i class="dark-white"></i>
+                                    {{ __('backend.notActive') }}
+                                </label>
+                            </div>
                         </div>
                     </div>
                     

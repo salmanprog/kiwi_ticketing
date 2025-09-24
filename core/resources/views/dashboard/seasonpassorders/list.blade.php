@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Season Pass'))
+@section('title', __('Season Pass Orders'))
 @section('content')
 <div class="padding">
 <div class="box">
@@ -10,17 +10,12 @@
             <a href="">{{ __('Season Pass') }}</a>
         </small>
     </div>
-     <div class="row p-a pull-right" style="margin-top: -70px;">
-        <div class="col-sm-12">
-            <a class="btn btn-fw primary" href="{{route('seasonpassCreate')}}">
-                <i class="material-icons">&#xe7fe;</i>
-                &nbsp; {{ __('Add New Sale') }}
-            </a>
-        </div>
-    </div>
-    
+    <div class="box-tool box-tool-lg">
+                
+            </div>
+            <div>
         <div class="table-responsive">
-                    <table class="table table-bordered m-a-0">
+                    <table class="table table table-bordered">
                         <thead class="dker">
                         <tr>
                             <th  class="width20 dker">
@@ -28,49 +23,51 @@
                                     <input id="checkAll" type="checkbox"><i></i>
                                 </label>
                             </th>
-                            <th>{{ __('ID') }}</th>
-                            <th>{{ __('Title') }}</th>
-                            <th>{{ __('Slug') }}</th>
-                            <th>{{ __('Total Product') }}</th>
-                            <th>{{ __('Status') }}</th>
+                            <th>{{ __('Order No') }}</th>
+                            <th>{{ __('Name') }}</th>
+                            <th>{{ __('Email') }}</th>
+                            <th>{{ __('Phone') }}</th>
+                            <th>{{ __('Transaction-Id') }}</th>
+                            <th>{{ __('Total') }}</th>
+                            <th>{{ __('Paid') }}</th>
+                            <th>{{ __('Date') }}</th>
                             <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
                         </tr>
                         </thead>
                         <tbody>
                             @if(count($paginated) > 0)
-                            @foreach ($paginated as $ticket)
+                            @foreach ($paginated as $order)
                              <tr>
                                 <td class="dker"><label class="ui-check m-a-0">
-                                        <input type="checkbox" name="ids[]" value="{{ $ticket['id'] }}"><i
+                                        <input type="checkbox" name="ids[]" value="{{ $order['id'] }}"><i
                                             class="dark-white"></i>
-                                        {!! Form::hidden('row_ids[]',$ticket['id'], array('class' => 'form-control row_no')) !!}
+                                        {!! Form::hidden('row_ids[]',$order['id'], array('class' => 'form-control row_no')) !!}
                                     </label>
                                 </td>
+                                <td>
+                                   <small>{{$order->slug }}</small>
+                                </td>
                                 <td class="h6">
-                                    {{ $ticket['id'] }}
+                                    {{ $order->customer->name }}
                                 </td>
                                 <td>
-                                    <div class="">
-                                        <a href="{{ route('seasonpassEdit',$ticket['slug']) }}"> 
-                                            <div class="pull-right">
-                                                 @foreach($ticket->media_slider as $media_cover)
-                                                <img src="{{ asset('uploads/sections/' . $media_cover->filename) }}" style="height: 30px;width:100px" alt="Curabitur vitae leo vitae ipsum varius laoreet">
-                                                @endforeach
-                                            </div>
-                                            <div class="h6 m-b-0">{{ $ticket['title'] }}</div>
-                                           
-                                        </a>
-                                    </div>
+                                   <small>{{$order->customer->email }}</small>
                                 </td>
 
                                 <td>
-                                    <small>{{ $ticket['slug'] }}</small>
+                                    <small>{{ $order->customer->phone }}</small>
                                 </td>
                                 <td>
-                                    <small>{{ count($ticket->products) }}</small>
+                                    <small>{{ $order['transactionId'] }}</small>
                                 </td>
-                                 <td class="text-center">
-                                    <i class="fa {{ $ticket['status'] == 1 ? 'fa-check text-success' : 'fa-times text-danger' }} inline"></i>
+                                <td>
+                                    <small>${{ $order['orderTotal'] }}</small>
+                                </td>
+                                <td class="text-center">
+                                    <i class="fa fa-check text-success inline"></i>
+                                </td>
+                                <td>
+                                    <small>{{ date('Y-m-d', strtotime($order['orderDate'])) }}</small>
                                 </td>
                                 <td class="text-center">
                                     <div class="dropdown">
@@ -80,19 +77,15 @@
                                         </button>
                                         <div class="dropdown-menu pull-right">
                                             <a class="dropdown-item"
-                                                href="{{ route('seasonpassEdit',$ticket['slug']) }}"><i
-                                                    class="material-icons">&#xe3c9;</i> {{ __('backend.edit') }}
-                                            </a>
-                                            <a class="dropdown-item text-danger"
-                                                onclick="DeleteTicket('{{ $ticket['slug'] }}')"><i
-                                                    class="material-icons">&#xe872;</i> {{ __('backend.delete') }}
+                                                href="{{ route('seasonpassordersdetail',$order['slug']) }}"><i
+                                                    class="material-icons"></i> {{ __('backend.preview') }}
                                             </a>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
                             @endforeach
-                             @endif
+                            @endif
                         </tbody>
                     </table>
 
@@ -123,7 +116,7 @@
                             </div>
                             <!-- / .modal -->
                             @if(@Auth::user()->permissionsGroup->settings_status)
-                                <!-- <select name="action" id="action" class="form-control c-select w-sm inline v-middle"
+                                <select name="action" id="action" class="form-control c-select w-sm inline v-middle"
                                         required>
                                     <option value="">{{ __('backend.bulkAction') }}</option>
                                     <option value="activate">{{ __('backend.activeSelected') }}</option>
@@ -136,7 +129,7 @@
                                         style="display: none"
                                         data-target="#m-all" ui-toggle-class="bounce"
                                         ui-target="#animate">{{ __('backend.apply') }}
-                                </button> -->
+                                </button>
                             @endif
                         </div>
                             <div class="col-sm-3 text-center">
@@ -151,30 +144,10 @@
                        
                     </div>
                 </footer>
-   
+    
 </div>
 </div>
-<!-- .modal -->
-    <div id="delete-tickets" class="modal fade" data-backdrop="true">
-        <div class="modal-dialog" id="animate">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">{{ __('backend.confirmation') }}</h5>
-                </div>
-                <div class="modal-body text-center p-lg">
-                    <p>
-                        {{ __('backend.confirmationDeleteMsg') }}
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn dark-white p-x-md"
-                            data-dismiss="modal">{{ __('backend.no') }}</button>
-                    <a type="button" id="ticketaddon_delete_btn" href=""
-                       class="btn danger p-x-md">{{ __('backend.yes') }}</a>
-                </div>
-            </div><!-- /.modal-content -->
-        </div>
-    </div>
+
 @endsection
 @push("after-scripts")
     <script type="text/javascript">
@@ -192,13 +165,4 @@
         });
     </script>
 
-<script type="text/javascript">
-    function DeleteTicket(slug) {
-        let url = '{{ route("seasonpassDestroy", ":slug") }}';
-        url = url.replace(':slug', slug);
-
-        $("#ticketaddon_delete_btn").attr("href", url);
-        $("#delete-tickets").modal("show");
-    }
-</script>
 @endpush

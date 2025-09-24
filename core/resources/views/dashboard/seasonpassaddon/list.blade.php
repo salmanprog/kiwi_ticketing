@@ -1,20 +1,20 @@
 @extends('dashboard.layouts.master')
-@section('title', __('SeasonPass Addon'))
+@section('title', __('SeasonPass Product'))
 @section('content')
 <div class="padding">
 <div class="box">
     <div class="box-header dker">
-        <h3>{{ __('SeasonPass Addon') }}</h3>
+        <h3>{{ __('SeasonPass Product') }}</h3>
         <small>
             <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-            <a href="">{{ __('SeasonPassAddon') }}</a>
+            <a href="">{{ __('SeasonPassProduct') }}</a>
         </small>
     </div>
      <div class="row p-a pull-right" style="margin-top: -70px;">
         <div class="col-sm-12">
             <a class="btn btn-fw primary" href="{{route('seasonpassaddonCreate')}}">
                 <i class="material-icons">&#xe7fe;</i>
-                &nbsp; {{ __('Add New Sale Addon') }}
+                &nbsp; {{ __('Add New Sale Product') }}
             </a>
         </div>
     </div>
@@ -28,11 +28,13 @@
                                     <input id="checkAll" type="checkbox"><i></i>
                                 </label>
                             </th>
-                            <th>{{ __('venueId') }}</th>
-                            <th>{{ __('ticketType') }}</th>
-                            <th>{{ __('ticketSlug') }}</th>
-                            <th>{{ __('price') }}</th>
-                            <th>{{ __('new_price') }}</th>
+                            <th>{{ __('Id') }}</th>
+                            <th>{{ __('Season Pass') }}</th>
+                            <th>{{ __('Product Name') }}</th>
+                            <th>{{ __('Product Slug') }}</th>
+                            <th>{{ __('Product Price') }}</th>
+                            <th>{{ __('Product New Price') }}</th>
+                            <th>{{ __('Status') }}</th>
                             <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
                         </tr>
                         </thead>
@@ -41,22 +43,25 @@
                                 @foreach ($paginated as $ticket)
                                 <tr>
                                     <td class="dker"><label class="ui-check m-a-0">
-                                            <input type="checkbox" name="ids[]" value="{{ $ticket['venueId'] }}"><i
+                                            <input type="checkbox" name="ids[]" value="{{ $ticket['id'] }}"><i
                                                 class="dark-white"></i>
-                                            {!! Form::hidden('row_ids[]',$ticket['venueId'], array('class' => 'form-control row_no')) !!}
+                                            {!! Form::hidden('row_ids[]',$ticket['id'], array('class' => 'form-control row_no')) !!}
                                         </label>
                                     </td>
                                     <td class="h6">
-                                    {{ $ticket['venueId'] }}
+                                    {{ $ticket['id'] }}
+                                    </td>
+                                    <td>
+                                    <div class="">
+                                            <a href="{{ route('seasonpass') }}"> 
+                                                <div class="h6 m-b-0">{{ $ticket->season_pass->title }}</div>
+                                            
+                                            </a>
+                                        </div>
                                     </td>
                                     <td>
                                     <div class="">
                                             <a href="{{ route('seasonpassaddonEdit',$ticket['slug']) }}"> 
-                                                <div class="pull-right">
-                                                    @foreach($ticket->media_slider as $media_cover)
-                                                    <img src="{{ asset('uploads/sections/' . $media_cover->filename) }}" style="height: 40px;width:150px" alt="Curabitur vitae leo vitae ipsum varius laoreet">
-                                                    @endforeach
-                                                </div>
                                                 <div class="h6 m-b-0">{{ $ticket['ticketType'] }}</div>
                                             
                                             </a>
@@ -72,6 +77,9 @@
                                     <td class="text-center">
                                         <small>${{ number_format($ticket['new_price'], 2) }}</small>
                                     </td>
+                                     <td class="text-center">
+                                    <i class="fa {{ $ticket['status'] == 1 ? 'fa-check text-success' : 'fa-times text-danger' }} inline"></i>
+                                    </td>
                                     </td>
                                     <td class="text-center">
                                         <div class="dropdown">
@@ -84,6 +92,10 @@
                                                     href="{{ route('seasonpassaddonEdit',$ticket['slug']) }}"><i
                                                         class="material-icons">&#xe3c9;</i> {{ __('backend.edit') }}
                                                 </a>
+                                                <a class="dropdown-item text-danger"
+                                                onclick="DeleteTicket('{{ $ticket['slug'] }}')"><i
+                                                    class="material-icons">&#xe872;</i> {{ __('backend.delete') }}
+                                            </a>
                                             </div>
                                         </div>
                                     </td>
@@ -130,7 +142,27 @@
    
 </div>
 </div>
-
+<!-- .modal -->
+    <div id="delete-tickets" class="modal fade" data-backdrop="true">
+        <div class="modal-dialog" id="animate">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ __('backend.confirmation') }}</h5>
+                </div>
+                <div class="modal-body text-center p-lg">
+                    <p>
+                        {{ __('backend.confirmationDeleteMsg') }}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn dark-white p-x-md"
+                            data-dismiss="modal">{{ __('backend.no') }}</button>
+                    <a type="button" id="ticketaddon_delete_btn" href=""
+                       class="btn danger p-x-md">{{ __('backend.yes') }}</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div>
+    </div>
 @endsection
 @push("after-scripts")
     <script type="text/javascript">
@@ -147,5 +179,13 @@
             }
         });
     </script>
+    <script type="text/javascript">
+    function DeleteTicket(slug) {
+        let url = '{{ route("seasonpassaddonDestroy", ":slug") }}';
+        url = url.replace(':slug', slug);
 
+        $("#ticketaddon_delete_btn").attr("href", url);
+        $("#delete-tickets").modal("show");
+    }
+</script>
 @endpush

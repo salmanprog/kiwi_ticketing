@@ -94,6 +94,28 @@ class OrderController extends Controller
         return view("dashboard.ticketingorders.list", compact("paginated", "GeneralWebmasterSections"));
     }
 
+    public function getSeasonPassOrders()
+    {
+        // General for all pages
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'desc')->get();
+        $get_birthday_orders = Order::with(['customer','purchases','transaction'])->where('auth_code',$authCode)->where('type','season_pass')->get();
+        
+         // Paginate
+        $perPage = 10;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $collection = collect($get_birthday_orders);
+        $paginated = new LengthAwarePaginator(
+            $collection->forPage($currentPage, $perPage),
+            $collection->count(),
+            $perPage,
+            $currentPage,
+            ['path' => url()->current(), 'query' => request()->query()]
+        );
+        return view("dashboard.seasonpassorders.list", compact("paginated", "GeneralWebmasterSections"));
+    }
+
     public function getByOrderSlug($slug)
     {
         // General for all pages
@@ -105,6 +127,8 @@ class OrderController extends Controller
             return view("dashboard.kabanaorders.show", compact("get_cabana_orders", "GeneralWebmasterSections"));
         }elseif($get_cabana_orders->type == 'general_ticket'){
             return view("dashboard.ticketingorders.show", compact("get_cabana_orders", "GeneralWebmasterSections"));
+        }elseif($get_cabana_orders->type == 'season_pass'){
+            return view("dashboard.seasonpassorders.show", compact("get_cabana_orders", "GeneralWebmasterSections"));
         }else{
             return view("dashboard.birthdayorders.show", compact("get_cabana_orders", "GeneralWebmasterSections"));
         }

@@ -40,7 +40,7 @@ class SeasonPassAddonsController extends Controller
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
         try {
             
-            $getSeasonPass = SeasonPassAddon::with(['media_slider'])->where('auth_code', $authCode)->orderby('id', 'asc')->get();
+            $getSeasonPass = SeasonPassAddon::with(['media_slider','season_pass'])->where('auth_code', $authCode)->orderby('id', 'desc')->get();
             // Paginate
             $perPage = 10;
             $currentPage = LengthAwarePaginator::resolveCurrentPage();
@@ -166,6 +166,8 @@ class SeasonPassAddonsController extends Controller
                 $seasonpassAddon->price = $tickets_arr[0]['price'];
                 $seasonpassAddon->description = $request->description;
                 $seasonpassAddon->new_price = $request->new_price;
+                $seasonpassAddon->is_featured = $request->is_featured;
+                $seasonpassAddon->status = $request->status;
                 $seasonpassAddon->save();
 
                 if(count($uploadedFileNames) > 0){
@@ -267,7 +269,9 @@ class SeasonPassAddonsController extends Controller
         }
 
         $seasonPassUpdate->description = $request->description;
-        $seasonPassUpdate->price = $request->price;
+        $seasonPassUpdate->price = $request->new_price;
+        $seasonPassUpdate->is_featured = $request->is_featured;
+        $seasonPassUpdate->status = $request->status;
         $seasonPassUpdate->save();
         
 
@@ -299,8 +303,17 @@ class SeasonPassAddonsController extends Controller
         
     }
 
-    public function destroy($webmasterId, $id = 0)
+    public function destroy($ticketSlug = 0)
     {
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $ticketAddon = SeasonPassAddon::where('slug',$ticketSlug)->where('auth_code',$authCode)->first();
+        if (!empty($ticketAddon)) {
+            SeasonPassAddon::where('slug',$ticketSlug)->where('auth_code',$authCode)->delete();
+            return redirect()->action('Dashboard\SeasonPassAddonsController@index')->with('doneMessage',
+                __('backend.deleteDone'));
+        } else {
+            return redirect()->action('Dashboard\SeasonPassAddonsController@index');
+        }
         
     }
 
