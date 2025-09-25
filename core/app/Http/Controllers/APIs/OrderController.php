@@ -33,6 +33,7 @@ class OrderController extends BaseAPIController
             'user_id' => 'required|exists:users,id',
             'totalAmount' => 'required|numeric',
             'purchases' => 'required|array',
+            'package_id' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -123,8 +124,9 @@ class OrderController extends BaseAPIController
                 $transaction->transactionDate = $date;
                 $transaction->amount = $data['data'][0]['orderTotal'];
                 $transaction->save();
-                if($order->type == 'season_pass')
-                $get_order = Order::with(['customer','purchases','transaction'])->where('id',$order->id)->first();
+                $order_type =  OrdersHelper::order_types($order->type);
+                $get_order = Order::with(['customer','purchases','transaction',$order_type])->where('id',$order->id)->first();
+                //$get_order = Order::with(['customer','purchases','transaction'])->where('id',$order->id)->first();
                 $resource = OrderResource::make($get_order);
                 return $this->sendResponse(200, 'Your Order has been successfully created', $resource);
             }

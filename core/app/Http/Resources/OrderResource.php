@@ -11,6 +11,7 @@ class OrderResource extends JsonResource
 {
     public function toArray($request)
     {
+        $allowedTypes = ['cabana', 'birthday', 'general_ticket', 'season_pass'];
         return [
             'id' => $this->id,
             'slug' => $this->slug,
@@ -34,7 +35,7 @@ class OrderResource extends JsonResource
             'orderFraudulentTimeStamp' => $this->orderFraudulentTimeStamp,
             'transactionId' => $this->transactionId,
             'totalOrderRefundedAmount' => $this->totalOrderRefundedAmount,
-            'package' => $this->season_pass,
+            'package' => in_array($this->type, $allowedTypes) ? $this->{$this->type} : '',
             'customer' => UserResource::make($this->customer),
             'tickets' => OrderTicketsResource::collection($this->purchases),
             'transaction' => TransactionResource::make($this->transaction),

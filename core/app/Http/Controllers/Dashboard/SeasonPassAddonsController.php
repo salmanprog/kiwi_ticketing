@@ -117,7 +117,7 @@ class SeasonPassAddonsController extends Controller
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
         try {
-            $ticketGeneralCheck = SeasonPassAddon::where('ticketSlug',$request->ticketSlug)->where('auth_code',$authCode)->first();
+            $ticketGeneralCheck = SeasonPassAddon::where('season_passes_slug',$request->season_passes_slug)->where('ticketSlug',$request->ticketSlug)->where('auth_code',$authCode)->first();
 
             if (!empty($ticketGeneralCheck)) {
                 return redirect()->action('Dashboard\SeasonPassAddonsController@create')->with('errorMessage', 'Season pass addon already exists.');

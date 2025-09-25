@@ -80,7 +80,7 @@ class Order extends Model
 
     public function cabana()
     {
-        return $this->hasOne(SeasonPass::class, 'id','package_id');
+        return $this->hasOne(CabanaPackages::class, 'id','package_id');
     }
 
     public function general_ticket()
