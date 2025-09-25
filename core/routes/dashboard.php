@@ -18,6 +18,7 @@ use App\Http\Controllers\Dashboard\MenusController;
 use App\Http\Controllers\Dashboard\FileManagerController;
 use App\Http\Controllers\Dashboard\TagController;
 use App\Http\Controllers\Dashboard\PopupController;
+use App\Http\Controllers\Dashboard\CabanaPackagesController;
 use App\Http\Controllers\Dashboard\KabanaSettingController;
 use App\Http\Controllers\Dashboard\KabanaAddonsController;
 use App\Http\Controllers\Dashboard\BirthdayPackagesController;
@@ -262,7 +263,15 @@ Route::get('/permissions-links/edit/{id?}/{p_id?}', [UsersController::class, 'li
 Route::get('/permissions-links/destroy/{id?}/{p_id?}', [UsersController::class, 'links_destroy'])->name('customLinksDestroy');
 Route::get('/permissions-links/list/{p_id?}', [UsersController::class, 'links_list'])->name('customLinksList');
 
-// Kabana Setting
+// Kabana Package
+Route::get('/cabana', [CabanaPackagesController::class, 'index'])->name('cabana');
+Route::get('/cabana-package/create/', [CabanaPackagesController::class, 'create'])->name('cabanaCreate');
+Route::get('/cabana-packages/{id}/edit', [CabanaPackagesController::class, 'edit'])->name('cabanaEdit');
+Route::post('/cabana-packages/store', [CabanaPackagesController::class, 'store'])->name('cabanaStore');
+Route::post('/cabana-packages/{id}/update', [CabanaPackagesController::class, 'update'])->name('cabanaUpdate');
+Route::get('/cabana-packages/destroy/{id}', [CabanaPackagesController::class, 'destroy'])->name('cabanaDestroy');
+
+
 Route::get('/kabanasetting', [KabanaSettingController::class, 'index'])->name('kabanasetting');
 Route::get('/kabanaddons', [KabanaSettingController::class, 'cabanAddon'])->name('kabanaddons');
 Route::get('/kabanaddons/{id}/edit', [KabanaSettingController::class, 'edit'])->name('kabanaaddonEdit');
@@ -275,7 +284,7 @@ Route::post('/kabanasetting/updateAll', [KabanaSettingController::class, 'update
 Route::get('/kabana-orders', [OrderController::class, 'getCabanaOrders'])->name('kabanaorders');
 Route::get('/kabana-orders-detail/{slug}', [OrderController::class, 'getByOrderSlug'])->name('kabanaordersdetail');
 //Kabana Addons
-Route::post('/cabana/store', [KabanaAddonsController::class, 'store'])->name('cabanaStore');
+Route::post('/cabana/store', [KabanaAddonsController::class, 'store'])->name('cabanaAddonStore');
 
 // Birthday Packages
 Route::get('/birthday_packages', [BirthdayPackagesController::class, 'index'])->name('birthdaypackages');

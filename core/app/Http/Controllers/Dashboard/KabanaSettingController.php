@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Models\Section;
 use App\Models\Topic;
-use App\Models\Cabana;
+use App\Models\CabanaPackages;
 use App\Models\CabanaAddon;
 use App\Models\WebmasterSection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -95,7 +95,7 @@ class KabanaSettingController extends Controller
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
         try {
             
-            $getFeaturedCabana = Cabana::where('featured', '=', '1')->orderby('id', 'asc')->get();
+            $getFeaturedCabana = CabanaPackages::where('is_featured', '=', '1')->where('status', '=', '1')->where('auth_code', $authCode)->orderby('id', 'asc')->get();
             // Paginate
             $perPage = 10;
             $currentPage = LengthAwarePaginator::resolveCurrentPage();
@@ -140,7 +140,7 @@ class KabanaSettingController extends Controller
         $date = Carbon::today()->toDateString();
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-        $cabana = Cabana::where('ticketSlug', $id)->first();
+        $cabana = CabanaPackages::where('ticketSlug', $id)->where('is_featured', '=', '1')->where('status', '=', '1')->where('auth_code', $authCode)->first();
         $cabana_addon = CabanaAddon::select('ticketSlug')->where('cabanaSlug', $id)->get()->toArray();
         $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
         if ($response->successful()) {

@@ -136,9 +136,9 @@ class OrderController extends BaseAPIController
 
     public function getBySlug($slug)
     {
-        // $order = Order::where('slug',$slug)->first();
-        // $order_type =  OrdersHelper::order_types($order->type);
-        $get_order = Order::with(['customer','purchases','transaction'])->where('slug',$slug)->first();
+        $order = Order::where('slug',$slug)->first();
+        $order_type =  OrdersHelper::order_types($order->type);
+        $get_order = Order::with(['customer','purchases','transaction',$order_type])->where('slug',$slug)->first();
         if (!isset($get_order)) {
             return $this->sendResponse(200, 'Order retrive successfully', []);
         }

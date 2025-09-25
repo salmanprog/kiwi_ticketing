@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\APIs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Cabana;
+use App\Models\CabanaPackages;
 use App\Http\Resources\CabanaResource;
+use Carbon\Carbon;
+use Helper;
 
 class CabanaController extends BaseAPIController
 {
     public function index()
-    {
-        $cabana = Cabana::get();
+    {   
+         $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $cabana = CabanaPackages::with(['media_slider'])->where('is_featured', '=', '1')->where('status', '=', '1')->where('auth_code', $authCode)->get();
         if ($cabana->isEmpty()) {
             return $this->sendResponse(200, 'Retrieved Cabana Listing', []);
         }

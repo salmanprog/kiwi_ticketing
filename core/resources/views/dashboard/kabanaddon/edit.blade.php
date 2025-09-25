@@ -40,7 +40,7 @@
         <div class="tab-content clear b-t">
             <div class="tab-pane  {{ $tab_1 }}" id="tab_details">
                 <div class="box-body p-a-2">
-                    {{Form::open(['route'=>['cabanaStore'],'method'=>'POST'])}}
+                    {{Form::open(['route'=>['cabanaAddonStore'],'method'=>'POST'])}}
                     
                     <input name="cabanaSlug" type="hidden" value="{{$cabana->ticketSlug}}">
                     <div class="form-group row">

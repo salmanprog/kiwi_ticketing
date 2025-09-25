@@ -47,7 +47,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                      <?php
                         $currentFolder = "kabanasetting";
                         $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
-                        $cabanaActive = in_array($current, ['kabanasetting', 'kabanaddons', 'kabanaorders', 'kabanaaddonEdit','kabanaordersdetail']);
+                        $cabanaActive = in_array($current, ['cabana','cabanaCreate','cabanaEdit','cabanaStore','cabanaUpdate','cabanaDestroy','kabanasetting', 'kabanaddons', 'kabanaorders', 'kabanaaddonEdit','kabanaordersdetail','cabanaAddonStore']);
                         $birthdayActive = in_array($current, ['birthdaypackages', 'birthdaypackagesCreate', 'birthdaypackagesEdit', 'birthdaypackagesStore','birthdaypackagesUpdate','birthdayorders','birthdayordersdetail','birthdayaddon','birthdayaddonEdit']);
                         $generalTicketActive = in_array($current, ['generaltickets','generalticketsCreate','generalticketsEdit','generalticketsStore','generalticketsaddon','generalticketsaddonCreate','generalticketsaddonEdit','generalticketscabana','generalticketscabanaCreate','generalticketscabanaStore','generalticketscabanaEdit','generalticketscabanaUpdate','generalticketscabanaDestroy','generalticketsorders','generalticketsordersdetail']);
                         $seasonpassActive = in_array($current, ['seasonpass', 'seasonpassEdit', 'seasonpassCreate', 'seasonpassStore','seasonpassDestroy','seasonpassaddon','seasonpassaddonEdit','seasonpassaddonStore','seasonpassaddonCreate','seasonpassaddonUpdate','seasonpassorders','seasonpassordersdetail']);
@@ -64,11 +64,11 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         </a>
                         <ul class="nav-sub">
                             <li class="{{ 
-                                $current === 'kabanasetting' 
-                                || Str::startsWith($current, 'kabanasetting') 
+                                $current === 'cabana' 
+                                || Str::startsWith($current, 'cabana') 
                                 ? 'active' : '' 
                             }}">
-                                <a href="{{ route('kabanasetting') }}">
+                                <a href="{{ route('cabana') }}">
                                     <span class="nav-text">{{ __('All Cabana') }}</span>
                                 </a>
                             </li>
