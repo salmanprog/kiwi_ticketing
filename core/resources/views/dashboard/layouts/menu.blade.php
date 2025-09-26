@@ -158,7 +158,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                     <span class="nav-text">{{ __('General Packages') }}</span>
                                 </a>
                             </li>
-                            <li class="{{ 
+                            <!-- <li class="{{ 
                                 $current === 'generaltickets' 
                                 || Str::startsWith($current, 'generaltickets') 
                                 ? 'active' : '' 
@@ -166,7 +166,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 <a href="{{ route('generaltickets') }}">
                                     <span class="nav-text">{{ __('All General Tickets') }}</span>
                                 </a>
-                            </li>
+                            </li> -->
 
                            <li class="{{ 
                                 $current === 'generalticketsaddon' 

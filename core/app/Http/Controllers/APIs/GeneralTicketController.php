@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\APIs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Models\GeneralTickets;
+use App\Models\GeneralTicketPackages;
 use App\Models\GeneralTicketAddon;
 use App\Models\GeneralTicketCabana;
 use App\Http\Resources\GeneralTicketsResource;
@@ -15,70 +15,79 @@ class GeneralTicketController extends BaseAPIController
 {
     public function index()
     {
+        
         $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
-        $generalTicket = GeneralTickets::with(['media_slider','addons','cabanas'])->where('auth_code',$authCode)->get();
+        $generalTicket = GeneralTicketPackages::with(['media_slider','general_addons'])->where('auth_code',$authCode)->where('status','1')->get();
+         if ($generalTicket->isEmpty()) {
+            return $this->sendResponse(200, 'Retrieved General Packages Listing', []);
+        }
+        $resource = GeneralTicketsResource::collection($generalTicket);
+        return $this->sendResponse(200, 'Retrieved General Packages Listing', $resource);
+
+
+        // $generalTicket = GeneralTickets::with(['media_slider','addons','cabanas'])->where('auth_code',$authCode)->get();
         
-        if ($generalTicket->isEmpty()) {
-            return $this->sendResponse(200, 'Retrieved General Tickets Listing', []);
-        }
+        // if ($generalTicket->isEmpty()) {
+        //     return $this->sendResponse(200, 'Retrieved General Tickets Listing', []);
+        // }
 
-        try {
-            $response = Http::get("{$baseUrl}/Pricing/GetAllProductPrice", [
-                'authcode' => $authCode,
-                'date' => $date,
-            ]);
-            $data = $response->json();
-            if (isset($data['status']['errorCode']) && $data['status']['errorCode'] === 1) {
-                return $this->sendResponse(400, 'General Ticket Error', ['error' => $data['status']['errorMessage']]);
-            }
-            $tickets = $data['getAllProductPrice']['data'] ?? [];
-            $filteredTickets = [];
-            if (count($tickets) > 0) {
-                $ticketSlugs = array_column($tickets, 'ticketSlug');
-                $generalTickets = GeneralTickets::with(['media_slider','addons.media_slider'])
-                    ->where('auth_code', $authCode)
-                    ->whereIn('ticketSlug', $ticketSlugs)
-                    ->get()
-                    ->keyBy('ticketSlug');
+        // try {
+        //     $response = Http::get("{$baseUrl}/Pricing/GetAllProductPrice", [
+        //         'authcode' => $authCode,
+        //         'date' => $date,
+        //     ]);
+        //     $data = $response->json();
+        //     if (isset($data['status']['errorCode']) && $data['status']['errorCode'] === 1) {
+        //         return $this->sendResponse(400, 'General Ticket Error', ['error' => $data['status']['errorMessage']]);
+        //     }
+        //     $tickets = $data['getAllProductPrice']['data'] ?? [];
+        //     $filteredTickets = [];
+        //     if (count($tickets) > 0) {
+        //         $ticketSlugs = array_column($tickets, 'ticketSlug');
+        //         $generalTickets = GeneralTickets::with(['media_slider','addons.media_slider'])
+        //             ->where('auth_code', $authCode)
+        //             ->whereIn('ticketSlug', $ticketSlugs)
+        //             ->get()
+        //             ->keyBy('ticketSlug');
                 
-                foreach ($tickets as &$ticket) {
-                    if ($ticket['venueId'] != 0) {
-                        $generalTicket = $generalTickets->get($ticket['ticketSlug']);
-                        if ($generalTicket) {
-                            $ticket['description'] = $generalTicket->description;
+        //         foreach ($tickets as &$ticket) {
+        //             if ($ticket['venueId'] != 0) {
+        //                 $generalTicket = $generalTickets->get($ticket['ticketSlug']);
+        //                 if ($generalTicket) {
+        //                     $ticket['description'] = $generalTicket->description;
 
-                            if ($generalTicket->media_slider && $generalTicket->media_slider->count() > 0) {
-                                $ticket['image_url'] = url($generalTicket->media_slider->first()->file_url);
-                            }
+        //                     if ($generalTicket->media_slider && $generalTicket->media_slider->count() > 0) {
+        //                         $ticket['image_url'] = url($generalTicket->media_slider->first()->file_url);
+        //                     }
 
-                            // Add addons as array
-                            $ticket['addons'] = $generalTicket->addons->map(function($addon) {
-                                return [
-                                    'venueId' => $addon->venueId,
-                                    'ticketType' => $addon->ticketType,
-                                    'ticketSlug' => $addon->ticketSlug,
-                                    'ticketCategory' => $addon->ticketCategory,
-                                    'price' => $addon->price,
-                                    'new_price' => $addon->new_price,
-                                    'description' => $addon->description,
-                                    'image_url' => ($addon->media_slider && $addon->media_slider->count() > 0)
-                                                    ? url($addon->media_slider->first()->file_url)
-                                                    : null,
-                                ];
-                            })->toArray();
+        //                     // Add addons as array
+        //                     $ticket['addons'] = $generalTicket->addons->map(function($addon) {
+        //                         return [
+        //                             'venueId' => $addon->venueId,
+        //                             'ticketType' => $addon->ticketType,
+        //                             'ticketSlug' => $addon->ticketSlug,
+        //                             'ticketCategory' => $addon->ticketCategory,
+        //                             'price' => $addon->price,
+        //                             'new_price' => $addon->new_price,
+        //                             'description' => $addon->description,
+        //                             'image_url' => ($addon->media_slider && $addon->media_slider->count() > 0)
+        //                                             ? url($addon->media_slider->first()->file_url)
+        //                                             : null,
+        //                         ];
+        //                     })->toArray();
 
-                            $filteredTickets[] = $ticket;
-                        }
-                    }
-                }
+        //                     $filteredTickets[] = $ticket;
+        //                 }
+        //             }
+        //         }
 
-            }
-            return $this->sendResponse(200, 'General Ticket fetched successfully', $filteredTickets);
-        } catch (\Exception $e) {
-            return $this->sendResponse(401, 'Server Error', $e->getMessage());
-        }
+        //     }
+        //     return $this->sendResponse(200, 'General Ticket fetched successfully', $filteredTickets);
+        // } catch (\Exception $e) {
+        //     return $this->sendResponse(401, 'Server Error', $e->getMessage());
+        // }
     }
 
     public function generalTicketAddon($slug)
@@ -89,7 +98,7 @@ class GeneralTicketController extends BaseAPIController
         $generalTicket = GeneralTicketAddon::with(['media_slider'])->where('generalTicketSlug', $slug)->where('auth_code',$authCode)->get();
         
         if ($generalTicket->isEmpty()) {
-            return $this->sendResponse(200, 'Retrieved General Tickets Listing', []);
+            return $this->sendResponse(200, 'Retrieved General Package Addon Listing', []);
         }
         try {
             $response = Http::get("{$baseUrl}/Pricing/GetAllProductPrice", [
@@ -127,7 +136,7 @@ class GeneralTicketController extends BaseAPIController
                     }
                 }
             }
-            return $this->sendResponse(200, 'General Ticket fetched successfully', $filteredTickets);
+            return $this->sendResponse(200, 'General Package Addon fetched successfully', $filteredTickets);
         } catch (\Exception $e) {
             return $this->sendResponse(401, 'Server Error', $e->getMessage());
         }
@@ -179,7 +188,7 @@ class GeneralTicketController extends BaseAPIController
                     }
                 }
             }
-            return $this->sendResponse(200, 'General Ticket fetched successfully', $filteredTickets);
+            return $this->sendResponse(200, 'General Ticket fetcheds successfully', $filteredTickets);
         } catch (\Exception $e) {
             return $this->sendResponse(401, 'Server Error', $e->getMessage());
         }

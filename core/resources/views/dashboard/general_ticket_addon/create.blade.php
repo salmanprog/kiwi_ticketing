@@ -29,13 +29,13 @@
                 {{Form::open(['route'=>['generalticketsaddonStore'],'method'=>'POST', 'files' => true])}}
                     <div class="form-group row">
                         <label for="section_id" class="col-sm-2 form-control-label">
-                            {!! __('Tickets') !!}
+                            {!! __('Package') !!}
                         </label>
                         <div class="col-sm-10">
                            <select name="generalTicketSlug" class="form-control">
-                                <option value="">- - {!!  __('Select General Ticket') !!} - -</option>
-                                @foreach($tickets_arr['ticket'] as $ticket)
-                                    <option value="{{ $ticket['ticketSlug'] }}">{{ $ticket['ticketType'] }}</option>
+                                <option value="">- - {!!  __('Select General Package') !!} - -</option>
+                                @foreach($getTicketGeneral as $ticket)
+                                    <option value="{{ $ticket['slug'] }}">{{ $ticket['title'] }}</option>
                                 @endforeach
                             </select>
                         </div>

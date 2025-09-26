@@ -111,13 +111,13 @@
                         <div class="col-sm-10">
                             <div class="radio">
                                 <label class="ui-check ui-check-md">
-                                    {!! Form::radio('status','1',($birthday_packages->status==1) ? true : false, array('id' => 'status1','class'=>'has-value')) !!}
+                                    {!! Form::radio('status','1',($general_ticket_packages->status==1) ? true : false, array('id' => 'status1','class'=>'has-value')) !!}
                                     <i class="dark-white"></i>
                                     {{ __('backend.active') }}
                                 </label>
                                 &nbsp; &nbsp;
                                 <label class="ui-check ui-check-md">
-                                    {!! Form::radio('status','0',($birthday_packages->status==0) ? true : false, array('id' => 'status2','class'=>'has-value')) !!}
+                                    {!! Form::radio('status','0',($general_ticket_packages->status==0) ? true : false, array('id' => 'status2','class'=>'has-value')) !!}
                                     <i class="dark-white"></i>
                                     {{ __('backend.notActive') }}
                                 </label>

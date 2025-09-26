@@ -63,6 +63,7 @@ class GeneralTicketPackagesController extends Controller
             'title' => 'required',
             'description' => 'required',
         ]);
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
         // Upload multiple photos
         $formFileName = "photo";
         $uploadedFileNames = []; // To store all uploaded file names
@@ -89,6 +90,7 @@ class GeneralTicketPackagesController extends Controller
         }
 
         $generalTicketPackage = new GeneralTicketPackages;
+        $generalTicketPackage->auth_code  = $authCode;
         $generalTicketPackage->title  = $request->title;
         $generalTicketPackage->description = $request->description;
         $generalTicketPackage->status = $request->status;
@@ -120,6 +122,7 @@ class GeneralTicketPackagesController extends Controller
     {
         
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
         $general_ticket_packages = GeneralTicketPackages::with(['media_slider'])->where('slug',$slug)->where('auth_code',$authCode)->first();
         return view("dashboard.general_ticket_packages.edit", compact("general_ticket_packages", "GeneralWebmasterSections"));
     }

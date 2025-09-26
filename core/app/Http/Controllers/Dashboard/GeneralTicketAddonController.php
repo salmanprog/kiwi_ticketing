@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Models\Section;
-use App\Models\GeneralTickets;
+use App\Models\GeneralTicketPackages;
 use App\Models\GeneralTicketAddon;
 use App\Models\WebmasterSection;
 use App\Models\Media;
@@ -34,7 +34,7 @@ class GeneralTicketAddonController extends Controller
     {
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-        $general_ticket_addon = GeneralTicketAddon::with(['media_slider'])->where('auth_code',$authCode)->get();
+        $general_ticket_addon = GeneralTicketAddon::with(['media_slider','general_addons'])->where('auth_code',$authCode)->orderby('id', 'desc')->get();
         $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $collection = collect($general_ticket_addon);
@@ -58,7 +58,7 @@ class GeneralTicketAddonController extends Controller
 
         try {
             $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
-            $getTicketGeneral = GeneralTickets::where('auth_code', $authCode)->get();
+            $getTicketGeneral = GeneralTicketPackages::where('auth_code', $authCode)->where('status', '=', '1')->get();
             if ($response->successful()) {
             $apiData = $response->json();
             $tickets = $apiData['getAllProductPrice']['data'] ?? [];
@@ -66,14 +66,16 @@ class GeneralTicketAddonController extends Controller
             $dbSlugs = $getTicketGeneral->pluck('ticketSlug')->toArray();
             if (!empty($tickets)) {
                 foreach ($tickets as $ticket) {
-                    if ($ticket['ticketCategory'] !== 'Season Passes' && !in_array($ticket['ticketSlug'], $dbSlugs)){
+                    //if ($ticket['ticketCategory'] !== 'Season Passes' && !in_array($ticket['ticketSlug'], $dbSlugs)){
+                    if ($ticket['ticketCategory'] !== 'Season Passes' && $ticket['ticketCategory'] !== 'Anyday'){
                         $tickets_arr['ticket_addon'][] = $ticket;
-                    } elseif (in_array($ticket['ticketSlug'], $dbSlugs)){
-                        $tickets_arr['ticket'][] = $ticket;
-                    }
+                    } 
+                    // elseif (in_array($ticket['ticketSlug'], $dbSlugs)){
+                    //     $tickets_arr['ticket'][] = $ticket;
+                    // }
                 }
             }
-            return view("dashboard.general_ticket_addon.create", compact("tickets_arr", "GeneralWebmasterSections"));
+            return view("dashboard.general_ticket_addon.create", compact("tickets_arr","getTicketGeneral", "GeneralWebmasterSections"));
             } else {
                 dd([
                     'status' => $response->status(),
@@ -113,9 +115,10 @@ class GeneralTicketAddonController extends Controller
 
                 if (!empty($tickets)) {
                     foreach ($tickets as $ticket) {
-                        if ($ticket['ticketSlug'] == $request->generalTicketSlug ) {
-                            $tickets_arr['ticket'][] = $ticket;
-                        } elseif ($ticket['ticketSlug'] === $request->ticketSlug) {
+                        // if ($ticket['ticketSlug'] == $request->generalTicketSlug ) {
+                        //     $tickets_arr['ticket'][] = $ticket;
+                        // } else
+                        if ($ticket['ticketSlug'] === $request->ticketSlug) {
                             $tickets_arr['ticket_addon'][] = $ticket;
                         }
                     }
@@ -142,11 +145,11 @@ class GeneralTicketAddonController extends Controller
                         }
                     }
                 }
-
+                $general_ticket_packages = GeneralTicketPackages::with(['media_slider'])->where('slug',$request->generalTicketSlug)->where('auth_code',$authCode)->first();
                 $ticketAddon = new GeneralTicketAddon;
                 $ticketAddon->auth_code  = Helper::GeneralSiteSettings('auth_code_en');
-                $ticketAddon->generalTicketType  = $tickets_arr['ticket'][0]['ticketType'];
-                $ticketAddon->generalTicketSlug  = $tickets_arr['ticket'][0]['ticketSlug'];
+                $ticketAddon->generalTicketType  = $general_ticket_packages->title;
+                $ticketAddon->generalTicketSlug  = $request->generalTicketSlug;
                 $ticketAddon->venueId = $tickets_arr['ticket_addon'][0]['venueId'];
                 $ticketAddon->ticketType  = $tickets_arr['ticket_addon'][0]['ticketType'];
                 $ticketAddon->ticketSlug = $tickets_arr['ticket_addon'][0]['ticketSlug'];

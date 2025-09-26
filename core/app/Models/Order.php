@@ -85,7 +85,7 @@ class Order extends Model
 
     public function general_ticket()
     {
-        return $this->hasOne(SeasonPass::class, 'id','package_id');
+        return $this->hasOne(GeneralTicketPackages::class, 'id','package_id');
     }
 
     public function season_pass()

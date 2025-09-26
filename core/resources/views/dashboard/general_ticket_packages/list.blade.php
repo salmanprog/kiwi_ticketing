@@ -31,6 +31,7 @@
                             <th>{{ __('ID') }}</th>
                             <th>{{ __('Title') }}</th>
                             <th>{{ __('Slug') }}</th>
+                            <th>{{ __('Total Addon') }}</th>
                             <th>{{ __('Status') }}</th>
                             <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
                         </tr>
@@ -58,6 +59,9 @@
 
                                 <td>
                                     <small>{{ $packages['slug'] }}</small>
+                                </td>
+                                <td>
+                                    <small>{{ count($packages->general_addons) }}</small>
                                 </td>
                                 <td>
                                    <i class="fa {{ $packages['status'] == 1 ? 'fa-check text-success' : 'fa-times text-danger' }} inline"></i>

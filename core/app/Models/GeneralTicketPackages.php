@@ -43,6 +43,10 @@ class GeneralTicketPackages extends Model
     {
         return $this->hasMany(Media::class, 'module_id')->where('module','general_ticket_packages');
     }
+    public function general_addons()
+    {
+        return $this->hasMany(GeneralTicketAddon::class, 'generalTicketSlug','slug');
+    }
     /**
      * Generate a unique slug for the general package.
      */

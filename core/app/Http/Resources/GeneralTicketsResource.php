@@ -3,17 +3,18 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\MediaResource;
 
 class GeneralTicketsResource extends JsonResource
 {
     public function toArray($request)
     {
         return [
-            'venueId' => $this->venueId,
-            'ticketType' => $this->ticketType,
-            'ticketSlug' => $this->ticketSlug,
-            'ticketCategory' => $this->ticketCategory,
-            'price' => $this->price,
+            'id' => $this->id,
+            'title' => $this->title,
+            'slug' => $this->slug,
+            'description' => $this->description,
+            'slider_images' => MediaResource::collection($this->media_slider),
         ];
     }
 }
