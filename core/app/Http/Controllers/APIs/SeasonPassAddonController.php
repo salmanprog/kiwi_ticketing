@@ -13,10 +13,11 @@ class SeasonPassAddonController extends BaseAPIController
 {
     public function getBySlug($slug)
     {
+        
         $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
-        $getSeasonPassProduct = SeasonPassAddon::with(['media_slider'])->where('slug',$slug)->where('status','1')->where('auth_code',$authCode)->get();
+        $getSeasonPassProduct = SeasonPassAddon::with(['media_slider'])->where('season_passes_slug',$slug)->where('status','1')->where('auth_code',$authCode)->get();
         
         if ($getSeasonPassProduct->isEmpty()) {
             return $this->sendResponse(200, 'Retrieved Season Pass Product Listing', []);
@@ -38,6 +39,7 @@ class SeasonPassAddonController extends BaseAPIController
                 $generalTickets = SeasonPassAddon::with(['media_slider'])
                     ->where('auth_code', $authCode)
                     ->whereIn('ticketSlug', $ticketSlugs)
+                    ->where('season_passes_slug',$slug)
                     ->get()
                     ->keyBy('ticketSlug');
                 
