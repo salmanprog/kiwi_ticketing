@@ -123,15 +123,23 @@ class OrderController extends Controller
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
         $get_cabana_orders = Order::with(['customer','purchases','transaction'])->where('auth_code',$authCode)->where('slug',$slug)->first();
-        if($get_cabana_orders->type == 'cabana'){
-            return view("dashboard.kabanaorders.show", compact("get_cabana_orders", "GeneralWebmasterSections"));
-        }elseif($get_cabana_orders->type == 'general_ticket'){
-            return view("dashboard.ticketingorders.show", compact("get_cabana_orders", "GeneralWebmasterSections"));
-        }elseif($get_cabana_orders->type == 'season_pass'){
-            return view("dashboard.seasonpassorders.show", compact("get_cabana_orders", "GeneralWebmasterSections"));
-        }else{
-            return view("dashboard.birthdayorders.show", compact("get_cabana_orders", "GeneralWebmasterSections"));
-        }
+        $views = [
+            'cabana'        => 'dashboard.kabanaorders.show',
+            'general_ticket'=> 'dashboard.ticketingorders.show',
+            'season_pass'   => 'dashboard.seasonpassorders.show',
+        ];
+
+        $view = $views[$get_cabana_orders->type] ?? 'dashboard.birthdayorders.show';
+        return view($view, compact("get_cabana_orders", "GeneralWebmasterSections"));
+        // if($get_cabana_orders->type == 'cabana'){
+        //     return view("dashboard.kabanaorders.show", compact("get_cabana_orders", "GeneralWebmasterSections"));
+        // }elseif($get_cabana_orders->type == 'general_ticket'){
+        //     return view("dashboard.ticketingorders.show", compact("get_cabana_orders", "GeneralWebmasterSections"));
+        // }elseif($get_cabana_orders->type == 'season_pass'){
+        //     return view("dashboard.seasonpassorders.show", compact("get_cabana_orders", "GeneralWebmasterSections"));
+        // }else{
+        //     return view("dashboard.birthdayorders.show", compact("get_cabana_orders", "GeneralWebmasterSections"));
+        // }
         
     }
 }

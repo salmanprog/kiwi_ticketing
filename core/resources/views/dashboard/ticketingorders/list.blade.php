@@ -77,7 +77,7 @@
                                         </button>
                                         <div class="dropdown-menu pull-right">
                                             <a class="dropdown-item"
-                                                href="{{ route('birthdayordersdetail',$order['slug']) }}"><i
+                                                href="{{ route('generalticketsordersdetail',$order['slug']) }}"><i
                                                     class="material-icons"></i> {{ __('backend.preview') }}
                                             </a>
                                         </div>
