@@ -29,6 +29,7 @@ use App\Http\Controllers\Dashboard\GeneralTicketAddonController;
 use App\Http\Controllers\Dashboard\GeneralTicketCabanaController;
 use App\Http\Controllers\Dashboard\SeasonPassController;
 use App\Http\Controllers\Dashboard\SeasonPassAddonsController;
+use App\Http\Controllers\Dashboard\GeneralTicketPackagesController;
 use Illuminate\Support\Facades\Route;
 
 // Admin Home
@@ -300,6 +301,14 @@ Route::get('/birthday-orders-detail/{slug}', [OrderController::class, 'getByOrde
 Route::get('/birthday_addons', [BirthdayAddonsController::class, 'index'])->name('birthdayaddon');
 Route::get('/birthday_addons/{id}/edit', [BirthdayAddonsController::class, 'edit'])->name('birthdayaddonEdit');
 Route::post('/birthday_addons/store', [BirthdayAddonsController::class, 'store'])->name('birthdayaddonStore');
+
+//Generl Tickets Packages
+Route::get('/general-ticket-packages', [GeneralTicketPackagesController::class, 'index'])->name('generalticketpackages');
+Route::get('/general-ticket-packages/{id}/edit', [GeneralTicketPackagesController::class, 'edit'])->name('generalticketpackagesEdit');
+Route::get('/general-ticket-packages/create/', [GeneralTicketPackagesController::class, 'create'])->name('generalticketpackagesCreate');
+Route::post('/general-ticket-packages/store', [GeneralTicketPackagesController::class, 'store'])->name('generalticketpackagesStore');
+Route::post('/general-ticket-packages/{id}/update', [GeneralTicketPackagesController::class, 'update'])->name('generalticketpackagesUpdate');
+Route::get('/general-ticket-packages/destroy/{id}', [GeneralTicketPackagesController::class, 'destroy'])->name('generalticketpackagesDestroy');
 
 // General Tickets
 Route::get('/general-tickets', [GeneralTicketController::class, 'index'])->name('generaltickets');

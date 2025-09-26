@@ -153,27 +153,22 @@ ALTER TABLE `smartend_order_tickets` ADD `VisualIdStockCount` VARCHAR(255) NULL 
 
 -----------------------------------------------------------------------
 
-CREATE TABLE `smartend_cabana` (
+CREATE TABLE `smartend_general_ticket_package` (
   `id` int(11) NOT NULL,
   `slug` varchar(255) DEFAULT NULL,
   `auth_code` varchar(255) NOT NULL,
-  `venueId` varchar(255) NOT NULL,
-  `ticketType` varchar(255) NOT NULL,
-  `ticketSlug` varchar(255) NOT NULL,
-  `ticketCategory` varchar(255) NOT NULL,
-  `price` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
   `description` text NULL,
-  `is_featured` ENUM('0','1') NOT NULL DEFAULT '0',
   `status` ENUM('0','1') NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
-ALTER TABLE `smartend_cabana`
+ALTER TABLE `smartend_general_ticket_package`
   ADD PRIMARY KEY (`id`);
 
-  ALTER TABLE `smartend_cabana`
+  ALTER TABLE `smartend_general_ticket_package`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1
 
 

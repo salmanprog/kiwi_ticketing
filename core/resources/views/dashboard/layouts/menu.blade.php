@@ -49,7 +49,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
                         $cabanaActive = in_array($current, ['cabana','cabanaCreate','cabanaEdit','cabanaStore','cabanaUpdate','cabanaDestroy','kabanasetting', 'kabanaddons', 'kabanaorders', 'kabanaaddonEdit','kabanaordersdetail','cabanaAddonStore']);
                         $birthdayActive = in_array($current, ['birthdaypackages', 'birthdaypackagesCreate', 'birthdaypackagesEdit', 'birthdaypackagesStore','birthdaypackagesUpdate','birthdayorders','birthdayordersdetail','birthdayaddon','birthdayaddonEdit']);
-                        $generalTicketActive = in_array($current, ['generaltickets','generalticketsCreate','generalticketsEdit','generalticketsStore','generalticketsaddon','generalticketsaddonCreate','generalticketsaddonEdit','generalticketscabana','generalticketscabanaCreate','generalticketscabanaStore','generalticketscabanaEdit','generalticketscabanaUpdate','generalticketscabanaDestroy','generalticketsorders','generalticketsordersdetail']);
+                        $generalTicketActive = in_array($current, ['generaltickets','generalticketsCreate','generalticketsEdit','generalticketsStore','generalticketsaddon','generalticketsaddonCreate','generalticketsaddonEdit','generalticketscabana','generalticketscabanaCreate','generalticketscabanaStore','generalticketscabanaEdit','generalticketscabanaUpdate','generalticketscabanaDestroy','generalticketsorders','generalticketsordersdetail','generalticketpackages','generalticketpackagesEdit','generalticketpackagesCreate','generalticketpackagesStore','generalticketpackagesUpdate','generalticketpackagesDestroy']);
                         $seasonpassActive = in_array($current, ['seasonpass', 'seasonpassEdit', 'seasonpassCreate', 'seasonpassStore','seasonpassDestroy','seasonpassaddon','seasonpassaddonEdit','seasonpassaddonStore','seasonpassaddonCreate','seasonpassaddonUpdate','seasonpassorders','seasonpassordersdetail']);
                         ?>
                     <li class="{{ $cabanaActive ? 'active' : '' }}" >
@@ -146,9 +146,18 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <span class="nav-icon">
                             <i class="material-icons">&#xe7fb;</i>
                             </span>
-                            <span class="nav-text">{{ __('General Tickets') }}</span>
+                            <span class="nav-text">{{ __('Platform Managment') }}</span>
                         </a>
                         <ul class="nav-sub">
+                            <li class="{{ 
+                                $current === 'generaltickets' 
+                                || Str::startsWith($current, 'generaltickets') 
+                                ? 'active' : '' 
+                            }}">
+                                <a href="{{ route('generalticketpackages') }}">
+                                    <span class="nav-text">{{ __('General Packages') }}</span>
+                                </a>
+                            </li>
                             <li class="{{ 
                                 $current === 'generaltickets' 
                                 || Str::startsWith($current, 'generaltickets') 
