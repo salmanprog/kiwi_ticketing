@@ -29,6 +29,18 @@
                 {{Form::open(['route'=>['generalticketsaddonStore'],'method'=>'POST', 'files' => true])}}
                     <div class="form-group row">
                         <label for="section_id" class="col-sm-2 form-control-label">
+                            {!! __('Product Type') !!}
+                        </label>
+                        <div class="col-sm-10">
+                           <select name="is_primary" id="is_primary" class="form-control">
+                                <option value="">- - {!!  __('Select Product Type') !!} - -</option>
+                                <option value="1">{!! __('Primary Product') !!}</option>
+                                <option value="0">{!! __('Secondary Product') !!}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="section_id" class="col-sm-2 form-control-label">
                             {!! __('Package') !!}
                         </label>
                         <div class="col-sm-10">
@@ -42,14 +54,11 @@
                     </div>
                     <div class="form-group row">
                         <label for="section_id" class="col-sm-2 form-control-label">
-                            {!! __('Ticket Addon') !!}
+                            {!! __('Product Addon') !!}
                         </label>
                         <div class="col-sm-10">
-                           <select name="ticketSlug" id="ticketSlug" class="form-control">
-                                <option value="">- - {!!  __('Select Ticket Addon') !!} - -</option>
-                                @foreach($tickets_arr['ticket_addon'] as $ticket_addon)
-                                    <option value="{{ $ticket_addon['ticketSlug'] }}" data-price="{{ $ticket_addon['price'] ?? '0' }}">{{ $ticket_addon['ticketType'] }}</option>
-                                @endforeach
+                           <select name="ticketSlug" id="ticket_items" class="form-control">
+                                <option value="">- - {!!  __('Select Product Addon') !!} - -</option>
                             </select>
                         </div>
                     </div>
@@ -124,7 +133,34 @@
         $(function () {
             $('.icp-auto').iconpicker({placement: '{{ (@Helper::currentLanguage()->direction=="rtl")?"topLeft":"topRight" }}'});
         });
-        const select = document.getElementById('ticketSlug');
+
+        const data = @json($tickets_arr);
+
+        const isPrimarySelect = document.getElementById('is_primary');
+        const ticketItemsSelect = document.getElementById('ticket_items');
+
+        isPrimarySelect.addEventListener('change', function () {
+            const selectedValue = this.value;
+            ticketItemsSelect.innerHTML = '<option value="">-- Select Product Addon --</option>';
+
+            let selectedArray = [];
+
+            if (selectedValue === "1") {
+                selectedArray = data.ticket;
+            } else if (selectedValue === "0") {
+                selectedArray = data.ticket_addon;
+            }
+
+            selectedArray.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.ticketSlug;
+                //option.textContent = item.ticketType + ' (' + item.ticketCategory + ') - $' + item.price;
+                option.textContent = item.ticketType;
+                option.setAttribute('data-price', item.price);
+                ticketItemsSelect.appendChild(option);
+            });
+        });
+        const select = document.getElementById('ticket_items');
         const priceDisplay = document.getElementById('new_price');
 
         select.addEventListener('change', function() {

@@ -15,6 +15,7 @@ class GeneralTicketAddon extends Model
         'auth_code',
         'generalTicketType',
         'generalTicketSlug',
+        'is_primary',
         'venueId',
         'ticketType',
         'ticketSlug',

@@ -70,9 +70,9 @@ class GeneralTicketAddonController extends Controller
                     if ($ticket['ticketCategory'] !== 'Season Passes' && $ticket['ticketCategory'] !== 'Anyday'){
                         $tickets_arr['ticket_addon'][] = $ticket;
                     } 
-                    // elseif (in_array($ticket['ticketSlug'], $dbSlugs)){
-                    //     $tickets_arr['ticket'][] = $ticket;
-                    // }
+                    if ($ticket['venueId'] !== 0){
+                        $tickets_arr['ticket'][] = $ticket;
+                    }
                 }
             }
             return view("dashboard.general_ticket_addon.create", compact("tickets_arr","getTicketGeneral", "GeneralWebmasterSections"));
@@ -150,6 +150,7 @@ class GeneralTicketAddonController extends Controller
                 $ticketAddon->auth_code  = Helper::GeneralSiteSettings('auth_code_en');
                 $ticketAddon->generalTicketType  = $general_ticket_packages->title;
                 $ticketAddon->generalTicketSlug  = $request->generalTicketSlug;
+                $ticketAddon->is_primary  = $request->is_primary;
                 $ticketAddon->venueId = $tickets_arr['ticket_addon'][0]['venueId'];
                 $ticketAddon->ticketType  = $tickets_arr['ticket_addon'][0]['ticketType'];
                 $ticketAddon->ticketSlug = $tickets_arr['ticket_addon'][0]['ticketSlug'];
@@ -258,6 +259,7 @@ class GeneralTicketAddonController extends Controller
                 }
             }
             $ticketAddon->new_price = $request->new_price;
+            $ticketAddon->is_primary  = $request->is_primary;
             $ticketAddon->description = $request->description;
             $ticketAddon->save();
             if(count($uploadedFileNames) > 0){
