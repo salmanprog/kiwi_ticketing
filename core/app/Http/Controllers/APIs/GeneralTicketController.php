@@ -95,7 +95,7 @@ class GeneralTicketController extends BaseAPIController
         $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
-        $generalTicket = GeneralTicketAddon::with(['media_slider'])->where('generalTicketSlug', $slug)->where('auth_code',$authCode)->get();
+        $generalTicket = GeneralTicketAddon::with(['media_slider'])->where('generalTicketSlug', $slug)->where('status', '1')->where('auth_code',$authCode)->get();
         
         if ($generalTicket->isEmpty()) {
             return $this->sendResponse(200, 'Retrieved General Package Addon Listing', []);
@@ -122,12 +122,12 @@ class GeneralTicketController extends BaseAPIController
                 
                 foreach ($tickets as &$ticket) {
                     if (
-                        ($ticket['ticketCategory'] === 'Tickets' || $ticket['ticketCategory'] === 'Food Addons') &&
                         isset($generalTickets[$ticket['ticketSlug']])
                     ) {
                         $generalTicket = $generalTickets[$ticket['ticketSlug']];
                         $ticket['description'] = $generalTicket->description;
-
+                        $ticket['is_primary'] = $generalTicket->is_primary;
+                        $ticket['new_price'] = $generalTicket->new_price;
                         if ($generalTicket->media_slider && $generalTicket->media_slider->isNotEmpty()) {
                             $ticket['image_url'] = url($generalTicket->media_slider->first()->file_url);
                         }

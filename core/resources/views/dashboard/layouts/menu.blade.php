@@ -174,7 +174,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 ? 'active' : '' 
                             }}">
                                 <a href="{{ route('generalticketsaddon') }}">
-                                    <span class="nav-text">{{ __('General Tickets Addon') }}</span>
+                                    <span class="nav-text">{{ __('General Package Addon') }}</span>
                                 </a>
                             </li>
 

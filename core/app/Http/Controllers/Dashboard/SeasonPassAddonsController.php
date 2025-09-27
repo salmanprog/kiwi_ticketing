@@ -72,7 +72,7 @@ class SeasonPassAddonsController extends Controller
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-        $getSeasonPass = SeasonPass::with(['media_slider'])->where('auth_code', $authCode)->orderby('id', 'asc')->get();
+        $getSeasonPass = SeasonPass::with(['media_slider'])->where('auth_code', $authCode)->where('status','1')->orderby('id', 'asc')->get();
         try {
             $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
 

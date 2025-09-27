@@ -1,20 +1,20 @@
 @extends('dashboard.layouts.master')
-@section('title', __('General Ticket Addon'))
+@section('title', __('General Package Addon'))
 @section('content')
 <div class="padding">
 <div class="box">
     <div class="box-header dker">
-        <h3>{{ __('General Ticket Addon') }}</h3>
+        <h3>{{ __('General Package Addon') }}</h3>
         <small>
             <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-            <a href="">{{ __('general-ticket-addon') }}</a>
+            <a href="">{{ __('general-package-addon') }}</a>
         </small>
     </div>
      <div class="row p-a pull-right" style="margin-top: -70px;">
         <div class="col-sm-12">
             <a class="btn btn-fw primary" href="{{route('generalticketsaddonCreate')}}">
                 <i class="material-icons">&#xe7fe;</i>
-                &nbsp; {{ __('Add Ticket Addon') }}
+                &nbsp; {{ __('Add Package Addon') }}
             </a>
         </div>
     </div>
@@ -34,6 +34,8 @@
                             <th>{{ __('Category') }}</th>
                             <th>{{ __('Price') }}</th>
                             <th>{{ __('New Price') }}</th>
+                            <th>{{ __('Primary Product') }}</th>
+                            <th>{{ __('Status') }}</th>
                             <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
                         </tr>
                         </thead>    
@@ -53,11 +55,7 @@
                                 <td>
                                     <div class="">
                                         <a href="{{ route('generalticketsaddonEdit',$packages['slug']) }}">
-                                            <div class="pull-right">
-                                                 @foreach($packages->media_slider as $media_cover)
-                                                <img src="{{ asset('uploads/sections/' . $media_cover->filename) }}" style="height: 30px;width:100px" alt="Curabitur vitae leo vitae ipsum varius laoreet">
-                                                @endforeach
-                                            </div> 
+                                            
                                             <div class="h6 m-b-0">{{ $packages['generalTicketType'] }}</div>
                                            
                                         </a>
@@ -75,6 +73,12 @@
                                 </td>
                                 <td class="text-center">
                                     <small>${{ number_format($packages['new_price'], 2) }}</small>
+                                </td>
+                                <td class="text-center">
+                                   <i class="fa {{ $packages['is_primary'] == 1 ? 'fa-check text-success' : 'fa-times text-danger' }} inline"></i>
+                                </td>
+                                <td class="text-center">
+                                   <i class="fa {{ $packages['status'] == 1 ? 'fa-check text-success' : 'fa-times text-danger' }} inline"></i>
                                 </td>
                                 <td class="text-center">
                                    <div class="dropdown">

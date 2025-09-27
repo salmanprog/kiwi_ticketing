@@ -34,7 +34,7 @@ class GeneralTicketAddonController extends Controller
     {
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-        $general_ticket_addon = GeneralTicketAddon::with(['media_slider','general_addons'])->where('auth_code',$authCode)->orderby('id', 'desc')->get();
+        $general_ticket_addon = GeneralTicketAddon::with(['media_slider'])->where('auth_code',$authCode)->orderby('id', 'desc')->get();
         $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $collection = collect($general_ticket_addon);
@@ -91,6 +91,7 @@ class GeneralTicketAddonController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
+            'is_primary' => 'required',
             'generalTicketSlug' => 'required',
             'ticketSlug' => 'required',
             'description' => 'required',
@@ -100,10 +101,22 @@ class GeneralTicketAddonController extends Controller
         $date = Carbon::today()->toDateString();
 
         try {
-            $ticketAddonCheck = GeneralTicketAddon::where('generalTicketSlug',$request->generalTicketSlug)->where('ticketSlug',$request->ticketSlug)->where('auth_code',$authCode)->first();
+            $checkPrimaryProduct = GeneralTicketAddon::where('generalTicketSlug',$request->generalTicketSlug)->where('ticketSlug',$request->ticketSlug)->where('is_primary','1')->where('auth_code',$authCode)->first();
 
-            if (!empty($ticketAddonCheck)) {
-                return redirect()->action('Dashboard\GeneralTicketAddonController@create')->with('errorMessage', 'This ticket addon already exists.');
+            if (!empty($checkPrimaryProduct)) {
+                return redirect()->action('Dashboard\GeneralTicketAddonController@create')->with('errorMessage', 'This product addon already exists in primary product.');
+            }
+
+            $checkSecondaryProduct = GeneralTicketAddon::where('generalTicketSlug',$request->generalTicketSlug)->where('ticketSlug',$request->ticketSlug)->where('is_primary','0')->where('auth_code',$authCode)->first();
+
+            if (!empty($checkSecondaryProduct)) {
+                return redirect()->action('Dashboard\GeneralTicketAddonController@create')->with('errorMessage', 'This product addon already exists in seconday product.');
+            }
+
+            $primaryProductCount = GeneralTicketAddon::where('generalTicketSlug',$request->generalTicketSlug)->where('is_primary','1')->where('status','1')->where('auth_code',$authCode)->count();
+
+            if ($primaryProductCount > 3) {
+                return redirect()->action('Dashboard\GeneralTicketAddonController@create')->with('errorMessage', 'You can add only 4 primary products.');
             }
 
             $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
@@ -158,6 +171,7 @@ class GeneralTicketAddonController extends Controller
                 $ticketAddon->price = $tickets_arr['ticket_addon'][0]['price'];
                 $ticketAddon->new_price = $request->new_price;
                 $ticketAddon->description = $request->description;
+                $ticketAddon->status = $request->status;
                 $ticketAddon->save();
                 
 
@@ -222,6 +236,14 @@ class GeneralTicketAddonController extends Controller
             $this->validate($request, [
                 'description' => 'required',
             ]);
+        if($request->status == '1'){
+            $primaryProductCount = GeneralTicketAddon::where('generalTicketSlug',$ticketAddon->generalTicketSlug)->where('is_primary','1')->where('status','1')->where('auth_code',$authCode)->count();
+
+            if ($primaryProductCount > 3) {
+                return redirect()->action('Dashboard\GeneralTicketAddonController@edit', [$id])->with('errorMessage',
+                __('Already 4 primary products are activated.'));
+            }
+        }
 
             if ($request->has('media_delete')) {
                 foreach ($request->input('media_delete') as $mediaId => $shouldDelete) {
@@ -259,8 +281,8 @@ class GeneralTicketAddonController extends Controller
                 }
             }
             $ticketAddon->new_price = $request->new_price;
-            $ticketAddon->is_primary  = $request->is_primary;
             $ticketAddon->description = $request->description;
+            $ticketAddon->status = $request->status;
             $ticketAddon->save();
             if(count($uploadedFileNames) > 0){
                 for($i=0;$i<count($uploadedFileNames);$i++){

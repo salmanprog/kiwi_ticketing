@@ -64,7 +64,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="title"
-                                class="col-sm-2 form-control-label">{!!  __('Ticket Addon Price') !!}
+                                class="col-sm-2 form-control-label">{!!  __('Product Addon Price') !!}
                         </label>
                         <div class="col-sm-10">
                             {!! Form::text('new_price','', array('placeholder' => '','class' => 'form-control','id'=>'new_price','required'=>'')) !!}
@@ -113,7 +113,24 @@
                             </small>
                         </div>
                     </div>
-                    
+                    <div class="form-group row">
+                        <label for="link_status" class="col-sm-2 form-control-label">Status</label>
+                        <div class="col-sm-10">
+                            <div class="radio">
+                                <label class="ui-check ui-check-md">
+                                    <input id="status1" class="has-value" checked="checked" name="status" type="radio" value="1">
+                                    <i class="dark-white"></i>
+                                    Active
+                                </label>
+                                &nbsp; &nbsp;
+                                <label class="ui-check ui-check-md">
+                                    <input id="status2" class="has-value" name="status" type="radio" value="0">
+                                    <i class="dark-white"></i>
+                                    Not Active
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                 <button type="button"

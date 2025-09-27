@@ -63,7 +63,7 @@ class SeasonPassAddon extends Model
 
     public function season_pass()
     {
-        return $this->hasOne(SeasonPass::class, 'slug','season_passes_slug')->where('status','1');
+        return $this->hasOne(SeasonPass::class, 'slug','season_passes_slug');
     }
 
     public function generateUniqueSlug($title)

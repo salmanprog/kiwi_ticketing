@@ -174,7 +174,7 @@ ALTER TABLE `smartend_general_ticket_package`
 
 
 ALTER TABLE `smartend_general_ticket_addons` ADD `is_primary` ENUM('0','1') NOT NULL DEFAULT '0' AFTER `generalTicketSlug`;
-
+ALTER TABLE `smartend_general_ticket_addons` ADD `status` ENUM('0','1') NOT NULL DEFAULT '1' AFTER `description`;
 
 
 

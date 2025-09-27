@@ -30,7 +30,15 @@
                     
                     <div class="form-group row">
                         <label for="title"
-                                class="col-sm-2 form-control-label">{!!  __('Tickets') !!}
+                                class="col-sm-2 form-control-label">{!!  __('Product Type') !!}
+                        </label>
+                        <div class="col-sm-10">
+                            {!! Form::text('is_primary',old('is_primary', ($ticket_addon->is_primary == '1') ? 'Primary Product':'Secondary Product'), array('placeholder' => '','class' => 'form-control','id'=>'is_primary','required'=>'','readonly' => 'readonly')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="title"
+                                class="col-sm-2 form-control-label">{!!  __('Package') !!}
                         </label>
                         <div class="col-sm-10">
                             {!! Form::text('generalTicketSlug',old('generalTicketSlug', $ticket_addon->generalTicketType ?? ''), array('placeholder' => '','class' => 'form-control','id'=>'generalTicketSlug','required'=>'','readonly' => 'readonly')) !!}
@@ -38,7 +46,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="title"
-                                class="col-sm-2 form-control-label">{!!  __('Ticket Addon') !!}
+                                class="col-sm-2 form-control-label">{!!  __('Product Addon') !!}
                         </label>
                         <div class="col-sm-10">
                             {!! Form::text('ticketSlug',old('ticketSlug', $ticket_addon->ticketType ?? ''), array('placeholder' => '','class' => 'form-control','id'=>'ticketSlug','required'=>'','readonly' => 'readonly')) !!}
@@ -46,7 +54,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="title"
-                                class="col-sm-2 form-control-label">{!!  __('Ticket Addon Price') !!}
+                                class="col-sm-2 form-control-label">{!!  __('Product Addon Price') !!}
                         </label>
                         <div class="col-sm-10">
                             {!! Form::text('new_price',old('new_price', $ticket_addon->new_price ?? ''), array('placeholder' => '','class' => 'form-control','id'=>'new_price','required'=>'')) !!}
@@ -115,13 +123,32 @@
                         </div>
                     </div>
                     <div class="form-group row m-t-md" style="margin-top: 0 !important;">
-                            <div class="offset-sm-2 col-sm-10">
-                                <small>
-                                    <i class="material-icons">&#xe8fd;</i>
-                                    {!!  __('backend.imagesTypes') !!}
-                                </small>
+                        <div class="offset-sm-2 col-sm-10">
+                            <small>
+                                <i class="material-icons">&#xe8fd;</i>
+                                {!!  __('backend.imagesTypes') !!}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="link_status"
+                                class="col-sm-2 form-control-label">{!!  __('backend.status') !!}</label>
+                        <div class="col-sm-10">
+                            <div class="radio">
+                                <label class="ui-check ui-check-md">
+                                    {!! Form::radio('status','1',($ticket_addon->status==1) ? true : false, array('id' => 'status1','class'=>'has-value')) !!}
+                                    <i class="dark-white"></i>
+                                    {{ __('backend.active') }}
+                                </label>
+                                &nbsp; &nbsp;
+                                <label class="ui-check ui-check-md">
+                                    {!! Form::radio('status','0',($ticket_addon->status==0) ? true : false, array('id' => 'status2','class'=>'has-value')) !!}
+                                    <i class="dark-white"></i>
+                                    {{ __('backend.notActive') }}
+                                </label>
                             </div>
                         </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                 <button type="button"
