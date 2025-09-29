@@ -1,6 +1,18 @@
 @extends('dashboard.layouts.master')
 @section('title', __('Cabana Addon'))
 @section('content')
+<style>
+    div.dataTables_wrapper div.dataTables_processing {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    margin-left: -100px;
+    margin-top: -26px;
+    text-align: center;
+    padding: 1em 0;
+}
+    </style>
 <div class="padding">
 <div class="box">
     <div class="box-header dker">
@@ -18,94 +30,29 @@
             </a>
         </div>
     </div> -->
-    @if(count($paginated) > 0)
-        <div class="table-responsive">
-                    <table class="table table-bordered m-a-0">
+    <div class="table-responsive">
+                    <table class="table table-bordered m-a-0" id="cabana_addon">
                         <thead class="dker">
                         <tr>
-                            <th  class="width20 dker">
+                            <th class="width20 dker">
                                 <label class="ui-check m-a-0">
                                     <input id="checkAll" type="checkbox"><i></i>
                                 </label>
                             </th>
-                            <th>{{ __('Venu ID') }}</th>
-                            <th>{{ __('Ticket Type') }}</th>
+                            <th>{{ __('ID') }}</th>
+                            <th>{{ __('venueId') }}</th>
+                            <th>{{ __('Name') }}</th>
                             <th>{{ __('Slug') }}</th>
                             <th>{{ __('Category') }}</th>
                             <th>{{ __('Price') }}</th>
+                            <th>{{ __('Featured') }}</th>
+                            <th>{{ __('Status') }}</th>
                             <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
                         </tr>
                         </thead>
-                        <tbody>
-                            @foreach ($paginated as $ticket)
-                             <tr>
-                                <td class="dker"><label class="ui-check m-a-0">
-                                        <input type="checkbox" name="ids[]" value="{{ $ticket['venueId'] }}"><i
-                                            class="dark-white"></i>
-                                        {!! Form::hidden('row_ids[]',$ticket['venueId'], array('class' => 'form-control row_no')) !!}
-                                    </label>
-                                </td>
-                                <td class="h6">
-                                    {{ $ticket['venueId'] }}
-                                </td>
-                                <td>
-                                   <small>{{ $ticket['ticketType'] }}</small>
-                                </td>
-
-                                <td>
-                                    <small>{{ $ticket['ticketSlug'] }}</small>
-                                </td>
-                                <td>
-                                    <small>{{ $ticket['ticketCategory'] }}</small>
-                                </td>
-                                <td class="text-center">
-                                    <small>{{ $ticket['price'] }}</small>
-                                </td>
-                                <td class="text-center">
-                                    <div class="dropdown">
-                                        <button type="button" class="btn btn-sm light dk dropdown-toggle"
-                                                data-toggle="dropdown"><i class="material-icons">&#xe5d4;</i>
-                                            {{ __('backend.options') }}
-                                        </button>
-                                        <div class="dropdown-menu pull-right">
-                                            <a class="dropdown-item"
-                                                href="{{ route('kabanaaddonEdit',$ticket['ticketSlug']) }}"><i
-                                                    class="material-icons">&#xe3c9;</i> {{ __('backend.edit') }}
-                                            </a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
+                        <tbody></tbody>
                     </table>
-                      <!-- Edit Modal -->
-                        <div id="editCabanaModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editCabanaLabel">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">{{ __('Edit Cabana') }}</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('backend.close') }}">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form id="editCabanaForm">
-                                            <div class="form-group">
-                                                <label for="ticketType">Ticket Type</label>
-                                                <input type="text" class="form-control" id="modalTicketType" readonly>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.close') }}</button>
-                                        <button type="button" class="btn btn-primary" id="saveCabanaChanges">{{ __('Save Changes') }}</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <!-- Edit Modal Close -->
-
+                    
         </div>
         <footer class="dker p-a">
                     <div class="row">
@@ -133,7 +80,7 @@
                             </div>
                             <!-- / .modal -->
                             @if(@Auth::user()->permissionsGroup->settings_status)
-                                <select name="action" id="action" class="form-control c-select w-sm inline v-middle"
+                                <!-- <select name="action" id="action" class="form-control c-select w-sm inline v-middle"
                                         required>
                                     <option value="">{{ __('backend.bulkAction') }}</option>
                                     <option value="activate">{{ __('backend.activeSelected') }}</option>
@@ -146,27 +93,28 @@
                                         style="display: none"
                                         data-target="#m-all" ui-toggle-class="bounce"
                                         ui-target="#animate">{{ __('backend.apply') }}
-                                </button>
+                                </button> -->
                             @endif
                         </div>
-                            <div class="col-sm-3 text-center">
+                            <!-- <div class="col-sm-3 text-center">
                                 <small class="text-muted inline m-t-sm m-b-sm">
                                     {{ __('backend.showing') }} {{ $paginated->firstItem() }} - {{ $paginated->lastItem() }}
                                     {{ __('backend.of') }} <strong>{{ $paginated->total() }}</strong> {{ __('backend.records') }}
                                 </small>
-                            </div>
+                            </div> -->
                             <div class="col-sm-6 text-right text-center-xs">
                                 {!! $paginated->links() !!}
                             </div>
                        
                     </div>
                 </footer>
-    @endif
+
 </div>
 </div>
 
 @endsection
 @push("after-scripts")
+<script src="{{ asset('assets/dashboard/js/datatables/datatables.min.js') }}"></script>
     <script type="text/javascript">
         $("#checkAll").click(function () {
             $('input:checkbox').not(this).prop('checked', this.checked);
@@ -179,6 +127,53 @@
                 $("#submit_all").css("display", "inline-block");
                 $("#submit_show_msg").css("display", "none");
             }
+        });
+        $(document).ready(function () {
+            var dataTable = $("#cabana_addon").DataTable({
+                processing: true,
+                serverSide: true,
+                searching: true,
+                ajax: {
+                    url: "{{ route('cabanaaddon.data') }}",
+                    type: "POST",
+                    data: function (data) {
+                        data._token = "{{ csrf_token() }}";
+                        data.find_q = $('#find_q').val();
+                    }
+                },
+               dom: '<"row"<"col-sm-6"f><"col-sm-6"l>>rtip',
+                columns: [
+                    { data: 'check', orderable: false, searchable: false },
+                    { data: 'id' },
+                    { data: 'venueId' },
+                    { data: 'ticketType' },
+                    { data: 'ticketSlug' },
+                    { data: 'ticketCategory' },
+                    { data: 'price' },
+                    { data: 'featured', orderable: false, searchable: false },
+                    { data: 'status', orderable: false, searchable: false },
+                    { data: 'options', orderable: false, searchable: false }
+                ],
+                order: [[1, 'desc']],
+                language: $.extend(
+                    {!! json_encode(__('backend.dataTablesTranslation')) !!},
+                    {
+                        processing: `<div class="col-sm-12 col-md-12">
+                            <img src="{{ asset('assets/dashboard/images/loading.gif') }}" style="height: 25px;" alt="Loading...">
+                            <div>{!! __('backend.loading') !!}</div>
+                        </div>`
+                    }
+                )
+            });
+
+            dataTable.on('page.dt', function () {
+                $('html, body').animate({
+                    scrollTop: $(".dataTables_wrapper").offset().top
+                }, 'slow');
+            });
+            $.fn.dataTable.ext.errMode = 'none';
+
+           
         });
     </script>
 

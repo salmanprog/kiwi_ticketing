@@ -50,6 +50,81 @@ class OrderController extends Controller
         return view("dashboard.kabanaorders.list", compact("paginated", "GeneralWebmasterSections"));
     }
 
+    public function getOrders(Request $request)
+    {
+        // General for all pages
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'desc')->get();
+        $query = Order::with(['customer','purchases','transaction',$request->type])->where('auth_code',$authCode)->where('type',$request->type);
+        if ($request->has('search') && $request->search['value'] != '') {
+            $search = $request->search['value'];
+
+            $query->where(function ($q) use ($search) {
+                $q->where('firstName', 'like', "%{$search}%")
+                ->orWhere('lastName', 'like', "%{$search}%")
+                ->orWhereRaw("DATE_FORMAT(orderDate, '%Y-%m-%d') LIKE ?", ["%{$search}%"])
+                ->orWhereRaw("DATE_FORMAT(created_at, '%Y-%m-%d') LIKE ?", ["%{$search}%"])
+                ->orWhereHas('cabana', function ($q2) use ($search) {
+                    $q2->where('ticketType', 'like', "%{$search}%");
+                });
+            });
+        }
+        
+        $totalData = $query->count();
+        $totalFiltered = $totalData;
+        $start = $request->input('start', 0);
+        $limit = $request->input('length', 10);
+        $draw = $request->input('draw', 1);
+        $orderColumn = $request->input('order.0.column');
+        $orderDir = $request->input('order.0.dir', 'desc');
+        $columns = $request->input('columns');
+        if ($columns && isset($columns[$orderColumn])) {
+            $orderField = $columns[$orderColumn]['data'];
+            $query->orderBy($orderField, $orderDir);
+        } else {
+            $query->orderBy('id', 'desc');
+        }
+
+        $data = $query->offset($start)->limit($limit)->get();
+
+        $result = [];
+        foreach ($data as $row) {
+            $result[] = [
+                'id' => $row->slug,
+                'check' => '<label class="ui-check m-a-0">
+                                <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
+                                <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
+                            </label>',
+                'package' => '<a class="dropdown-item" href="' . route('kabanaordersdetail', $row->slug) . '">'.$row->cabana->ticketType.'</a>',
+                'customerName' => $row->firstName.' '.$row->lastName,
+                'customerEmail' => $row->email,
+                'orderTotal' => '$' . number_format($row->orderTotal, 2),
+                'orderDate' => date('Y-m-d', strtotime($row->orderDate)),
+                'createdAt' => date('Y-m-d', strtotime($row->created_at)),
+                'status' => '<div class="text-center"><i class="fa ' . ($row->transactionId ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
+                'options' => '<div class="dropdown">
+                                <button type="button" class="btn btn-sm light dk dropdown-toggle" data-toggle="dropdown">
+                                    <i class="material-icons">&#xe5d4;</i> Options
+                                </button>
+                                <div class="dropdown-menu pull-right">
+                                    <a class="dropdown-item" href="' . route('kabanaordersdetail', $row->slug) . '">
+                                        <i class="material-icons"></i> Edit
+                                    </a>
+                                </div>
+                            </div>',
+            ];
+        }
+
+        return response()->json([
+            'draw' => intval($draw),
+            'recordsTotal' => $totalData,
+            'recordsFiltered' => $totalFiltered,
+            'data' => $result,
+        ]);
+    }
+
+
     public function getBirthdayOrders()
     {
         // General for all pages

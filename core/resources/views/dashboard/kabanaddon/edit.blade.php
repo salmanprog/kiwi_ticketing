@@ -51,7 +51,7 @@
                             <input placeholder="" class="form-control has-value" required="" maxlength="191" dir="ltr" name="ticketType" type="text" value="{{$cabana->ticketType}}" readonly>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <!-- <div class="form-group row">
                         <label for="link_status" class="col-sm-2 form-control-label">Addons</label>
                         <div class="col-sm-10">
                             
@@ -72,7 +72,36 @@
                                 @endif
                             
                         </div>
+                    </div> -->
+                    <div class="form-group row">
+                        <label for="link_status" class="col-sm-2 form-control-label">Addons</label>
+                        <div class="col-sm-10">
+                            @if(count($tickets) > 0)
+                                <div class="row">
+                                    @foreach($tickets as $ticket)
+                                        @if($ticket['ticketSlug'] != $cabana->ticketSlug)
+                                            <div class="col-md-4 col-sm-6 mb-2">
+                                                <label class="ui-check ui-check-md d-block">
+                                                    <input 
+                                                        id="ticket_active_{{ $ticket['ticketSlug'] }}" 
+                                                        class="has-value" 
+                                                        name="ticket[]" 
+                                                        type="checkbox" 
+                                                        value="{{ $ticket['ticketSlug'] }}"
+                                                        {{ in_array($ticket['ticketSlug'], array_column($cabana_addon, 'ticketSlug')) ? 'checked' : '' }}>
+                                                    <i class="dark-white"></i>
+                                                    {{ $ticket['ticketType'] }}
+                                                </label>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            @else
+                                <p>No addon available.</p>
+                            @endif
+                        </div>
                     </div>
+
                     <div class="form-group row m-t-md">
                         <div class="offset-sm-2 col-sm-10">
                             <button type="submit" class="btn btn-lg btn-primary m-t"><i class="material-icons">

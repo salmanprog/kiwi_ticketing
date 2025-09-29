@@ -8,6 +8,7 @@ use App\Models\Section;
 use App\Models\Topic;
 use App\Models\Cabana;
 use App\Models\CabanaAddon;
+use App\Models\CabanaPackages;
 use App\Models\WebmasterSection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Auth;
@@ -33,6 +34,75 @@ class KabanaAddonsController extends Controller
     public function index()
     {
         
+    }
+
+    public function getData(Request $request)
+    {
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $query = CabanaPackages::with(['media_slider'])->where('auth_code', $authCode);
+        if ($request->has('search') && $request->search['value'] != '') {
+            $search = $request->search['value'];
+            $query->where(function ($q) use ($search) {
+                $q->where('ticketType', 'like', "%{$search}%")
+                ->orWhere('ticketSlug', 'like', "%{$search}%")
+                ->orWhere('ticketCategory', 'like', "%{$search}%")
+                ->orWhere('venueId', 'like', "%{$search}%")
+                ->orWhere('price', 'like', "%{$search}%");
+            });
+        }
+
+        $totalData = $query->count();
+        $totalFiltered = $totalData;
+        $start = $request->input('start', 0);
+        $limit = $request->input('length', 10);
+        $draw = $request->input('draw', 1);
+        $orderColumn = $request->input('order.0.column');
+        $orderDir = $request->input('order.0.dir', 'desc');
+        $columns = $request->input('columns');
+        if ($columns && isset($columns[$orderColumn])) {
+            $orderField = $columns[$orderColumn]['data'];
+            $query->orderBy($orderField, $orderDir);
+        } else {
+            $query->orderBy('id', 'desc');
+        }
+
+        $data = $query->offset($start)->limit($limit)->get();
+
+        $result = [];
+        foreach ($data as $row) {
+            $result[] = [
+                'id' => $row->id,
+                'venueId' => $row->venueId,
+                'check' => '<label class="ui-check m-a-0">
+                                <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
+                                <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
+                            </label>',
+                'ticketType' => '<a class="dropdown-item" href="' . route('kabanaaddonEdit', $row->ticketSlug) . '">'.$row->ticketType.'</a>',
+                'ticketSlug' => $row->ticketSlug,
+                'ticketCategory' => $row->ticketCategory,
+                'price' => '$' . number_format($row->price, 2),
+                
+                'featured' => '<div class="text-center"><i class="fa ' . ($row->is_featured ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
+                'status' => '<div class="text-center"><i class="fa ' . ($row->status ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
+                'options' => '<div class="dropdown">
+                                <button type="button" class="btn btn-sm light dk dropdown-toggle" data-toggle="dropdown">
+                                    <i class="material-icons">&#xe5d4;</i> Options
+                                </button>
+                                <div class="dropdown-menu pull-right">
+                                    <a class="dropdown-item" href="' . route('kabanaaddonEdit', $row->ticketSlug) . '">
+                                        <i class="material-icons">&#xe3c9;</i> Edit
+                                    </a>
+                                </div>
+                            </div>',
+            ];
+        }
+
+        return response()->json([
+            'draw' => intval($draw),
+            'recordsTotal' => $totalData,
+            'recordsFiltered' => $totalFiltered,
+            'data' => $result,
+        ]);
     }
 
     public function cabanAddon()

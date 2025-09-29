@@ -47,6 +47,10 @@ class CabanaPackages extends Model
     {
         return $this->hasMany(Media::class, 'module_id')->where('module','cabana_package');
     }
+    public function cabana_addon()
+    {
+        return $this->hasMany(CabanaAddon::class, 'cabanaSlug','ticketSlug');
+    }
     /**
      * Generate a unique slug for the birthday package.
      */
