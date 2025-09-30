@@ -291,6 +291,7 @@ Route::post('/cabana/store', [KabanaAddonsController::class, 'store'])->name('ca
 Route::post('/cabana-addon', [KabanaAddonsController::class, 'getData'])->name('cabanaaddon.data');
 // Birthday Packages
 Route::get('/birthday_packages', [BirthdayPackagesController::class, 'index'])->name('birthdaypackages');
+Route::post('/birthday-package', [BirthdayPackagesController::class, 'getData'])->name('birthdaypackages.data');
 Route::get('/birthday_packages/{id}/edit', [BirthdayPackagesController::class, 'edit'])->name('birthdaypackagesEdit');
 Route::get('/birthday_packages/create/', [BirthdayPackagesController::class, 'create'])->name('birthdaypackagesCreate');
 Route::post('/birthday_packages/store', [BirthdayPackagesController::class, 'store'])->name('birthdaypackagesStore');
@@ -301,11 +302,13 @@ Route::get('/birthday-orders', [OrderController::class, 'getBirthdayOrders'])->n
 Route::get('/birthday-orders-detail/{slug}', [OrderController::class, 'getByOrderSlug'])->name('birthdayordersdetail');
 // Birthday Addons
 Route::get('/birthday_addons', [BirthdayAddonsController::class, 'index'])->name('birthdayaddon');
+Route::post('/birthday-addons', [BirthdayAddonsController::class, 'getData'])->name('birthdayaddon.data');
 Route::get('/birthday_addons/{id}/edit', [BirthdayAddonsController::class, 'edit'])->name('birthdayaddonEdit');
 Route::post('/birthday_addons/store', [BirthdayAddonsController::class, 'store'])->name('birthdayaddonStore');
 
 //Generl Tickets Packages
 Route::get('/general-ticket-packages', [GeneralTicketPackagesController::class, 'index'])->name('generalticketpackages');
+Route::post('/general-ticket', [GeneralTicketPackagesController::class, 'getData'])->name('generalticketpackages.data');
 Route::get('/general-ticket-packages/{id}/edit', [GeneralTicketPackagesController::class, 'edit'])->name('generalticketpackagesEdit');
 Route::get('/general-ticket-packages/create/', [GeneralTicketPackagesController::class, 'create'])->name('generalticketpackagesCreate');
 Route::post('/general-ticket-packages/store', [GeneralTicketPackagesController::class, 'store'])->name('generalticketpackagesStore');
@@ -322,6 +325,7 @@ Route::get('/general-ticket-orders', [OrderController::class, 'getTicketingOrder
 Route::get('/general-ticket-orders-detail/{slug}', [OrderController::class, 'getByOrderSlug'])->name('generalticketsordersdetail');
 // General Tickets Addons
 Route::get('/general-tickets-addon', [GeneralTicketAddonController::class, 'index'])->name('generalticketsaddon');
+Route::post('/general-ticket-addon', [GeneralTicketAddonController::class, 'getData'])->name('generalticketsaddon.data');
 Route::get('/general-tickets-addon/create/', [GeneralTicketAddonController::class, 'create'])->name('generalticketsaddonCreate');
 Route::post('/general-tickets-addon/store', [GeneralTicketAddonController::class, 'store'])->name('generalticketsaddonStore');
 Route::get('/general-tickets-addon/{id}/edit', [GeneralTicketAddonController::class, 'edit'])->name('generalticketsaddonEdit');
@@ -329,6 +333,7 @@ Route::post('/general-tickets-addon/{id}/update', [GeneralTicketAddonController:
 Route::get('/general-tickets-addon/destroy/{id}', [GeneralTicketAddonController::class, 'destroy'])->name('generalticketsaddonDestroy');
 // Season Pass
 Route::get('/season-pass', [SeasonPassController::class, 'index'])->name('seasonpass');
+Route::post('/season-pass-package', [SeasonPassController::class, 'getData'])->name('seasonpass.data');
 Route::get('/season-pass/{slug}/edit', [SeasonPassController::class, 'edit'])->name('seasonpassEdit');
 Route::get('/season-pass/create/', [SeasonPassController::class, 'create'])->name('seasonpassCreate');
 Route::post('/season-pass/store', [SeasonPassController::class, 'store'])->name('seasonpassStore');
@@ -338,6 +343,7 @@ Route::get('/season-pass-orders', [OrderController::class, 'getSeasonPassOrders'
 Route::get('/season-pass-orders-detail/{slug}', [OrderController::class, 'getByOrderSlug'])->name('seasonpassordersdetail');
 // Season Pass Addons
 Route::get('/season-pass-addons', [SeasonPassAddonsController::class, 'index'])->name('seasonpassaddon');
+Route::post('/season-pass-addon', [SeasonPassAddonsController::class, 'getData'])->name('seasonpassaddon.data');
 Route::get('/season-pass-addons/create/', [SeasonPassAddonsController::class, 'create'])->name('seasonpassaddonCreate');
 Route::get('/season-pass-addons/{id}/edit', [SeasonPassAddonsController::class, 'edit'])->name('seasonpassaddonEdit');
 Route::post('/season-pass-addons/store', [SeasonPassAddonsController::class, 'store'])->name('seasonpassaddonStore');

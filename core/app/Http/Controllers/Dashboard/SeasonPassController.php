@@ -51,6 +51,70 @@ class SeasonPassController extends Controller
          return view("dashboard.seasonpass.list", compact("paginated", "GeneralWebmasterSections"));
     }
 
+    public function getData(Request $request)
+    {
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $query = SeasonPass::with(['media_slider','products'])->where('auth_code', $authCode);
+        if ($request->has('search') && $request->search['value'] != '') {
+            $search = $request->search['value'];
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%");
+            });
+        }
+
+        $totalData = $query->count();
+        $totalFiltered = $totalData;
+        $start = $request->input('start', 0);
+        $limit = $request->input('length', 10);
+        $draw = $request->input('draw', 1);
+        $orderColumn = $request->input('order.0.column');
+        $orderDir = $request->input('order.0.dir', 'desc');
+        $columns = $request->input('columns');
+        if ($columns && isset($columns[$orderColumn])) {
+            $orderField = $columns[$orderColumn]['data'];
+            $query->orderBy($orderField, $orderDir);
+        } else {
+            $query->orderBy('id', 'desc');
+        }
+
+        $data = $query->offset($start)->limit($limit)->get();
+
+        $result = [];
+        foreach ($data as $row) {
+            $result[] = [
+                'id' => $row->id,
+                'check' => '<label class="ui-check m-a-0">
+                                <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
+                                <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
+                            </label>',
+                'title' => '<a class="dropdown-item" href="' . route('seasonpassEdit', $row->slug) . '">'.$row->title.'</a>',
+                'slug' => $row->slug,
+                'products' => '<div class="text-center">'.count($row->products).'</div>',
+                'status' => '<div class="text-center"><i class="fa ' . ($row->status ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
+                'options' => '<div class="dropdown">
+                                <button type="button" class="btn btn-sm light dk dropdown-toggle" data-toggle="dropdown">
+                                    <i class="material-icons">&#xe5d4;</i> Options
+                                </button>
+                                <div class="dropdown-menu pull-right">
+                                    <a class="dropdown-item" href="' . route('seasonpassEdit', $row->slug) . '">
+                                        <i class="material-icons">&#xe3c9;</i> Edit
+                                    </a>
+                                    <a class="dropdown-item text-danger" onclick="DeleteTicket(\'' . $row->slug . '\')">
+                                        <i class="material-icons">&#xe872;</i> Delete
+                                    </a>
+                                </div>
+                            </div>',
+            ];
+        }
+
+        return response()->json([
+            'draw' => intval($draw),
+            'recordsTotal' => $totalData,
+            'recordsFiltered' => $totalFiltered,
+            'data' => $result,
+        ]);
+    }
+
     public function create()
     {
         // General for all pages

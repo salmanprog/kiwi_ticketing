@@ -1,6 +1,18 @@
 @extends('dashboard.layouts.master')
 @section('title', __('Birthday Addon'))
 @section('content')
+<style>
+    div.dataTables_wrapper div.dataTables_processing {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    margin-left: -100px;
+    margin-top: -26px;
+    text-align: center;
+    padding: 1em 0;
+}
+    </style>
 <div class="padding">
 <div class="box">
     <div class="box-header dker">
@@ -18,16 +30,16 @@
             </a>
         </div>
     </div> -->
-    @if(count($paginated) > 0)
-        <div class="table-responsive">
-                    <table class="table table-bordered m-a-0">
+    <div class="table-responsive">
+                    <table class="table table-bordered m-a-0" id="birthday_addons">
                         <thead class="dker">
                         <tr>
-                            <th  class="width20 dker">
+                            <th class="width20 dker">
                                 <label class="ui-check m-a-0">
                                     <input id="checkAll" type="checkbox"><i></i>
                                 </label>
                             </th>
+                            <th>{{ __('ID') }}</th>
                             <th>{{ __('Package Title') }}</th>
                             <th>{{ __('Slug') }}</th>
                             <th>{{ __('Price') }}</th>
@@ -36,61 +48,9 @@
                             <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
                         </tr>
                         </thead>
-                        <tbody>
-                            @foreach ($paginated as $ticket)
-                             <tr>
-                                <td class="dker"><label class="ui-check m-a-0">
-                                        <input type="checkbox" name="ids[]" value="{{ $ticket['venueId'] }}"><i
-                                            class="dark-white"></i>
-                                        {!! Form::hidden('row_ids[]',$ticket['id'], array('class' => 'form-control row_no')) !!}
-                                    </label>
-                                </td>
-                                <td>
-                                   <div class="">
-                                        <a href="{{ route('birthdayaddonEdit',$ticket['slug']) }}"> 
-                                            <div class="pull-right">
-                                                 @foreach($ticket->media_cover as $media_cover)
-                                                <img src="{{ asset('uploads/sections/' . $media_cover->filename) }}" style="height: 40px;width:150px" alt="Curabitur vitae leo vitae ipsum varius laoreet">
-                                                @endforeach
-                                            </div>
-                                            <div class="h6 m-b-0">{{ $ticket['title'] }}</div>
-                                           
-                                        </a>
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <small>{{ $ticket['slug'] }}</small>
-                                </td>
-                                <td class="text-center">
-                                    <small>{{ $ticket['price'] }}</small>
-                                </td>
-                                <td class="text-center">
-                                    <small>{{ count($ticket['addons']) }}</small>
-                                </td>
-                                <td class="text-center">
-                                    <i class="fa fa-check text-success inline"></i>
-                                </td>
-                                </td>
-                                <td class="text-center">
-                                    <div class="dropdown">
-                                        <button type="button" class="btn btn-sm light dk dropdown-toggle"
-                                                data-toggle="dropdown"><i class="material-icons">&#xe5d4;</i>
-                                            {{ __('backend.options') }}
-                                        </button>
-                                        <div class="dropdown-menu pull-right">
-                                            <a class="dropdown-item"
-                                                href="{{ route('birthdayaddonEdit',$ticket['slug']) }}"><i
-                                                    class="material-icons">&#xe3c9;</i> {{ __('backend.edit') }}
-                                            </a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
+                        <tbody></tbody>
                     </table>
-
+                    
         </div>
         <footer class="dker p-a">
                     <div class="row">
@@ -125,12 +85,12 @@
                        
                     </div>
                 </footer>
-    @endif
 </div>
 </div>
 
 @endsection
 @push("after-scripts")
+<script src="{{ asset('assets/dashboard/js/datatables/datatables.min.js') }}"></script>
     <script type="text/javascript">
         $("#checkAll").click(function () {
             $('input:checkbox').not(this).prop('checked', this.checked);
@@ -143,6 +103,51 @@
                 $("#submit_all").css("display", "inline-block");
                 $("#submit_show_msg").css("display", "none");
             }
+        });
+        $(document).ready(function () {
+            var dataTable = $("#birthday_addons").DataTable({
+                processing: true,
+                serverSide: true,
+                searching: true,
+                ajax: {
+                    url: "{{ route('birthdayaddon.data') }}",
+                    type: "POST",
+                    data: function (data) {
+                        data._token = "{{ csrf_token() }}";
+                        data.find_q = $('#find_q').val();
+                    }
+                },
+               dom: '<"row"<"col-sm-6"f><"col-sm-6"l>>rtip',
+                columns: [
+                    { data: 'check', orderable: false, searchable: false },
+                    { data: 'id' },
+                    { data: 'title' },
+                    { data: 'slug' },
+                    { data: 'price' },
+                    { data: 'addons' },
+                    { data: 'status', orderable: false, searchable: false },
+                    { data: 'options', orderable: false, searchable: false }
+                ],
+                order: [[1, 'desc']],
+                language: $.extend(
+                    {!! json_encode(__('backend.dataTablesTranslation')) !!},
+                    {
+                        processing: `<div class="col-sm-12 col-md-12">
+                            <img src="{{ asset('assets/dashboard/images/loading.gif') }}" style="height: 25px;" alt="Loading...">
+                            <div>{!! __('backend.loading') !!}</div>
+                        </div>`
+                    }
+                )
+            });
+
+            dataTable.on('page.dt', function () {
+                $('html, body').animate({
+                    scrollTop: $(".dataTables_wrapper").offset().top
+                }, 'slow');
+            });
+            $.fn.dataTable.ext.errMode = 'none';
+
+           
         });
     </script>
 

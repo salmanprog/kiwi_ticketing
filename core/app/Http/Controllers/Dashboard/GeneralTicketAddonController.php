@@ -48,6 +48,74 @@ class GeneralTicketAddonController extends Controller
         return view("dashboard.general_ticket_addon.list", compact("paginated", "GeneralWebmasterSections"));
     }
 
+    public function getData(Request $request)
+    {
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $query = GeneralTicketAddon::with(['media_slider'])->where('auth_code',$authCode);
+        if ($request->has('search') && $request->search['value'] != '') {
+            $search = $request->search['value'];
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%");
+            });
+        }
+
+        $totalData = $query->count();
+        $totalFiltered = $totalData;
+        $start = $request->input('start', 0);
+        $limit = $request->input('length', 10);
+        $draw = $request->input('draw', 1);
+        $orderColumn = $request->input('order.0.column');
+        $orderDir = $request->input('order.0.dir', 'desc');
+        $columns = $request->input('columns');
+        if ($columns && isset($columns[$orderColumn])) {
+            $orderField = $columns[$orderColumn]['data'];
+            $query->orderBy($orderField, $orderDir);
+        } else {
+            $query->orderBy('id', 'desc');
+        }
+
+        $data = $query->offset($start)->limit($limit)->get();
+
+        $result = [];
+        foreach ($data as $row) {
+            $result[] = [
+                'id' => $row->id,
+                'check' => '<label class="ui-check m-a-0">
+                                <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
+                                <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
+                            </label>',
+                'venueId' => $row->venueId,            
+                'generalTicketType' => '<a class="dropdown-item" href="' . route('generalticketsaddonEdit', $row->slug) . '">'.$row->generalTicketType.'</a>',
+                'ticketType' => $row->ticketType,
+                'ticketCategory' => $row->ticketCategory,
+                'price' => '$' . number_format($row->price, 2),
+                'new_price' => '$' . number_format($row->new_price, 2),
+                'is_primary' => '<div class="text-center"><i class="fa ' . ($row->is_primary ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
+                 'status' => '<div class="text-center"><i class="fa ' . ($row->status ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
+                'options' => '<div class="dropdown">
+                                <button type="button" class="btn btn-sm light dk dropdown-toggle" data-toggle="dropdown">
+                                    <i class="material-icons">&#xe5d4;</i> Options
+                                </button>
+                                <div class="dropdown-menu pull-right">
+                                    <a class="dropdown-item" href="' . route('generalticketsaddonEdit', $row->slug) . '">
+                                        <i class="material-icons">&#xe3c9;</i> Edit
+                                    </a>
+                                     <a class="dropdown-item text-danger" onclick="DeleteTicketAddon(\'' . $row->id . '\')">
+                                        <i class="material-icons">&#xe872;</i> Delete
+                                    </a>
+                                </div>
+                            </div>',
+            ];
+        }
+
+        return response()->json([
+            'draw' => intval($draw),
+            'recordsTotal' => $totalData,
+            'recordsFiltered' => $totalFiltered,
+            'data' => $result,
+        ]);
+    }
+
     public function create()
     {
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();

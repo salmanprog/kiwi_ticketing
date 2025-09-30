@@ -1,6 +1,18 @@
 @extends('dashboard.layouts.master')
 @section('title', __('SeasonPass Product'))
 @section('content')
+<style>
+    div.dataTables_wrapper div.dataTables_processing {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    margin-left: -100px;
+    margin-top: -26px;
+    text-align: center;
+    padding: 1em 0;
+}
+    </style>
 <div class="padding">
 <div class="box">
     <div class="box-header dker">
@@ -20,91 +32,27 @@
     </div>
    
         <div class="table-responsive">
-                    <table class="table table-bordered m-a-0">
-                        <thead class="dker">
-                        <tr>
-                            <th  class="width20 dker">
-                                <label class="ui-check m-a-0">
-                                    <input id="checkAll" type="checkbox"><i></i>
-                                </label>
-                            </th>
-                            <th>{{ __('Id') }}</th>
-                            <th>{{ __('Season Pass') }}</th>
-                            <th>{{ __('Product Name') }}</th>
-                            <th>{{ __('Product Slug') }}</th>
-                            <th>{{ __('Product Price') }}</th>
-                            <th>{{ __('Product New Price') }}</th>
-                            <th>{{ __('Status') }}</th>
-                            <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                             @if(count($paginated) > 0)
-                                @foreach ($paginated as $ticket)
-                                <tr>
-                                    <td class="dker"><label class="ui-check m-a-0">
-                                            <input type="checkbox" name="ids[]" value="{{ $ticket['id'] }}"><i
-                                                class="dark-white"></i>
-                                            {!! Form::hidden('row_ids[]',$ticket['id'], array('class' => 'form-control row_no')) !!}
-                                        </label>
-                                    </td>
-                                    <td class="h6">
-                                    {{ $ticket['id'] }}
-                                    </td>
-                                    <td>
-                                    <div class="">
-                                            <a href="{{ route('seasonpass') }}"> 
-                                                <div class="h6 m-b-0">{{ $ticket->season_pass->title }}</div>
-                                            
-                                            </a>
-                                        </div>
-                                    </td>
-                                    <td>
-                                    <div class="">
-                                            <a href="{{ route('seasonpassaddonEdit',$ticket['slug']) }}"> 
-                                                <div class="h6 m-b-0">{{ $ticket['ticketType'] }}</div>
-                                            
-                                            </a>
-                                        </div>
-                                    </td>
-
-                                    <td>
-                                        <small>{{ $ticket['ticketSlug'] }}</small>
-                                    </td>
-                                    <td class="text-center">
-                                        <small>${{ number_format($ticket['price'], 2) }}</small>
-                                    </td>
-                                    <td class="text-center">
-                                        <small>${{ number_format($ticket['new_price'], 2) }}</small>
-                                    </td>
-                                     <td class="text-center">
-                                    <i class="fa {{ $ticket['status'] == 1 ? 'fa-check text-success' : 'fa-times text-danger' }} inline"></i>
-                                    </td>
-                                    </td>
-                                    <td class="text-center">
-                                        <div class="dropdown">
-                                            <button type="button" class="btn btn-sm light dk dropdown-toggle"
-                                                    data-toggle="dropdown"><i class="material-icons">&#xe5d4;</i>
-                                                {{ __('backend.options') }}
-                                            </button>
-                                            <div class="dropdown-menu pull-right">
-                                                <a class="dropdown-item"
-                                                    href="{{ route('seasonpassaddonEdit',$ticket['slug']) }}"><i
-                                                        class="material-icons">&#xe3c9;</i> {{ __('backend.edit') }}
-                                                </a>
-                                                <a class="dropdown-item text-danger"
-                                                onclick="DeleteTicket('{{ $ticket['slug'] }}')"><i
-                                                    class="material-icons">&#xe872;</i> {{ __('backend.delete') }}
-                                            </a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @endforeach
-                             @endif
-                        </tbody>
-                    </table>
-
+            <table class="table table-bordered m-a-0" id="season_pass_addon">
+                <thead class="dker">
+                <tr>
+                    <th class="width20 dker">
+                        <label class="ui-check m-a-0">
+                            <input id="checkAll" type="checkbox"><i></i>
+                        </label>
+                    </th>
+                    <th>{{ __('Id') }}</th>
+                    <th>{{ __('Season Pass') }}</th>
+                    <th>{{ __('Product Name') }}</th>
+                    <th>{{ __('Product Slug') }}</th>
+                    <th>{{ __('Product Price') }}</th>
+                    <th>{{ __('Product New Price') }}</th>
+                    <th>{{ __('Status') }}</th>
+                    <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+                    
         </div>
         <footer class="dker p-a">
                     <div class="row">
@@ -127,12 +75,12 @@
                                 </button> -->
                             @endif
                         </div>
-                            <div class="col-sm-3 text-center">
+                            <!-- <div class="col-sm-3 text-center">
                                 <small class="text-muted inline m-t-sm m-b-sm">
                                     {{ __('backend.showing') }} {{ $paginated->firstItem() }} - {{ $paginated->lastItem() }}
                                     {{ __('backend.of') }} <strong>{{ $paginated->total() }}</strong> {{ __('backend.records') }}
                                 </small>
-                            </div>
+                            </div> -->
                             <div class="col-sm-6 text-right text-center-xs">
                                 {!! $paginated->links() !!}
                             </div>
@@ -165,6 +113,7 @@
     </div>
 @endsection
 @push("after-scripts")
+<script src="{{ asset('assets/dashboard/js/datatables/datatables.min.js') }}"></script>
     <script type="text/javascript">
         $("#checkAll").click(function () {
             $('input:checkbox').not(this).prop('checked', this.checked);
@@ -177,6 +126,52 @@
                 $("#submit_all").css("display", "inline-block");
                 $("#submit_show_msg").css("display", "none");
             }
+        });
+        $(document).ready(function () {
+            var dataTable = $("#season_pass_addon").DataTable({
+                processing: true,
+                serverSide: true,
+                searching: true,
+                ajax: {
+                    url: "{{ route('seasonpassaddon.data') }}",
+                    type: "POST",
+                    data: function (data) {
+                        data._token = "{{ csrf_token() }}";
+                        data.find_q = $('#find_q').val();
+                    }
+                },
+               dom: '<"row"<"col-sm-6"f><"col-sm-6"l>>rtip',
+                columns: [
+                    { data: 'check', orderable: false, searchable: false },
+                    { data: 'id' },
+                    { data: 'seasonpass' },
+                    { data: 'title' },
+                    { data: 'slug' },
+                    { data: 'price' },
+                    { data: 'new_price' },
+                    { data: 'status', orderable: false, searchable: false },
+                    { data: 'options', orderable: false, searchable: false }
+                ],
+                order: [[1, 'desc']],
+                language: $.extend(
+                    {!! json_encode(__('backend.dataTablesTranslation')) !!},
+                    {
+                        processing: `<div class="col-sm-12 col-md-12">
+                            <img src="{{ asset('assets/dashboard/images/loading.gif') }}" style="height: 25px;" alt="Loading...">
+                            <div>{!! __('backend.loading') !!}</div>
+                        </div>`
+                    }
+                )
+            });
+
+            dataTable.on('page.dt', function () {
+                $('html, body').animate({
+                    scrollTop: $(".dataTables_wrapper").offset().top
+                }, 'slow');
+            });
+            $.fn.dataTable.ext.errMode = 'none';
+
+           
         });
     </script>
     <script type="text/javascript">
