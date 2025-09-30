@@ -96,7 +96,7 @@ class OrderController extends Controller
                                 <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
                                 <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
                             </label>',
-                'package' => '<a class="dropdown-item" href="' . route('kabanaordersdetail', $row->slug) . '">'.$row->cabana->ticketType.'</a>',
+                'package' => '<a class="dropdown-item" href="' . route($request->route, $row->slug) . '">'.$row->cabana->ticketType.'</a>',
                 'customerName' => $row->firstName.' '.$row->lastName,
                 'customerEmail' => $row->email,
                 'orderTotal' => '$' . number_format($row->orderTotal, 2),
@@ -108,7 +108,7 @@ class OrderController extends Controller
                                     <i class="material-icons">&#xe5d4;</i> Options
                                 </button>
                                 <div class="dropdown-menu pull-right">
-                                    <a class="dropdown-item" href="' . route('kabanaordersdetail', $row->slug) . '">
+                                    <a class="dropdown-item" href="' . route($request->route, $row->slug) . '">
                                         <i class="material-icons"></i> Edit
                                     </a>
                                 </div>

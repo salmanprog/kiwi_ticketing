@@ -1,6 +1,18 @@
 @extends('dashboard.layouts.master')
 @section('title', __('General Ticket Orders'))
 @section('content')
+<style>
+    div.dataTables_wrapper div.dataTables_processing {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    margin-left: -100px;
+    margin-top: -26px;
+    text-align: center;
+    padding: 1em 0;
+}
+    </style>
 <div class="padding">
 <div class="box">
     <div class="box-header dker">
@@ -15,81 +27,28 @@
             </div>
             <div>
         <div class="table-responsive">
-                    <table class="table table table-bordered">
-                        <thead class="dker">
-                        <tr>
-                            <th  class="width20 dker">
-                                <label class="ui-check m-a-0">
-                                    <input id="checkAll" type="checkbox"><i></i>
-                                </label>
-                            </th>
-                            <th>{{ __('Order No') }}</th>
-                            <th>{{ __('Name') }}</th>
-                            <th>{{ __('Email') }}</th>
-                            <th>{{ __('Phone') }}</th>
-                            <th>{{ __('Transaction-Id') }}</th>
-                            <th>{{ __('Total') }}</th>
-                            <th>{{ __('Paid') }}</th>
-                            <th>{{ __('Date') }}</th>
-                            <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            @if(count($paginated) > 0)
-                            @foreach ($paginated as $order)
-                             <tr>
-                                <td class="dker"><label class="ui-check m-a-0">
-                                        <input type="checkbox" name="ids[]" value="{{ $order['id'] }}"><i
-                                            class="dark-white"></i>
-                                        {!! Form::hidden('row_ids[]',$order['id'], array('class' => 'form-control row_no')) !!}
-                                    </label>
-                                </td>
-                                <td>
-                                   <small>{{$order->slug }}</small>
-                                </td>
-                                <td class="h6">
-                                    {{ $order->customer->name }}
-                                </td>
-                                <td>
-                                   <small>{{$order->customer->email }}</small>
-                                </td>
-
-                                <td>
-                                    <small>{{ $order->customer->phone }}</small>
-                                </td>
-                                <td>
-                                    <small>{{ $order['transactionId'] }}</small>
-                                </td>
-                                <td>
-                                    <small>${{ $order['orderTotal'] }}</small>
-                                </td>
-                                <td class="text-center">
-                                    <i class="fa fa-check text-success inline"></i>
-                                </td>
-                                <td>
-                                    <small>{{ date('Y-m-d', strtotime($order['orderDate'])) }}</small>
-                                </td>
-                                <td class="text-center">
-                                    <div class="dropdown">
-                                        <button type="button" class="btn btn-sm light dk dropdown-toggle"
-                                                data-toggle="dropdown"><i class="material-icons">&#xe5d4;</i>
-                                            {{ __('backend.options') }}
-                                        </button>
-                                        <div class="dropdown-menu pull-right">
-                                            <a class="dropdown-item"
-                                                href="{{ route('generalticketsordersdetail',$order['slug']) }}"><i
-                                                    class="material-icons"></i> {{ __('backend.preview') }}
-                                            </a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
-                            @endif
-                        </tbody>
-                    </table>
-
-        </div>
+                <table class="table table-bordered m-a-0" id="general_orders">
+                    <thead class="dker">
+                    <tr>
+                        <th class="width20 dker">
+                            <label class="ui-check m-a-0">
+                                <input id="checkAll" type="checkbox"><i></i>
+                            </label>
+                        </th>
+                        <th>{{ __('ID') }}</th>
+                        <th>{{ __('Package') }}</th>
+                        <th>{{ __('Customer Name') }}</th>
+                        <th>{{ __('Customer Email') }}</th>
+                        <th>{{ __('Total') }}</th>
+                        <th>{{ __('Status') }}</th>
+                        <th>{{ __('OrderDate') }}</th>
+                        <th>{{ __('CreatedAt') }}</th>
+                        <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         <footer class="dker p-a">
                     <div class="row">
                         <div class="col-sm-3 hidden-xs">
@@ -116,7 +75,7 @@
                             </div>
                             <!-- / .modal -->
                             @if(@Auth::user()->permissionsGroup->settings_status)
-                                <select name="action" id="action" class="form-control c-select w-sm inline v-middle"
+                                <!-- <select name="action" id="action" class="form-control c-select w-sm inline v-middle"
                                         required>
                                     <option value="">{{ __('backend.bulkAction') }}</option>
                                     <option value="activate">{{ __('backend.activeSelected') }}</option>
@@ -129,15 +88,15 @@
                                         style="display: none"
                                         data-target="#m-all" ui-toggle-class="bounce"
                                         ui-target="#animate">{{ __('backend.apply') }}
-                                </button>
+                                </button> -->
                             @endif
                         </div>
-                            <div class="col-sm-3 text-center">
+                            <!-- <div class="col-sm-3 text-center">
                                 <small class="text-muted inline m-t-sm m-b-sm">
                                     {{ __('backend.showing') }} {{ $paginated->firstItem() }} - {{ $paginated->lastItem() }}
                                     {{ __('backend.of') }} <strong>{{ $paginated->total() }}</strong> {{ __('backend.records') }}
                                 </small>
-                            </div>
+                            </div> -->
                             <div class="col-sm-6 text-right text-center-xs">
                                 {!! $paginated->links() !!}
                             </div>
@@ -150,6 +109,7 @@
 
 @endsection
 @push("after-scripts")
+<script src="{{ asset('assets/dashboard/js/datatables/datatables.min.js') }}"></script>
     <script type="text/javascript">
         $("#checkAll").click(function () {
             $('input:checkbox').not(this).prop('checked', this.checked);
@@ -162,6 +122,55 @@
                 $("#submit_all").css("display", "inline-block");
                 $("#submit_show_msg").css("display", "none");
             }
+        });
+        $(document).ready(function () {
+            var dataTable = $("#general_orders").DataTable({
+                processing: true,
+                serverSide: true,
+                searching: true,
+                ajax: {
+                    url: "{{ route('generalticketsorders.data') }}",
+                    type: "POST",
+                    data: function (data) {
+                        data._token = "{{ csrf_token() }}";
+                        data.find_q = $('#find_q').val();
+                        data.type = 'general_ticket';
+                        data.route = 'generalticketsordersdetail';
+                    }
+                },
+               dom: '<"row"<"col-sm-6"f><"col-sm-6"l>>rtip',
+                columns: [
+                    { data: 'check', orderable: false, searchable: false },
+                    { data: 'id' },
+                    { data: 'package' },
+                    { data: 'customerName' },
+                    { data: 'customerEmail' },
+                    { data: 'orderTotal' },
+                    { data: 'status' },
+                    { data: 'orderDate' },
+                    { data: 'createdAt' },
+                    { data: 'options', orderable: false, searchable: false }
+                ],
+                order: [[1, 'desc']],
+                language: $.extend(
+                    {!! json_encode(__('backend.dataTablesTranslation')) !!},
+                    {
+                        processing: `<div class="col-sm-12 col-md-12">
+                            <img src="{{ asset('assets/dashboard/images/loading.gif') }}" style="height: 25px;" alt="Loading...">
+                            <div>{!! __('backend.loading') !!}</div>
+                        </div>`
+                    }
+                )
+            });
+
+            dataTable.on('page.dt', function () {
+                $('html, body').animate({
+                    scrollTop: $(".dataTables_wrapper").offset().top
+                }, 'slow');
+            });
+            $.fn.dataTable.ext.errMode = 'none';
+
+           
         });
     </script>
 

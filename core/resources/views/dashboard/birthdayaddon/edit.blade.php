@@ -56,17 +56,19 @@
                         <div class="col-sm-10">
                             
                                 @if(count($tickets) > 0)
+                                <div class="row">
                                     @foreach($tickets as $ticket)
-                                        @if($ticket['ticketSlug'] != $cabana->ticketSlug)
-                                            <div class="radio">
-                                                <label class="ui-check ui-check-md">
-                                                    <input id="ticket_active_{{ $ticket['ticketSlug'] }}" class="has-value" name="ticket[]" type="checkbox" value="{{ $ticket['ticketSlug'] }}" {{ in_array($ticket['ticketSlug'], array_column($cabana_addon, 'ticketSlug')) ? 'checked' : '' }}>
-                                                    <i class="dark-white"></i>
-                                                    {{ $ticket['ticketType'] }}
-                                                </label>
-                                            </div>
-                                        @endif
-                                @endforeach
+                                            @if($ticket['ticketSlug'] != $cabana->ticketSlug)
+                                                <div class="col-md-4 col-sm-6 mb-2">
+                                                    <label class="ui-check ui-check-md d-block">
+                                                        <input id="ticket_active_{{ $ticket['ticketSlug'] }}" class="has-value" name="ticket[]" type="checkbox" value="{{ $ticket['ticketSlug'] }}" {{ in_array($ticket['ticketSlug'], array_column($cabana_addon, 'ticketSlug')) ? 'checked' : '' }}>
+                                                        <i class="dark-white"></i>
+                                                        {{ $ticket['ticketType'] }}
+                                                    </label>
+                                                </div>
+                                            @endif
+                                    @endforeach
+                                </div>
                                 @else
                                     <p>No tickets available.</p>
                                 @endif

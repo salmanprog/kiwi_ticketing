@@ -142,6 +142,7 @@
                         data._token = "{{ csrf_token() }}";
                         data.find_q = $('#find_q').val();
                         data.type = 'cabana';
+                        data.route = 'kabanaordersdetail';
                     }
                 },
                dom: '<"row"<"col-sm-6"f><"col-sm-6"l>>rtip',

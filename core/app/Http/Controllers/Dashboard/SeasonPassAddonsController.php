@@ -68,7 +68,10 @@ class SeasonPassAddonsController extends Controller
         if ($request->has('search') && $request->search['value'] != '') {
             $search = $request->search['value'];
             $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%");
+                $q->where('ticketType', 'like', "%{$search}%")
+                ->orWhereHas('season_pass', function ($q2) use ($search) {
+                    $q2->where('title', 'like', "%{$search}%");
+                });
             });
         }
 

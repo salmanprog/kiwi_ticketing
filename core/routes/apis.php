@@ -49,9 +49,11 @@ Route::get('/birthday/addon/{slug}', 'BirthdayAddonController@show');
 //Tickets
 Route::post('/ticket-hold', 'TicketController@ticketHold');
 Route::post('/cabana-occupancy', 'TicketController@GetCabanaOccupancy');
+Route::get('/calendar', 'TicketController@GetCalendar');
 //General Ticket
 Route::get('/general-package', 'GeneralTicketController@index');
 Route::get('/general-ticket-package/{slug}', 'GeneralTicketController@generalTicketAddon');
+
 //Route::get('/general-ticket-cabana/{slug}', 'GeneralTicketController@generalTicketCabana');
 //Season Pass
 Route::get('/season-pass', 'SeasonPassController@index');

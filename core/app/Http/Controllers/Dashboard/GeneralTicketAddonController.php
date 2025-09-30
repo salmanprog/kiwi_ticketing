@@ -55,7 +55,9 @@ class GeneralTicketAddonController extends Controller
         if ($request->has('search') && $request->search['value'] != '') {
             $search = $request->search['value'];
             $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%");
+                $q->where('generalTicketType', 'like', "%{$search}%")
+                ->orWhere('ticketType', 'like', "%{$search}%")
+                ->orWhere('ticketCategory', 'like', "%{$search}%");
             });
         }
 
