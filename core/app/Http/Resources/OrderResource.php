@@ -6,6 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\OrderTicketsResource;
 use App\Http\Resources\TransactionResource;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\OrderCouponResource;
 
 class OrderResource extends JsonResource
 {
@@ -35,7 +36,9 @@ class OrderResource extends JsonResource
             'orderFraudulentTimeStamp' => $this->orderFraudulentTimeStamp,
             'transactionId' => $this->transactionId,
             'totalOrderRefundedAmount' => $this->totalOrderRefundedAmount,
+            'promoCode' => $this->promoCode,
             'package' => in_array($this->type, $allowedTypes) ? $this->{$this->type} : '',
+            'coupon' => isset($this->apply_coupon) ? OrderCouponResource::make($this->apply_coupon) : [],
             'customer' => UserResource::make($this->customer),
             'tickets' => OrderTicketsResource::collection($this->purchases),
             'transaction' => TransactionResource::make($this->transaction),

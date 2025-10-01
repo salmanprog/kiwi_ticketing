@@ -77,7 +77,6 @@ class OrdersHelper
                 return $item;
             }, $requestPayload['purchases']);
         }
-        
         if($requestPayload['type'] == 'general_ticket'){
             $response = Http::post($baseUrl.'/Pricing/AddOrder',$requestPayload);
         }elseif($requestPayload['type'] == 'season_pass'){

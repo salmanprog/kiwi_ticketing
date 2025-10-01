@@ -38,13 +38,57 @@ class CouponController extends BaseAPIController
         }
 
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
-        $coupons = Coupons::where('auth_code',$authCode)->where('package_type',$request->package_type)->where('coupon_code',$request->coupon_code)->where('status','1')->first();
 
-        if ($coupons->isEmpty()) {
-            return $this->sendResponse(200, 'Retrieved Coupon Discount', []);
+        $coupons = Coupons::where('auth_code', $authCode)
+            ->where('package_type', $request->package_type)
+            ->where('coupon_code', $request->coupon_code)
+            ->where('status', '1')
+            ->first();
+
+        if (!$coupons) {
+            return $this->sendResponse(400, 'Coupon Error', [
+                'coupon_code' => 'Coupon does not exist in our record'
+            ]);
         }
 
-        $resource = CouponResource::make($coupons);
-        return $this->sendResponse(200, 'Retrieved Coupon Discount', $resource);
+        if (\Carbon\Carbon::parse($coupons->start_date)->gt(now())) {
+            return $this->sendResponse(400, 'Coupon Error', [
+                'coupon_code' => 'This coupon is not yet active'
+            ]);
+        }
+
+        if (\Carbon\Carbon::parse($coupons->end_date)->lt(now())) {
+            return $this->sendResponse(400, 'Coupon Error', [
+                'coupon_code' => 'This coupon has expired'
+            ]);
+        }
+
+        if ($coupons->coupon_use_limit >= $coupons->coupon_total_limit){
+            return $this->sendResponse(400, 'Coupon Error', [
+                'coupon_code' => 'This coupon limit has expired'
+            ]);
+        }
+
+        if ($coupons->discount_type === 'percentage') {
+            $discount = ($request->amount * $coupons->discount) / 100;
+        } elseif ($coupons->discount_type === 'flat_rate') {
+            $discount = $coupons->discount;
+        } else {
+            return $this->sendResponse(400, 'Coupon Error', [
+                'coupon_code' => 'Invalid discount type'
+            ]);
+        }
+
+        $discount = min($discount, $request->amount);
+        $finalAmount = $request->amount - $discount;
+
+        return $this->sendResponse(200, 'Discount applied', [
+            'id' => $coupons->id,
+            'original_amount' => $request->amount,
+            'discount_type' => $coupons->discount_type,
+            'discount' => $discount,
+            'final_amount' => $finalAmount,
+            'coupon' => CouponResource::make($coupons)
+        ]);
     }
 }

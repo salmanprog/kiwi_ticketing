@@ -32,13 +32,7 @@
                             {!! __('Type') !!}
                         </label>
                         <div class="col-sm-10">
-                            <select name="package_type" id="package_type" class="form-control">
-                                <option value="">- - {!!  __('Select Type') !!} - -</option>
-                                <option value="cabana">{!! __('Cabana') !!}</option>
-                                <option value="birthday">{!! __('Birthday') !!}</option>
-                                <option value="general_ticket">{!! __('Platform Ticket') !!}</option>
-                                <option value="season_pass">{!! __('Season Pass') !!}</option>
-                            </select>
+                            {!! Form::text('package_type',old('package_type', $couponsPackages->package_type ?? ''), array('placeholder' => '','class' => 'form-control','id'=>'package_type','required'=>'','readonly'=>'readonly')) !!}
                         </div>
                     </div>
                     <div class="form-group row">
@@ -70,11 +64,7 @@
                                 class="col-sm-2 form-control-label">{!!  __('Discount Type') !!}
                         </label>
                         <div class="col-sm-10">
-                            <select name="discount_type" id="discount_type" class="form-control">
-                                <option value="">- - {!!  __('Select Discount Type') !!} - -</option>
-                                <option value="percentage">{!! __('Percentage') !!}</option>
-                                <option value="flat_rate">{!! __('Flat Rate') !!}</option>
-                            </select>
+                            {!! Form::text('discount_type',old('discount_type', $couponsPackages->discount_type ?? ''), array('placeholder' => '','class' => 'form-control','id'=>'discount_type','required'=>'','readonly'=>'readonly')) !!}
                         </div>
                     </div>
                     <div class="form-group row">
@@ -134,10 +124,24 @@
     </div>
 @endsection
 @push("after-scripts")
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="{{ asset("assets/dashboard/js/iconpicker/fontawesome-iconpicker.js") }}"></script>
     <script>
         $(function () {
             $('.icp-auto').iconpicker({placement: '{{ (@Helper::currentLanguage()->direction=="rtl")?"topLeft":"topRight" }}'});
         });
+        $(document).ready(function () {
+        $('#start_date').datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            todayHighlight: true
+        });
+        $('#end_date').datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            todayHighlight: true
+        });
+    });
     </script>
 @endpush

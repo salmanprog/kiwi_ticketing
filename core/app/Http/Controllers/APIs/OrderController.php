@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Order;
 use App\Models\OrderTickets;
 use App\Models\Transaction;
+use App\Models\OrderCoupon;
+use App\Models\Coupons;
 use App\Models\User;
 use App\Http\Resources\OrderResource;
 use Carbon\Carbon;
@@ -74,7 +76,8 @@ class OrderController extends BaseAPIController
                 $order->posStaffIdentity = isset($orderData['posStaffIdentity']) ? $orderData['posStaffIdentity'] : '0';
                 $order->isOrderFraudulent  = isset($orderData['isOrderFraudulent']) ? $orderData['isOrderFraudulent'] : '0';
                 $order->orderFraudulentTimeStamp  = isset($orderData['orderFraudulentTimeStamp']) ? $orderData['orderFraudulentTimeStamp'] : '0';
-                $order->customerAddress = isset($orderData['customerAddress']) ? $orderData['customerAddress'] : '0';
+                $order->customerAddress = isset($orderData['customerAddress']) ? $orderData['customerAddress'] : $request->customerAddress;
+                $order->promoCode = isset($request->promoCode) ? $request->promoCode : 'N/A';
                 $order->transactionId = isset($orderData['transactionId']) ? $orderData['transactionId'] : $request->transactionId;
                 $order->totalOrderRefundedAmount = isset($orderData['totalOrderRefundedAmount']) ? $orderData['totalOrderRefundedAmount'] : '0';
                 $order->user_id  = $request->user_id;
@@ -124,8 +127,33 @@ class OrderController extends BaseAPIController
                 $transaction->transactionDate = $date;
                 $transaction->amount = $data['data'][0]['orderTotal'];
                 $transaction->save();
+
+                if (isset($request->promoCode) && $request->promoCode > 0) {
+                    $coupons = Coupons::find($request->promoCode);
+                    
+                    if ($coupons->discount_type === 'percentage') {
+                        $discount = ($order->orderTotal * $coupons->discount) / 100;
+                    } elseif ($coupons->discount_type === 'flat_rate') {
+                        $discount = $coupons->discount;
+                    }
+                    $discount = min($discount, $order->orderTotal);
+                    $finalAmount = $order->orderTotal - $discount;
+                    
+                    $coupons->coupon_use_limit += 1;
+                    $coupons->save();
+
+                    $orderCoupon = new OrderCoupon;
+                    $orderCoupon->order_id = $order->id;
+                    $orderCoupon->coupon_id = $coupons->id;
+                    $orderCoupon->original_amount = $order->orderTotal;
+                    $orderCoupon->discount_type = $coupons->discount_type;
+                    $orderCoupon->discount = $discount;
+                    $orderCoupon->final_amount = $finalAmount;
+                    $orderCoupon->save();
+                }
+
                 $order_type =  OrdersHelper::order_types($order->type);
-                $get_order = Order::with(['customer','purchases','transaction',$order_type])->where('id',$order->id)->first();
+                $get_order = Order::with(['customer','purchases','apply_coupon','transaction',$order_type])->where('id',$order->id)->first();
                 //$get_order = Order::with(['customer','purchases','transaction'])->where('id',$order->id)->first();
                 $resource = OrderResource::make($get_order);
                 return $this->sendResponse(200, 'Your Order has been successfully created', $resource);
@@ -140,7 +168,7 @@ class OrderController extends BaseAPIController
     {
         $order = Order::where('slug',$slug)->first();
         $order_type =  OrdersHelper::order_types($order->type);
-        $get_order = Order::with(['customer','purchases','transaction',$order_type])->where('slug',$slug)->first();
+        $get_order = Order::with(['customer','purchases','apply_coupon','transaction',$order_type])->where('slug',$slug)->first();
         if (!isset($get_order)) {
             return $this->sendResponse(200, 'Order retrive successfully', []);
         }

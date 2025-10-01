@@ -179,9 +179,28 @@ ALTER TABLE `smartend_coupons`
 
 
 
-ALTER TABLE `smartend_general_ticket_addons` ADD `is_primary` ENUM('0','1') NOT NULL DEFAULT '0' AFTER `generalTicketSlug`;
-ALTER TABLE `smartend_general_ticket_addons` ADD `status` ENUM('0','1') NOT NULL DEFAULT '1' AFTER `description`;
+ALTER TABLE `smartend_order` ADD `promoCode` VARCHAR(255) NOT NULL DEFAULT '0' AFTER `orderFraudulentTimeStamp`;
 
+
+CREATE TABLE `smartend_order_coupons` (
+  `id` int(11) NOT NULL,
+  `slug` varchar(255) DEFAULT NULL,
+  `order_id` varchar(255) NOT NULL,
+  `coupon_id` varchar(255) NOT NULL,
+  `original_amount` varchar(255) NOT NULL,
+  `discount_type` varchar(255) NOT NULL,
+  `discount` varchar(255) NOT NULL,
+  `final_amount` varchar(255) NOT NULL,
+  `status` ENUM('0','1') NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+ALTER TABLE `smartend_order_coupons`
+  ADD PRIMARY KEY (`id`);
+
+  ALTER TABLE `smartend_order_coupons`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1
 
 
 

@@ -78,6 +78,21 @@
                             {{ $get_cabana_orders->slug }}
                         </div>
                         <div class="col-md-3 p-3 text-center">
+                            <strong>Package Name</strong><br>
+                            {{ $get_cabana_orders->general_ticket->title }}
+                        </div>
+                        <div class="col-md-3 p-3 text-center">
+                            <strong>Total Ticket</strong><br>
+                            {{ count($get_cabana_orders->purchases) }}
+                        </div>
+                        <div class="col-md-3 p-3 text-center">
+                            <strong>Status</strong><br>
+                            Paid
+                        </div>
+                    </div>
+
+                    <div class="row mb-4" style="margin-bottom: 40px;">
+                        <div class="col-md-3 p-3 text-center">
                             <strong>Name</strong><br>
                             {{ $get_cabana_orders->firstName }} {{ $get_cabana_orders->lastName }}
                         </div>
@@ -89,26 +104,70 @@
                             <strong>Phone</strong><br>
                             {{ $get_cabana_orders->phone }}
                         </div>
+                        <div class="col-md-3 p-3 text-center">
+                            <strong>Address</strong><br>
+                            {{ $get_cabana_orders->customerAddress ? $get_cabana_orders->customerAddress : 'N/A' }}
+                        </div>
                     </div>
+                    
 
+                    @if($get_cabana_orders->apply_coupon)
                     <div class="row mb-4" style="margin-bottom: 40px;">
                         <div class="col-md-3 p-3 text-center">
-                            <strong>Order Total</strong><br>
+                            <strong>Coupon Title</strong><br>
+                            {{ $get_cabana_orders->coupon->title }}
+                        </div>
+                        <div class="col-md-3 p-3 text-center">
+                            <strong>Coupon Code</strong><br>
+                            {{ $get_cabana_orders->coupon->coupon_code }}
+                        </div>
+                        <div class="col-md-3 p-3 text-center">
+                            <strong>Discount</strong><br>
+                            {{ $get_cabana_orders->coupon->discount }}
+                        </div>
+                        <div class="col-md-3 p-3 text-center">
+                            <strong>Discount Type</strong><br>
+                            {{ $get_cabana_orders->coupon->discount_type == 'percentage' ? '%' : ' Flat Rate' }}
+                        </div>
+                    </div>
+                    <div class="row mb-4" style="margin-bottom: 40px;">
+                        <div class="col-md-3 p-3 text-center">
+                            <strong>Sub Total</strong><br>
                             ${{ number_format($get_cabana_orders->orderTotal, 2) }}
                         </div>
                         <div class="col-md-3 p-3 text-center">
-                            <strong>Tax</strong><br>
-                            ${{ number_format($get_cabana_orders->tax, 2) }}
+                            <strong>Apply Discount</strong><br>
+                            {{ $get_cabana_orders->coupon->discount }}{{ $get_cabana_orders->coupon->discount_type == 'percentage' ? '%' : ' Flat Rate' }}
                         </div>
                         <div class="col-md-3 p-3 text-center">
-                            <strong>Order Tip</strong><br>
-                            ${{ number_format($get_cabana_orders->orderTip, 2) }}
+                            <strong>Total Order</strong><br>
+                            ${{ number_format($get_cabana_orders->apply_coupon->final_amount, 2) }}
                         </div>
                         <div class="col-md-3 p-3 text-center">
                             <strong>Order Date</strong><br>
                             {{ \Carbon\Carbon::parse($get_cabana_orders->orderDate)->format('Y-m-d') }}
                         </div>
                     </div>
+                    @else
+                        <div class="row mb-4" style="margin-bottom: 40px;">
+                            <div class="col-md-3 p-3 text-center">
+                                <strong>Order Total</strong><br>
+                                ${{ number_format($get_cabana_orders->orderTotal, 2) }}
+                            </div>
+                            <div class="col-md-3 p-3 text-center">
+                                <strong>Tax</strong><br>
+                                ${{ number_format($get_cabana_orders->tax, 2) }}
+                            </div>
+                            <div class="col-md-3 p-3 text-center">
+                                <strong>Order Tip</strong><br>
+                                ${{ number_format($get_cabana_orders->orderTip, 2) }}
+                            </div>
+                            <div class="col-md-3 p-3 text-center">
+                                <strong>Order Date</strong><br>
+                                {{ \Carbon\Carbon::parse($get_cabana_orders->orderDate)->format('Y-m-d') }}
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
 

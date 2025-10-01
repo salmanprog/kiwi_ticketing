@@ -56,7 +56,7 @@ class OrderController extends Controller
         $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'desc')->get();
-        $query = Order::with(['customer','purchases','transaction',$request->type])->where('auth_code',$authCode)->where('type',$request->type);
+        $query = Order::with(['customer','purchases','apply_coupon','coupon','transaction',$request->type])->where('auth_code',$authCode)->where('type',$request->type);
         if ($request->has('search') && $request->search['value'] != '') {
             $search = $request->search['value'];
 
@@ -197,8 +197,9 @@ class OrderController extends Controller
         // General for all pages
         $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $order = Order::where('slug',$slug)->first();
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-        $get_cabana_orders = Order::with(['customer','purchases','transaction'])->where('auth_code',$authCode)->where('slug',$slug)->first();
+        $get_cabana_orders = Order::with(['customer','purchases','apply_coupon','coupon','transaction',$order->type])->where('auth_code',$authCode)->where('slug',$slug)->first();
         $views = [
             'cabana'        => 'dashboard.kabanaorders.show',
             'general_ticket'=> 'dashboard.ticketingorders.show',
@@ -207,15 +208,5 @@ class OrderController extends Controller
 
         $view = $views[$get_cabana_orders->type] ?? 'dashboard.birthdayorders.show';
         return view($view, compact("get_cabana_orders", "GeneralWebmasterSections"));
-        // if($get_cabana_orders->type == 'cabana'){
-        //     return view("dashboard.kabanaorders.show", compact("get_cabana_orders", "GeneralWebmasterSections"));
-        // }elseif($get_cabana_orders->type == 'general_ticket'){
-        //     return view("dashboard.ticketingorders.show", compact("get_cabana_orders", "GeneralWebmasterSections"));
-        // }elseif($get_cabana_orders->type == 'season_pass'){
-        //     return view("dashboard.seasonpassorders.show", compact("get_cabana_orders", "GeneralWebmasterSections"));
-        // }else{
-        //     return view("dashboard.birthdayorders.show", compact("get_cabana_orders", "GeneralWebmasterSections"));
-        // }
-        
     }
 }

@@ -230,6 +230,9 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             </li>
                         </ul>
                     </li>
+                    <li class="nav-header hidden-folded m-t-sm">
+                        <small class="text-muted">{{ __('Coupon Managment') }}</small>
+                    </li>
                     <li class="{{ $couponActive ? 'active' : '' }}" >
                         <a>
                             <span class="nav-caret">
