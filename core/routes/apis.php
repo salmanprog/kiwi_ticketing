@@ -58,6 +58,9 @@ Route::get('/general-ticket-package/{slug}', 'GeneralTicketController@generalTic
 //Season Pass
 Route::get('/season-pass', 'SeasonPassController@index');
 Route::get('/season-pass-product/{slug}', 'SeasonPassAddonController@getBySlug');
+//Coupon Code
+Route::get('/coupon', 'CouponController@index');
+Route::post('/coupon-discount', 'CouponController@store');
 //Stripe
 Route::post('/order-payment', 'StripeController@createPaymentIntent');
 Route::post('/order-create', 'OrderController@OrderCreate');
