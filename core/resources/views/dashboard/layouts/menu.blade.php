@@ -51,6 +51,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         $birthdayActive = in_array($current, ['birthdaypackages', 'birthdaypackagesCreate', 'birthdaypackagesEdit', 'birthdaypackagesStore','birthdaypackagesUpdate','birthdayorders','birthdayordersdetail','birthdayaddon','birthdayaddonEdit']);
                         $generalTicketActive = in_array($current, ['generaltickets','generalticketsCreate','generalticketsEdit','generalticketsStore','generalticketsaddon','generalticketsaddonCreate','generalticketsaddonEdit','generalticketscabana','generalticketscabanaCreate','generalticketscabanaStore','generalticketscabanaEdit','generalticketscabanaUpdate','generalticketscabanaDestroy','generalticketsorders','generalticketsordersdetail','generalticketpackages','generalticketpackagesEdit','generalticketpackagesCreate','generalticketpackagesStore','generalticketpackagesUpdate','generalticketpackagesDestroy']);
                         $seasonpassActive = in_array($current, ['seasonpass', 'seasonpassEdit', 'seasonpassCreate', 'seasonpassStore','seasonpassDestroy','seasonpassaddon','seasonpassaddonEdit','seasonpassaddonStore','seasonpassaddonCreate','seasonpassaddonUpdate','seasonpassorders','seasonpassordersdetail']);
+                        $couponActive = in_array($current, ['coupon', 'couponCreate', 'couponEdit', 'couponStore','couponUpdate','couponDestroy']);
                         ?>
                     <li class="{{ $cabanaActive ? 'active' : '' }}" >
                         <a>
@@ -225,6 +226,28 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             }}">
                                 <a href="{{ route('seasonpassorders') }}">
                                     <span class="nav-text">{{ __('Season Pass Orders') }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="{{ $couponActive ? 'active' : '' }}" >
+                        <a>
+                            <span class="nav-caret">
+                            <i class="fa fa-caret-down"></i>
+                            </span>
+                            <span class="nav-icon">
+                            <i class="material-icons">&#xe7fb;</i>
+                            </span>
+                            <span class="nav-text">{{ __('Coupons Managment') }}</span>
+                        </a>
+                        <ul class="nav-sub">
+                            <li class="{{ 
+                                $current === 'coupon' 
+                                || Str::startsWith($current, 'coupon') 
+                                ? 'active' : '' 
+                            }}">
+                                <a href="{{ route('coupon') }}">
+                                    <span class="nav-text">{{ __('All Coupons') }}</span>
                                 </a>
                             </li>
                         </ul>

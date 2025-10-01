@@ -30,6 +30,7 @@ use App\Http\Controllers\Dashboard\GeneralTicketCabanaController;
 use App\Http\Controllers\Dashboard\SeasonPassController;
 use App\Http\Controllers\Dashboard\SeasonPassAddonsController;
 use App\Http\Controllers\Dashboard\GeneralTicketPackagesController;
+use App\Http\Controllers\Dashboard\CouponController;
 use Illuminate\Support\Facades\Route;
 
 // Admin Home
@@ -352,6 +353,14 @@ Route::get('/season-pass-addons/{id}/edit', [SeasonPassAddonsController::class, 
 Route::post('/season-pass-addons/store', [SeasonPassAddonsController::class, 'store'])->name('seasonpassaddonStore');
 Route::post('/season-pass-addons/{id}/update', [SeasonPassAddonsController::class, 'update'])->name('seasonpassaddonUpdate');
 Route::get('/season-pass-addons/destroy/{id}', [SeasonPassAddonsController::class, 'destroy'])->name('seasonpassaddonDestroy');
+// Coupons Code
+Route::get('/coupon', [CouponController::class, 'index'])->name('coupon');
+Route::post('/coupon/data', [CouponController::class, 'getData'])->name('coupon.data');
+Route::get('/coupon/create/', [CouponController::class, 'create'])->name('couponCreate');
+Route::get('/coupon/{id}/edit', [CouponController::class, 'edit'])->name('couponEdit');
+Route::post('/coupon/store', [CouponController::class, 'store'])->name('couponStore');
+Route::post('/coupon/{id}/update', [CouponController::class, 'update'])->name('couponUpdate');
+Route::get('/coupon/destroy/{id}', [CouponController::class, 'destroy'])->name('couponDestroy');
 // Menus
 Route::post('/menus/store/parent', [MenusController::class, 'storeMenu'])->name('parentMenusStore');
 Route::get('/menus/parent/{id}/edit', [MenusController::class, 'editMenu'])->name('parentMenusEdit');

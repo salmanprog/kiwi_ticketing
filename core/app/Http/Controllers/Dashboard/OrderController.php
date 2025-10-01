@@ -63,6 +63,7 @@ class OrderController extends Controller
             $query->where(function ($q) use ($search) {
                 $q->where('firstName', 'like', "%{$search}%")
                 ->orWhere('lastName', 'like', "%{$search}%")
+                ->orWhere('slug', 'like', "%{$search}%")
                 ->orWhereRaw("DATE_FORMAT(orderDate, '%Y-%m-%d') LIKE ?", ["%{$search}%"])
                 ->orWhereRaw("DATE_FORMAT(created_at, '%Y-%m-%d') LIKE ?", ["%{$search}%"])
                 ->orWhereHas('cabana', function ($q2) use ($search) {
