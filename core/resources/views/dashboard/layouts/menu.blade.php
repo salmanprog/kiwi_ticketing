@@ -52,6 +52,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         $generalTicketActive = in_array($current, ['generaltickets','generalticketsCreate','generalticketsEdit','generalticketsStore','generalticketsaddon','generalticketsaddonCreate','generalticketsaddonEdit','generalticketscabana','generalticketscabanaCreate','generalticketscabanaStore','generalticketscabanaEdit','generalticketscabanaUpdate','generalticketscabanaDestroy','generalticketsorders','generalticketsordersdetail','generalticketpackages','generalticketpackagesEdit','generalticketpackagesCreate','generalticketpackagesStore','generalticketpackagesUpdate','generalticketpackagesDestroy']);
                         $seasonpassActive = in_array($current, ['seasonpass', 'seasonpassEdit', 'seasonpassCreate', 'seasonpassStore','seasonpassDestroy','seasonpassaddon','seasonpassaddonEdit','seasonpassaddonStore','seasonpassaddonCreate','seasonpassaddonUpdate','seasonpassorders','seasonpassordersdetail']);
                         $couponActive = in_array($current, ['coupon', 'couponCreate', 'couponEdit', 'couponStore','couponUpdate','couponDestroy']);
+                        $offerCreationActive = in_array($current, ['offercreationpackages','offercreationpackagesEdit','offercreationpackagesCreate','offercreationpackagesStore','offercreationpackagesUpdate','offercreationpackagesDestroy','offeraddon','offeraddonCreate','offeraddonStore','offeraddonEdit','offeraddonUpdate','offeraddonDestroy']);
                         ?>
                     <li class="{{ $cabanaActive ? 'active' : '' }}" >
                         <a>
@@ -225,6 +226,46 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 ? 'active' : '' 
                             }}">
                                 <a href="{{ route('seasonpassorders') }}">
+                                    <span class="nav-text">{{ __('Season Pass Orders') }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="{{ $offerCreationActive ? 'active' : '' }}" >
+                        <a>
+                            <span class="nav-caret">
+                            <i class="fa fa-caret-down"></i>
+                            </span>
+                            <span class="nav-icon">
+                            <i class="material-icons">&#xe7fb;</i>
+                            </span>
+                            <span class="nav-text">{{ __('Offer Managment') }}</span>
+                        </a>
+                        <ul class="nav-sub">
+                            <li class="{{ 
+                                $current === 'offercreationpackages' 
+                                || Str::startsWith($current, 'offercreationpackages') 
+                                ? 'active' : '' 
+                            }}">
+                                <a href="{{ route('offercreationpackages') }}">
+                                    <span class="nav-text">{{ __('Offers') }}</span>
+                                </a>
+                            </li>
+                            <li class="{{ 
+                                $current === 'offercreationpackages' 
+                                || Str::startsWith($current, 'offercreationpackages') 
+                                ? 'active' : '' 
+                            }}">
+                                <a href="{{ route('offeraddon') }}">
+                                    <span class="nav-text">{{ __('Offer Addon') }}</span>
+                                </a>
+                            </li>
+                            <li class="{{ 
+                                $current === 'offercreationpackages' 
+                                || Str::startsWith($current, 'offercreationpackages') 
+                                ? 'active' : '' 
+                            }}">
+                                <a href="#">
                                     <span class="nav-text">{{ __('Season Pass Orders') }}</span>
                                 </a>
                             </li>

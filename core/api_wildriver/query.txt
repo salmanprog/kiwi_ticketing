@@ -1,208 +1,48 @@
-CREATE TABLE `smartend_order` (
+CREATE TABLE `smartend_offer_creation_packages` (
   `id` int(11) NOT NULL,
   `slug` varchar(255) DEFAULT NULL,
   `auth_code` varchar(255) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `type` varchar(255) NOT NULL,
-  `firstName` varchar(255) DEFAULT NULL,
-  `lastName` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `phone` varchar(255) DEFAULT NULL,
-  `customerAddress` varchar(255) DEFAULT NULL,
-  `orderTotal` varchar(255) DEFAULT NULL,
-  `tax` varchar(255) DEFAULT NULL,
-  `serviceCharges` varchar(255) DEFAULT NULL,
-  `orderTip` varchar(255) DEFAULT NULL,
-  `orderDate` varchar(255) DEFAULT NULL,
-  `slotTime` varchar(255) DEFAULT NULL,
-  `orderSource` varchar(255) DEFAULT NULL,
-  `posStaffIdentity` varchar(255) DEFAULT NULL,
-  `isOrderFraudulent` varchar(255) DEFAULT NULL,
-  `orderFraudulentTimeStamp` varchar(255) DEFAULT NULL,
-  `transactionId` varchar(255) DEFAULT NULL,
-  `totalOrderRefundedAmount` varchar(255) DEFAULT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
-ALTER TABLE `smartend_order`
+ALTER TABLE `smartend_offer_creation_packages`
   ADD PRIMARY KEY (`id`);
 
-  ALTER TABLE `smartend_order`
+  ALTER TABLE `smartend_offer_creation_packages`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1
 
-
-  CREATE TABLE `smartend_order_tickets` (
-  `id` int(11) NOT NULL,
-  `slug` varchar(255) DEFAULT NULL,
-  `order_id` int(11) NOT NULL,
-  `visualId` varchar(255) NOT NULL,
-  `parentVisualId` varchar(255) DEFAULT NULL,
-  `childVisualId` varchar(255) DEFAULT NULL,
-  `ticketType` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `seat` varchar(255) DEFAULT NULL,
-  `price` varchar(255) NOT NULL,
-  `ticketDate` varchar(255) DEFAULT NULL,
-  `ticketDisplayDate` varchar(255) DEFAULT NULL,
-  `quantity` varchar(255) NOT NULL,
-  `slotTime` varchar(255) DEFAULT NULL,
-  `isRefundedOrder` varchar(255) DEFAULT NULL,
-  `checkInStatus` int(11) NOT NULL,
-  `totalRefundedAmount` varchar(255) NOT NULL,
-  `isWavierFormSubmitted` varchar(255) DEFAULT NULL,
-  `isQrCodeBurn` varchar(255) DEFAULT NULL,
-  `wavierSubmittedDateTime` varchar(255) DEFAULT NULL,
-  `refundedDateTime` varchar(255) DEFAULT NULL,
-  `isTicketUpgraded` varchar(255) DEFAULT NULL,
-  `ticketUpgradedFrom` varchar(255) DEFAULT NULL,
-  `isSearchParentRecord` varchar(255) DEFAULT NULL,
-  `validUntil` varchar(255) DEFAULT NULL,
-  `isSeasonPassRenewal` varchar(255) DEFAULT NULL,
-  `isSeasonPass` varchar(255) DEFAULT NULL,
-  `totalOrderRefundedAmount` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  ALTER TABLE `smartend_offer_creation_packages` ADD `status` ENUM('0','1') NOT NULL DEFAULT '1' AFTER `description`;
 
 
-ALTER TABLE `smartend_order_tickets`
-  ADD PRIMARY KEY (`id`);
-
-  ALTER TABLE `smartend_order_tickets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1
-
-
-  CREATE TABLE `smartend_general_ticket_addons` (
+CREATE TABLE `smartend_offer_addons` (
   `id` int(11) NOT NULL,
   `slug` varchar(255) DEFAULT NULL,
   `auth_code` varchar(255) NOT NULL,
-  `generalTicketSlug` varchar(255) NOT NULL,
+  `offerType` varchar(255) NOT NULL,
+  `offerSlug` varchar(255) NOT NULL,
+  `is_offer` ENUM('0','1') NOT NULL DEFAULT '1',
+  `is_featured` ENUM('0','1') NOT NULL DEFAULT '1',
   `venueId` varchar(255) NOT NULL,
   `ticketType` varchar(255) NOT NULL,
   `ticketSlug` varchar(255) NOT NULL,
   `ticketCategory` varchar(255) NOT NULL,
   `price` varchar(255) NOT NULL,
-  `description` text NULL,
+  `description` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-
-ALTER TABLE `smartend_general_ticket_addons`
+ALTER TABLE `smartend_offer_addons`
   ADD PRIMARY KEY (`id`);
 
-  ALTER TABLE `smartend_general_ticket_addons`
+  ALTER TABLE `smartend_offer_addons`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1
 
-
-   CREATE TABLE `smartend_season_passes` (
-  `id` int(11) NOT NULL,
-  `slug` varchar(255) DEFAULT NULL,
-  `auth_code` varchar(255) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `description` text NULL,
-  `price` varchar(255) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-
-ALTER TABLE `smartend_season_passes`
-  ADD PRIMARY KEY (`id`);
-
-  ALTER TABLE `smartend_season_passes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1
-
-ALTER TABLE `smartend_season_passes` ADD `status` ENUM('0','1') NOT NULL DEFAULT '1' AFTER `description`;
-
-
-  CREATE TABLE `smartend_season_passes_addon` (
-  `id` int(11) NOT NULL,
-  `slug` varchar(255) DEFAULT NULL,
-  `auth_code` varchar(255) NOT NULL,
-  `season_passes_slug` varchar(255) NOT NULL,
-  `venueId` varchar(255) NOT NULL,
-  `ticketType` varchar(255) NOT NULL,
-  `ticketSlug` varchar(255) NOT NULL,
-  `ticketCategory` varchar(255) NOT NULL,
-  `price` varchar(255) NOT NULL,
-  `description` text NULL,
-  `new_price` varchar(255) NOT NULL,
-  `is_featured` varchar(255) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-
-ALTER TABLE `smartend_season_passes_addon`
-  ADD PRIMARY KEY (`id`);
-
-  ALTER TABLE `smartend_season_passes_addon`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1
-
-
-ALTER TABLE `smartend_season_passes_addon` ADD `status` ENUM('0','1') NOT NULL DEFAULT '1' AFTER `is_featured`;
-  
-ALTER TABLE `smartend_order` ADD `promoCode` VARCHAR(255) NULL DEFAULT NULL AFTER `orderFraudulentTimeStamp`;
-ALTER TABLE `smartend_order_tickets` ADD `VisualIdStockCount` VARCHAR(255) NULL DEFAULT NULL AFTER `childVisualId`;
-
-
-
------------------------------------------------------------------------
-
-CREATE TABLE `smartend_coupons` (
-  `id` int(11) NOT NULL,
-  `slug` varchar(255) DEFAULT NULL,
-  `auth_code` varchar(255) NOT NULL,
-  `package_type` varchar(255) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `coupon_code` varchar(255) NOT NULL,
-  `start_date` varchar(255) NOT NULL,
-  `end_date` varchar(255) NOT NULL,
-  `discount` varchar(255) NOT NULL,
-  `discount_type` varchar(255) NOT NULL,
-  `coupon_total_limit` varchar(255) NOT NULL,
-  `coupon_use_limit` varchar(255) NOT NULL,
-  `status` ENUM('0','1') NOT NULL DEFAULT '1',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-ALTER TABLE `smartend_coupons`
-  ADD PRIMARY KEY (`id`);
-
-  ALTER TABLE `smartend_coupons`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1
-
-
-
-ALTER TABLE `smartend_order` ADD `promoCode` VARCHAR(255) NOT NULL DEFAULT '0' AFTER `orderFraudulentTimeStamp`;
-
-
-CREATE TABLE `smartend_order_coupons` (
-  `id` int(11) NOT NULL,
-  `slug` varchar(255) DEFAULT NULL,
-  `order_id` varchar(255) NOT NULL,
-  `coupon_id` varchar(255) NOT NULL,
-  `original_amount` varchar(255) NOT NULL,
-  `discount_type` varchar(255) NOT NULL,
-  `discount` varchar(255) NOT NULL,
-  `final_amount` varchar(255) NOT NULL,
-  `status` ENUM('0','1') NOT NULL DEFAULT '1',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-ALTER TABLE `smartend_order_coupons`
-  ADD PRIMARY KEY (`id`);
-
-  ALTER TABLE `smartend_order_coupons`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1
-
-
+-----------------------------------------------------------------------------------------
 
 {
     "authCode":"d063d05b-fbb1-4bf0-b4d8-b2f603454858",

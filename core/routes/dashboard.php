@@ -353,6 +353,22 @@ Route::get('/season-pass-addons/{id}/edit', [SeasonPassAddonsController::class, 
 Route::post('/season-pass-addons/store', [SeasonPassAddonsController::class, 'store'])->name('seasonpassaddonStore');
 Route::post('/season-pass-addons/{id}/update', [SeasonPassAddonsController::class, 'update'])->name('seasonpassaddonUpdate');
 Route::get('/season-pass-addons/destroy/{id}', [SeasonPassAddonsController::class, 'destroy'])->name('seasonpassaddonDestroy');
+//Offer Creation Packages
+Route::get('/offer-packages', [OfferCreationPackagesController::class, 'index'])->name('offercreationpackages');
+Route::post('/offer-ticket', [OfferCreationPackagesController::class, 'getData'])->name('offercreationpackages.data');
+Route::get('/offer-packages/{id}/edit', [OfferCreationPackagesController::class, 'edit'])->name('offercreationpackagesEdit');
+Route::get('/offer-packages/create/', [OfferCreationPackagesController::class, 'create'])->name('offercreationpackagesCreate');
+Route::post('/offer-packages/store', [OfferCreationPackagesController::class, 'store'])->name('offercreationpackagesStore');
+Route::post('/offer-packages/{id}/update', [OfferCreationPackagesController::class, 'update'])->name('offercreationpackagesUpdate');
+Route::get('/offer-packages/destroy/{id}', [OfferCreationPackagesController::class, 'destroy'])->name('offercreationpackagesDestroy');
+// Offer Creation Addons
+Route::get('/offer-addon', [OfferAddonController::class, 'index'])->name('offeraddon');
+Route::post('/offer-addon', [OfferAddonController::class, 'getData'])->name('offeraddon.data');
+Route::get('/offer-addon/create/', [OfferAddonController::class, 'create'])->name('offeraddonCreate');
+Route::post('/offer-addon/store', [OfferAddonController::class, 'store'])->name('offeraddonStore');
+Route::get('/offer-addon/{id}/edit', [OfferAddonController::class, 'edit'])->name('offeraddonEdit');
+Route::post('/offer-addon/{id}/update', [OfferAddonController::class, 'update'])->name('offeraddonUpdate');
+Route::get('/offer-addon/destroy/{id}', [OfferAddonController::class, 'destroy'])->name('offeraddonDestroy');
 // Coupons Code
 Route::get('/coupon', [CouponController::class, 'index'])->name('coupon');
 Route::post('/coupon/data', [CouponController::class, 'getData'])->name('coupon.data');
