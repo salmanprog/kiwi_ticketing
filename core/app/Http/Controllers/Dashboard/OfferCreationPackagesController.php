@@ -160,7 +160,7 @@ class OfferCreationPackagesController extends Controller
             for($i=0;$i<count($uploadedFileNames);$i++){
                 $media = new Media;
                 $media->module  = 'offer_creation_packages';
-                $media->module_id = $generalTicketPackage->id;
+                $media->module_id = $offerCreationPackage->id;
                 $media->filename  = $uploadedFileNames[$i];
                 $media->original_name = $uploadedFileNames[$i];
                 $media->file_url = $this->uploadPath.$uploadedFileNames[$i];

@@ -47,7 +47,7 @@ class OrderController extends BaseAPIController
         $date = Carbon::today()->toDateString();
 
         try {
-            $store_order =  OrdersHelper::birthDayOrder($request->all());
+            $store_order =  OrdersHelper::generateOrder($request->all());
             $data = $store_order->json();
             if (isset($data['status']['errorCode']) && $data['status']['errorCode'] == 1) {
                 return $this->sendResponse(400, 'Order Error', ['error' => $data['status']['errorMessage']]);

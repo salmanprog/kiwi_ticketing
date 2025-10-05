@@ -5,6 +5,7 @@ use App;
 use App\Models\Menu;
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Coupons;
 use URL;
 use Helper;
 use Illuminate\Support\Facades\Http;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Http;
 class OrdersHelper
 {
     //Add Order
-    public static function birthDayOrder($requestPayload)
+    public static function generateOrder($requestPayload)
     {
         $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
@@ -22,10 +23,11 @@ class OrdersHelper
         }
         $get_customer_obj = User::where('id',$requestPayload['user_id'])->first();
         $prefixMap = [
-            'birthday' => 'bd_',
-            'cabana' => 'ca_',
-            'general_ticket' => 'ge_',
-            'season_pass' => 'sp_'
+            'birthday' => 'bd'.date("y").'_',
+            'cabana' => 'ca'.date("y").'_',
+            'general_ticket' => 'ge'.date("y").'_',
+            'season_pass' => 'sp'.date("y").'_',
+            'offer_creation' => 'of'.date("y").'_'
         ];
 
         $prefix = $prefixMap[$requestPayload['type']] ?? 'any_';
@@ -43,6 +45,18 @@ class OrdersHelper
         $requestPayload['customer'] = $customer_object;
         $requestPayload['authCode'] = $authCode;
         $requestPayload['orderId'] = $order_number;
+        $total_amount = $requestPayload['totalAmount'];
+        if (isset($requestPayload['promoCode']) && $requestPayload['promoCode'] > 0) {
+            $coupons = Coupons::find($requestPayload['promoCode']);
+                    
+                if ($coupons->discount_type === 'percentage') {
+                    $discount = ($total_amount * $coupons->discount) / 100;
+                } elseif ($coupons->discount_type === 'flat_rate') {
+                    $discount = $coupons->discount;
+                }
+                $discount = min($discount, $total_amount);
+                $total_amount = $total_amount - $discount;
+        }
         $payment = [
                 'cardholerName' => "Omitted",
                 'billingStreet'  => "Teststreet123",
@@ -51,7 +65,7 @@ class OrdersHelper
                 'expDate' => "Omitted",
                 'ccNumber'  => "Omitted",
                 'paymentCode'     => "32",
-                'amount'     => $requestPayload['totalAmount'],
+                'amount'     => $total_amount,
             ];
         $payment = json_decode(json_encode($payment));
         $requestPayload['payment'] = $payment;
@@ -82,6 +96,8 @@ class OrdersHelper
         }elseif($requestPayload['type'] == 'season_pass'){
             unset($requestPayload['isOfficeUse']);
             $response = Http::post($baseUrl.'/Pricing/SeasonPassAddOrder',$requestPayload);
+        }elseif($requestPayload['type'] == 'offer_creation'){
+            $response = Http::post($baseUrl.'/Pricing/AnyDayAddOrder',$requestPayload);
         }else{  
             $response = Http::post($baseUrl.'/Pricing/BirthdayPackageAddOrder',$requestPayload);
         }
@@ -96,7 +112,7 @@ class OrdersHelper
 
     public static function order_types($type)
     {
-        $orderTypes = ['birthday', 'cabana', 'general_ticket', 'season_pass'];
+        $orderTypes = ['birthday', 'cabana', 'general_ticket', 'season_pass', 'offer_creation'];
 
         return in_array($type, $orderTypes) ? $type : null;
     }

@@ -14,6 +14,7 @@ use Auth;
 use File;
 use Helper;
 use Illuminate\Http\Request;
+use App\Helpers\ApiHelper;
 use Redirect;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
@@ -77,9 +78,12 @@ class GeneralTicketAddonController extends Controller
         }
 
         $data = $query->offset($start)->limit($limit)->get();
+        $externalProducts = ApiHelper::getAddonWithoutCategory($data);
+        $externalMap = collect($externalProducts)->keyBy('ticketSlug');
 
         $result = [];
         foreach ($data as $row) {
+            $external = $externalMap[$row->ticketSlug] ?? null;
             $result[] = [
                 'id' => $row->id,
                 'check' => '<label class="ui-check m-a-0">
@@ -90,7 +94,7 @@ class GeneralTicketAddonController extends Controller
                 'generalTicketType' => '<a class="dropdown-item" href="' . route('generalticketsaddonEdit', $row->slug) . '">'.$row->generalTicketType.'</a>',
                 'ticketType' => $row->ticketType,
                 'ticketCategory' => $row->ticketCategory,
-                'price' => '$' . number_format($row->price, 2),
+                'price' => '$' . number_format($external['price'], 2),
                 'new_price' => '$' . number_format($row->new_price, 2),
                 'is_primary' => '<div class="text-center"><i class="fa ' . ($row->is_primary ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
                  'status' => '<div class="text-center"><i class="fa ' . ($row->status ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
@@ -240,6 +244,7 @@ class GeneralTicketAddonController extends Controller
                 $ticketAddon->ticketCategory = $tickets_arr['ticket_addon'][0]['ticketCategory'];
                 $ticketAddon->price = $tickets_arr['ticket_addon'][0]['price'];
                 $ticketAddon->new_price = $request->new_price;
+                $ticketAddon->is_new_price_show = $request->is_new_price_show;
                 $ticketAddon->description = $request->description;
                 $ticketAddon->status = $request->status;
                 $ticketAddon->save();
@@ -351,6 +356,7 @@ class GeneralTicketAddonController extends Controller
                 }
             }
             $ticketAddon->new_price = $request->new_price;
+            $ticketAddon->is_new_price_show = $request->is_new_price_show;
             $ticketAddon->description = $request->description;
             $ticketAddon->status = $request->status;
             $ticketAddon->save();

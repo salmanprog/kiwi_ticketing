@@ -9,6 +9,7 @@ use App\Models\CabanaPackages;
 use App\Models\WebmasterSection;
 use App\Models\Media;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Helpers\ApiHelper;
 use Auth;
 use File;
 use Helper;
@@ -59,8 +60,7 @@ class CabanaPackagesController extends Controller
                 $q->where('ticketType', 'like', "%{$search}%")
                 ->orWhere('ticketSlug', 'like', "%{$search}%")
                 ->orWhere('ticketCategory', 'like', "%{$search}%")
-                ->orWhere('venueId', 'like', "%{$search}%")
-                ->orWhere('price', 'like', "%{$search}%");
+                ->orWhere('venueId', 'like', "%{$search}%");
             });
         }
 
@@ -81,11 +81,14 @@ class CabanaPackagesController extends Controller
 
         $data = $query->offset($start)->limit($limit)->get();
 
+        $externalProducts = ApiHelper::getProductByCategory($data,'Cabanas');
+        $externalMap = collect($externalProducts)->keyBy('ticketSlug');
         $result = [];
         foreach ($data as $row) {
+            $external = $externalMap[$row->ticketSlug] ?? null;
             $result[] = [
                 'id' => $row->id,
-                'venueId' => $row->venueId,
+                'venueId' => $external['venueId'],
                 'check' => '<label class="ui-check m-a-0">
                                 <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
                                 <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
@@ -93,7 +96,7 @@ class CabanaPackagesController extends Controller
                 'ticketType' => '<a class="dropdown-item" href="' . route('cabanaEdit', $row->slug) . '">'.$row->ticketType.'</a>',
                 'ticketSlug' => $row->ticketSlug,
                 'ticketCategory' => $row->ticketCategory,
-                'price' => '$' . number_format($row->price, 2),
+                'price' => '$' . number_format($external['price'], 2),
                 'addon' => '<div class="text-center">'.count($row->cabana_addon).'</div>',
                 'featured' => '<div class="text-center"><i class="fa ' . ($row->is_featured ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
                 'status' => '<div class="text-center"><i class="fa ' . ($row->status ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',

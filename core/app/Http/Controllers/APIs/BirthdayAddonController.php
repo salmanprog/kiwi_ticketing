@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\BirthdayPackages;
 use App\Models\BirthdayAddon;
+use App\Helpers\ApiHelper;
 use App\Http\Resources\BirthdayAddonResource;
 
 class BirthdayAddonController extends BaseAPIController
@@ -30,6 +31,14 @@ class BirthdayAddonController extends BaseAPIController
         if ($birthday_addon->isEmpty()) {
             return $this->sendResponse(200, 'Retrieved Birthday Addons Listing', []);
         }
+        $externalProducts = ApiHelper::getAddonWithoutCategory($birthday_addon);
+        $externalMap = collect($externalProducts)->keyBy('ticketSlug');
+        $birthday_addon->transform(function ($item) use ($externalMap) {
+            $external = $externalMap[$item->ticketSlug] ?? null;
+            $item->external_price = $external['price'] ?? null;
+            $item->external_name = $external['ticketType'] ?? null;
+            return $item;
+        });
         $resource = BirthdayAddonResource::collection($birthday_addon);
         return $this->sendResponse(200, 'Retrieved Birthday Addon Listing', $resource);
     }

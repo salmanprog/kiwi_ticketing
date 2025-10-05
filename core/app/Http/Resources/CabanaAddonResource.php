@@ -13,7 +13,7 @@ class CabanaAddonResource extends JsonResource
             'ticketType' => $this->ticketType,
             'ticketSlug' => $this->ticketSlug,
             'ticketCategory' => $this->ticketCategory,
-            'price' => $this->price,
+            'price' => $this->external_price,
         ];
     }
 }

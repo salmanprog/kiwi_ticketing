@@ -143,6 +143,25 @@
                     </div>
                     <div class="form-group row">
                         <label for="link_status"
+                                class="col-sm-2 form-control-label">{!!  __('Show New Price') !!}</label>
+                        <div class="col-sm-10">
+                            <div class="radio">
+                                <label class="ui-check ui-check-md">
+                                    {!! Form::radio('is_new_price_show','1',($seasonpassAddon->is_new_price_show==1) ? true : false, array('id' => 'is_new_price_show1','class'=>'has-value')) !!}
+                                    <i class="dark-white"></i>
+                                    {{ __('backend.yes') }}
+                                </label>
+                                &nbsp; &nbsp;
+                                <label class="ui-check ui-check-md">
+                                    {!! Form::radio('is_new_price_show','0',($seasonpassAddon->is_new_price_show==0) ? true : false, array('id' => 'is_new_price_show2','class'=>'has-value')) !!}
+                                    <i class="dark-white"></i>
+                                    {{ __('backend.no') }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="link_status"
                                 class="col-sm-2 form-control-label">{!!  __('backend.status') !!}</label>
                         <div class="col-sm-10">
                             <div class="radio">

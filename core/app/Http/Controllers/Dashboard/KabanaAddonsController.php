@@ -14,6 +14,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Auth;
 use File;
 use Helper;
+use App\Helpers\ApiHelper;
 use Illuminate\Http\Request;
 use Redirect;
 use Illuminate\Support\Facades\Http;
@@ -46,8 +47,7 @@ class KabanaAddonsController extends Controller
                 $q->where('ticketType', 'like', "%{$search}%")
                 ->orWhere('ticketSlug', 'like', "%{$search}%")
                 ->orWhere('ticketCategory', 'like', "%{$search}%")
-                ->orWhere('venueId', 'like', "%{$search}%")
-                ->orWhere('price', 'like', "%{$search}%");
+                ->orWhere('venueId', 'like', "%{$search}%");
             });
         }
 
@@ -67,9 +67,11 @@ class KabanaAddonsController extends Controller
         }
 
         $data = $query->offset($start)->limit($limit)->get();
-
+        $externalProducts = ApiHelper::getProductByCategory($data,'Cabanas');
+        $externalMap = collect($externalProducts)->keyBy('ticketSlug');
         $result = [];
         foreach ($data as $row) {
+            $external = $externalMap[$row->ticketSlug] ?? null;
             $result[] = [
                 'id' => $row->id,
                 'venueId' => $row->venueId,
@@ -80,7 +82,7 @@ class KabanaAddonsController extends Controller
                 'ticketType' => '<a class="dropdown-item" href="' . route('kabanaaddonEdit', $row->ticketSlug) . '">'.$row->ticketType.'</a>',
                 'ticketSlug' => $row->ticketSlug,
                 'ticketCategory' => $row->ticketCategory,
-                'price' => '$' . number_format($row->price, 2),
+                'price' => '$' . number_format($external['price'], 2),
                 
                 'featured' => '<div class="text-center"><i class="fa ' . ($row->is_featured ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
                 'status' => '<div class="text-center"><i class="fa ' . ($row->status ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',

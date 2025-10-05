@@ -128,6 +128,7 @@ class GeneralTicketController extends BaseAPIController
                         $ticket['description'] = $generalTicket->description;
                         $ticket['is_primary'] = $generalTicket->is_primary;
                         $ticket['new_price'] = $generalTicket->new_price;
+                        $ticket['is_new_price_show'] = $generalTicket->is_new_price_show;
                         if ($generalTicket->media_slider && $generalTicket->media_slider->isNotEmpty()) {
                             $ticket['image_url'] = url($generalTicket->media_slider->first()->file_url);
                         }

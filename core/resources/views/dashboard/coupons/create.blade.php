@@ -38,6 +38,7 @@
                                 <option value="birthday">{!! __('Birthday') !!}</option>
                                 <option value="general_ticket">{!! __('Platform Ticket') !!}</option>
                                 <option value="season_pass">{!! __('Season Pass') !!}</option>
+                                <option value="offer_creation">{!! __('Offers') !!}</option>
                             </select>
                         </div>
                     </div>

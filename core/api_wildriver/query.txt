@@ -42,6 +42,12 @@ ALTER TABLE `smartend_offer_addons`
   ALTER TABLE `smartend_offer_addons`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1
 
+  ALTER TABLE `smartend_offer_addons` ADD `status` ENUM('0','1') NOT NULL DEFAULT '1' AFTER `description`;
+
+  ALTER TABLE `smartend_general_ticket_addons` ADD `is_new_price_show` ENUM('0','1') NOT NULL DEFAULT '1' AFTER `new_price`;
+
+  ALTER TABLE `smartend_season_passes_addon` ADD `is_new_price_show` ENUM('0','1') NOT NULL DEFAULT '1' AFTER `new_price`;
+
 -----------------------------------------------------------------------------------------
 
 {

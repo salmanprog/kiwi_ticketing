@@ -20,6 +20,7 @@ class SeasonPassAddon extends Model
         'price',
         'description',
         'new_price',
+        'is_new_price_show',
         'is_featured',
         'status',
     ];

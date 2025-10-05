@@ -8,6 +8,7 @@ use App\Models\BirthdayCabanas;
 use App\Http\Resources\BirthdayPackagesResource;
 use Carbon\Carbon;
 use Helper;
+use App\Helpers\ApiHelper;
 use Illuminate\Support\Facades\Http;
 
 class BirthdayController extends BaseAPIController

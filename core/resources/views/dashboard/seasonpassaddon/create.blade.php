@@ -123,6 +123,24 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label for="link_status" class="col-sm-2 form-control-label">Show New Price</label>
+                        <div class="col-sm-10">
+                            <div class="radio">
+                                <label class="ui-check ui-check-md">
+                                    <input id="is_new_price_show1" class="has-value" checked="checked" name="is_new_price_show" type="radio" value="1">
+                                    <i class="dark-white"></i>
+                                    Yes
+                                </label>
+                                &nbsp; &nbsp;
+                                <label class="ui-check ui-check-md">
+                                    <input id="is_new_price_show2" class="has-value" name="is_new_price_show" type="radio" value="0">
+                                    <i class="dark-white"></i>
+                                    No
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label for="link_status" class="col-sm-2 form-control-label">Status</label>
                         <div class="col-sm-10">
                             <div class="radio">

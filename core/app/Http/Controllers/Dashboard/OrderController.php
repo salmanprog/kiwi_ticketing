@@ -192,6 +192,28 @@ class OrderController extends Controller
         return view("dashboard.seasonpassorders.list", compact("paginated", "GeneralWebmasterSections"));
     }
 
+    public function getOfferCreationOrders()
+    {
+        // General for all pages
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'desc')->get();
+        $get_offer_orders = Order::with(['customer','purchases','transaction'])->where('auth_code',$authCode)->where('type','offer_creation')->get();
+        
+         // Paginate
+        $perPage = 10;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $collection = collect($get_offer_orders);
+        $paginated = new LengthAwarePaginator(
+            $collection->forPage($currentPage, $perPage),
+            $collection->count(),
+            $perPage,
+            $currentPage,
+            ['path' => url()->current(), 'query' => request()->query()]
+        );
+        return view("dashboard.offercreationorders.list", compact("paginated", "GeneralWebmasterSections"));
+    }
+
     public function getByOrderSlug($slug)
     {
         // General for all pages
@@ -204,6 +226,7 @@ class OrderController extends Controller
             'cabana'        => 'dashboard.kabanaorders.show',
             'general_ticket'=> 'dashboard.ticketingorders.show',
             'season_pass'   => 'dashboard.seasonpassorders.show',
+            'offer_creation'   => 'dashboard.offercreationorders.show',
         ];
 
         $view = $views[$get_cabana_orders->type] ?? 'dashboard.birthdayorders.show';

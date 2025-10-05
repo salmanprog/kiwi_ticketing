@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Helper;
 
 class ApiTokenMiddleware
 {
@@ -12,12 +13,20 @@ class ApiTokenMiddleware
     {
         $b64 = $request->header('Authorization') ?? $request->header('X-Auth');
         if (!$b64) {
-            return response()->json(['message' => 'Unauthorized: missing header'], 401);
+            return response()->json([
+                'success' => false,
+                'error' => 'Authorization Error',
+                'message' => 'Missing authorization header.'
+            ], 401);
         }
 
         $cipher = base64_decode($b64, true);
         if ($cipher === false) {
-            return response()->json(['message' => 'Unauthorized: bad base64'], 401);
+            return response()->json([
+                'success' => false,
+                'error' => 'Authorization Error',
+                'message' => 'Invalid base64 encoding in token.'
+            ], 401);
         }
 
         $key = 'my-secret-key-16';
@@ -25,12 +34,20 @@ class ApiTokenMiddleware
 
         if ($plain === false) {
             Log::warning('AES decrypt failed (ECB).');
-            return response()->json(['message' => 'Unauthorized: decrypt failed'], 401);
+            return response()->json([
+                'success' => false,
+                'error' => 'Authorization Error',
+                'message' => 'Token decryption failed.'
+            ], 401);
         }
 
-        if ($plain !== 'Abc123') {
-            return response()->json(['message' => 'Unauthorized: token mismatch'], 401);
-        }
+        if ($plain !== Helper::GeneralSiteSettings('auth_code_en')) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Authorization Error',
+                'message' => 'Invalid or mismatched token.'
+            ], 401);
+        }   
 
         return $next($request);
     }

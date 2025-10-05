@@ -14,6 +14,7 @@ use App\Models\Media;
 use Auth;
 use File;
 use Helper;
+use App\Helpers\ApiHelper;
 use Illuminate\Http\Request;
 use Redirect;
 use Illuminate\Support\Facades\Http;
@@ -91,9 +92,11 @@ class SeasonPassAddonsController extends Controller
         }
 
         $data = $query->offset($start)->limit($limit)->get();
-
+        $externalProducts = ApiHelper::getProductByCategory($data,'Season Passes');
+        $externalMap = collect($externalProducts)->keyBy('ticketSlug');
         $result = [];
         foreach ($data as $row) {
+            $external = $externalMap[$row->ticketSlug] ?? null;
             $result[] = [
                 'id' => $row->id,
                 'check' => '<label class="ui-check m-a-0">
@@ -103,7 +106,7 @@ class SeasonPassAddonsController extends Controller
                 'seasonpass' => '<a class="dropdown-item" href="' . route('seasonpass') . '">'.$row->season_pass->title.'</a>',
                 'title' => '<a class="dropdown-item" href="' . route('seasonpassaddonEdit', $row->slug) . '">'.$row->ticketType.'</a>',
                 'slug' => $row->ticketSlug,
-                'price' => '$' . number_format($row->price, 2),
+                'price' => '$' . number_format($external['price'], 2),
                 'new_price' => '$' . number_format($row->new_price, 2),
                 'status' => '<div class="text-center"><i class="fa ' . ($row->status ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
                 'options' => '<div class="dropdown">
@@ -235,6 +238,7 @@ class SeasonPassAddonsController extends Controller
                 $seasonpassAddon->price = $tickets_arr[0]['price'];
                 $seasonpassAddon->description = $request->description;
                 $seasonpassAddon->new_price = $request->new_price;
+                $seasonpassAddon->is_new_price_show = $request->is_new_price_show;
                 $seasonpassAddon->is_featured = $request->is_featured;
                 $seasonpassAddon->status = $request->status;
                 $seasonpassAddon->save();
@@ -339,6 +343,7 @@ class SeasonPassAddonsController extends Controller
 
         $seasonPassUpdate->description = $request->description;
         $seasonPassUpdate->price = $request->new_price;
+        $seasonPassUpdate->is_new_price_show = $request->is_new_price_show;
         $seasonPassUpdate->is_featured = $request->is_featured;
         $seasonPassUpdate->status = $request->status;
         $seasonPassUpdate->save();

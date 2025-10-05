@@ -93,6 +93,11 @@ class Order extends Model
         return $this->hasOne(SeasonPass::class, 'id','package_id');
     }
 
+    public function offer_creation()
+    {
+        return $this->hasOne(OfferCreation::class, 'id','package_id');
+    }
+
     public function apply_coupon()
     {
         return $this->hasOne(OrderCoupon::class, 'order_id','id');

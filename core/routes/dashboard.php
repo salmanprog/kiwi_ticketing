@@ -31,6 +31,8 @@ use App\Http\Controllers\Dashboard\SeasonPassController;
 use App\Http\Controllers\Dashboard\SeasonPassAddonsController;
 use App\Http\Controllers\Dashboard\GeneralTicketPackagesController;
 use App\Http\Controllers\Dashboard\CouponController;
+use App\Http\Controllers\Dashboard\OfferCreationPackagesController;
+use App\Http\Controllers\Dashboard\OfferAddonController;
 use Illuminate\Support\Facades\Route;
 
 // Admin Home
@@ -361,6 +363,9 @@ Route::get('/offer-packages/create/', [OfferCreationPackagesController::class, '
 Route::post('/offer-packages/store', [OfferCreationPackagesController::class, 'store'])->name('offercreationpackagesStore');
 Route::post('/offer-packages/{id}/update', [OfferCreationPackagesController::class, 'update'])->name('offercreationpackagesUpdate');
 Route::get('/offer-packages/destroy/{id}', [OfferCreationPackagesController::class, 'destroy'])->name('offercreationpackagesDestroy');
+Route::get('/offer-packages-orders', [OrderController::class, 'getOfferCreationOrders'])->name('offercreationpackagesorders');
+Route::post('/offer-packages-order', [OrderController::class, 'getOrders'])->name('offercreationpackagesorders.data');
+Route::get('/offer-packages-orders-detail/{slug}', [OrderController::class, 'getByOrderSlug'])->name('offercreationpackagesordersdetail');
 // Offer Creation Addons
 Route::get('/offer-addon', [OfferAddonController::class, 'index'])->name('offeraddon');
 Route::post('/offer-addon', [OfferAddonController::class, 'getData'])->name('offeraddon.data');

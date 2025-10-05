@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\CabanaPackages;
 use App\Http\Resources\CabanaResource;
+use App\Helpers\ApiHelper;
 use Carbon\Carbon;
 use Helper;
 
@@ -17,6 +18,14 @@ class CabanaController extends BaseAPIController
         if ($cabana->isEmpty()) {
             return $this->sendResponse(200, 'Retrieved Cabana Listing', []);
         }
+        $externalProducts = ApiHelper::getProductByCategory($cabana,'Cabanas');
+        $externalMap = collect($externalProducts)->keyBy('ticketSlug');
+        $cabana->transform(function ($item) use ($externalMap) {
+            $external = $externalMap[$item->ticketSlug] ?? null;
+            $item->external_price = $external['price'] ?? null;
+            $item->external_category = $external['ticketCategory'] ?? null;
+            return $item;
+        });
         $resource = CabanaResource::collection($cabana);
         return $this->sendResponse(200, 'Retrieved Cabana Listing', $resource);
     }

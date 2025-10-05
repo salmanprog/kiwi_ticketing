@@ -49,6 +49,7 @@ class SeasonPassAddonController extends BaseAPIController
                         $ticket['description'] = $generalTicket->description;
                         $ticket['new_price'] = $generalTicket->new_price;
                         $ticket['is_featured'] = $generalTicket->is_featured;
+                        $ticket['is_new_price_show'] = $generalTicket->is_new_price_show;
                         if ($generalTicket->media_slider && $generalTicket->media_slider->count() > 0) {
                             $ticket['image_url'] = url($generalTicket->media_slider->first()->file_url);
                         }

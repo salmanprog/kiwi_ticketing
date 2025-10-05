@@ -13,6 +13,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Auth;
 use File;
 use Helper;
+use App\Helpers\ApiHelper;
 use Illuminate\Http\Request;
 use Redirect;
 use Illuminate\Support\Facades\Http;
@@ -77,9 +78,11 @@ class OfferAddonController extends Controller
         }
 
         $data = $query->offset($start)->limit($limit)->get();
-
+        $externalProducts = ApiHelper::getAddonWithoutCategory($data);
+        $externalMap = collect($externalProducts)->keyBy('ticketSlug');
         $result = [];
         foreach ($data as $row) {
+            $external = $externalMap[$row->ticketSlug] ?? null;
             $result[] = [
                 'id' => $row->id,
                 'check' => '<label class="ui-check m-a-0">
@@ -90,7 +93,7 @@ class OfferAddonController extends Controller
                 'offerType' => '<a class="dropdown-item" href="' . route('offeraddonEdit', $row->slug) . '">'.$row->offerType.'</a>',
                 'ticketType' => $row->ticketType,
                 'ticketCategory' => $row->ticketCategory,
-                'price' => '$' . number_format($row->price, 2),
+                'price' => '$' . number_format($external['price'], 2),
                 'is_offer' => $row->is_offer,
                 'is_featured' => '<div class="text-center"><i class="fa ' . ($row->is_featured ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
                 'options' => '<div class="dropdown">
@@ -248,7 +251,7 @@ class OfferAddonController extends Controller
                     for($i=0;$i<count($uploadedFileNames);$i++){
                         $media = new Media;
                         $media->module  = 'offer_addon';
-                        $media->module_id = $ticketAddon->id;
+                        $media->module_id = $offerAddon->id;
                         $media->filename  = $uploadedFileNames[$i];
                         $media->original_name = $uploadedFileNames[$i];
                         $media->file_url = $this->uploadPath.$uploadedFileNames[$i];

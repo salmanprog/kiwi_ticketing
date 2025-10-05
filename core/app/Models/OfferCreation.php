@@ -44,6 +44,10 @@ class OfferCreation extends Model
         return $this->hasMany(Media::class, 'module_id')->where('module','offer_creation_packages');
     }
 
+    public function addons()
+    {
+        return $this->hasMany(OfferAddon::class, 'offerSlug', 'slug');
+    }
     /**
      * Generate a unique slug for the general package.
      */
