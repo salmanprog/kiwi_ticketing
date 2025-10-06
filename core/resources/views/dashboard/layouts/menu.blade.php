@@ -103,7 +103,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <i class="fa fa-caret-down"></i>
                             </span>
                             <span class="nav-icon">
-                            <i class="material-icons">{!! $LiIcon !!}</i>
+                            <i class="material-icons">&#xe241;</i>
                             </span>
                             <span class="nav-text">{{ __('Birthday Managment') }}</span>
                         </a>
