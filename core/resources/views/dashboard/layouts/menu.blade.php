@@ -60,7 +60,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <i class="fa fa-caret-down"></i>
                             </span>
                             <span class="nav-icon">
-                            <i class="material-icons">&#xe7fb;</i>
+                            <i class="material-icons">&#xe156;</i>
                             </span>
                             <span class="nav-text">{{ __('Cabana Managment') }}</span>
                         </a>
@@ -103,7 +103,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <i class="fa fa-caret-down"></i>
                             </span>
                             <span class="nav-icon">
-                            <i class="material-icons">&#xe7fb;</i>
+                            <i class="material-icons">{!! $LiIcon !!}</i>
                             </span>
                             <span class="nav-text">{{ __('Birthday Managment') }}</span>
                         </a>
@@ -146,7 +146,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <i class="fa fa-caret-down"></i>
                             </span>
                             <span class="nav-icon">
-                            <i class="material-icons">&#xe7fb;</i>
+                            <i class="material-icons">&#xe433;</i>
                             </span>
                             <span class="nav-text">{{ __('Platform Managment') }}</span>
                         </a>
@@ -197,7 +197,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <i class="fa fa-caret-down"></i>
                             </span>
                             <span class="nav-icon">
-                            <i class="material-icons">&#xe7fb;</i>
+                            <i class="material-icons">&#xe8d9;</i>
                             </span>
                             <span class="nav-text">{{ __('SeasonPass Managment') }}</span>
                         </a>
@@ -237,7 +237,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <i class="fa fa-caret-down"></i>
                             </span>
                             <span class="nav-icon">
-                            <i class="material-icons">&#xe7fb;</i>
+                            <i class="material-icons">&#xe53b;</i>
                             </span>
                             <span class="nav-text">{{ __('Offer Managment') }}</span>
                         </a>
@@ -280,7 +280,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <i class="fa fa-caret-down"></i>
                             </span>
                             <span class="nav-icon">
-                            <i class="material-icons">&#xe7fb;</i>
+                            <i class="material-icons">&#xe1b8;</i>
                             </span>
                             <span class="nav-text">{{ __('Coupons Managment') }}</span>
                         </a>
