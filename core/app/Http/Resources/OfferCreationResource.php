@@ -13,6 +13,7 @@ class OfferCreationResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'slug' => $this->slug,
+            'offerType' => $this->offerType,
             'description' => $this->description,
             'slider_images' => MediaResource::collection($this->media_slider),
         ];

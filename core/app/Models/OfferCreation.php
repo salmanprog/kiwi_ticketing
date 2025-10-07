@@ -15,6 +15,7 @@ class OfferCreation extends Model
     protected $fillable = [
         'slug',
         'auth_code',
+        'offerType',
         'title',
         'description',
         'image_url',

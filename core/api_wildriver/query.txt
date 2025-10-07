@@ -1,54 +1,49 @@
-CREATE TABLE `smartend_offer_creation_packages` (
-  `id` int(11) NOT NULL,
-  `slug` varchar(255) DEFAULT NULL,
-  `auth_code` varchar(255) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `description` text DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+ALTER TABLE `smartend_offer_creation_packages` ADD `offerType` ENUM('any_day','specifc_date') NOT NULL DEFAULT 'any_day' AFTER `auth_code`;
 
-
-ALTER TABLE `smartend_offer_creation_packages`
-  ADD PRIMARY KEY (`id`);
-
-  ALTER TABLE `smartend_offer_creation_packages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1
-
-  ALTER TABLE `smartend_offer_creation_packages` ADD `status` ENUM('0','1') NOT NULL DEFAULT '1' AFTER `description`;
-
-
-CREATE TABLE `smartend_offer_addons` (
-  `id` int(11) NOT NULL,
-  `slug` varchar(255) DEFAULT NULL,
-  `auth_code` varchar(255) NOT NULL,
-  `offerType` varchar(255) NOT NULL,
-  `offerSlug` varchar(255) NOT NULL,
-  `is_offer` ENUM('0','1') NOT NULL DEFAULT '1',
-  `is_featured` ENUM('0','1') NOT NULL DEFAULT '1',
-  `venueId` varchar(255) NOT NULL,
-  `ticketType` varchar(255) NOT NULL,
-  `ticketSlug` varchar(255) NOT NULL,
-  `ticketCategory` varchar(255) NOT NULL,
-  `price` varchar(255) NOT NULL,
-  `description` text DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-ALTER TABLE `smartend_offer_addons`
-  ADD PRIMARY KEY (`id`);
-
-  ALTER TABLE `smartend_offer_addons`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1
-
-  ALTER TABLE `smartend_offer_addons` ADD `status` ENUM('0','1') NOT NULL DEFAULT '1' AFTER `description`;
-
-  ALTER TABLE `smartend_general_ticket_addons` ADD `is_new_price_show` ENUM('0','1') NOT NULL DEFAULT '1' AFTER `new_price`;
-
-  ALTER TABLE `smartend_season_passes_addon` ADD `is_new_price_show` ENUM('0','1') NOT NULL DEFAULT '1' AFTER `new_price`;
-
+ALTER TABLE `smartend_order` ADD `status` ENUM('0','1') NOT NULL DEFAULT '1' AFTER `totalOrderRefundedAmount`;
+ALTER TABLE `smartend_order` ADD `order_status` ENUM('new_order','update_order','upgrade_order') NOT NULL DEFAULT 'new_order' AFTER `totalOrderRefundedAmount`;
 -----------------------------------------------------------------------------------------
+{
+  "sessionId": 0,
+  "previousOrderNumber": "string",
+  "orderNumber": "string",
+  "transactionId": "string",
+  "authCode": "string",
+  "isterminalPayment": true,
+  "posStaffIdentity": "string",
+  "date": "2025-10-06T19:27:44.326Z",
+  "makeThisAddonsAsChild": true,
+  "isPaymentThroughSubscriptionPlan": 0,
+  "totalInstallments": 0,
+  "installmentType": "string",
+  "ticketChanges": [
+    {
+      "ticketType": "string",
+      "visualId": "string",
+      "date": "2025-10-06T19:27:44.326Z",
+      "sectionId": "string",
+      "capacityId": "string",
+      "amount": 0,
+      "isSeasonPass": 0
+    }
+  ],
+  "payment": {
+    "cardholerName": "string",
+    "billingStreet": "string",
+    "billingZipCode": "string",
+    "expDate": "string",
+    "paymentCode": "string",
+    "amount": 0,
+    "staffTip": 0,
+    "tax": 0,
+    "serviceCharges": 0,
+    "transactionId": "string",
+    "ccNumber": "string",
+    "cvn": "string",
+    "paymentMethodId": "string"
+  }
+}
+
 
 {
     "authCode":"d063d05b-fbb1-4bf0-b4d8-b2f603454858",
