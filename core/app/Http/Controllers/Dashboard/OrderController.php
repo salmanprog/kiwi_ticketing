@@ -110,7 +110,7 @@ class OrderController extends Controller
                                 </button>
                                 <div class="dropdown-menu pull-right">
                                     <a class="dropdown-item" href="' . route($request->route, $row->slug) . '">
-                                        <i class="material-icons"></i> Edit
+                                        <i class="material-icons"></i> Preview
                                     </a>
                                 </div>
                             </div>',

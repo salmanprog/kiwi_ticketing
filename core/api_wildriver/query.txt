@@ -1,6 +1,49 @@
+ALTER TABLE `smartend_offer_creation_packages` ADD `offerType` ENUM('any_day','specifc_date') NOT NULL DEFAULT 'any_day' AFTER `auth_code`;
 
-
+ALTER TABLE `smartend_order` ADD `status` ENUM('0','1') NOT NULL DEFAULT '1' AFTER `totalOrderRefundedAmount`;
+ALTER TABLE `smartend_order` ADD `order_status` ENUM('new_order','update_order','upgrade_order') NOT NULL DEFAULT 'new_order' AFTER `totalOrderRefundedAmount`;
 -----------------------------------------------------------------------------------------
+{
+  "sessionId": 0,
+  "previousOrderNumber": "string",
+  "orderNumber": "string",
+  "transactionId": "string",
+  "authCode": "string",
+  "isterminalPayment": true,
+  "posStaffIdentity": "string",
+  "date": "2025-10-06T19:27:44.326Z",
+  "makeThisAddonsAsChild": true,
+  "isPaymentThroughSubscriptionPlan": 0,
+  "totalInstallments": 0,
+  "installmentType": "string",
+  "ticketChanges": [
+    {
+      "ticketType": "string",
+      "visualId": "string",
+      "date": "2025-10-06T19:27:44.326Z",
+      "sectionId": "string",
+      "capacityId": "string",
+      "amount": 0,
+      "isSeasonPass": 0
+    }
+  ],
+  "payment": {
+    "cardholerName": "string",
+    "billingStreet": "string",
+    "billingZipCode": "string",
+    "expDate": "string",
+    "paymentCode": "string",
+    "amount": 0,
+    "staffTip": 0,
+    "tax": 0,
+    "serviceCharges": 0,
+    "transactionId": "string",
+    "ccNumber": "string",
+    "cvn": "string",
+    "paymentMethodId": "string"
+  }
+}
+
 
 {
     "authCode":"d063d05b-fbb1-4bf0-b4d8-b2f603454858",

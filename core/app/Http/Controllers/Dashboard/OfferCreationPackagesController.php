@@ -86,6 +86,7 @@ class OfferCreationPackagesController extends Controller
                                 <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
                             </label>',
                 'title' => '<a class="dropdown-item" href="' . route('offercreationpackagesEdit', $row->slug) . '">'.$row->title.'</a>',
+                'offerType' => '<a class="dropdown-item" href="' . route('offercreationpackagesEdit', $row->slug) . '">'.($row->offerType == 'any_day') ? 'Any Day' : 'Specific Date'.'</a>',
                 'slug' => $row->slug,
                 'status' => '<div class="text-center"><i class="fa ' . ($row->status ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
                 'options' => '<div class="dropdown">
@@ -121,6 +122,7 @@ class OfferCreationPackagesController extends Controller
     {
         $this->validate($request, [
             'title' => 'required',
+            'offerType' => 'required',
             'description' => 'required',
         ]);
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
@@ -152,6 +154,7 @@ class OfferCreationPackagesController extends Controller
         $offerCreationPackage = new OfferCreation;
         $offerCreationPackage->auth_code  = $authCode;
         $offerCreationPackage->title  = $request->title;
+        $offerCreationPackage->offerType  = $request->offerType;
         $offerCreationPackage->description = $request->description;
         $offerCreationPackage->status = $request->status;
         $offerCreationPackage->save();

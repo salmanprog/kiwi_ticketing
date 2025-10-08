@@ -15,7 +15,6 @@ class OfferAddon extends Model
         'auth_code',
         'offerType',
         'offerSlug',
-        'is_offer',
         'is_featured',
         'venueId',
         'ticketType',

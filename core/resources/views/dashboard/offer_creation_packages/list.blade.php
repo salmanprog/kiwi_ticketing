@@ -41,6 +41,7 @@
                             </th>
                             <th>{{ __('ID') }}</th>
                             <th>{{ __('Title') }}</th>
+                            <th>{{ __('Type') }}</th>
                             <th>{{ __('Slug') }}</th>
                             <th>{{ __('Status') }}</th>
                             <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
@@ -142,6 +143,7 @@
                     { data: 'check', orderable: false, searchable: false },
                     { data: 'id' },
                     { data: 'title' },
+                    { data: 'offerType' },
                     { data: 'slug' },
                     { data: 'status', orderable: false, searchable: false },
                     { data: 'options', orderable: false, searchable: false }

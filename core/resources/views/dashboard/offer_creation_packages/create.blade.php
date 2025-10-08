@@ -28,6 +28,18 @@
             <div class="box-body p-a-2">
                 {{Form::open(['route'=>['offercreationpackagesStore'],'method'=>'POST', 'files' => true])}}
                     <div class="form-group row">
+                        <label for="section_id" class="col-sm-2 form-control-label">
+                            {!! __('Type') !!}
+                        </label>
+                        <div class="col-sm-10">
+                           <select name="offerType" id="offerType" class="form-control">
+                                <option value="">- - {!!  __('Select Offer Type') !!} - -</option>
+                                <option value="any_day">{!! __('Anyday Offer') !!}</option>
+                                <option value="specifc_date">{!! __('Specific Date Offer') !!}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label for="title"
                                 class="col-sm-2 form-control-label">{!!  __('Title') !!}
                         </label>

@@ -62,7 +62,6 @@ class OfferCreationController extends BaseAPIController
                     ) {
                         $generalTicket = $generalTickets[$ticket['ticketSlug']];
                         $ticket['description'] = $generalTicket->description;
-                        $ticket['is_offer'] = ($generalTicket->is_offer == '0') ? 'specific_date_offer' : 'any_day';
                         $ticket['is_featured'] = $generalTicket->is_featured;
                         if ($generalTicket->media_slider && $generalTicket->media_slider->isNotEmpty()) {
                             $ticket['image_url'] = url($generalTicket->media_slider->first()->file_url);

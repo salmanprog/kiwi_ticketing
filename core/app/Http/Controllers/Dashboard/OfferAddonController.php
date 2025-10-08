@@ -94,7 +94,6 @@ class OfferAddonController extends Controller
                 'ticketType' => $row->ticketType,
                 'ticketCategory' => $row->ticketCategory,
                 'price' => '$' . number_format($external['price'], 2),
-                'is_offer' => $row->is_offer,
                 'is_featured' => '<div class="text-center"><i class="fa ' . ($row->is_featured ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
                 'options' => '<div class="dropdown">
                                 <button type="button" class="btn btn-sm light dk dropdown-toggle" data-toggle="dropdown">
@@ -103,9 +102,6 @@ class OfferAddonController extends Controller
                                 <div class="dropdown-menu pull-right">
                                     <a class="dropdown-item" href="' . route('offeraddonEdit', $row->slug) . '">
                                         <i class="material-icons">&#xe3c9;</i> Edit
-                                    </a>
-                                     <a class="dropdown-item text-danger" onclick="DeleteTicketAddon(\'' . $row->id . '\')">
-                                        <i class="material-icons">&#xe872;</i> Delete
                                     </a>
                                 </div>
                             </div>',
@@ -164,7 +160,6 @@ class OfferAddonController extends Controller
     {
         $this->validate($request, [
             'offerSlug' => 'required',
-            'is_offer' => 'required',
             'ticketSlug' => 'required',
             'description' => 'required',
         ]);
@@ -235,7 +230,6 @@ class OfferAddonController extends Controller
                 $offerAddon->auth_code  = Helper::GeneralSiteSettings('auth_code_en');
                 $offerAddon->offerType  = $offer_packages->title;
                 $offerAddon->offerSlug  = $request->offerSlug;
-                $offerAddon->is_offer  = $request->is_offer;
                 $offerAddon->is_featured  = $request->is_featured;
                 $offerAddon->venueId = $tickets_arr['ticket_addon'][0]['venueId'];
                 $offerAddon->ticketType  = $tickets_arr['ticket_addon'][0]['ticketType'];

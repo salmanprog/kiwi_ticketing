@@ -45,7 +45,6 @@
                             <th>{{ __('ticketType') }}</th>
                             <th>{{ __('Category') }}</th>
                             <th>{{ __('Price') }}</th>
-                            <th>{{ __('Type') }}</th>
                             <th>{{ __('Featured') }}</th>
                             <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
                         </tr>
@@ -176,7 +175,6 @@
                     { data: 'ticketType' },
                     { data: 'ticketCategory' },
                     { data: 'price' },
-                    { data: 'is_offer' },
                     { data: 'is_featured', orderable: false, searchable: false },
                     { data: 'options', orderable: false, searchable: false }
                 ],

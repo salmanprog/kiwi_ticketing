@@ -130,13 +130,13 @@
                                 <label class="ui-check ui-check-md">
                                     {!! Form::radio('is_featured','1',($offer_addon->is_featured==1) ? true : false, array('id' => 'is_featured1','class'=>'has-value')) !!}
                                     <i class="dark-white"></i>
-                                    {{ __('backend.active') }}
+                                    {{ __('backend.yes') }}
                                 </label>
                                 &nbsp; &nbsp;
                                 <label class="ui-check ui-check-md">
                                     {!! Form::radio('is_featured','0',($offer_addon->is_featured==0) ? true : false, array('id' => 'is_featured2','class'=>'has-value')) !!}
                                     <i class="dark-white"></i>
-                                    {{ __('backend.notActive') }}
+                                    {{ __('backend.no') }}
                                 </label>
                             </div>
                         </div>

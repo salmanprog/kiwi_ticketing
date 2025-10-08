@@ -27,27 +27,16 @@
             </div>
             <div class="box-body p-a-2">
                 {{Form::open(['route'=>['offeraddonStore'],'method'=>'POST', 'files' => true])}}
-                    <div class="form-group row">
-                        <label for="section_id" class="col-sm-2 form-control-label">
-                            {!! __('Type') !!}
-                        </label>
-                        <div class="col-sm-10">
-                           <select name="is_offer" id="is_offer" class="form-control">
-                                <option value="">- - {!!  __('Select Offer Type') !!} - -</option>
-                                <option value="1">{!! __('Anyday Offer') !!}</option>
-                                <option value="0">{!! __('Specific Date Offer') !!}</option>
-                            </select>
-                        </div>
-                    </div>
+                    
                     <div class="form-group row">
                         <label for="section_id" class="col-sm-2 form-control-label">
                             {!! __('Offer') !!}
                         </label>
                         <div class="col-sm-10">
-                           <select name="offerSlug" class="form-control">
+                           <select name="offerSlug" id="is_offer" class="form-control">
                                 <option value="">- - {!!  __('Select Offer') !!} - -</option>
                                 @foreach($offerCreation as $ticket)
-                                    <option value="{{ $ticket['slug'] }}">{{ $ticket['title'] }}</option>
+                                    <option value="{{ $ticket['slug'] }}" data-offer-type="{{ $ticket['offerType'] }}">{{ $ticket['title'] }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -163,37 +152,37 @@
 
         const data = @json($tickets_arr);
 
-        const isPrimarySelect = document.getElementById('is_offer');
-        const ticketItemsSelect = document.getElementById('ticket_items');
+        const select = document.getElementById('is_offer');
+        const ticketItemsSelect = document.getElementById('ticket_items'); // Ensure this matches your actual element ID
 
-        isPrimarySelect.addEventListener('change', function () {
-            const selectedValue = this.value;
+        select.addEventListener('change', function () {
+            const selectedOption = this.options[this.selectedIndex];
+            const selectedValue = selectedOption.getAttribute('data-offer-type');
             ticketItemsSelect.innerHTML = '<option value="">-- Select Offer Addon --</option>';
 
             let selectedArray = [];
 
-            if (selectedValue === "1") {
+            if (selectedValue === "any_day") {
                 selectedArray = data.ticket;
-            } else if (selectedValue === "0") {
+            } else if (selectedValue === "specifc_date") { // fixed typo
                 selectedArray = data.ticket_addon;
             }
 
             selectedArray.forEach(item => {
                 const option = document.createElement('option');
                 option.value = item.ticketSlug;
-                //option.textContent = item.ticketType + ' (' + item.ticketCategory + ') - $' + item.price;
-                option.textContent = item.ticketType;
+                option.textContent = item.ticketType; // or use a more detailed label
                 option.setAttribute('data-price', item.price);
                 ticketItemsSelect.appendChild(option);
             });
         });
-        const select = document.getElementById('ticket_items');
-        const priceDisplay = document.getElementById('new_price');
+        // const select = document.getElementById('ticket_items');
+        // const priceDisplay = document.getElementById('new_price');
 
-        select.addEventListener('change', function() {
-            const selectedOption = this.options[this.selectedIndex];
-            const price = selectedOption.getAttribute('data-price');
-            priceDisplay.value = price ? price : '0';
-        });
+        // select.addEventListener('change', function() {
+        //     const selectedOption = this.options[this.selectedIndex];
+        //     const price = selectedOption.getAttribute('data-price');
+        //     priceDisplay.value = price ? price : '0';
+        // });
     </script>
 @endpush

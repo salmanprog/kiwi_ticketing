@@ -29,6 +29,14 @@
                 {{Form::open(['route'=>['offercreationpackagesUpdate',"id"=>$offer_creation_packages->slug],'method'=>'POST', 'files' => true])}}
                     <div class="form-group row">
                         <label for="title"
+                                class="col-sm-2 form-control-label">{!!  __('Type') !!}
+                        </label>
+                        <div class="col-sm-10">
+                            {!! Form::text('offerType',old('offerType', ($offer_creation_packages->offerType == 'any_day') ? 'Anyday Offer':'Specific Date Offer'), array('placeholder' => '','class' => 'form-control','id'=>'offerType','required'=>'','readonly' => 'readonly')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="title"
                                 class="col-sm-2 form-control-label">{!!  __('Title') !!}
                         </label>
                         <div class="col-sm-10">
