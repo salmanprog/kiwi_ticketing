@@ -11,6 +11,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Auth;
 use File;
 use Helper;
+use App\Helpers\OrdersHelper;
 use Illuminate\Http\Request;
 use Redirect;
 use Illuminate\Support\Facades\Http;
@@ -56,6 +57,7 @@ class OrderController extends Controller
         $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'desc')->get();
+        $order_type =  OrdersHelper::order_types($request->type);
         $query = Order::with(['customer','purchases','apply_coupon','coupon','transaction',$request->type])->where('auth_code',$authCode)->where('type',$request->type);
         if ($request->has('search') && $request->search['value'] != '') {
             $search = $request->search['value'];
@@ -97,7 +99,7 @@ class OrderController extends Controller
                                 <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
                                 <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
                             </label>',
-                'package' => '<a class="dropdown-item" href="' . route($request->route, $row->slug) . '">'.$row->cabana->ticketType.'</a>',
+                'package' => '<a class="dropdown-item" href="' . route($request->route, $row->slug) . '">'.$row->$order_type->ticketType.'</a>',
                 'customerName' => $row->firstName.' '.$row->lastName,
                 'customerEmail' => $row->email,
                 'orderTotal' => '$' . number_format($row->orderTotal, 2),
