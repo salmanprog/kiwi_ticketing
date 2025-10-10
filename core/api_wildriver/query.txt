@@ -5,6 +5,47 @@ ALTER TABLE `smartend_order` ADD `order_status` ENUM('new_order','update_order',
 -----------------------------------------------------------------------------------------
 {
   "sessionId": 0,
+  "previousOrderNumber": "ca25-202527705",
+  "orderNumber": "ca25-202527706",
+  "transactionId": "pi_sdfsdfd46548dfdsfdffsd",
+  "authCode": "d063d05b-fbb1-4bf0-b4d8-b2f603454858",
+  "isterminalPayment": true,
+  "posStaffIdentity": "1",
+  "date": "2025-10-11T19:27:44.326Z",
+  "makeThisAddonsAsChild": true,
+  "isPaymentThroughSubscriptionPlan": 0,
+  "totalInstallments": 0,
+  "installmentType": "",
+  "ticketChanges": [
+    {
+      "ticketType": "wave-pool-blue-cabanas",
+      "visualId": "101-091025202706744-156807-985977",
+      "date": "2025-10-11T19:27:44.326Z",
+      "sectionId": "",
+      "capacityId": "",
+      "amount": 12,
+      "isSeasonPass": 0
+    }
+  ],
+  "payment": {
+    "cardholerName": "Omitted",
+    "billingStreet": "Teststreet123",
+    "billingZipCode": "12345",
+    "expDate": "string",
+    "paymentCode": "32",
+    "amount": 12,
+    "staffTip": 0,
+    "tax": 0,
+    "serviceCharges": 0,
+    "transactionId": "pi_sdfsdfd46548dfdsfdffsd",
+    "ccNumber": "Omitted",
+    "cvn": "Omitted",
+    "paymentMethodId": "0"
+  }
+}
+
+{
+  "sessionId": 0,
   "previousOrderNumber": "string",
   "orderNumber": "string",
   "transactionId": "string",

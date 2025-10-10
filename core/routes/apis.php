@@ -66,6 +66,7 @@ Route::post('/coupon-discount', 'CouponController@store');
 //Stripe
 Route::post('/order-payment', 'StripeController@createPaymentIntent');
 Route::post('/order-create', 'OrderController@OrderCreate');
+Route::post('/order-update', 'OrderController@OrderUpdate');
 Route::get('/order/{slug}', 'OrderController@getBySlug');
 
     Route::get('/secure-data', function () {

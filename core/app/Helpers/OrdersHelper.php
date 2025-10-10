@@ -185,8 +185,8 @@ class OrdersHelper
         } else {
             $requestPayload['isOfficeUse'] = null;
         }
-        if (isset($requestPayload['purchases']) && is_array($requestPayload['purchases'])) {
-            $requestPayload['purchases'] = array_map(function ($item) {
+        if (isset($requestPayload['ticketChanges']) && is_array($requestPayload['ticketChanges'])) {
+            $requestPayload['ticketChanges'] = array_map(function ($item) {
                 if (is_string($item)) {
                     $item = json_decode($item, true);
                 }
@@ -194,20 +194,11 @@ class OrdersHelper
                     $item['sectionId'] = (string) $item['sectionId'];
                 }
                 return $item;
-            }, $requestPayload['purchases']);
+            }, $requestPayload['ticketChanges']);
         }
-       
-        if($requestPayload['type'] == 'general_ticket'){
-            $response = Http::post($baseUrl.'/Pricing/UpdateOrder',$requestPayload);
-        }elseif($requestPayload['type'] == 'season_pass'){
-            unset($requestPayload['isOfficeUse']);
-            $response = Http::post($baseUrl.'/Pricing/UpdateOrder',$requestPayload);
-        }elseif($requestPayload['type'] == 'offer_creation'){
-            $response = Http::post($baseUrl.'/Pricing/UpdateOrder',$requestPayload);
-        }else{  
-            $response = Http::post($baseUrl.'/Pricing/UpdateOrder',$requestPayload);
-        }
-        
+         echo json_encode($requestPayload, true);
+             die();
+        $response = Http::post($baseUrl.'/Pricing/UpdateOrder',$requestPayload);
         return $response;
     }
 
