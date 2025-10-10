@@ -6,6 +6,7 @@ use App\Models\Menu;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Coupons;
+use App\Models\OfferCreation;
 use URL;
 use Helper;
 use Illuminate\Support\Facades\Http;
@@ -82,6 +83,7 @@ class OrdersHelper
         }
         if (isset($requestPayload['purchases']) && is_array($requestPayload['purchases'])) {
             $requestPayload['purchases'] = array_map(function ($item) {
+                
                 if (is_string($item)) {
                     $item = json_decode($item, true);
                 }
@@ -91,13 +93,23 @@ class OrdersHelper
                 return $item;
             }, $requestPayload['purchases']);
         }
+        //  print_r($requestPayload);
+        // die();
         if($requestPayload['type'] == 'general_ticket'){
             $response = Http::post($baseUrl.'/Pricing/AddOrder',$requestPayload);
         }elseif($requestPayload['type'] == 'season_pass'){
             unset($requestPayload['isOfficeUse']);
             $response = Http::post($baseUrl.'/Pricing/SeasonPassAddOrder',$requestPayload);
         }elseif($requestPayload['type'] == 'offer_creation'){
-            $response = Http::post($baseUrl.'/Pricing/AnyDayAddOrder',$requestPayload);
+            //  echo json_encode($requestPayload, true);
+            //  die();
+             $getType = OfferCreation::find($requestPayload['package_id']);
+             if($getType->offerType == 'specifc_date'){
+                $response = Http::post($baseUrl.'/Pricing/AddOrder',$requestPayload);
+             }else{
+                $response = Http::post($baseUrl.'/Pricing/AnyDayAddOrder',$requestPayload);
+             }
+            
         }else{  
             $response = Http::post($baseUrl.'/Pricing/BirthdayPackageAddOrder',$requestPayload);
         }
@@ -184,6 +196,7 @@ class OrdersHelper
                 return $item;
             }, $requestPayload['purchases']);
         }
+       
         if($requestPayload['type'] == 'general_ticket'){
             $response = Http::post($baseUrl.'/Pricing/UpdateOrder',$requestPayload);
         }elseif($requestPayload['type'] == 'season_pass'){
