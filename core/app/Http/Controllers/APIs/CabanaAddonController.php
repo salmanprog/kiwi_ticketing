@@ -25,13 +25,20 @@ class CabanaAddonController extends BaseAPIController
        
     }
 
-    public function show($slug)
+    public function show(Request $request,$slug)
     {
+        $validator = Validator::make($request->all(), [
+            'date' => 'required|string|max:255'
+        ]);
+        if ($validator->fails()) {
+            return $this->sendResponse(400, 'Validation Error', $validator->errors());
+        }
+        $params = $request->all();
         $cabana_addon = CabanaAddon::where('cabanaSlug', $slug)->get();
         if ($cabana_addon->isEmpty()) {
             return $this->sendResponse(200, 'Retrieved Cabana Addons Listing', []);
         }
-        $externalProducts = ApiHelper::getAddonWithoutCategory($cabana_addon);
+        $externalProducts = ApiHelper::getAddonWithoutCategory($cabana_addon,$params['date']);
         $externalMap = collect($externalProducts)->keyBy('ticketSlug');
         $cabana_addon->transform(function ($item) use ($externalMap) {
             $external = $externalMap[$item->ticketSlug] ?? null;

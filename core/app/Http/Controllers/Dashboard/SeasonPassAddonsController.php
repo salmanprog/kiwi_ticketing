@@ -65,6 +65,7 @@ class SeasonPassAddonsController extends Controller
     public function getData(Request $request)
     {
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $date = Carbon::today()->toDateString();
         $query = SeasonPassAddon::with(['media_slider','season_pass'])->where('auth_code', $authCode);
         if ($request->has('search') && $request->search['value'] != '') {
             $search = $request->search['value'];
@@ -92,7 +93,7 @@ class SeasonPassAddonsController extends Controller
         }
 
         $data = $query->offset($start)->limit($limit)->get();
-        $externalProducts = ApiHelper::getProductByCategory($data,'Season Passes');
+        $externalProducts = ApiHelper::getProductByCategory($data,'Season Passes',$date);
         $externalMap = collect($externalProducts)->keyBy('ticketSlug');
         $result = [];
         foreach ($data as $row) {

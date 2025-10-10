@@ -10,12 +10,11 @@ use Carbon\Carbon;
 class ApiHelper
 {
    
-   public static function getProductByCategory($query, $category)
+   public static function getProductByCategory($query, $category,$date)
     {
         try {
             $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
             $authCode = Helper::GeneralSiteSettings('auth_code_en');
-            $date = Carbon::today()->toDateString();
 
             $response = Http::get($baseUrl . '/Pricing/GetAllProductPrice', [
                 'authcode' => $authCode,
@@ -46,12 +45,11 @@ class ApiHelper
         }
     }
 
-    public static function getAddonWithoutCategory($query)
+    public static function getAddonWithoutCategory($query,$date)
     {
         try {
             $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
             $authCode = Helper::GeneralSiteSettings('auth_code_en');
-            $date = Carbon::today()->toDateString();
 
             $response = Http::get($baseUrl . '/Pricing/GetAllProductPrice', [
                 'authcode' => $authCode,

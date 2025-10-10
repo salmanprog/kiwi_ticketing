@@ -52,6 +52,7 @@ class OfferAddonController extends Controller
     public function getData(Request $request)
     {
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $date = Carbon::today()->toDateString();
         $query = OfferAddon::with(['media_slider'])->where('auth_code',$authCode);
         if ($request->has('search') && $request->search['value'] != '') {
             $search = $request->search['value'];
@@ -78,7 +79,7 @@ class OfferAddonController extends Controller
         }
 
         $data = $query->offset($start)->limit($limit)->get();
-        $externalProducts = ApiHelper::getAddonWithoutCategory($data);
+        $externalProducts = ApiHelper::getAddonWithoutCategory($data,$date);
         $externalMap = collect($externalProducts)->keyBy('ticketSlug');
         $result = [];
         foreach ($data as $row) {

@@ -11,14 +11,21 @@ use Helper;
 
 class CabanaController extends BaseAPIController
 {
-    public function index()
+    public function index(Request $request)
     {   
+        $validator = Validator::make($request->all(), [
+            'date' => 'required|string|max:255'
+        ]);
+        if ($validator->fails()) {
+            return $this->sendResponse(400, 'Validation Error', $validator->errors());
+        }
+        $params = $request->all();
          $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $cabana = CabanaPackages::with(['media_slider'])->where('is_featured', '=', '1')->where('status', '=', '1')->where('auth_code', $authCode)->get();
         if ($cabana->isEmpty()) {
             return $this->sendResponse(200, 'Retrieved Cabana Listing', []);
         }
-        $externalProducts = ApiHelper::getProductByCategory($cabana,'Cabanas');
+        $externalProducts = ApiHelper::getProductByCategory($cabana,'Cabanas',$params['date']);
         $externalMap = collect($externalProducts)->keyBy('ticketSlug');
         $cabana->transform(function ($item) use ($externalMap) {
             $external = $externalMap[$item->ticketSlug] ?? null;

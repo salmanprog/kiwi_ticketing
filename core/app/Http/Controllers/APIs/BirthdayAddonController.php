@@ -25,13 +25,20 @@ class BirthdayAddonController extends BaseAPIController
        
     }
 
-    public function show($slug)
+    public function show(Request $request,$slug)
     {
+        $validator = Validator::make($request->all(), [
+            'date' => 'required|string|max:255'
+        ]);
+        if ($validator->fails()) {
+            return $this->sendResponse(400, 'Validation Error', $validator->errors());
+        }
+        $params = $request->all();
         $birthday_addon = BirthdayAddon::where('birthday_slug', $slug)->get();
         if ($birthday_addon->isEmpty()) {
             return $this->sendResponse(200, 'Retrieved Birthday Addons Listing', []);
         }
-        $externalProducts = ApiHelper::getAddonWithoutCategory($birthday_addon);
+        $externalProducts = ApiHelper::getAddonWithoutCategory($birthday_addon,$params['date']);
         $externalMap = collect($externalProducts)->keyBy('ticketSlug');
         $birthday_addon->transform(function ($item) use ($externalMap) {
             $external = $externalMap[$item->ticketSlug] ?? null;

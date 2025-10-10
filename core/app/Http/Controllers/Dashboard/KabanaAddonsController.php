@@ -40,6 +40,7 @@ class KabanaAddonsController extends Controller
     public function getData(Request $request)
     {
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $date = Carbon::today()->toDateString();
         $query = CabanaPackages::with(['media_slider'])->where('auth_code', $authCode);
         if ($request->has('search') && $request->search['value'] != '') {
             $search = $request->search['value'];
@@ -67,7 +68,7 @@ class KabanaAddonsController extends Controller
         }
 
         $data = $query->offset($start)->limit($limit)->get();
-        $externalProducts = ApiHelper::getProductByCategory($data,'Cabanas');
+        $externalProducts = ApiHelper::getProductByCategory($data,'Cabanas',$date);
         $externalMap = collect($externalProducts)->keyBy('ticketSlug');
         $result = [];
         foreach ($data as $row) {
