@@ -53,6 +53,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         $seasonpassActive = in_array($current, ['seasonpass', 'seasonpassEdit', 'seasonpassCreate', 'seasonpassStore','seasonpassDestroy','seasonpassaddon','seasonpassaddonEdit','seasonpassaddonStore','seasonpassaddonCreate','seasonpassaddonUpdate','seasonpassorders','seasonpassordersdetail']);
                         $couponActive = in_array($current, ['coupon', 'couponCreate', 'couponEdit', 'couponStore','couponUpdate','couponDestroy']);
                         $offerCreationActive = in_array($current, ['offercreationpackages','offercreationpackagesEdit','offercreationpackagesCreate','offercreationpackagesStore','offercreationpackagesUpdate','offercreationpackagesDestroy','offeraddon','offeraddonCreate','offeraddonStore','offeraddonEdit','offeraddonUpdate','offeraddonDestroy','offercreationpackagesorders','offercreationpackagesordersdetail']);
+                        $transactionActive = in_array($current, ['transactionorders']);
                         ?>
                     <li class="{{ $cabanaActive ? 'active' : '' }}" >
                         <a>
@@ -295,6 +296,17 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 </a>
                             </li>
                         </ul>
+                    </li>
+                    <li class="nav-header hidden-folded m-t-sm">
+                        <small class="text-muted">{{ __('Transactions') }}</small>
+                    </li>
+                    <li class="{{ $transactionActive ? 'active' : '' }}" >
+                        <a href="{{ route('transactionorders') }}">
+                        <span class="nav-icon">
+                        <i class="material-icons"></i>
+                        </span>
+                            <span class="nav-text">{{ __('All Transactions') }}</span>
+                        </a>
                     </li>
                     @if(@Auth::user()->permissionsGroup->roles_status || (Helper::GeneralWebmasterSettings("settings_status") && @Auth::user()->permissionsGroup->settings_status) || @Auth::user()->permissionsGroup->webmaster_status)
                         <li class="nav-header hidden-folded m-t-sm">

@@ -129,4 +129,5 @@ class Order extends Model
 
         return $slug;
     }
+
 }

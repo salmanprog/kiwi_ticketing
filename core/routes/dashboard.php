@@ -374,6 +374,12 @@ Route::post('/offer-addon/store', [OfferAddonController::class, 'store'])->name(
 Route::get('/offer-addon/{id}/edit', [OfferAddonController::class, 'edit'])->name('offeraddonEdit');
 Route::post('/offer-addon/{id}/update', [OfferAddonController::class, 'update'])->name('offeraddonUpdate');
 Route::get('/offer-addon/destroy/{id}', [OfferAddonController::class, 'destroy'])->name('offeraddonDestroy');
+// Transactions
+Route::get('/transaction', [OrderController::class, 'getTransactions'])->name('transactionorders');
+Route::post('/transactions', [OrderController::class, 'getTransaction'])->name('transaction.data');
+Route::get('/transactions-detail/{slug}', [OrderController::class, 'getByOrderSlug'])->name('transactionordersdetail');
+Route::get('/transactions/orders/print', [OrderController::class, 'print'])->name('transactionPrint');
+Route::get('/packages/by-type', [OrderController::class, 'getPackagesByType'])->name('getPackagesByType');
 // Coupons Code
 Route::get('/coupon', [CouponController::class, 'index'])->name('coupon');
 Route::post('/coupon/data', [CouponController::class, 'getData'])->name('coupon.data');
