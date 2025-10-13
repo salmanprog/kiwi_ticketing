@@ -379,6 +379,11 @@ Route::get('/transaction', [OrderController::class, 'getTransactions'])->name('t
 Route::post('/transactions', [OrderController::class, 'getTransaction'])->name('transaction.data');
 Route::get('/transactions-detail/{slug}', [OrderController::class, 'getByOrderSlug'])->name('transactionordersdetail');
 Route::get('/transactions/orders/print', [OrderController::class, 'print'])->name('transactionPrint');
+Route::get('/transactions/orders/cabanaprint', [OrderController::class, 'printCabana'])->name('cabanaPrint');
+Route::get('/transactions/orders/birthdayprint', [OrderController::class, 'printBirthday'])->name('birthdayPrint');
+Route::get('/transactions/orders/generalprint', [OrderController::class, 'printGeneralTicket'])->name('generalTicketPrint');
+Route::get('/transactions/orders/seasonpassprint', [OrderController::class, 'printSeasonPass'])->name('seasonPassPrint');
+Route::get('/transactions/orders/offercreationprint', [OrderController::class, 'printOfferCreation'])->name('offerCreationPrint');
 Route::get('/packages/by-type', [OrderController::class, 'getPackagesByType'])->name('getPackagesByType');
 // Coupons Code
 Route::get('/coupon', [CouponController::class, 'index'])->name('coupon');

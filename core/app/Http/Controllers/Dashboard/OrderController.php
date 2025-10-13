@@ -73,6 +73,30 @@ class OrderController extends Controller
                 });
             });
         }
+
+        if ($request->filled('find_q')) {
+            $q = $request->find_q;
+            $query->where(function ($q2) use ($q) {
+                $q2->where('firstName', 'like', "%{$q}%")
+                ->orWhere('lastName', 'like', "%{$q}%")
+                ->orWhere('email', 'like', "%{$q}%")
+                ->orWhere('slug', 'like', "%{$q}%");
+            });
+        }
+
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+
+        if ($request->filled('package_id')) {
+            $query->where('package_id', $request->package_id);
+        }
+
+        if ($request->from_date && $request->to_date) {
+            $from = $request->from_date . ' 00:00:00';
+            $to = $request->to_date . ' 23:59:59';
+            $query->whereBetween('created_at', [$from, $to]);
+        }
         
         $totalData = $query->count();
         $totalFiltered = $totalData;
@@ -88,7 +112,7 @@ class OrderController extends Controller
         } else {
             $query->orderBy('id', 'desc');
         }
-
+        $totalEarnings = $query->sum('orderTotal');
         $data = $query->offset($start)->limit($limit)->get();
 
         $result = [];
@@ -124,6 +148,7 @@ class OrderController extends Controller
             'recordsTotal' => $totalData,
             'recordsFiltered' => $totalFiltered,
             'data' => $result,
+            'totalEarnings' => '$' . number_format($totalEarnings, 2),
         ]);
     }
 
@@ -258,7 +283,9 @@ class OrderController extends Controller
         }
 
         if ($from_date && $to_date) {
-            $query->whereBetween('orderDate', [$from_date, $to_date]);
+            $from = $from_date . ' 00:00:00';
+            $to = $to_date . ' 23:59:59';
+            $query->whereBetween('created_at', [$from, $to]);
         }
 
         if ($type) {
@@ -268,7 +295,6 @@ class OrderController extends Controller
         if ($package_id) {
             $query->where('package_id', $package_id);
         }
-        
         $orders = $query->orderBy('id', 'desc')->get();
         $totalEarnings = $orders->sum('orderTotal');
         if ($stat === 'excel') {
@@ -277,7 +303,237 @@ class OrderController extends Controller
         return view('dashboard.transaction.print', compact('orders', 'totalEarnings', 'stat'));
     }
 
+    public function printCabana(Request $request)
+    {
+        $q = $request->input('find_q');
+        $from_date = $request->input('from_date');
+        $to_date = $request->input('to_date');
+        $type = $request->input('type');
+        $package_id = $request->input('package_id');
+        $stat = $request->input('stat'); // 'excel' or something else
 
+        $query = Order::with([
+            'customer',
+            'purchases',
+            'apply_coupon',
+            'coupon',
+            'transaction',
+            'cabana',
+        ]);
+
+        // Filter by search query
+        if ($q) {
+            $query->where(function ($qBuilder) use ($q) {
+                $qBuilder->where('firstName', 'like', "%$q%")
+                    ->orWhere('lastName', 'like', "%$q%")
+                    ->orWhere('email', 'like', "%$q%")
+                    ->orWhere('phone', 'like', "%$q%")
+                    ->orWhere('slug', 'like', "%$q%");
+            });
+        }
+
+        if ($from_date && $to_date) {
+            $from = $from_date . ' 00:00:00';
+            $to = $to_date . ' 23:59:59';
+            $query->whereBetween('created_at', [$from, $to]);
+        }
+
+        if ($package_id) {
+            $query->where('package_id', $package_id);
+        }
+        
+        $orders = $query->where('type', 'cabana')->orderBy('id', 'desc')->get();
+
+        $totalEarnings = $orders->sum('orderTotal');
+        if ($stat === 'excel') {
+        }
+
+        return view('dashboard.transaction.print', compact('orders', 'totalEarnings', 'stat'));
+    }
+
+    public function printBirthday(Request $request)
+    {
+        $q = $request->input('find_q');
+        $from_date = $request->input('from_date');
+        $to_date = $request->input('to_date');
+        $type = $request->input('type');
+        $package_id = $request->input('package_id');
+        $stat = $request->input('stat'); // 'excel' or something else
+
+        $query = Order::with([
+            'customer',
+            'purchases',
+            'apply_coupon',
+            'coupon',
+            'transaction',
+            'birthday',
+        ]);
+
+        // Filter by search query
+        if ($q) {
+            $query->where(function ($qBuilder) use ($q) {
+                $qBuilder->where('firstName', 'like', "%$q%")
+                    ->orWhere('lastName', 'like', "%$q%")
+                    ->orWhere('email', 'like', "%$q%")
+                    ->orWhere('phone', 'like', "%$q%")
+                    ->orWhere('slug', 'like', "%$q%");
+            });
+        }
+
+        if ($from_date && $to_date) {
+            $from = $from_date . ' 00:00:00';
+            $to = $to_date . ' 23:59:59';
+            $query->whereBetween('created_at', [$from, $to]);
+        }
+
+        if ($package_id) {
+            $query->where('package_id', $package_id);
+        }
+        $orders = $query->where('type', 'birthday')->orderBy('id', 'desc')->get();
+        $totalEarnings = $orders->sum('orderTotal');
+        if ($stat === 'excel') {
+        }
+
+        return view('dashboard.transaction.print', compact('orders', 'totalEarnings', 'stat'));
+    }
+
+    public function printGeneralTicket(Request $request)
+    {
+        $q = $request->input('find_q');
+        $from_date = $request->input('from_date');
+        $to_date = $request->input('to_date');
+        $type = $request->input('type');
+        $package_id = $request->input('package_id');
+        $stat = $request->input('stat'); // 'excel' or something else
+
+        $query = Order::with([
+            'customer',
+            'purchases',
+            'apply_coupon',
+            'coupon',
+            'transaction',
+            'general_ticket',
+        ]);
+
+        // Filter by search query
+        if ($q) {
+            $query->where(function ($qBuilder) use ($q) {
+                $qBuilder->where('firstName', 'like', "%$q%")
+                    ->orWhere('lastName', 'like', "%$q%")
+                    ->orWhere('email', 'like', "%$q%")
+                    ->orWhere('phone', 'like', "%$q%")
+                    ->orWhere('slug', 'like', "%$q%");
+            });
+        }
+
+        if ($from_date && $to_date) {
+            $from = $from_date . ' 00:00:00';
+            $to = $to_date . ' 23:59:59';
+            $query->whereBetween('created_at', [$from, $to]);
+        }
+
+        if ($package_id) {
+            $query->where('package_id', $package_id);
+        }
+        $orders = $query->where('type', 'general_ticket')->orderBy('id', 'desc')->get();
+        $totalEarnings = $orders->sum('orderTotal');
+        if ($stat === 'excel') {
+        }
+
+        return view('dashboard.transaction.print', compact('orders', 'totalEarnings', 'stat'));
+    }
+
+    public function printSeasonPass(Request $request)
+    {
+        $q = $request->input('find_q');
+        $from_date = $request->input('from_date');
+        $to_date = $request->input('to_date');
+        $type = $request->input('type');
+        $package_id = $request->input('package_id');
+        $stat = $request->input('stat'); // 'excel' or something else
+
+        $query = Order::with([
+            'customer',
+            'purchases',
+            'apply_coupon',
+            'coupon',
+            'transaction',
+            'season_pass',
+        ]);
+
+        // Filter by search query
+        if ($q) {
+            $query->where(function ($qBuilder) use ($q) {
+                $qBuilder->where('firstName', 'like', "%$q%")
+                    ->orWhere('lastName', 'like', "%$q%")
+                    ->orWhere('email', 'like', "%$q%")
+                    ->orWhere('phone', 'like', "%$q%")
+                    ->orWhere('slug', 'like', "%$q%");
+            });
+        }
+
+        if ($from_date && $to_date) {
+            $from = $from_date . ' 00:00:00';
+            $to = $to_date . ' 23:59:59';
+            $query->whereBetween('created_at', [$from, $to]);
+        }
+
+        if ($package_id) {
+            $query->where('package_id', $package_id);
+        }
+        $orders = $query->where('type', 'season_pass')->orderBy('id', 'desc')->get();
+        $totalEarnings = $orders->sum('orderTotal');
+        if ($stat === 'excel') {
+        }
+
+        return view('dashboard.transaction.print', compact('orders', 'totalEarnings', 'stat'));
+    }
+
+    public function printOfferCreation(Request $request)
+    {
+        $q = $request->input('find_q');
+        $from_date = $request->input('from_date');
+        $to_date = $request->input('to_date');
+        $type = $request->input('type');
+        $package_id = $request->input('package_id');
+        $stat = $request->input('stat'); // 'excel' or something else
+
+        $query = Order::with([
+            'customer',
+            'purchases',
+            'apply_coupon',
+            'coupon',
+            'transaction',
+            'offer_creation',
+        ]);
+
+        // Filter by search query
+        if ($q) {
+            $query->where(function ($qBuilder) use ($q) {
+                $qBuilder->where('firstName', 'like', "%$q%")
+                    ->orWhere('lastName', 'like', "%$q%")
+                    ->orWhere('email', 'like', "%$q%")
+                    ->orWhere('phone', 'like', "%$q%")
+                    ->orWhere('slug', 'like', "%$q%");
+            });
+        }
+
+        if ($from_date && $to_date) {
+            $from = $from_date . ' 00:00:00';
+            $to = $to_date . ' 23:59:59';
+            $query->whereBetween('created_at', [$from, $to]);
+        }
+
+        if ($package_id) {
+            $query->where('package_id', $package_id);
+        }
+        $orders = $query->where('type', 'offer_creation')->orderBy('id', 'desc')->get();
+        $totalEarnings = $orders->sum('orderTotal');
+        if ($stat === 'excel') {
+        }
+
+        return view('dashboard.transaction.print', compact('orders', 'totalEarnings', 'stat'));
+    }
 
     public function getBirthdayOrders()
     {
@@ -373,7 +629,7 @@ class OrderController extends Controller
         $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'desc')->get();
-        $get_offer_orders = Order::with(['customer','purchases','transaction'])->where('auth_code',$authCode)->where('type','offer_creation')->get();
+        $get_offer_orders = Order::with(['customer','purchases','transaction'])->where('auth_code',$authCode)->get();
         
          // Paginate
         $perPage = 10;

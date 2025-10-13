@@ -23,10 +23,34 @@
         </small>
     </div>
     <div class="box-tool box-tool-lg">
+        <ul class="nav">
+            <li class="nav-item inline">
+                <a class="btn primary" href="Javascript:void(0);">
+                    <i class="material-icons">&#xe02e;</i>
+                    <strong>Total Earnings:</strong> <span id="total-earnings">$0.00</span>
+                </a>
+            </li>
+            <li class="nav-item inline">
+                <button type="button" class="btn info" id="filter_btn" title="{{ __('Advance Search') }}"
+                        data-toggle="tooltip">
+                    <i class="fa fa-search"></i>
+                </button>
+            </li>
+            <li class="nav-item inline">
+                <button type="button" class="btn success" id="excel_btn" title="{{ __('backend.export') }}"
+                        data-toggle="tooltip"
+                        onclick="print_as('excel')">
+                    <i class="fa fa-file-excel-o"></i>
+                </button>
+            </li>
+        </ul>
+    </div>
+    <div class="box-tool box-tool-lg">
                 
             </div>
             <div>
         <div class="table-responsive">
+                @include("dashboard.ticketingorders.search")
                 <table class="table table-bordered m-a-0" id="general_orders">
                     <thead class="dker">
                     <tr>
@@ -134,6 +158,10 @@
                     data: function (data) {
                         data._token = "{{ csrf_token() }}";
                         data.find_q = $('#find_q').val();
+                        data.type = $('#find_type').val();
+                        data.package_id = $('#find_package').val();
+                        data.from_date = $('#from_date').val();
+                        data.to_date = $('#to_date').val();
                         data.type = 'general_ticket';
                         data.route = 'generalticketsordersdetail';
                     }
@@ -170,8 +198,35 @@
             });
             $.fn.dataTable.ext.errMode = 'none';
 
+            $('#general_orders').on('xhr.dt', function (e, settings, json, xhr) {
+                if (json.totalEarnings !== undefined) {
+                    $('#total-earnings').text(json.totalEarnings);
+                }
+            });
+            $('#search-btn').on('click', function () {
+                $("#search_submit_stat").val(""); 
+                $("#filter_form").submit();
+            });
+            $('#filter_form').submit(function () {
+                if ($("#search_submit_stat").val() === "") {
+                    dataTable.draw();
+                    return false;
+                }
+            });
+            $("#filter_btn").on('click', function () {
+                $("#filter_div").slideToggle();
+            });
            
         });
+        function print_as(stat) {
+            $("#search_submit_stat").val(stat);
+            $("#filter_form").attr('action', '{{ route("generalTicketPrint") }}');
+            $("#filter_form").attr('target', '_blank');
+            $("#filter_form").submit();
+            $("#filter_form").attr('action', '{{ route("generalTicketPrint") }}');
+            $("#search_submit_stat").val("");
+            $("#filter_form").attr('target', '');
+        }
     </script>
 
 @endpush
