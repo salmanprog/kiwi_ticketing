@@ -100,7 +100,7 @@ class MailHelper
             $email_subject = $get_mail_content->subject;
             $to_email = $data->customer->email;
             $from_email = config('mail.from.address');
-            $from_name = config('mail.from.name');
+            $from_name = 'WildRivers';
             $get_emails = array_map('trim', explode(',', $get_mail_content->to_reciever));
             if (!in_array($to_email, $get_emails)) {
                 $get_emails[] = $to_email;
