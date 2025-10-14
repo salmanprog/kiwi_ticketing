@@ -33,6 +33,7 @@ use App\Http\Controllers\Dashboard\GeneralTicketPackagesController;
 use App\Http\Controllers\Dashboard\CouponController;
 use App\Http\Controllers\Dashboard\OfferCreationPackagesController;
 use App\Http\Controllers\Dashboard\OfferAddonController;
+use App\Http\Controllers\Dashboard\EmailController;
 use Illuminate\Support\Facades\Route;
 
 // Admin Home
@@ -393,6 +394,15 @@ Route::get('/coupon/{id}/edit', [CouponController::class, 'edit'])->name('coupon
 Route::post('/coupon/store', [CouponController::class, 'store'])->name('couponStore');
 Route::post('/coupon/{id}/update', [CouponController::class, 'update'])->name('couponUpdate');
 Route::get('/coupon/destroy/{id}', [CouponController::class, 'destroy'])->name('couponDestroy');
+// Email Templates
+Route::get('/email-template', [EmailController::class, 'index'])->name('emailTemplate');
+Route::post('/email-template/data', [EmailController::class, 'getData'])->name('email.data');
+Route::get('/email-template/create/', [EmailController::class, 'create'])->name('emailTemplateCreate');
+Route::get('/email-template/{id}/edit', [EmailController::class, 'edit'])->name('emailTemplateEdit');
+Route::post('/email-template/store', [EmailController::class, 'store'])->name('emailTemplateStore');
+Route::post('/email-template/{id}/update', [EmailController::class, 'update'])->name('emailTemplateUpdate');
+Route::get('/email-template/destroy/{id}', [EmailController::class, 'destroy'])->name('emailTemplateDestroy');
+Route::get('/smtp-configure', [EmailController::class, 'smtpConfigure'])->name('smtpConfigure');
 // Menus
 Route::post('/menus/store/parent', [MenusController::class, 'storeMenu'])->name('parentMenusStore');
 Route::get('/menus/parent/{id}/edit', [MenusController::class, 'editMenu'])->name('parentMenusEdit');

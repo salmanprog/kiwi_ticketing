@@ -54,6 +54,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         $couponActive = in_array($current, ['coupon', 'couponCreate', 'couponEdit', 'couponStore','couponUpdate','couponDestroy']);
                         $offerCreationActive = in_array($current, ['offercreationpackages','offercreationpackagesEdit','offercreationpackagesCreate','offercreationpackagesStore','offercreationpackagesUpdate','offercreationpackagesDestroy','offeraddon','offeraddonCreate','offeraddonStore','offeraddonEdit','offeraddonUpdate','offeraddonDestroy','offercreationpackagesorders','offercreationpackagesordersdetail']);
                         $transactionActive = in_array($current, ['transactionorders']);
+                        $emailTemplateActive = in_array($current, ['emailTemplate','emailTemplateCreate','emailTemplateEdit','emailTemplateStore','emailTemplateUpdate','emailTemplateDestroy','smtpConfigure']);
                         ?>
                     <li class="{{ $cabanaActive ? 'active' : '' }}" >
                         <a>
@@ -307,6 +308,40 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         </span>
                             <span class="nav-text">{{ __('All Transactions') }}</span>
                         </a>
+                    </li>
+                    <li class="nav-header hidden-folded m-t-sm">
+                        <small class="text-muted">{{ __('Email Setting') }}</small>
+                    </li>
+                    <li class="{{ $emailTemplateActive ? 'active' : '' }}" >
+                        <a>
+                            <span class="nav-caret">
+                            <i class="fa fa-caret-down"></i>
+                            </span>
+                            <span class="nav-icon">
+                            <i class="material-icons">&#xe1b8;</i>
+                            </span>
+                            <span class="nav-text">{{ __('Email Managment') }}</span>
+                        </a>
+                        <ul class="nav-sub">
+                            <li class="{{ 
+                                $current === 'emailTemplate' 
+                                || Str::startsWith($current, 'emailTemplate') 
+                                ? 'active' : '' 
+                            }}">
+                                <a href="{{ route('emailTemplate') }}">
+                                    <span class="nav-text">{{ __('Email Templates') }}</span>
+                                </a>
+                            </li>
+                            <li class="{{ 
+                                $current === 'emailTemplate' 
+                                || Str::startsWith($current, 'emailTemplate') 
+                                ? 'active' : '' 
+                            }}">
+                                <a href="{{ route('smtpConfigure') }}">
+                                    <span class="nav-text">{{ __('SMTP Congfiguration') }}</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     @if(@Auth::user()->permissionsGroup->roles_status || (Helper::GeneralWebmasterSettings("settings_status") && @Auth::user()->permissionsGroup->settings_status) || @Auth::user()->permissionsGroup->webmaster_status)
                         <li class="nav-header hidden-folded m-t-sm">

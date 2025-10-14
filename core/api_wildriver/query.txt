@@ -1,7 +1,21 @@
-ALTER TABLE `smartend_offer_creation_packages` ADD `offerType` ENUM('any_day','specifc_date') NOT NULL DEFAULT 'any_day' AFTER `auth_code`;
+CREATE TABLE `smartend_email_template` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `identifier` varchar(191) DEFAULT NULL,
+  `subject` text DEFAULT NULL,
+  `content` longtext NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-ALTER TABLE `smartend_order` ADD `status` ENUM('0','1') NOT NULL DEFAULT '1' AFTER `totalOrderRefundedAmount`;
-ALTER TABLE `smartend_order` ADD `order_status` ENUM('new_order','update_order','upgrade_order') NOT NULL DEFAULT 'new_order' AFTER `totalOrderRefundedAmount`;
+ALTER TABLE `smartend_email_template`
+  ADD PRIMARY KEY (`id`)
+
+ALTER TABLE `smartend_email_template`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1
+  
+  ALTER TABLE `smartend_email_template` ADD `slug` VARCHAR(255) NOT NULL AFTER `id`;
+  ALTER TABLE `smartend_email_template` ADD `status` ENUM('0','1') NOT NULL DEFAULT '1' AFTER `content`;
+  ALTER TABLE `smartend_email_template` ADD `to_reciever` LONGTEXT NULL DEFAULT NULL AFTER `identifier`;
 -----------------------------------------------------------------------------------------
 {
   "sessionId": 0,

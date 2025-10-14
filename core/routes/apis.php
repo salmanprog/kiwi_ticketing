@@ -73,3 +73,5 @@ Route::get('/order/{slug}', 'OrderController@getBySlug');
         return response()->json(['data' => 'Authorized Access!']);
     });
 });
+//Email
+Route::post('/send-email', 'EmailController@sendEmail');
