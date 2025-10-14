@@ -16,6 +16,8 @@
                     <a>{{__('smtp-email')}}</a> 
                 </small>
             </div>
+            {{Form::open(['route'=>['smtpUpdate'],'method'=>'POST','id'=>'settingsForm'])}}
+            <input type="hidden" name="permission_group" id="permission_group" value="3">
             <div class="box-body p-a-2">
                     <div class="form-group row">
                         <label for="title"
@@ -113,17 +115,21 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                <button id="smtp_check" type="button"
+                    <button type="submit" id="save-settings-btn"
+                            class="btn primary m-a pull-right"><i
+                            class="material-icons">&#xe31b;</i> {{ __('backend.update') }}</button>
+                <!-- <button id="smtp_check" type="button"
                         class="btn pull-right btn-sm info {{ (config('smartend.mail_driver') == "smtp")?"":"displayNone" }}">
                     <i class="fa fa-bolt"></i> &nbsp;{{ __("backend.smtpCheck") }}
                 </button>
                 <button id="send_test" type="button" class="btn btn-sm info {{ (config('smartend.mail_driver') == "")?"displayNone":"" }}">
                     <i class="fa fa-envelope"></i> &nbsp;{{ __("backend.sendTestMail") }}
-                </button>
+                </button> -->
                 <input type="hidden" name="mail_test" id="to_email" value="">
             </div>
             
         </div>
+        {{Form::close()}}
     </div>
 @endsection
 @push("after-scripts")

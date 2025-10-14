@@ -9,12 +9,14 @@ use App\Models\Email;
 use App\Models\WebmasterSection;
 use App\Models\Media;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Models\WebmasterSetting;
 use Auth;
 use File;
 use Helper;
 use Illuminate\Http\Request;
 use Redirect;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Artisan;
 use Carbon\Carbon;
 
 
@@ -265,6 +267,126 @@ class EmailController extends Controller
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
         // General END
         return view("dashboard.email_template.smtp_configure", compact("GeneralWebmasterSections"));
+    }
+
+    public function updateSmtp(Request $request)
+    {
+        //
+        $WebmasterSetting = WebmasterSetting::find(1);
+        if (!empty($WebmasterSetting)) {
+
+            $WebmasterSetting->mail_driver = ($request->mail_driver != "") ? $request->mail_driver : "smtp";
+            $WebmasterSetting->mail_host = ($request->mail_host != "") ? $request->mail_host : "";
+            $WebmasterSetting->mail_port = ($request->mail_port != "") ? $request->mail_port : "";
+            $WebmasterSetting->mail_username = ($request->mail_username != "") ? $request->mail_username : "";
+            $WebmasterSetting->mail_password = ($request->mail_password != "") ? $request->mail_password : "";
+            $WebmasterSetting->mail_encryption = ($request->mail_encryption != "") ? $request->mail_encryption : "";
+            $WebmasterSetting->mail_no_replay = ($request->mail_no_replay != "") ? $request->mail_no_replay : "";
+            $WebmasterSetting->mail_title = $request->mail_title;
+            $WebmasterSetting->mail_template = $request->mail_template;
+            $WebmasterSetting->save();
+
+            $OLD_BACKEND_PATH = config('smartend.backend_path');
+            if ($request->backend_path == "") {
+                $request->backend_path = "admin";
+            }
+            // Update .env file
+            $env_update = $this->changeEnv([
+                'MAIL_DRIVER' => $request->mail_driver,
+                'MAIL_HOST' => $request->mail_host,
+                'MAIL_PORT' => $request->mail_port,
+                'MAIL_USERNAME' => $request->mail_username,
+                'MAIL_PASSWORD' => $request->mail_password,
+                'MAIL_ENCRYPTION' => $request->mail_encryption,
+                'MAIL_FROM_ADDRESS' => $request->mail_no_replay,
+            ]);
+
+            // clear old sessions
+            \Session()->forget('_Loader_WebmasterSettings');
+            \Session()->forget('_Loader_Web_Settings');
+            \Session()->forget('_Loader_Languages');
+            \Session()->forget('_Loader_Events');
+            \Session()->forget('_Loader_WebmasterSections');
+
+            // clear cache & views cache
+            Artisan::call('cache:clear');
+            Artisan::call('view:clear');
+
+            // delete cache files manually
+            if (\File::exists(base_path("bootstrap/cache/config.php"))) {
+                \File::delete(base_path("bootstrap/cache/config.php"));
+            }
+            if (\File::exists(base_path("bootstrap/cache/routes-v7.php"))) {
+                \File::delete(base_path("bootstrap/cache/routes-v7.php"));
+            }
+
+            // re cache routes
+            Artisan::call('route:cache');
+            // re cache config
+            Artisan::call('config:cache');
+            sleep(4);
+            return redirect()->action('Dashboard\EmailController@smtpConfigure')->with('doneMessage', __('backend.addDone'));
+        } else {
+            return redirect()->action('Dashboard\EmailController@smtpConfigure');
+        }
+    }
+
+    public function changeEnv($data = array())
+    {
+        if (count($data) > 0) {
+
+            // Read .env-file
+            $env = file_get_contents(base_path() . '/.env');
+
+            // Split string on every " " and write into array
+            $env = preg_split('/\s+/', $env);;
+
+
+            // Loop through given data
+            foreach ((array)$data as $key => $value) {
+
+                // add KEY if not exist
+                $KEY_EXIST = 0;
+                foreach ($env as $env_key => $env_value) {
+                    $entry = explode("=", $env_value, 2);
+                    if ($entry[0] == $key) {
+                        $KEY_EXIST = 1;
+                    }
+                }
+                if (!$KEY_EXIST) {
+                    $env[$key] = $key . "=";
+                }
+
+                // Loop through .env-data
+                foreach ($env as $env_key => $env_value) {
+
+                    // Turn the value into an array and stop after the first split
+                    // So it's not possible to split e.g. the App-Key by accident
+                    $entry = explode("=", $env_value, 2);
+
+                    // Check, if new key fits the actual .env-key
+                    if ($entry[0] == $key) {
+                        // If yes, overwrite it with the new one
+                        $env[$env_key] = $key . "=" . $value;
+                        config(['smartend.' . strtolower($key) => $value]);
+                    } else {
+                        // If not, keep the old one
+                        $env[$env_key] = $env_value;
+                        config(['smartend.' . strtolower($env_key) => $env_value]);
+                    }
+                }
+            }
+
+            // Turn the array back to an String
+            $env = implode("\n", $env);
+
+            // And overwrite the .env with the new data
+            file_put_contents(base_path() . '/.env', $env);
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function seo(Request $request, $webmasterId, $id)

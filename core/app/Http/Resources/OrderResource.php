@@ -12,7 +12,7 @@ class OrderResource extends JsonResource
 {
     public function toArray($request)
     {
-        $allowedTypes = ['cabana', 'birthday', 'general_ticket', 'season_pass'];
+        $allowedTypes = ['cabana', 'birthday', 'general_ticket', 'season_pass','offer_creation'];
         return [
             'id' => $this->id,
             'slug' => $this->slug,

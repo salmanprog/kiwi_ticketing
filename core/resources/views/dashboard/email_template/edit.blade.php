@@ -32,7 +32,7 @@
                                 class="col-sm-2 form-control-label">{!!  __('Identifier') !!}
                         </label>
                         <div class="col-sm-10">
-                            {!! Form::text('identifier',old('identifier', $email_template->identifier ?? ''), array('placeholder' => '','class' => 'form-control','id'=>'identifier','required'=>'')) !!}
+                            {!! Form::text('identifier',old('identifier', $email_template->identifier ?? ''), array('placeholder' => '','class' => 'form-control','id'=>'identifier','required'=>'','readonly'=>'readonly')) !!}
                         </div>
                     </div>
                     <div class="form-group row">

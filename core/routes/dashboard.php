@@ -403,6 +403,7 @@ Route::post('/email-template/store', [EmailController::class, 'store'])->name('e
 Route::post('/email-template/{id}/update', [EmailController::class, 'update'])->name('emailTemplateUpdate');
 Route::get('/email-template/destroy/{id}', [EmailController::class, 'destroy'])->name('emailTemplateDestroy');
 Route::get('/smtp-configure', [EmailController::class, 'smtpConfigure'])->name('smtpConfigure');
+Route::post('/smtp-configure/update', [EmailController::class, 'updateSmtp'])->name('smtpUpdate');
 // Menus
 Route::post('/menus/store/parent', [MenusController::class, 'storeMenu'])->name('parentMenusStore');
 Route::get('/menus/parent/{id}/edit', [MenusController::class, 'editMenu'])->name('parentMenusEdit');

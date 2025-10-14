@@ -68,10 +68,10 @@ Route::post('/order-payment', 'StripeController@createPaymentIntent');
 Route::post('/order-create', 'OrderController@OrderCreate');
 Route::post('/order-update', 'OrderController@OrderUpdate');
 Route::get('/order/{slug}', 'OrderController@getBySlug');
+//Email
+Route::post('/send-email', 'EmailController@sendEmail');
 
     Route::get('/secure-data', function () {
         return response()->json(['data' => 'Authorized Access!']);
     });
 });
-//Email
-Route::post('/send-email', 'EmailController@sendEmail');

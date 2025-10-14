@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Http\Resources\OrderResource;
 use Carbon\Carbon;
 use App\Helpers\OrdersHelper;
+use App\Helpers\MailHelper;
 use Helper;
 
 class OrderController extends BaseAPIController
@@ -154,6 +155,7 @@ class OrderController extends BaseAPIController
 
                 $order_type =  OrdersHelper::order_types($order->type);
                 $get_order = Order::with(['customer','purchases','apply_coupon','transaction',$order_type])->where('id',$order->id)->first();
+                $emailSent = MailHelper::orderConfirmationEmail($get_order,'new_order');
                 //$get_order = Order::with(['customer','purchases','transaction'])->where('id',$order->id)->first();
                 $resource = OrderResource::make($get_order);
                 return $this->sendResponse(200, 'Your Order has been successfully created', $resource);
