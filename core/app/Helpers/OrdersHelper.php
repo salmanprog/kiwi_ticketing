@@ -126,7 +126,7 @@ class OrdersHelper
         if (is_string($requestPayload)) {
             $requestPayload = json_decode($requestPayload, true);
         }
-        $get_customer_obj = User::where('id',$requestPayload['user_id'])->first();
+        //$get_customer_obj = User::where('id',$requestPayload['user_id'])->first();
         $prefixMap = [
             'birthday' => 'bd'.date("y").'_',
             'cabana' => 'ca'.date("y").'_',
@@ -137,31 +137,20 @@ class OrdersHelper
 
         $prefix = $prefixMap[$requestPayload['type']] ?? 'any_';
         $order_number = Order::generateUniqueSlug($prefix . date('Y') . rand(10000, 99999));
-        if (isset($get_customer_obj) && isset($get_customer_obj->name)) {
-            $nameParts = explode(' ', trim($get_customer_obj->name));
-            $customer = [
-                'FirstName' => $nameParts[0] ?? '',
-                'LastName'  => isset($nameParts[1]) ? implode(' ', array_slice($nameParts, 1)) : '',
-                'Email'     => $get_customer_obj->email ?? '',
-                'Phone'     => $get_customer_obj->phone ?? '',
-            ];
-        }
-        $customer_object = json_decode(json_encode($customer));
-        $requestPayload['customer'] = $customer_object;
+        // if (isset($get_customer_obj) && isset($get_customer_obj->name)) {
+        //     $nameParts = explode(' ', trim($get_customer_obj->name));
+        //     $customer = [
+        //         'FirstName' => $nameParts[0] ?? '',
+        //         'LastName'  => isset($nameParts[1]) ? implode(' ', array_slice($nameParts, 1)) : '',
+        //         'Email'     => $get_customer_obj->email ?? '',
+        //         'Phone'     => $get_customer_obj->phone ?? '',
+        //     ];
+        // }
+        // $customer_object = json_decode(json_encode($customer));
+        //$requestPayload['customer'] = $customer_object;
         $requestPayload['authCode'] = $authCode;
-        $requestPayload['orderId'] = $order_number;
+        $requestPayload['OrderNumber'] = $order_number;
         $total_amount = $requestPayload['totalAmount'];
-        if (isset($requestPayload['promoCode']) && $requestPayload['promoCode'] > 0) {
-            $coupons = Coupons::find($requestPayload['promoCode']);
-                    
-                if ($coupons->discount_type === 'percentage') {
-                    $discount = ($total_amount * $coupons->discount) / 100;
-                } elseif ($coupons->discount_type === 'flat_rate') {
-                    $discount = $coupons->discount;
-                }
-                $discount = min($discount, $total_amount);
-                $total_amount = $total_amount - $discount;
-        }
         $payment = [
                 'cardholerName' => "Omitted",
                 'billingStreet'  => "Teststreet123",
@@ -174,17 +163,6 @@ class OrdersHelper
             ];
         $payment = json_decode(json_encode($payment));
         $requestPayload['payment'] = $payment;
-         $requestPayload['isterminalPayment'] = filter_var($requestPayload['isterminalPayment'], FILTER_VALIDATE_BOOLEAN);
-        if (isset($requestPayload['isOfficeUse'])) {
-            $val = $requestPayload['isOfficeUse'];
-            if ($val === null || $val === '') {
-                $requestPayload['isOfficeUse'] = null;
-            } else {
-                $requestPayload['isOfficeUse'] = filter_var($val, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
-            }
-        } else {
-            $requestPayload['isOfficeUse'] = null;
-        }
         if (isset($requestPayload['ticketChanges']) && is_array($requestPayload['ticketChanges'])) {
             $requestPayload['ticketChanges'] = array_map(function ($item) {
                 if (is_string($item)) {
@@ -196,9 +174,13 @@ class OrdersHelper
                 return $item;
             }, $requestPayload['ticketChanges']);
         }
-         echo json_encode($requestPayload, true);
+         unset($requestPayload['type']);
+         unset($requestPayload['order_status']);
+         echo json_encode($requestPayload, true);   
              die();
         $response = Http::post($baseUrl.'/Pricing/UpdateOrder',$requestPayload);
+        echo json_encode($response, true);
+        die();
         return $response;
     }
 

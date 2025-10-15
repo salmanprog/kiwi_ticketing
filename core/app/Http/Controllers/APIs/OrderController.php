@@ -172,21 +172,11 @@ class OrderController extends BaseAPIController
         $validator = Validator::make($request->all(), [
             'type' => 'required|string',
             'previousOrderNumber' => 'required|exists:order,slug',
-            'isterminalPayment' => 'nullable|boolean',
-            'staffDiscount' => 'nullable|numeric',
             'sessionId' => 'nullable|string',
-            'orderCreationWithScript' => 'nullable|boolean',
-            'isOfficeUse' => 'nullable|boolean',
-            'orderSource' => 'nullable|string',
-            'posStaffIdentity' => 'nullable|string',
-            'dateNightPass' => 'nullable|string',
             'transactionId' => 'nullable|string',
-            'saleFormName' => 'nullable|string',
-            'notes' => 'nullable|string',
-            'user_id' => 'required|exists:users,id',
-            'totalAmount' => 'required|numeric',
+            'date' => 'required',
             'ticketChanges' => 'required|array',
-            'package_id' => 'required',
+            'totalAmount' => 'required|numeric',
             'order_status' => 'required|in:update_order,upgrade_order',
         ]);
 
@@ -199,8 +189,10 @@ class OrderController extends BaseAPIController
         $date = Carbon::today()->toDateString();
 
         try {
-            $store_order =  OrdersHelper::updateOrUpgradeOrder($request->all());
-            $data = $store_order->json();
+            $update_order =  OrdersHelper::updateOrUpgradeOrder($request->all());
+            print_r($update_order);
+            die();
+            $data = $update_order->json();
             if (isset($data['status']['errorCode']) && $data['status']['errorCode'] == 1) {
                 return $this->sendResponse(400, 'Order Error', ['error' => $data['status']['errorMessage']]);
             }else{
