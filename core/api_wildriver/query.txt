@@ -17,46 +17,46 @@ ALTER TABLE `smartend_email_template`
   ALTER TABLE `smartend_email_template` ADD `status` ENUM('0','1') NOT NULL DEFAULT '1' AFTER `content`;
   ALTER TABLE `smartend_email_template` ADD `to_reciever` LONGTEXT NULL DEFAULT NULL AFTER `identifier`;
 -----------------------------------------------------------------------------------------
+http://dev-dynamicpricing-env.eba-tkbnkmbm.us-east-1.elasticbeanstalk.com/Pricing/UpdateOrder
 {
-  "sessionId": 0,
-  "previousOrderNumber": "ca25-202527705",
-  "orderNumber": "ca25-202527706",
-  "transactionId": "pi_sdfsdfd46548dfdsfdffsd",
-  "authCode": "d063d05b-fbb1-4bf0-b4d8-b2f603454858",
-  "isterminalPayment": true,
-  "posStaffIdentity": "1",
-  "date": "2025-10-11T19:27:44.326Z",
-  "makeThisAddonsAsChild": true,
-  "isPaymentThroughSubscriptionPlan": 0,
-  "totalInstallments": 0,
-  "installmentType": "",
-  "ticketChanges": [
-    {
-      "ticketType": "wave-pool-blue-cabanas",
-      "visualId": "101-091025202706744-156807-985977",
-      "date": "2025-10-11T19:27:44.326Z",
-      "sectionId": "",
-      "capacityId": "",
-      "amount": 12,
-      "isSeasonPass": 0
-    }
-  ],
-  "payment": {
-    "cardholerName": "Omitted",
-    "billingStreet": "Teststreet123",
-    "billingZipCode": "12345",
-    "expDate": "string",
-    "paymentCode": "32",
-    "amount": 12,
-    "staffTip": 0,
-    "tax": 0,
-    "serviceCharges": 0,
+    "sessionId": 438766,
+    "previousOrderNumber": "ge25-202550588",
+    "orderNumber": "ge25-202550588",
     "transactionId": "pi_sdfsdfd46548dfdsfdffsd",
-    "ccNumber": "Omitted",
-    "cvn": "Omitted",
-    "paymentMethodId": "0"
-  }
+    "authCode": "d063d05b-fbb1-4bf0-b4d8-b2f603454858",
+    "isterminalPayment": false,
+    "posStaffIdentity": "1",
+    "date": "2025-12-18T21:21:42.057Z",
+    "makeThisAddonsAsChild": true,
+    "isPaymentThroughSubscriptionPlan": 0,
+    "totalInstallments": 0,
+    "installmentType": "",
+    "ticketChanges": [
+        {
+            "ticketType": "general-admissions-8375",
+            "visualId": "101-151025110357572-156934-147615",
+            "date": "2025-10-12T00:00:00",
+            "sectionId": "0",
+            "capacityId": "67718",
+            "amount": 0,
+            "isSeasonPass": 0
+        }
+    ],
+    "payment": {
+        "cardholerName": "Omitted",
+        "billingStreet": "",
+        "billingZipCode": "",
+        "expDate": "Omitted",
+        "paymentCode": "32",
+        "amount": 0,
+        "staffTip": 0,
+        "tax": 0,
+        "serviceCharges": 0,
+        "cvn": "Omitted"
+    }
 }
+
+
 
 {
   "sessionId": 0,
