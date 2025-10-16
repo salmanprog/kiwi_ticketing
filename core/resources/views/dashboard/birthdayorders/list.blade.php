@@ -61,6 +61,7 @@
                         <th>{{ __('Customer Name') }}</th>
                         <th>{{ __('Customer Email') }}</th>
                         <th>{{ __('Total') }}</th>
+                        <th>{{ __('Order Status') }}</th>
                         <th>{{ __('Status') }}</th>
                         <th>{{ __('OrderDate') }}</th>
                         <th>{{ __('CreatedAt') }}</th>
@@ -171,6 +172,7 @@
                     { data: 'customerName' },
                     { data: 'customerEmail' },
                     { data: 'orderTotal' },
+                    { data: 'order_status' },
                     { data: 'status' },
                     { data: 'orderDate' },
                     { data: 'createdAt' },

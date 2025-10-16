@@ -180,11 +180,11 @@ class OrdersHelper
         unset($requestPayload['totalAmount']);
         unset($requestPayload['order_status']);
         unset($requestPayload['orderId']);
-         echo json_encode($requestPayload, true);   
-             die();
+        //  echo json_encode($requestPayload, true);   
+        //      die();
         $response = Http::post($baseUrl.'/Pricing/UpdateOrder',$requestPayload);
-        echo json_encode($response, true);
-        die();
+        //echo json_decode($response, true);
+        
         return $response;
     }
 

@@ -38,6 +38,7 @@ class OrderResource extends JsonResource
             'totalOrderRefundedAmount' => $this->totalOrderRefundedAmount,
             'promoCode' => $this->promoCode,
             'package' => in_array($this->type, $allowedTypes) ? $this->{$this->type} : '',
+            'order_status' => $this->order_status,
             'coupon' => isset($this->apply_coupon) ? OrderCouponResource::make($this->apply_coupon) : [],
             'customer' => UserResource::make($this->customer),
             'tickets' => OrderTicketsResource::collection($this->purchases),
