@@ -123,12 +123,15 @@ class OrderController extends Controller
                                 <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
                                 <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
                             </label>',
-                'package' => '<a class="dropdown-item" href="' . route($request->route, $row->slug) . '">'.$row->$order_type->ticketType.'</a>',
+                'package' => $row->$order_type
+                                ? '<a class="dropdown-item" href="' . route($request->route, $row->slug) . '">' . $row->$order_type->ticketType . '</a>'
+                                : '<span class="dropdown-item text-muted">N/A</span>',
                 'customerName' => $row->firstName.' '.$row->lastName,
                 'customerEmail' => $row->email,
                 'orderTotal' => '$' . number_format($row->orderTotal, 2),
                 'orderDate' => date('Y-m-d', strtotime($row->orderDate)),
                 'createdAt' => date('Y-m-d', strtotime($row->created_at)),
+                'order_status' => $row?->order_status ? ucwords(str_replace('_', ' ', $row->order_status)) : 'N/A',
                 'status' => '<div class="text-center"><i class="fa ' . ($row->transactionId ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
                 'options' => '<div class="dropdown">
                                 <button type="button" class="btn btn-sm light dk dropdown-toggle" data-toggle="dropdown">

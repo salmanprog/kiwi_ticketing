@@ -34,6 +34,7 @@ class OrderTicketsResource extends JsonResource
             'isSeasonPassRenewal' => $this->isSeasonPassRenewal,
             'isSeasonPass' => $this->isSeasonPass,
             'totalOrderRefundedAmount' => $this->totalOrderRefundedAmount,
+            'ticket_status' => $this->ticket_status,
         ];
     }
 }

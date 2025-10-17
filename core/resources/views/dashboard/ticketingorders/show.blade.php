@@ -79,7 +79,7 @@
                         </div>
                         <div class="col-md-3 p-3 text-center">
                             <strong>Package Name</strong><br>
-                            {{ $get_cabana_orders->general_ticket->title }}
+                            {{ optional($get_cabana_orders->general_ticket)->title ?? 'N/A' }}
                         </div>
                         <div class="col-md-3 p-3 text-center">
                             <strong>Total Ticket</strong><br>
@@ -178,6 +178,12 @@
                                 <div class="row mb-4" style="background-color: #f1f1f1; padding: 12px 20px; border-radius: 6px;">
                                     <div class="col-md-10 d-flex align-items-center">
                                         <h5 class="m-0"><strong>Ticket No {{ $loop->iteration }}</strong></h5>
+                                        <p>
+                                            <strong>Ticket Status:</strong>
+                                            <span style="color: green;">
+                                                {{ isset($ticket->ticket_status) ? ucwords(str_replace('_', ' ', $ticket->ticket_status)) : 'N/A' }}
+                                            </span>
+                                        </p>
                                     </div>
                                     <div class="col-md-2 d-flex justify-content-end align-items-center">
                                         <img src="https://quickchart.io/qr?text={{$ticket->visualId}}&margin=2&size=150"
@@ -189,7 +195,7 @@
                                 <div class="row mb-4" style="margin-bottom: 40px;">
                                     <div class="col-md-3 p-3 text-center">
                                         <strong>Ticket Type</strong><br>
-                                        {{ $ticket->ticketType ?? 'N/A' }}
+                                        {{ optional($ticket->ticketType)->title ?? 'N/A' }}
                                     </div>
                                     <div class="col-md-3 p-3 text-center">
                                         <strong>Description</strong><br>
