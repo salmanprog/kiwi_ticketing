@@ -35,7 +35,7 @@ Route::post('/subscribe', 'APIsController@subscribeSubmit');
 Route::post('/comment', 'APIsController@commentSubmit');
 Route::post('/order', 'APIsController@orderSubmit');
 Route::post('/contact', 'APIsController@ContactPageSubmit');
-Route::middleware('apiAuth')->group(function () {
+//Route::middleware('apiAuth')->group(function () {
 //General Settings
 Route::get('/general/settings', 'GeneralController@website_setting');
 //Cabana Settings
@@ -73,7 +73,7 @@ Route::post('/send-email', 'EmailController@sendEmail');
     Route::get('/secure-data', function () {
         return response()->json(['data' => 'Authorized Access!']);
     });
-});
+//});
 Route::post('/ticket-hold', 'TicketController@ticketHold');
 Route::post('/cabana-occupancy', 'TicketController@GetCabanaOccupancy');
 Route::post('/order-create', 'OrderController@OrderCreate');

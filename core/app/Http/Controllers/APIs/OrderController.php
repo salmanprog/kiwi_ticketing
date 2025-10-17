@@ -190,118 +190,89 @@ class OrderController extends BaseAPIController
 
         try {
             $update_order =  OrdersHelper::updateOrUpgradeOrder($request->all());
-            print_r($update_order);
-            die();
+            
             $data = $update_order->json();
             if (isset($data['status']['errorCode']) && $data['status']['errorCode'] == 1) {
                 return $this->sendResponse(400, 'Order Error', ['error' => $data['status']['errorMessage']]);
             }else{
-                $get_order = Http::get($baseUrl.'/Pricing/QueryOrder2?orderId='.$data['data'][0]['orderNumber'].'&authcode='.$authCode);
+            //     print_r($data);
+            // die();
+                $get_previous_order = Order::where('slug',$request->previousOrderNumber)->first();
+                $get_order = Http::get($baseUrl.'/Pricing/QueryOrder2?orderId='.$request->previousOrderNumber.'&authcode='.$authCode);
                 $get_order = $get_order->json();
-                $orderData = $data['data'][0];
-                $get_user = User::where('id',$request->user_id)->first();
-                $nameParts = explode(' ', trim($get_user->name));
-                $order = new Order;
-                $order->auth_code  = Helper::GeneralSiteSettings('auth_code_en',true);
-                $order->type = $request->type;
-                $order->package_id = $request->package_id;
-                $order->slug  = $orderData['orderNumber'];
-                $order->firstName  = $nameParts[0];
-                $order->lastName = isset($nameParts[1]) ? implode(' ', array_slice($nameParts, 1)) : '';
-                $order->email = $get_user->email;
-                $order->phone = $get_user->phone;
-                $order->orderTotal = $orderData['orderTotal'];
-                $order->tax = isset($orderData['tax']) ? $orderData['tax'] : '0';
-                $order->serviceCharges = isset($orderData['serviceCharges']) ? $orderData['serviceCharges'] : '0';
-                $order->orderTip  = isset($orderData['orderTip']) ? $orderData['orderTip'] : '0';
-                $order->orderDate  = isset($orderData['orderDate']) ? $orderData['orderDate'] : '0';
-                $order->slotTime = isset($orderData['slotTime']) ? $orderData['slotTime'] : '0';
-                $order->orderSource = isset($orderData['orderSource']) ? $orderData['orderSource'] : '0';
-                $order->posStaffIdentity = isset($orderData['posStaffIdentity']) ? $orderData['posStaffIdentity'] : '0';
-                $order->isOrderFraudulent  = isset($orderData['isOrderFraudulent']) ? $orderData['isOrderFraudulent'] : '0';
-                $order->orderFraudulentTimeStamp  = isset($orderData['orderFraudulentTimeStamp']) ? $orderData['orderFraudulentTimeStamp'] : '0';
-                $order->customerAddress = isset($orderData['customerAddress']) ? $orderData['customerAddress'] : $request->customerAddress;
-                $order->promoCode = isset($request->promoCode) ? $request->promoCode : 'N/A';
-                $order->transactionId = isset($orderData['transactionId']) ? $orderData['transactionId'] : $request->transactionId;
-                $order->totalOrderRefundedAmount = isset($orderData['totalOrderRefundedAmount']) ? $orderData['totalOrderRefundedAmount'] : '0';
-                $order->user_id  = $request->user_id;
-                $order->order_status  = $request->order_status;
-                $order->save();
-               // return $this->sendResponse(200, 'Generate Order', $get_order);
-
+                //$orderData = $data['data'][0];
+                $ticket_status = ($request->order_status == 'update_order') ? 'ticket_update' : 'ticket_upgrade';
+               
+                $get_previous_order->orderTotal  = $request->totalAmount;
+                $get_previous_order->order_status  = $request->order_status;
+                $get_previous_order->updated_at  = Carbon::now();
+                $get_previous_order->save();
                 if (isset($get_order['data']['tickets']) && is_array($get_order['data']['tickets'])) {
                     foreach ($get_order['data']['tickets'] as $ticket) {
                         
-                        $ordertickets = new OrderTickets;
-                        $ordertickets->order_id = $order->id;
-                        $ordertickets->visualId = $ticket['visualId'];
-                        $ordertickets->childVisualId = $ticket['childVisualId'];
-                        $ordertickets->parentVisualId = $ticket['parentVisualId'];
-                        $ordertickets->description = $ticket['description'];
-                        $ordertickets->seat = $ticket['seat'];
-                        $ordertickets->price = $ticket['price'];
-                        $ordertickets->ticketDate = $ticket['ticketDate'];
-                        $ordertickets->ticketDisplayDate = $ticket['ticketDisplayDate'];
-                        $ordertickets->quantity = $ticket['quantity'];
-                        $ordertickets->slotTime = $ticket['slotTime'];
-                        $ordertickets->isRefundedOrder = $ticket['isRefundedOrder'];
-                        $ordertickets->checkInStatus = $ticket['checkInStatus'];
-                        $ordertickets->totalRefundedAmount = $ticket['totalRefundedAmount'];
-                        $ordertickets->isWavierFormSubmitted = $ticket['isWavierFormSubmitted'];
-                        $ordertickets->isQrCodeBurn = $ticket['isQrCodeBurn'];
-                        $ordertickets->wavierSubmittedDateTime = $ticket['wavierSubmittedDateTime'];
-                        $ordertickets->refundedDateTime = $ticket['refundedDateTime'];
-                        $ordertickets->isTicketUpgraded = $ticket['isTicketUpgraded'];
-                        $ordertickets->ticketUpgradedFrom = $ticket['ticketUpgradedFrom'];
-                        $ordertickets->isSearchParentRecord = $ticket['isSearchParentRecord'];
-                        $ordertickets->validUntil = $ticket['validUntil'];
-                        $ordertickets->isSeasonPassRenewal = $ticket['isSeasonPassRenewal'];
-                        $ordertickets->isSeasonPass = $ticket['isSeasonPass'];
-                        $ordertickets->totalOrderRefundedAmount = $ticket['totalOrderRefundedAmount'];
-                        $ordertickets->save();
+                        $existing_ticket = OrderTickets::where('order_id', $get_previous_order->id)->where('visualId', $ticket['visualId'])->first();
+
+                        if (!$existing_ticket) {
+                            $ordertickets = new OrderTickets;
+                            $ordertickets->order_id = $get_previous_order->id;
+                            $ordertickets->visualId = $ticket['visualId'];
+                            $ordertickets->childVisualId = $ticket['childVisualId'];
+                            $ordertickets->parentVisualId = $ticket['parentVisualId'];
+                            $ordertickets->description = $ticket['description'];
+                            $ordertickets->seat = $ticket['seat'];
+                            $ordertickets->price = $ticket['price'];
+                            $ordertickets->ticketDate = $ticket['ticketDate'];
+                            $ordertickets->ticketDisplayDate = $ticket['ticketDisplayDate'];
+                            $ordertickets->quantity = $ticket['quantity'];
+                            $ordertickets->slotTime = $ticket['slotTime'];
+                            $ordertickets->isRefundedOrder = $ticket['isRefundedOrder'];
+                            $ordertickets->checkInStatus = $ticket['checkInStatus'];
+                            $ordertickets->totalRefundedAmount = $ticket['totalRefundedAmount'];
+                            $ordertickets->isWavierFormSubmitted = $ticket['isWavierFormSubmitted'];
+                            $ordertickets->isQrCodeBurn = $ticket['isQrCodeBurn'];
+                            $ordertickets->wavierSubmittedDateTime = $ticket['wavierSubmittedDateTime'];
+                            $ordertickets->refundedDateTime = $ticket['refundedDateTime'];
+                            $ordertickets->isTicketUpgraded = $ticket['isTicketUpgraded'];
+                            $ordertickets->ticketUpgradedFrom = $ticket['ticketUpgradedFrom'];
+                            $ordertickets->isSearchParentRecord = $ticket['isSearchParentRecord'];
+                            $ordertickets->validUntil = $ticket['validUntil'];
+                            $ordertickets->isSeasonPassRenewal = $ticket['isSeasonPassRenewal'];
+                            $ordertickets->isSeasonPass = $ticket['isSeasonPass'];
+                            $ordertickets->totalOrderRefundedAmount = $ticket['totalOrderRefundedAmount'];
+                            $ordertickets->ticket_status = 'new_ticket';
+                            $ordertickets->save();
+                        }
                     }
+
+                    if (is_array($request->ticketChanges)) {
+                    foreach ($request->ticketChanges as $ticketJson) {
+                        $ticket = json_decode($ticketJson, true);
+                            if (is_array($ticket) && !empty($ticket['visualId'])) {
+                                OrderTickets::where('order_id', $get_previous_order->id)
+                                    ->where('visualId', $ticket['visualId'])
+                                    ->update(['ticket_status' => $ticket_status]);
+                            }
+                        }
+                    }
+                    
                 }
 
-                $total_item_quantity = OrderTickets::where('order_id',$order->id)->sum('quantity');
-                $transaction = new Transaction;
+                $total_item_quantity = OrderTickets::where('order_id',$get_previous_order->id)->sum('quantity');
+                $total_ticket = OrderTickets::where('order_id',$get_previous_order->id)->count();
+                $transaction = Transaction::where('order_id',$get_previous_order->id)->first();
                 $transaction->auth_code  = Helper::GeneralSiteSettings('auth_code_en',true);
-                $transaction->order_id = $order->id;
-                $transaction->transactionId = $order->transactionId;
-                $transaction->totalItem = count($request->purchases);
+                $transaction->order_id = $get_previous_order->id;
+                $transaction->transactionId = $get_previous_order->transactionId;
+                $transaction->totalItem = $total_ticket;
                 $transaction->quantity = $total_item_quantity;
-                $transaction->transactionDate = $date;
                 $transaction->amount = $data['data'][0]['orderTotal'];
                 $transaction->save();
 
-                if (isset($request->promoCode) && $request->promoCode > 0) {
-                    $coupons = Coupons::find($request->promoCode);
-                    
-                    if ($coupons->discount_type === 'percentage') {
-                        $discount = ($order->orderTotal * $coupons->discount) / 100;
-                    } elseif ($coupons->discount_type === 'flat_rate') {
-                        $discount = $coupons->discount;
-                    }
-                    $discount = min($discount, $order->orderTotal);
-                    $finalAmount = $order->orderTotal - $discount;
-                    
-                    $coupons->coupon_use_limit += 1;
-                    $coupons->save();
-
-                    $orderCoupon = new OrderCoupon;
-                    $orderCoupon->order_id = $order->id;
-                    $orderCoupon->coupon_id = $coupons->id;
-                    $orderCoupon->original_amount = $order->orderTotal;
-                    $orderCoupon->discount_type = $coupons->discount_type;
-                    $orderCoupon->discount = $discount;
-                    $orderCoupon->final_amount = $finalAmount;
-                    $orderCoupon->save();
-                }
-
-                $order_type =  OrdersHelper::order_types($order->type);
-                $get_order = Order::with(['customer','purchases','apply_coupon','transaction',$order_type])->where('id',$order->id)->first();
+                $order_type =  OrdersHelper::order_types($get_previous_order->type);
+                $get_order = Order::with(['customer','purchases','apply_coupon','transaction',$order_type])->where('id',$get_previous_order->id)->first();
                 //$get_order = Order::with(['customer','purchases','transaction'])->where('id',$order->id)->first();
                 $resource = OrderResource::make($get_order);
-                return $this->sendResponse(200, 'Your Order has been successfully created', $resource);
+                return $this->sendResponse(200, 'Your Order has been successfully updated', $resource);
             }
 
         } catch (\Exception $e) {
