@@ -11,6 +11,7 @@ class Order extends Model
     protected $table = 'order';
     protected $fillable = [
         'slug',
+        'parent_order',
         'auth_code',
         'user_id',
         'type',

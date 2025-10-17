@@ -48,10 +48,11 @@ Route::get('/cabana/addon/{lang}', 'CabanaAddonController@show');
 Route::get('/birthday/packages', 'BirthdayController@index');
 Route::get('/birthday/addon/{slug}', 'BirthdayAddonController@show');
 //Tickets
-
+Route::post('/ticket-hold', 'TicketController@ticketHold');
 Route::get('/calendar', 'TicketController@GetCalendar');
 //General Ticket
 Route::get('/general-package', 'GeneralTicketController@index');
+Route::post('/cabana-occupancy', 'TicketController@GetCabanaOccupancy');
 Route::get('/general-ticket-package/{slug}', 'GeneralTicketController@generalTicketAddon');
 //Offer Creation
 Route::get('/offers-package', 'OfferCreationController@index');
@@ -65,7 +66,8 @@ Route::post('/coupon-discount', 'CouponController@store');
 //Stripe
 Route::post('/order-payment', 'StripeController@createPaymentIntent');
 
-
+Route::post('/order-create', 'OrderController@OrderCreate');
+Route::post('/order-update', 'OrderController@OrderUpdate');
 Route::get('/order/{slug}', 'OrderController@getBySlug');
 //Email
 Route::post('/send-email', 'EmailController@sendEmail');
@@ -74,7 +76,5 @@ Route::post('/send-email', 'EmailController@sendEmail');
         return response()->json(['data' => 'Authorized Access!']);
     });
 });
-Route::post('/ticket-hold', 'TicketController@ticketHold');
-Route::post('/cabana-occupancy', 'TicketController@GetCabanaOccupancy');
-Route::post('/order-create', 'OrderController@OrderCreate');
-Route::post('/order-update', 'OrderController@OrderUpdate');
+
+

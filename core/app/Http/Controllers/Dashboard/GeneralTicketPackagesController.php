@@ -122,7 +122,6 @@ class GeneralTicketPackagesController extends Controller
     {
         $this->validate($request, [
             'title' => 'required',
-            'description' => 'required',
         ]);
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         // Upload multiple photos
@@ -195,7 +194,6 @@ class GeneralTicketPackagesController extends Controller
        if (!empty($generalTicketPackages)) {
             $this->validate($request, [
                 'title' => 'required',
-                'description' => 'required'
             ]);
             
             if ($request->has('media_delete')) {

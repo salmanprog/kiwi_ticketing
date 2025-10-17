@@ -169,7 +169,6 @@ class GeneralTicketAddonController extends Controller
             'is_primary' => 'required',
             'generalTicketSlug' => 'required',
             'ticketSlug' => 'required',
-            'description' => 'required',
         ]);
         $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
@@ -310,7 +309,6 @@ class GeneralTicketAddonController extends Controller
        $ticketAddon = GeneralTicketAddon::where('slug',$id)->where('auth_code',$authCode)->first();
        if (!empty($ticketAddon)) {
             $this->validate($request, [
-                'description' => 'required',
             ]);
         if($request->status == '1'){
             $primaryProductCount = GeneralTicketAddon::where('generalTicketSlug',$ticketAddon->generalTicketSlug)->where('is_primary','1')->where('status','1')->where('auth_code',$authCode)->count();

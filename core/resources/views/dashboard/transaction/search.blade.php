@@ -18,9 +18,9 @@
                             ui-options="{theme: 'bootstrap'}">
                         <option value="">{{ __('Select Type') }}</option>
                         <option value="cabana">{{ __('Cabana Orders') }}</option>
-                        <option value="birthday">{{ __('Birthday Orders') }}</option>
+                        <option value="birthday">{{ __('Packages Orders') }}</option>
                         <option value="general_ticket">{{ __('Platform Orders') }}</option>
-                        <option value="season_pass">{{ __('Season Orders') }}</option>
+                        <option value="season_pass">{{ __('LandingPage Orders') }}</option>
                         <option value="offer_creation">{{ __('OfferCreation Orders') }}</option>
                         
                     </select>

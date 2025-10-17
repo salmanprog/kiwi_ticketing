@@ -123,7 +123,6 @@ class OfferCreationPackagesController extends Controller
         $this->validate($request, [
             'title' => 'required',
             'offerType' => 'required',
-            'description' => 'required',
         ]);
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         // Upload multiple photos
@@ -197,7 +196,6 @@ class OfferCreationPackagesController extends Controller
        if (!empty($offerCreationPackages)) {
             $this->validate($request, [
                 'title' => 'required',
-                'description' => 'required'
             ]);
             
             if ($request->has('media_delete')) {

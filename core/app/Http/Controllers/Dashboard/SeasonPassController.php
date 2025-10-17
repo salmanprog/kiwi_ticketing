@@ -126,7 +126,6 @@ class SeasonPassController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'description' => 'required',
         ]);
         $formFileName = "photo";
         $uploadedFileNames = [];
@@ -199,7 +198,6 @@ class SeasonPassController extends Controller
         $seasonPassUpdate = SeasonPass::where('slug',$id)->first();
        if (!empty($seasonPassUpdate)) {
             $this->validate($request, [
-                'description' => 'required',
             ]);
         if ($request->has('media_delete')) {
             foreach ($request->input('media_delete') as $mediaId => $shouldDelete) {

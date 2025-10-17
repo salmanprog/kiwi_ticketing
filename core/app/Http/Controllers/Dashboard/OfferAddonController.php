@@ -162,7 +162,6 @@ class OfferAddonController extends Controller
         $this->validate($request, [
             'offerSlug' => 'required',
             'ticketSlug' => 'required',
-            'description' => 'required',
         ]);
         $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
@@ -301,7 +300,6 @@ class OfferAddonController extends Controller
        $offerAddon = OfferAddon::where('slug',$id)->where('auth_code',$authCode)->first();
        if (!empty($offerAddon)) {
             $this->validate($request, [
-                'description' => 'required',
             ]);
 
             if ($request->has('media_delete')) {

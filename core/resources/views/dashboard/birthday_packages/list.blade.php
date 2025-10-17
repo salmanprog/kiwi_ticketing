@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Birthday Packages'))
+@section('title', __('Packages'))
 @section('content')
 <style>
     div.dataTables_wrapper div.dataTables_processing {
@@ -16,10 +16,10 @@
 <div class="padding">
 <div class="box">
     <div class="box-header dker">
-        <h3>{{ __('Birthday Packages') }}</h3>
+        <h3>{{ __('Packages') }}</h3>
         <small>
             <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-            <a href="">{{ __('BirthdayPackages') }}</a>
+            <a href="">{{ __('packages') }}</a>
         </small>
     </div>
      <div class="row p-a pull-right" style="margin-top: -70px;">

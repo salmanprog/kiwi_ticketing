@@ -182,7 +182,6 @@ class SeasonPassAddonsController extends Controller
         $this->validate($request, [
             'season_passes_slug' => 'required',
             'ticketSlug' => 'required',
-            'description' => 'required',
             'new_price' => 'required'
         ]);
 
@@ -306,7 +305,6 @@ class SeasonPassAddonsController extends Controller
         $seasonPassUpdate = SeasonPassAddon::where('slug',$id)->first();
        if (!empty($seasonPassUpdate)) {
             $this->validate($request, [
-                'description' => 'required',
                 'new_price' => 'required',
             ]);
         if ($request->has('media_delete')) {
@@ -343,7 +341,7 @@ class SeasonPassAddonsController extends Controller
         }
 
         $seasonPassUpdate->description = $request->description;
-        $seasonPassUpdate->price = $request->new_price;
+        $seasonPassUpdate->new_price = $request->new_price;
         $seasonPassUpdate->is_new_price_show = $request->is_new_price_show;
         $seasonPassUpdate->is_featured = $request->is_featured;
         $seasonPassUpdate->status = $request->status;

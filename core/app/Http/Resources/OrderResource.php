@@ -16,6 +16,7 @@ class OrderResource extends JsonResource
         return [
             'id' => $this->id,
             'slug' => $this->slug,
+            'previousNumber'  => $this->parent_order,
             'orderNumber'  => $this->slug,
             'type' => $this->type,
             'visualId' => $this->visualId,
