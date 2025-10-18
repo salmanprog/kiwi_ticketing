@@ -12,12 +12,15 @@ use App\Models\Section;
 use App\Models\Tag;
 use App\Models\Topic;
 use App\Models\TopicTag;
+use App\Models\Order;
 use App\Models\Webmail;
 use App\Models\WebmasterSection;
 use Auth;
 use Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -67,6 +70,71 @@ class DashboardController extends Controller
         $stat = "date";
 
         $Last7DaysVisitors = array();
+
+        $ordersByType = Order::select(
+                'type',
+                DB::raw('COUNT(*) as total_number_of_orders'),
+                DB::raw('SUM(orderTotal) as total_earning')
+            )
+            ->groupBy('type')
+            ->get();
+
+        $overallTotals = Order::select(
+                DB::raw("'TOTAL' as type"),
+                DB::raw('COUNT(*) as total_number_of_orders'),
+                DB::raw('SUM(orderTotal) as total_earning')
+            )
+            ->first();
+
+        $orders = $ordersByType->push($overallTotals);
+
+        $today = Carbon::today();
+        $statuses = ['paid_order', 'upgrade_order', 'update_order'];
+
+        $todayOrders = Order::whereIn('order_status', $statuses)
+            ->whereDate('created_at', $today)
+            ->get();
+
+        // Counts by status
+        $paidCount = $todayOrders->where('order_status', 'paid_order')->count();
+        $upgradeCount = $todayOrders->where('order_status', 'upgrade_order')->count();
+        $updateCount = $todayOrders->where('order_status', 'update_order')->count();
+
+        // Earnings by status
+        $paidTotal = $todayOrders->where('order_status', 'paid_order')->sum('orderTotal');
+        $upgradeTotal = $todayOrders->where('order_status', 'upgrade_order')->sum('orderTotal');
+        $updateTotal = $todayOrders->where('order_status', 'update_order')->sum('orderTotal');
+
+        $paidCount      = $paidCount ?? 0;
+        $upgradeCount   = $upgradeCount ?? 0;
+        $updateCount    = $updateCount ?? 0;
+
+        $paidTotal      = $paidTotal ?? 0;
+        $upgradeTotal   = $upgradeTotal ?? 0;
+        $updateTotal    = $updateTotal ?? 0;
+
+        // Overall
+        $totalCount = $paidCount + $upgradeCount + $updateCount;
+        $totalEarning = $paidTotal + $upgradeTotal + $updateTotal;
+
+        // Percentages
+        $paidPercent = $totalCount > 0 ? round(($paidCount * 100) / $totalCount) : 0;
+        $upgradePercent = $totalCount > 0 ? round(($upgradeCount * 100) / $totalCount) : 0;
+        $updatePercent = $totalCount > 0 ? round(($updateCount * 100) / $totalCount) : 0;
+
+        $monthlyOrders = DB::table('order') // or 'smartend_order'
+                        ->select(
+                            DB::raw("DATE_FORMAT(created_at, '%Y-%m') as month"),
+                            DB::raw("COUNT(*) as total_orders")
+                        )
+                        ->where('created_at', '>=', Carbon::now()->subMonths(12))
+                        ->groupBy('month')
+                        ->orderBy('month', 'asc')
+                        ->get();
+        $ordersChartData = [];
+        foreach ($monthlyOrders as $item) {
+            $ordersChartData[] = [$item->month, $item->total_orders];
+        }
 
         $AnalyticsVisitors = AnalyticsVisitor::select("*")->select($stat)->where('date', '>=', $daterangepicker_start)
             ->where('date', '<=', $daterangepicker_end)
@@ -224,10 +292,10 @@ class DashboardController extends Controller
             $TodayVisitorsRate = $TodayVisitorsRate . $fsla . "[$ii,$TotalV]";
         }
 
-        return view('dashboard.home',
+        return view('dashboard.home2',
             compact("GeneralWebmasterSections", "Webmails", "Events", "Contacts", "TodayVisitors", "TodayPages",
                 "Last7DaysVisitors", "TodayByCountry", "TodayByBrowser1", "TodayByBrowser1_val", "TodayByBrowser2",
-                "TodayByBrowser2_val", "TodayVisitorsRate"));
+                "TodayByBrowser2_val", "TodayVisitorsRate","orders",'paidCount', 'upgradeCount', 'updateCount','paidTotal', 'upgradeTotal', 'updateTotal','paidPercent', 'upgradePercent', 'updatePercent','totalCount', 'totalEarning','ordersChartData'));
     }
 
     public function search()
