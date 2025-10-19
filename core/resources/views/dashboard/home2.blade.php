@@ -201,107 +201,68 @@
             </div>
         </div>
     </div>
-<div class="col-sm-12 col-md-7 col-lg-8">
-                            <div class="row-col box bg">
-                                <div class="col-sm-8">
-                                    <div class="box-header">
-                                        <h3>{{ __('Total Orders') }}</h3>
-                                        <small>{{ __('you can view order by monthly') }}</small>
-                                    </div>
-                                    <div class="box-body">
-                                        <div ui-jp="plot" ui-refresh="app.setting.color" ui-options="
-			              [
-			                {
-			                  data: [
-                  <?php
-                                        $ii = 1;
-                                        ?>
-                                        @foreach($Last7DaysVisitors as $id)
-
-                                        @if($ii<=10)
-                                        @if($ii!=1)
-                                            ,
-@endif
-                                        <?php
-                                        $i2 = 0;
-                                        ?>
-                                        @foreach($id as $key => $val)
-                                        <?php
-                                        if ($i2 == 1) {
-                                        ?>
-                                            [{{ $ii }}, {{$val}}]
-                                <?php
-                                        }
-                                        $i2++;
-                                        ?>
-                                        @endforeach
-                                        @endif
-                                        <?php $ii++;?>
-                                        @endforeach
-                                            ],
-                                          points: { show: true, radius: 0},
-                                          splines: { show: true, tension: 0.45, lineWidth: 2, fill: 0 }
-                                        },
-                                        {
-                                          data: [
-<?php
-                                        $ii = 1;
-                                        ?>
-                                        @foreach($Last7DaysVisitors as $id)
-
-                                        @if($ii<=10)
-                                        @if($ii!=1)
-                                            ,
-@endif
-                                        <?php
-                                        $i2 = 0;
-                                        ?>
-                                        @foreach($id as $key => $val)
-                                        <?php
-                                        if ($i2 == 2) {
-                                        ?>
-                                            [{{ $ii }}, {{$val}}]
-                                <?php
-                                        }
-                                        $i2++;
-                                        ?>
-                                        @endforeach
-                                        @endif
-                                        <?php $ii++;?>
-                                        @endforeach
-                                            ],
-              points: { show: true, radius: 0},
-              splines: { show: true, tension: 0.45, lineWidth: 2, fill: 0 }
-            }
-            ],
-            {
-            colors: ['#0cc2aa','#fcc100'],
-            series: { shadowSize: 3 },
-            xaxis: { show: true, font: { color: '#ccc' }, position: 'bottom' },
-            yaxis:{ show: true, font: { color: '#ccc' }},
-            grid: { hoverable: true, clickable: true, borderWidth: 0, color: 'rgba(120,120,120,0.5)' },
-            tooltip: true,
-            tooltipOpts: { content: '%x.0 is %y.4',  defaultTheme: false, shifts: { x: 0, y: -40 } }
-            }
-" style="height:162px">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4 dker">
-                                    <div class="box-header">
-                                        <h3>{{ __('By Monthly') }}</h3>
-                                    </div>
-                                    <div class="box-body">
-                                       <p class="text-muted">
-                                            {{ __('backend.reportsDetails') }} : <br>
-                                            {{ __('Order By Type') }}, {{ __('By Packages') }},
-                                            {{ __('Date Filters') }}, {{ __('Order ID Filter') }}
-                                        </p>
-                                        <a href="{{ route('transactionorders') }}" style="margin-bottom: 5px;"
-                                           class="btn btn-sm btn-outline rounded b-success">{{ __('backend.viewMore') }}</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+    <div class="col-sm-12 col-md-7 col-lg-8">
+        <div class="row-col box bg">
+            <div class="col-sm-8">
+                <div class="box-header">
+                    <h3>{{ __('Total Orders') }}</h3>
+                    <small>{{ __('you can view order by monthly') }}</small>
+                </div>
+                <div class="box-body">
+                    <canvas id="ordersChart" height="120"></canvas>
+                </div>
+            </div>
+            <div class="col-sm-4 dker">
+                <div class="box-header">
+                    <h3>{{ __('By Monthly') }}</h3>
+                </div>
+                <div class="box-body">
+                    <p class="text-muted">
+                        {{ __('backend.reportsDetails') }} : <br>
+                        {{ __('Order By Type') }}, {{ __('By Packages') }},
+                        {{ __('Date Filters') }}, {{ __('Order ID Filter') }}
+                    </p>
+                    <a href="{{ route('transactionorders') }}" style="margin-bottom: 5px;"
+                        class="btn btn-sm btn-outline rounded b-success">{{ __('backend.viewMore') }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
+@push("after-scripts")
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
+<script>
+    const labels = @json($monthlyOrders->pluck('month_name'));
+    const data = @json($monthlyOrders->pluck('total_orders'));
+
+    const ctx = document.getElementById('ordersChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Total Orders',
+                data: data,
+                borderColor: '#0cc2aa',
+                backgroundColor: 'rgba(12,194,170,0.1)',
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        precision:0
+                    }
+                }
+            }
+        }
+    });
+</script>
+@endpush

@@ -41,6 +41,17 @@
                 <div class="col-md-4 col-xs-6 m-b-5p">
                     <input type="text" name="to_date" id="to_date" class="form-control datepicker" placeholder="{{ __('To Date') }}" autocomplete="off" value="{{ request('to_date') }}">
                 </div>
+                <div class="col-md-2 col-xs-6 m-b-5p">
+                    <select name="order_status"
+                            id="find_order_status"
+                            class="form-control select2"
+                            ui-jp="select2"
+                            ui-options="{theme: 'bootstrap'}">
+                        <option value="">{{ __('Select Order Status') }}</option>
+                        <option value="update_order">{{ __('Update Order') }}</option>
+                        <option value="upgrade_order">{{ __('Upgrade Orders') }}</option>
+                    </select>
+                </div>
                 <div class="col-md-1 col-xs-6 m-b-5p">
                     <button class="btn white w-full" id="search-btn" type="button"><i
                             class="fa fa-search"></i>
@@ -101,6 +112,7 @@
             $('#date_range').val('');
             $('#from_date').val('');
             $('#to_date').val('');
+            $('#find_order_status').val('');
             $('#filter_form').submit();
         });
     });

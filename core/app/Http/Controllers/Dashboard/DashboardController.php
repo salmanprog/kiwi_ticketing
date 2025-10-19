@@ -92,7 +92,7 @@ class DashboardController extends Controller
         $statuses = ['paid_order', 'upgrade_order', 'update_order'];
 
         $todayOrders = Order::whereIn('order_status', $statuses)
-            ->whereDate('created_at', $today)
+            ->whereDate('updated_at', $today)
             ->get();
 
         // Counts by status
@@ -122,19 +122,28 @@ class DashboardController extends Controller
         $upgradePercent = $totalCount > 0 ? round(($upgradeCount * 100) / $totalCount) : 0;
         $updatePercent = $totalCount > 0 ? round(($updateCount * 100) / $totalCount) : 0;
 
+        // $monthlyOrders = DB::table('order') // or 'smartend_order'
+        //                 ->select(
+        //                     DB::raw("DATE_FORMAT(created_at, '%Y-%m') as month"),
+        //                     DB::raw("COUNT(*) as total_orders")
+        //                 )
+        //                 ->where('created_at', '>=', Carbon::now()->subMonths(12))
+        //                 ->groupBy('month')
+        //                 ->orderBy('month', 'asc')
+        //                 ->get();
+        // $ordersChartData = [];
+        // foreach ($monthlyOrders as $item) {
+        //     $ordersChartData[] = [$item->month, $item->total_orders];
+        // }
         $monthlyOrders = DB::table('order') // or 'smartend_order'
                         ->select(
-                            DB::raw("DATE_FORMAT(created_at, '%Y-%m') as month"),
+                            DB::raw("DATE_FORMAT(created_at, '%b %Y') as month_name"), // e.g., "Jan 2025"
                             DB::raw("COUNT(*) as total_orders")
                         )
                         ->where('created_at', '>=', Carbon::now()->subMonths(12))
-                        ->groupBy('month')
-                        ->orderBy('month', 'asc')
+                        ->groupBy('month_name')
+                        ->orderByRaw("STR_TO_DATE(month_name, '%b %Y') ASC")
                         ->get();
-        $ordersChartData = [];
-        foreach ($monthlyOrders as $item) {
-            $ordersChartData[] = [$item->month, $item->total_orders];
-        }
 
         $AnalyticsVisitors = AnalyticsVisitor::select("*")->select($stat)->where('date', '>=', $daterangepicker_start)
             ->where('date', '<=', $daterangepicker_end)
@@ -295,7 +304,7 @@ class DashboardController extends Controller
         return view('dashboard.home2',
             compact("GeneralWebmasterSections", "Webmails", "Events", "Contacts", "TodayVisitors", "TodayPages",
                 "Last7DaysVisitors", "TodayByCountry", "TodayByBrowser1", "TodayByBrowser1_val", "TodayByBrowser2",
-                "TodayByBrowser2_val", "TodayVisitorsRate","orders",'paidCount', 'upgradeCount', 'updateCount','paidTotal', 'upgradeTotal', 'updateTotal','paidPercent', 'upgradePercent', 'updatePercent','totalCount', 'totalEarning','ordersChartData'));
+                "TodayByBrowser2_val", "TodayVisitorsRate","orders",'paidCount', 'upgradeCount', 'updateCount','paidTotal', 'upgradeTotal', 'updateTotal','paidPercent', 'upgradePercent', 'updatePercent','totalCount', 'totalEarning','monthlyOrders'));
     }
 
     public function search()
