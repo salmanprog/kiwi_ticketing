@@ -46,7 +46,6 @@ class OrderController extends BaseAPIController
         $baseUrl = Helper::GeneralSiteSettings('external_api_link_en',true);
         $authCode = Helper::GeneralSiteSettings('auth_code_en',true);
         $date = Carbon::today()->toDateString();
-
         try {
             $store_order =  OrdersHelper::generateOrder($request->all());
             $data = $store_order->json();
@@ -77,7 +76,7 @@ class OrderController extends BaseAPIController
                 $order->posStaffIdentity = isset($orderData['posStaffIdentity']) ? $orderData['posStaffIdentity'] : '0';
                 $order->isOrderFraudulent  = isset($orderData['isOrderFraudulent']) ? $orderData['isOrderFraudulent'] : '0';
                 $order->orderFraudulentTimeStamp  = isset($orderData['orderFraudulentTimeStamp']) ? $orderData['orderFraudulentTimeStamp'] : '0';
-                $order->customerAddress = isset($orderData['customerAddress']) ? $orderData['customerAddress'] : $request->customerAddress;
+                $order->customerAddress = $request->customerAddress;
                 $order->promoCode = isset($request->promoCode) ? $request->promoCode : 'N/A';
                 $order->transactionId = isset($orderData['transactionId']) ? $orderData['transactionId'] : $request->transactionId;
                 $order->totalOrderRefundedAmount = isset($orderData['totalOrderRefundedAmount']) ? $orderData['totalOrderRefundedAmount'] : '0';
@@ -303,9 +302,18 @@ class OrderController extends BaseAPIController
                         }
                     }
 
+                    // if (is_array($request->ticketChanges)) {
+                    // foreach ($request->ticketChanges as $ticketJson) {
+                    //     $ticket = json_decode($ticketJson, true);
+                    //         if (is_array($ticket) && !empty($ticket['visualId'])) {
+                    //             OrderTickets::where('order_id', $get_previous_order->id)
+                    //                 ->where('visualId', $ticket['visualId'])
+                    //                 ->update(['ticket_status' => $ticket_status]);
+                    //         }
+                    //     }
+                    // }
                     if (is_array($request->ticketChanges)) {
-                    foreach ($request->ticketChanges as $ticketJson) {
-                        $ticket = json_decode($ticketJson, true);
+                        foreach ($request->ticketChanges as $ticket) {
                             if (is_array($ticket) && !empty($ticket['visualId'])) {
                                 OrderTickets::where('order_id', $get_previous_order->id)
                                     ->where('visualId', $ticket['visualId'])
