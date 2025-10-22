@@ -1,5 +1,6 @@
-CREATE TABLE `smartend_email_template` (
+CREATE TABLE `smartend_email_logs` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `order_number` varchar(191) DEFAULT NULL,
   `identifier` varchar(191) DEFAULT NULL,
   `subject` text DEFAULT NULL,
   `content` longtext NOT NULL,
@@ -7,19 +8,16 @@ CREATE TABLE `smartend_email_template` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-ALTER TABLE `smartend_email_template`
+ALTER TABLE `smartend_email_logs`
   ADD PRIMARY KEY (`id`)
 
-ALTER TABLE `smartend_email_template`
+ALTER TABLE `smartend_email_logs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1
  
- ALTER TABLE `smartend_order` ADD `order_status` ENUM('paid_order','update_order','upgrade_order') NOT NULL DEFAULT 'paid_order' AFTER `totalOrderRefundedAmount`;
- 
- ALTER TABLE `smartend_order_tickets` ADD `ticket_status` ENUM('ticket_paid','ticket_update','ticket_upgrade','new_ticket') NOT NULL DEFAULT 'ticket_paid' AFTER `totalOrderRefundedAmount`;
+ALTER TABLE `smartend_email_logs` ADD `slug` VARCHAR(255) NOT NULL AFTER `id`;
+ALTER TABLE `smartend_email_logs` ADD `email` VARCHAR(255) NOT NULL AFTER `order_number`;
+ALTER TABLE `smartend_email_logs` ADD `status` ENUM('0','1') NOT NULL DEFAULT '1' AFTER `content`;
 
-
-
- ALTER TABLE `smartend_order` ADD `parent_order` VARCHAR(255) NULL DEFAULT '0' AFTER `slug`;
 -----------------------------------------------------------------------------------------
 http://dev-dynamicpricing-env.eba-tkbnkmbm.us-east-1.elasticbeanstalk.com/Pricing/UpdateOrder
 {

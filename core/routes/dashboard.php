@@ -34,6 +34,7 @@ use App\Http\Controllers\Dashboard\CouponController;
 use App\Http\Controllers\Dashboard\OfferCreationPackagesController;
 use App\Http\Controllers\Dashboard\OfferAddonController;
 use App\Http\Controllers\Dashboard\EmailController;
+use App\Http\Controllers\Dashboard\EmailLogsController;
 use Illuminate\Support\Facades\Route;
 
 // Admin Home
@@ -404,6 +405,11 @@ Route::post('/email-template/{id}/update', [EmailController::class, 'update'])->
 Route::get('/email-template/destroy/{id}', [EmailController::class, 'destroy'])->name('emailTemplateDestroy');
 Route::get('/smtp-configure', [EmailController::class, 'smtpConfigure'])->name('smtpConfigure');
 Route::post('/smtp-configure/update', [EmailController::class, 'updateSmtp'])->name('smtpUpdate');
+// Email Logs Templates
+Route::get('/email-logs', [EmailLogsController::class, 'index'])->name('emailsLogs');
+Route::post('/email-logs/data', [EmailLogsController::class, 'getData'])->name('emailsLogs.data');
+Route::get('/email/{id}/view', [EmailLogsController::class, 'show'])->name('emailShow');
+Route::get('/resend/{id}/email', [EmailLogsController::class, 'resendmail'])->name('emailResend');
 // Menus
 Route::post('/menus/store/parent', [MenusController::class, 'storeMenu'])->name('parentMenusStore');
 Route::get('/menus/parent/{id}/edit', [MenusController::class, 'editMenu'])->name('parentMenusEdit');

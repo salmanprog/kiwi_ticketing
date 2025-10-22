@@ -54,7 +54,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         $couponActive = in_array($current, ['coupon', 'couponCreate', 'couponEdit', 'couponStore','couponUpdate','couponDestroy']);
                         $offerCreationActive = in_array($current, ['offercreationpackages','offercreationpackagesEdit','offercreationpackagesCreate','offercreationpackagesStore','offercreationpackagesUpdate','offercreationpackagesDestroy','offeraddon','offeraddonCreate','offeraddonStore','offeraddonEdit','offeraddonUpdate','offeraddonDestroy','offercreationpackagesorders','offercreationpackagesordersdetail']);
                         $transactionActive = in_array($current, ['transactionorders']);
-                        $emailTemplateActive = in_array($current, ['emailTemplate','emailTemplateCreate','emailTemplateEdit','emailTemplateStore','emailTemplateUpdate','emailTemplateDestroy','smtpConfigure']);
+                        $emailTemplateActive = in_array($current, ['emailTemplate','emailTemplateCreate','emailTemplateEdit','emailTemplateStore','emailTemplateUpdate','emailTemplateDestroy','smtpConfigure','emailLogs']);
                         ?>
                     <li class="{{ $cabanaActive ? 'active' : '' }}" >
                         <a>
@@ -339,6 +339,15 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             }}">
                                 <a href="{{ route('smtpConfigure') }}">
                                     <span class="nav-text">{{ __('SMTP Congfiguration') }}</span>
+                                </a>
+                            </li>
+                            <li class="{{ 
+                                $current === 'emailTemplate' 
+                                || Str::startsWith($current, 'emailTemplate') 
+                                ? 'active' : '' 
+                            }}">
+                                <a href="{{ route('emailsLogs') }}">
+                                    <span class="nav-text">{{ __('Email Logs') }}</span>
                                 </a>
                             </li>
                         </ul>
