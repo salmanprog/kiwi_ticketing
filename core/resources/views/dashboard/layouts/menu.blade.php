@@ -107,7 +107,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <span class="nav-icon">
                             <i class="material-icons">&#xe241;</i>
                             </span>
-                            <span class="nav-text">{{ __('Birthday Managment') }}</span>
+                            <span class="nav-text">{{ __('Package Managment') }}</span>
                         </a>
 
                         <ul class="nav-sub">
@@ -117,7 +117,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 ? 'active' : '' 
                             }}">
                                 <a href="{{ route('birthdaypackages') }}">
-                                    <span class="nav-text">{{ __('Birthday Packages') }}</span>
+                                    <span class="nav-text">{{ __('All Packages') }}</span>
                                 </a>
                             </li>
 
@@ -127,7 +127,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 ? 'active' : '' 
                             }}">
                                 <a href="{{ route('birthdayaddon') }}">
-                                    <span class="nav-text">{{ __('Birthday Addon') }}</span>
+                                    <span class="nav-text">{{ __('Packages Addon') }}</span>
                                 </a>
                             </li>
 
@@ -137,7 +137,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 ? 'active' : '' 
                             }}">
                                 <a href="{{ route('birthdayorders') }}">
-                                    <span class="nav-text">{{ __('Birthday Orders') }}</span>
+                                    <span class="nav-text">{{ __('Packages Orders') }}</span>
                                 </a>
                             </li>
                         </ul>
@@ -201,7 +201,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <span class="nav-icon">
                             <i class="material-icons">&#xe8d9;</i>
                             </span>
-                            <span class="nav-text">{{ __('SeasonPass Managment') }}</span>
+                            <span class="nav-text">{{ __('LandingPage Managment') }}</span>
                         </a>
                         <ul class="nav-sub">
                             <li class="{{ 
@@ -210,7 +210,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 ? 'active' : '' 
                             }}">
                                 <a href="{{ route('seasonpass') }}">
-                                    <span class="nav-text">{{ __('Season Pass Sale') }}</span>
+                                    <span class="nav-text">{{ __('LandingPage Sale') }}</span>
                                 </a>
                             </li>
                             <li class="{{ 
@@ -219,7 +219,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 ? 'active' : '' 
                             }}">
                                 <a href="{{ route('seasonpassaddon') }}">
-                                    <span class="nav-text">{{ __('Season Pass Products') }}</span>
+                                    <span class="nav-text">{{ __('LandingPage Products') }}</span>
                                 </a>
                             </li>
                             <li class="{{ 
@@ -228,7 +228,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 ? 'active' : '' 
                             }}">
                                 <a href="{{ route('seasonpassorders') }}">
-                                    <span class="nav-text">{{ __('Season Pass Orders') }}</span>
+                                    <span class="nav-text">{{ __('LandingPage Orders') }}</span>
                                 </a>
                             </li>
                         </ul>

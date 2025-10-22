@@ -65,6 +65,7 @@
                         <th>{{ __('Customer Email') }}</th>
                         <th>{{ __('Total') }}</th>
                         <th>{{ __('Status') }}</th>
+                        <th>{{ __('Order Status') }}</th>
                         <th>{{ __('OrderDate') }}</th>
                         <th>{{ __('CreatedAt') }}</th>
                         <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
@@ -121,9 +122,9 @@
                                     {{ __('backend.of') }} <strong>{{ $paginated->total() }}</strong> {{ __('backend.records') }}
                                 </small>
                             </div> -->
-                            <div class="col-sm-6 text-right text-center-xs">
+                            <!-- <div class="col-sm-6 text-right text-center-xs">
                                 {!! $paginated->links() !!}
-                            </div>
+                            </div> -->
                        
                     </div>
                 </footer>
@@ -162,6 +163,7 @@
                         data.package_id = $('#find_package').val();
                         data.from_date = $('#from_date').val();
                         data.to_date = $('#to_date').val();
+                        data.order_status = $('#find_order_status').val();
                         data.route = 'transactionordersdetail';
                     }
                 },
@@ -175,6 +177,7 @@
                     { data: 'customerEmail' },
                     { data: 'orderTotal' },
                     { data: 'status' },
+                    { data: 'order_status' },
                     { data: 'orderDate' },
                     { data: 'createdAt' },
                     { data: 'options', orderable: false, searchable: false }

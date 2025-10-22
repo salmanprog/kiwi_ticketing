@@ -169,6 +169,7 @@ class OrderController extends Controller
                 $q->where('firstName', 'like', "%{$search}%")
                 ->orWhere('lastName', 'like', "%{$search}%")
                 ->orWhere('slug', 'like', "%{$search}%")
+                ->orWhere('order_status', 'like', "%{$search}%")
                 ->orWhereRaw("DATE_FORMAT(orderDate, '%Y-%m-%d') LIKE ?", ["%{$search}%"])
                 ->orWhereRaw("DATE_FORMAT(created_at, '%Y-%m-%d') LIKE ?", ["%{$search}%"]);
             });
@@ -192,6 +193,10 @@ class OrderController extends Controller
             $from = $request->from_date . ' 00:00:00';
             $to = $request->to_date . ' 23:59:59';
             $query->whereBetween('created_at', [$from, $to]);
+        }
+
+        if ($request->filled('order_status')) {
+            $query->where('order_status', $request->order_status);
         }
 
         
@@ -230,6 +235,7 @@ class OrderController extends Controller
                 'orderDate' => date('Y-m-d', strtotime($row->orderDate)),
                 'createdAt' => date('Y-m-d', strtotime($row->created_at)),
                 'status' => '<div class="text-center"><i class="fa ' . ($row->transactionId ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
+                'order_status' => $row?->order_status ? ucwords(str_replace('_', ' ', $row->order_status)) : 'N/A',
                 'options' => '<div class="dropdown">
                                 <button type="button" class="btn btn-sm light dk dropdown-toggle" data-toggle="dropdown">
                                     <i class="material-icons">&#xe5d4;</i> Options

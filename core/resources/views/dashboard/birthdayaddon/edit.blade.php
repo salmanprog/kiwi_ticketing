@@ -1,6 +1,6 @@
 
 @extends('dashboard.layouts.master')
-@section('title', __('Birthday Addon'))
+@section('title', __('Package Addon'))
 @push("after-styles")
     <link href="{{ asset("assets/dashboard/js/iconpicker/fontawesome-iconpicker.min.css") }}" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -11,10 +11,10 @@
 <div class="padding">
     <div class="box m-b-0">
         <div class="box-header dker">
-            <h3><i class="material-icons">&#xe3c9;</i> {{ __('Birthday Addon') }}</h3>
+            <h3><i class="material-icons">&#xe3c9;</i> {{ __('Package Addon') }}</h3>
             <small>
-                <a href="{{ route('adminHome') }}">{{ __('Birthday') }}</a> /
-                <a>{{ __('Addons') }}</a>
+                <a href="{{ route('adminHome') }}">{{ __('Package') }}</a> /
+                <a>{{ __('package-addon') }}</a>
             </small>
         </div>
         <div class="box-tool">
@@ -33,7 +33,7 @@
             <li class="nav-item inline">
                 <a class="nav-link {{ $tab_1 }}" data-toggle="tab" data-target="#tab_details">
                     <span class="text-md"><i class="material-icons">
-                            &#xe31e;</i> {{ __('Birthday Addon') }}</span>
+                            &#xe31e;</i> {{ __('Package Addon') }}</span>
                 </a>
             </li>
         </ul>

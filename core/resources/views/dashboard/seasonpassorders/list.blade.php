@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Season Pass Orders'))
+@section('title', __('LandingPage Orders'))
 @section('content')
 <style>
     div.dataTables_wrapper div.dataTables_processing {
@@ -16,10 +16,10 @@
 <div class="padding">
 <div class="box">
     <div class="box-header dker">
-        <h3>{{ __('Season Pass') }}</h3>
+        <h3>{{ __('Orders') }}</h3>
         <small>
             <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-            <a href="">{{ __('Season Pass') }}</a>
+            <a href="">{{ __('landing-page') }}</a>
         </small>
     </div>
     <div class="box-tool box-tool-lg">
@@ -122,9 +122,9 @@
                                     {{ __('backend.of') }} <strong>{{ $paginated->total() }}</strong> {{ __('backend.records') }}
                                 </small>
                             </div> -->
-                            <div class="col-sm-6 text-right text-center-xs">
+                            <!-- <div class="col-sm-6 text-right text-center-xs">
                                 {!! $paginated->links() !!}
-                            </div>
+                            </div> -->
                        
                     </div>
                 </footer>

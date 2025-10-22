@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Birthday Package'))
+@section('title', __('Package'))
 @push("after-styles")
     <link href="{{ asset("assets/dashboard/js/iconpicker/fontawesome-iconpicker.min.css") }}" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -13,7 +13,7 @@
                 <h3><i class="material-icons">&#xe02e;</i> {{ __('Edit Package') }}</h3>
                 <small>
                     <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-                    <a>{{__('New Package')}}</a> 
+                    <a>{{__('edit-package')}}</a> 
                 </small>
             </div>
             <div class="box-tool">

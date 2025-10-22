@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Season Pass Product'))
+@section('title', __('LandingPage Product'))
 @push("after-styles")
     <link href="{{ asset("assets/dashboard/js/iconpicker/fontawesome-iconpicker.min.css") }}" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -13,7 +13,7 @@
                 <h3><i class="material-icons">&#xe02e;</i> {{ __('New Product') }}</h3>
                 <small>
                     <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-                    <a>{{__('season-pass-product')}}</a> 
+                    <a>{{__('landing-page-product')}}</a> 
                 </small>
             </div>
             <div class="box-tool">
@@ -29,11 +29,11 @@
                 {{Form::open(['route'=>['seasonpassaddonStore'],'method'=>'POST', 'files' => true])}}
                     <div class="form-group row">
                         <label for="section_id" class="col-sm-2 form-control-label">
-                            {!! __('Season Pass') !!}
+                            {!! __('Sale Pass') !!}
                         </label>
                         <div class="col-sm-10">
                            <select name="season_passes_slug" class="form-control">
-                                <option value="">- - {!!  __('Select Season Pass') !!} - -</option>
+                                <option value="">- - {!!  __('Select Sale Pass') !!} - -</option>
                                 @foreach($getSeasonPass as $pass)
                                     <option value="{{ $pass['slug'] }}">{{ $pass['title'] }}</option>
                                 @endforeach
@@ -42,11 +42,11 @@
                     </div>
                     <div class="form-group row">
                         <label for="section_id" class="col-sm-2 form-control-label">
-                            {!! __('Season Pass Product') !!}
+                            {!! __('Sale Product') !!}
                         </label>
                         <div class="col-sm-10">
                            <select name="ticketSlug" id="ticketSlug" class="form-control">
-                                <option value="">- - {!!  __('Select Season Pass Product') !!} - -</option>
+                                <option value="">- - {!!  __('Select Sale Product') !!} - -</option>
                                 @foreach($addon_arr as $addon)
                                     <option value="{{ $addon['ticketSlug'] }}" data-price="{{ $addon['price'] ?? '0' }}">{{ $addon['ticketType'] }}</option>
                                 @endforeach

@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Season Pass Product'))
+@section('title', __('LandingPage Product'))
 @push("after-styles")
     <link href="{{ asset("assets/dashboard/js/iconpicker/fontawesome-iconpicker.min.css") }}" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -29,7 +29,7 @@
                 {{Form::open(['route'=>['seasonpassaddonUpdate',"id"=>$seasonpassAddon->slug],'method'=>'POST', 'files' => true])}}
                     <div class="form-group row">
                         <label for="section_id" class="col-sm-2 form-control-label">
-                            {!! __('Season Pass') !!}
+                            {!! __('Sale Pass') !!}
                         </label>
                         <div class="col-sm-10">
                              {!! Form::text('season_passes_slug',old('title', $getSeasonPass->title ?? ''), array('placeholder' => '','class' => 'form-control','id'=>'season_passes_slug','required'=>'','readonly' => 'readonly')) !!}
@@ -37,7 +37,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="section_id" class="col-sm-2 form-control-label">
-                            {!! __('Season Pass Product') !!}
+                            {!! __('Sale Product') !!}
                         </label>
                         <div class="col-sm-10">
                             {!! Form::text('ticketSlug',old('title', $seasonpassAddon->ticketSlug ?? ''), array('placeholder' => '','class' => 'form-control','id'=>'ticketSlug','required'=>'','readonly' => 'readonly')) !!}

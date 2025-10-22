@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('SeasonPass Order Detail'))
+@section('title', __('LandingPage Detail'))
 @push("after-styles")
     <link href="{{ asset("assets/dashboard/js/iconpicker/fontawesome-iconpicker.min.css") }}" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -13,8 +13,8 @@
             <h3><i class="material-icons"></i> {{ __('Order Detail') }}</h3>
             <small>
                 <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-                <a>SeasonPass</a> /
-                <a>Order Details</a>
+                <a>landing-page</a> /
+                <a>order-details</a>
             </small>
         </div>
         <div class="box-tool">
