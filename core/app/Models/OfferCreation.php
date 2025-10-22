@@ -18,6 +18,8 @@ class OfferCreation extends Model
         'offerType',
         'title',
         'description',
+        'from_date',
+        'to_date',
         'image_url',
         'status'
     ];

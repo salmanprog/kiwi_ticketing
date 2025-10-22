@@ -155,6 +155,8 @@ class OfferCreationPackagesController extends Controller
         $offerCreationPackage->title  = $request->title;
         $offerCreationPackage->offerType  = $request->offerType;
         $offerCreationPackage->description = $request->description;
+        $offerCreationPackage->from_date = $request->from_date;
+        $offerCreationPackage->to_date = $request->to_date;
         $offerCreationPackage->status = $request->status;
         $offerCreationPackage->save();
         
@@ -238,6 +240,8 @@ class OfferCreationPackagesController extends Controller
 
             $offerCreationPackages->title  = $request->title;
             $offerCreationPackages->description = $request->description;
+            $offerCreationPackages->from_date = $request->from_date;
+            $offerCreationPackages->to_date = $request->to_date;
             $offerCreationPackages->status = $request->status;
             $offerCreationPackages->save();
 
