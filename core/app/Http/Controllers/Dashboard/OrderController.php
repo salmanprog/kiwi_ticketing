@@ -118,7 +118,7 @@ class OrderController extends Controller
         $result = [];
         foreach ($data as $row) {
             $result[] = [
-                'id' => $row->slug,
+                'id' => strtoupper($row->slug),
                 'check' => '<label class="ui-check m-a-0">
                                 <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
                                 <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">

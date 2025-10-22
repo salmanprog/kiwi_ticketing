@@ -23,12 +23,14 @@ class OrdersHelper
             $requestPayload = json_decode($requestPayload, true);
         }
         $get_customer_obj = User::where('id',$requestPayload['user_id'])->first();
+        $get_package = OrdersHelper::getPackagesByType($requestPayload['type'],$requestPayload['package_id']);
+        $package_initials = substr($get_package->name, 0, 2);
         $prefixMap = [
-            'birthday' => 'bd'.date("y").'_',
-            'cabana' => 'ca'.date("y").'_',
-            'general_ticket' => 'ge'.date("y").'_',
-            'season_pass' => 'sp'.date("y").'_',
-            'offer_creation' => 'of'.date("y").'_'
+            'birthday' => 'bd-'.$package_initials.date("y").'_',
+            'cabana' => 'ca-'.$package_initials.date("y").'_',
+            'general_ticket' => 'ge-'.$package_initials.date("y").'_',
+            'season_pass' => 'sp-'.$package_initials.date("y").'_',
+            'offer_creation' => 'of-'.$package_initials.date("y").'_'
         ];
 
         $prefix = $prefixMap[$requestPayload['type']] ?? 'any_';
@@ -126,12 +128,15 @@ class OrdersHelper
         if (is_string($requestPayload)) {
             $requestPayload = json_decode($requestPayload, true);
         }
+        $get_order = Order::where('slug',$requestPayload['previousOrderNumber'])->first();
+        $get_package = OrdersHelper::getPackagesByType($get_order->type,$get_order->package_id);
+        $package_initials = substr($get_package->name, 0, 2);
         $prefixMap = [
-            'birthday' => 'bd'.date("y").'_',
-            'cabana' => 'ca'.date("y").'_',
-            'general_ticket' => 'ge'.date("y").'_',
-            'season_pass' => 'sp'.date("y").'_',
-            'offer_creation' => 'of'.date("y").'_'
+            'birthday' => 'bd-'.$package_initials.date("y").'_',
+            'cabana' => 'ca-'.$package_initials.date("y").'_',
+            'general_ticket' => 'ge-'.$package_initials.date("y").'_',
+            'season_pass' => 'sp='.$package_initials.date("y").'_',
+            'offer_creation' => 'of='.$package_initials.date("y").'_'
         ];
 
         $prefix = $prefixMap[$requestPayload['type']] ?? 'any_';
@@ -198,6 +203,31 @@ class OrdersHelper
         $orderTypes = ['birthday', 'cabana', 'general_ticket', 'season_pass', 'offer_creation'];
 
         return in_array($type, $orderTypes) ? $type : null;
+    }
+
+    public static function getPackagesByType($type,$package_id)
+    {
+        switch ($type) {
+            case 'cabana':
+                $packages = \App\Models\CabanaPackages::select('id', 'ticketType as name')->where('id',$package_id)->first();
+                break;
+            case 'birthday':
+                $packages = \App\Models\BirthdayPackages::select('id', 'title as name')->where('id',$package_id)->first();
+                break;
+            case 'general_ticket':
+                $packages = \App\Models\GeneralTicketPackages::select('id', 'title as name')->where('id',$package_id)->first();
+                break;
+            case 'season_pass':
+                $packages = \App\Models\SeasonPass::select('id', 'title as name')->where('id',$package_id)->first();
+                break;
+            case 'offer_creation':
+                $packages = \App\Models\OfferCreation::select('id', 'title as name')->where('id',$package_id)->first();
+                break;
+            default:
+                $packages = [];
+        }
+
+        return $packages;
     }
 }
 
