@@ -44,7 +44,7 @@
                         'route' => 'offercreationpackagesorders'
                     ],
                     'season_pass' => [
-                        'title' => 'LandingPage',
+                        'title' => 'SeasonPass',
                         'route' => 'seasonpassorders'
                     ]
                 ];

@@ -258,6 +258,109 @@ class OrderController extends Controller
         ]);
     }
 
+    public function getUpdateTransaction(Request $request)
+    {
+        // General for all pages
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'desc')->get();
+        $query = Order::with(['customer','purchases','apply_coupon','coupon','transaction','birthday','cabana','general_ticket','season_pass','offer_creation'])->whereIn('order_status',['update_order','upgrade_order'])->where('auth_code',$authCode);
+        if ($request->has('search') && $request->search['value'] != '') {
+            $search = $request->search['value'];
+
+            $query->where(function ($q) use ($search) {
+                $q->where('firstName', 'like', "%{$search}%")
+                ->orWhere('lastName', 'like', "%{$search}%")
+                ->orWhere('slug', 'like', "%{$search}%")
+                ->orWhere('order_status', 'like', "%{$search}%")
+                ->orWhereRaw("DATE_FORMAT(orderDate, '%Y-%m-%d') LIKE ?", ["%{$search}%"])
+                ->orWhereRaw("DATE_FORMAT(created_at, '%Y-%m-%d') LIKE ?", ["%{$search}%"]);
+            });
+        }
+
+        if ($request->filled('find_q')) {
+            $q = $request->find_q;
+            $query->where(function ($q2) use ($q) {
+                $q2->where('firstName', 'like', "%{$q}%")
+                ->orWhere('lastName', 'like', "%{$q}%")
+                ->orWhere('email', 'like', "%{$q}%")
+                ->orWhere('slug', 'like', "%{$q}%");
+            });
+        }
+
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+
+        if ($request->from_date && $request->to_date) {
+            $from = $request->from_date . ' 00:00:00';
+            $to = $request->to_date . ' 23:59:59';
+            $query->whereBetween('created_at', [$from, $to]);
+        }
+
+        if ($request->filled('order_status')) {
+            $query->where('order_status', $request->order_status);
+        }
+
+        
+        $totalData = $query->count();
+        $totalFiltered = $totalData;
+        $start = $request->input('start', 0);
+        $limit = $request->input('length', 10);
+        $draw = $request->input('draw', 1);
+        $orderColumn = $request->input('order.0.column');
+        $orderDir = $request->input('order.0.dir', 'desc');
+        $columns = $request->input('columns');
+        if ($columns && isset($columns[$orderColumn])) {
+            $orderField = $columns[$orderColumn]['data'];
+            $query->orderBy($orderField, $orderDir);
+        } else {
+            $query->orderBy('id', 'desc');
+        }
+        $totalEarnings = $query->sum('orderTotal');
+        $data = $query->offset($start)->limit($limit)->get();
+
+        $result = [];
+        foreach ($data as $row) {
+            
+            $order_type =  OrdersHelper::order_types($row->type);
+            $result[] = [
+                'id' => $row->slug,
+                'check' => '<label class="ui-check m-a-0">
+                                <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
+                                <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
+                            </label>',
+                'package' => '<a class="dropdown-item" href="' . route($request->route, $row->slug) . '">'.$row->$order_type->ticketType.'</a>',
+                'type' => ucwords(str_replace('_', ' ',$row->type)),
+                'customerName' => $row->firstName.' '.$row->lastName,
+                'customerEmail' => $row->email,
+                'orderTotal' => '$' . number_format($row->orderTotal, 2),
+                'orderDate' => date('Y-m-d', strtotime($row->orderDate)),
+                'createdAt' => date('Y-m-d', strtotime($row->created_at)),
+                'status' => '<div class="text-center"><i class="fa ' . ($row->transactionId ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
+                'order_status' => $row?->order_status ? ucwords(str_replace('_', ' ', $row->order_status)) : 'N/A',
+                'options' => '<div class="dropdown">
+                                <button type="button" class="btn btn-sm light dk dropdown-toggle" data-toggle="dropdown">
+                                    <i class="material-icons">&#xe5d4;</i> Options
+                                </button>
+                                <div class="dropdown-menu pull-right">
+                                    <a class="dropdown-item" href="' . route($request->route, $row->slug) . '">
+                                        <i class="material-icons"></i> Preview
+                                    </a>
+                                </div>
+                            </div>',
+            ];
+        }
+
+        return response()->json([
+            'draw' => intval($draw),
+            'recordsTotal' => $totalData,
+            'recordsFiltered' => $totalFiltered,
+            'data' => $result,
+            'totalEarnings' => '$' . number_format($totalEarnings, 2),
+        ]);
+    }
+
     public function print(Request $request)
     {
         $q = $request->input('find_q');
@@ -652,6 +755,28 @@ class OrderController extends Controller
             ['path' => url()->current(), 'query' => request()->query()]
         );
         return view("dashboard.transaction.list", compact("paginated", "GeneralWebmasterSections"));
+    }
+
+    public function getUpdateUpgradeTransactions()
+    {
+        // General for all pages
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'desc')->get();
+        $get_offer_orders = Order::with(['customer','purchases','transaction'])->whereIn('order_status', ['update_order','upgrade_order'])->where('auth_code',$authCode)->get();
+        
+         // Paginate
+        $perPage = 10;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $collection = collect($get_offer_orders);
+        $paginated = new LengthAwarePaginator(
+            $collection->forPage($currentPage, $perPage),
+            $collection->count(),
+            $perPage,
+            $currentPage,
+            ['path' => url()->current(), 'query' => request()->query()]
+        );
+        return view("dashboard.transaction.updatelist", compact("paginated", "GeneralWebmasterSections"));
     }
 
     public function getByOrderSlug($slug)

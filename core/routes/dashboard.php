@@ -379,6 +379,8 @@ Route::get('/offer-addon/destroy/{id}', [OfferAddonController::class, 'destroy']
 // Transactions
 Route::get('/transaction', [OrderController::class, 'getTransactions'])->name('transactionorders');
 Route::post('/transactions', [OrderController::class, 'getTransaction'])->name('transaction.data');
+Route::get('update/transaction', [OrderController::class, 'getUpdateUpgradeTransactions'])->name('updatetransactionorders');
+Route::post('update/transactions', [OrderController::class, 'getUpdateTransaction'])->name('updatetransaction.data');
 Route::get('/transactions-detail/{slug}', [OrderController::class, 'getByOrderSlug'])->name('transactionordersdetail');
 Route::get('/transactions/orders/print', [OrderController::class, 'print'])->name('transactionPrint');
 Route::get('/transactions/orders/cabanaprint', [OrderController::class, 'printCabana'])->name('cabanaPrint');

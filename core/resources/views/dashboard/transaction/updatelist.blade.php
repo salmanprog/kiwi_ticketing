@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('SeasonPass Orders'))
+@section('title', __('Update & Upgrade Transaction'))
 @section('content')
 <style>
     div.dataTables_wrapper div.dataTables_processing {
@@ -16,10 +16,10 @@
 <div class="padding">
 <div class="box">
     <div class="box-header dker">
-        <h3>{{ __('Orders') }}</h3>
+        <h3>{{ __('Update & Upgrade Transaction') }}</h3>
         <small>
             <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-            <a href="">{{ __('season-pass-page') }}</a>
+            <a href="">{{ __('update-upgrade-transaction') }}</a>
         </small>
     </div>
     <div class="box-tool box-tool-lg">
@@ -46,12 +46,11 @@
         </ul>
     </div>
     <div class="box-tool box-tool-lg">
-                
-            </div>
-            <div>
-        <div class="table-responsive">
-            @include("dashboard.seasonpassorders.search")
-                <table class="table table-bordered m-a-0" id="seasonpass_orders">
+    </div>
+        <div>
+            <div class="table-responsive">
+                @include("dashboard.transaction.search")
+                <table class="table table-bordered m-a-0" id="update_transactions">
                     <thead class="dker">
                     <tr>
                         <th class="width20 dker">
@@ -61,11 +60,12 @@
                         </th>
                         <th>{{ __('ID') }}</th>
                         <th>{{ __('Package') }}</th>
+                        <th>{{ __('Order Type') }}</th>
                         <th>{{ __('Customer Name') }}</th>
                         <th>{{ __('Customer Email') }}</th>
                         <th>{{ __('Total') }}</th>
-                        <th>{{ __('Order Status') }}</th>
                         <th>{{ __('Status') }}</th>
+                        <th>{{ __('Order Status') }}</th>
                         <th>{{ __('OrderDate') }}</th>
                         <th>{{ __('CreatedAt') }}</th>
                         <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
@@ -134,7 +134,7 @@
 
 @endsection
 @push("after-scripts")
-<script src="{{ asset('assets/dashboard/js/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/datatables/datatables.min.js') }}"></script>
     <script type="text/javascript">
         $("#checkAll").click(function () {
             $('input:checkbox').not(this).prop('checked', this.checked);
@@ -149,12 +149,12 @@
             }
         });
         $(document).ready(function () {
-            var dataTable = $("#seasonpass_orders").DataTable({
+            var dataTable = $("#update_transactions").DataTable({
                 processing: true,
                 serverSide: true,
                 searching: true,
                 ajax: {
-                    url: "{{ route('seasonpassorders.data') }}",
+                    url: "{{ route('updatetransaction.data') }}",
                     type: "POST",
                     data: function (data) {
                         data._token = "{{ csrf_token() }}";
@@ -163,8 +163,8 @@
                         data.package_id = $('#find_package').val();
                         data.from_date = $('#from_date').val();
                         data.to_date = $('#to_date').val();
-                        data.type = 'season_pass';
-                        data.route = 'seasonpassordersdetail';
+                        data.order_status = $('#find_order_status').val();
+                        data.route = 'transactionordersdetail';
                     }
                 },
                dom: '<"row"<"col-sm-6"f><"col-sm-6"l>>rtip',
@@ -172,11 +172,12 @@
                     { data: 'check', orderable: false, searchable: false },
                     { data: 'id' },
                     { data: 'package' },
+                    { data: 'type' },
                     { data: 'customerName' },
                     { data: 'customerEmail' },
                     { data: 'orderTotal' },
-                    { data: 'order_status' },
                     { data: 'status' },
+                    { data: 'order_status' },
                     { data: 'orderDate' },
                     { data: 'createdAt' },
                     { data: 'options', orderable: false, searchable: false }
@@ -200,7 +201,7 @@
             });
             $.fn.dataTable.ext.errMode = 'none';
 
-            $('#seasonpass_orders').on('xhr.dt', function (e, settings, json, xhr) {
+           $('#update_transactions').on('xhr.dt', function (e, settings, json, xhr) {
                 if (json.totalEarnings !== undefined) {
                     $('#total-earnings').text(json.totalEarnings);
                 }
@@ -218,14 +219,14 @@
             $("#filter_btn").on('click', function () {
                 $("#filter_div").slideToggle();
             });
-           
         });
+
         function print_as(stat) {
             $("#search_submit_stat").val(stat);
-            $("#filter_form").attr('action', '{{ route("seasonPassPrint") }}');
+            $("#filter_form").attr('action', '{{ route("transactionPrint") }}');
             $("#filter_form").attr('target', '_blank');
             $("#filter_form").submit();
-            $("#filter_form").attr('action', '{{ route("seasonPassPrint") }}');
+            $("#filter_form").attr('action', '{{ route("transactionPrint") }}');
             $("#search_submit_stat").val("");
             $("#filter_form").attr('target', '');
         }

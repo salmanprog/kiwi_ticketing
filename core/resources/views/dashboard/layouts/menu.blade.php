@@ -53,7 +53,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         $seasonpassActive = in_array($current, ['seasonpass', 'seasonpassEdit', 'seasonpassCreate', 'seasonpassStore','seasonpassDestroy','seasonpassaddon','seasonpassaddonEdit','seasonpassaddonStore','seasonpassaddonCreate','seasonpassaddonUpdate','seasonpassorders','seasonpassordersdetail']);
                         $couponActive = in_array($current, ['coupon', 'couponCreate', 'couponEdit', 'couponStore','couponUpdate','couponDestroy']);
                         $offerCreationActive = in_array($current, ['offercreationpackages','offercreationpackagesEdit','offercreationpackagesCreate','offercreationpackagesStore','offercreationpackagesUpdate','offercreationpackagesDestroy','offeraddon','offeraddonCreate','offeraddonStore','offeraddonEdit','offeraddonUpdate','offeraddonDestroy','offercreationpackagesorders','offercreationpackagesordersdetail']);
-                        $transactionActive = in_array($current, ['transactionorders']);
+                        $transactionActive = in_array($current, ['transactionorders','updatetransactionorders']);
                         $emailTemplateActive = in_array($current, ['emailTemplate','emailTemplateCreate','emailTemplateEdit','emailTemplateStore','emailTemplateUpdate','emailTemplateDestroy','smtpConfigure','emailLogs']);
                         ?>
                     <li class="{{ $cabanaActive ? 'active' : '' }}" >
@@ -201,7 +201,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <span class="nav-icon">
                             <i class="material-icons">&#xe8d9;</i>
                             </span>
-                            <span class="nav-text">{{ __('LandingPage Managment') }}</span>
+                            <span class="nav-text">{{ __('SeasonPass Managment') }}</span>
                         </a>
                         <ul class="nav-sub">
                             <li class="{{ 
@@ -210,7 +210,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 ? 'active' : '' 
                             }}">
                                 <a href="{{ route('seasonpass') }}">
-                                    <span class="nav-text">{{ __('LandingPage Sale') }}</span>
+                                    <span class="nav-text">{{ __('SeasonPass Sale') }}</span>
                                 </a>
                             </li>
                             <li class="{{ 
@@ -219,7 +219,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 ? 'active' : '' 
                             }}">
                                 <a href="{{ route('seasonpassaddon') }}">
-                                    <span class="nav-text">{{ __('LandingPage Products') }}</span>
+                                    <span class="nav-text">{{ __('SeasonPass Products') }}</span>
                                 </a>
                             </li>
                             <li class="{{ 
@@ -228,7 +228,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 ? 'active' : '' 
                             }}">
                                 <a href="{{ route('seasonpassorders') }}">
-                                    <span class="nav-text">{{ __('LandingPage Orders') }}</span>
+                                    <span class="nav-text">{{ __('SeasonPass Orders') }}</span>
                                 </a>
                             </li>
                         </ul>
@@ -302,12 +302,35 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         <small class="text-muted">{{ __('Transactions') }}</small>
                     </li>
                     <li class="{{ $transactionActive ? 'active' : '' }}" >
-                        <a href="{{ route('transactionorders') }}">
-                        <span class="nav-icon">
-                        <i class="material-icons"></i>
-                        </span>
-                            <span class="nav-text">{{ __('All Transactions') }}</span>
+                        <a>
+                            <span class="nav-caret">
+                            <i class="fa fa-caret-down"></i>
+                            </span>
+                            <span class="nav-icon">
+                            <i class="material-icons"></i>
+                            </span>
+                            <span class="nav-text">{{ __('Transactions') }}</span>
                         </a>
+                        <ul class="nav-sub">
+                            <li class="{{ 
+                                $current === 'transactionorders' 
+                                || Str::startsWith($current, 'transactionorders') 
+                                ? 'active' : '' 
+                            }}">
+                                <a href="{{ route('transactionorders') }}">
+                                    <span class="nav-text">{{ __('All Transactions') }}</span>
+                                </a>
+                            </li>
+                            <li class="{{ 
+                                $current === 'updatetransactionorders' 
+                                || Str::startsWith($current, 'updatetransactionorders') 
+                                ? 'active' : '' 
+                            }}">
+                                <a href="{{ route('updatetransactionorders') }}">
+                                    <span class="nav-text">{{ __('Update & Upgrade Transactions') }}</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="nav-header hidden-folded m-t-sm">
                         <small class="text-muted">{{ __('Email Setting') }}</small>
