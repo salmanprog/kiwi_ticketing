@@ -124,7 +124,7 @@ class OrderController extends Controller
                                 <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
                             </label>',
                 'package' => $row->$order_type
-                                ? '<a class="dropdown-item" href="' . route($request->route, $row->slug) . '">' . $row->$order_type->ticketType . '</a>'
+                                ? '<a class="dropdown-item" href="' . route($request->route, $row->slug) . '">' . $row->$order_type->title . '</a>'
                                 : '<span class="dropdown-item text-muted">N/A</span>',
                 'customerName' => $row->firstName.' '.$row->lastName,
                 'customerEmail' => $row->email,

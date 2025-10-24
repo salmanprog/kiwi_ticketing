@@ -228,6 +228,7 @@ class CabanaPackagesController extends Controller
                 }
                 $cabanaPackage = new CabanaPackages;
                 $cabanaPackage->auth_code  = Helper::GeneralSiteSettings('auth_code_en');
+                $cabanaPackage->title  = $tickets_arr[0]['ticketType'];
                 $cabanaPackage->venueId = $tickets_arr[0]['venueId'];
                 $cabanaPackage->ticketType  = $tickets_arr[0]['ticketType'];
                 $cabanaPackage->ticketSlug = $tickets_arr[0]['ticketSlug'];

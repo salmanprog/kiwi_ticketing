@@ -92,6 +92,8 @@ class OrderController extends BaseAPIController
                         $ordertickets->visualId = $ticket['visualId'];
                         $ordertickets->childVisualId = $ticket['childVisualId'];
                         $ordertickets->parentVisualId = $ticket['parentVisualId'];
+                        $ordertickets->ticketType = $ticket['ticketType'];
+                        $ordertickets->ticketSlug = $ticket['ticketSlug'];
                         $ordertickets->description = $ticket['description'];
                         $ordertickets->seat = $ticket['seat'];
                         $ordertickets->price = $ticket['price'];
@@ -247,6 +249,8 @@ class OrderController extends BaseAPIController
                             $ordertickets->visualId = $ticket['visualId'];
                             $ordertickets->childVisualId = $ticket['childVisualId'] ?? null;
                             $ordertickets->parentVisualId = $ticket['parentVisualId'] ?? null;
+                            $ordertickets->ticketType = $ticket['ticketType'] ?? null;
+                            $ordertickets->ticketSlug = $ticket['ticketSlug'] ?? null;
                             $ordertickets->description = $ticket['description'] ?? null;
                             $ordertickets->seat = $ticket['seat'] ?? null;
                             $ordertickets->price = $ticket['price'];
@@ -276,6 +280,8 @@ class OrderController extends BaseAPIController
                             $orderNewtickets->visualId = $ticket['visualId'];
                             $orderNewtickets->childVisualId = $ticket['childVisualId'] ?? null;
                             $orderNewtickets->parentVisualId = $ticket['parentVisualId'] ?? null;
+                            $orderNewtickets->ticketType = $ticket['ticketType'] ?? null;
+                            $orderNewtickets->ticketSlug = $ticket['ticketSlug'] ?? null;
                             $orderNewtickets->description = $ticket['description'] ?? null;
                             $orderNewtickets->seat = $ticket['seat'] ?? null;
                             $orderNewtickets->price = $ticket['price'];

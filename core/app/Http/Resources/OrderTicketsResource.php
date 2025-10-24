@@ -13,6 +13,7 @@ class OrderTicketsResource extends JsonResource
             'parentVisualId' => $this->parentVisualId,
             'childVisualId' => $this->childVisualId,
             'ticketType' => $this->ticketType,
+            'ticketSlug' => $this->ticketSlug,
             'description' => $this->description,
             'seat' => $this->seat,
             'price' => $this->price,

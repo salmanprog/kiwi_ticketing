@@ -16,6 +16,7 @@ class CabanaPackages extends Model
         'slug',
         'auth_code',
         'venueId',
+        'title',
         'ticketType',
         'ticketSlug',
         'ticketCategory',

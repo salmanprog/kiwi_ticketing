@@ -73,6 +73,7 @@ class OfferCreationController extends BaseAPIController
                     ->where('auth_code', $authCode)
                     ->where('offerSlug', $slug)
                     ->whereIn('ticketSlug', $ticketSlugs)
+                    ->where('status', '1')
                     ->get()
                     ->keyBy('ticketSlug');
                 
