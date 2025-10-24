@@ -227,7 +227,7 @@ class OrderController extends Controller
                                 <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
                                 <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
                             </label>',
-                'package' => '<a class="dropdown-item" href="' . route($request->route, $row->slug) . '">'.$row->$order_type->ticketType.'</a>',
+                'package' => '<a class="dropdown-item" href="' . route($request->route, $row->slug) . '">'.$row->$order_type->title.'</a>',
                 'type' => ucwords(str_replace('_', ' ',$row->type)),
                 'customerName' => $row->firstName.' '.$row->lastName,
                 'customerEmail' => $row->email,
@@ -330,7 +330,7 @@ class OrderController extends Controller
                                 <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
                                 <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
                             </label>',
-                'package' => '<a class="dropdown-item" href="' . route($request->route, $row->slug) . '">'.$row->$order_type->ticketType.'</a>',
+                'package' => '<a class="dropdown-item" href="' . route($request->route, $row->slug) . '">'.$row->$order_type->title.'</a>',
                 'type' => ucwords(str_replace('_', ' ',$row->type)),
                 'customerName' => $row->firstName.' '.$row->lastName,
                 'customerEmail' => $row->email,
