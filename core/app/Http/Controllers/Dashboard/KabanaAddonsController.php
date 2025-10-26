@@ -41,7 +41,7 @@ class KabanaAddonsController extends Controller
     {
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
-        $query = CabanaPackages::with(['media_slider'])->where('auth_code', $authCode);
+        $query = CabanaPackages::with(['media_slider','createdBy','updatedBy'])->where('auth_code', $authCode);
         if ($request->has('search') && $request->search['value'] != '') {
             $search = $request->search['value'];
             $query->where(function ($q) use ($search) {
@@ -73,6 +73,7 @@ class KabanaAddonsController extends Controller
         $result = [];
         foreach ($data as $row) {
             $external = $externalMap[$row->ticketSlug] ?? null;
+            $get_cabanaaddon = CabanaAddon::with(['createdBy','updatedBy'])->where('cabanaSlug', $row->ticketSlug)->first();
             $result[] = [
                 'id' => $row->id,
                 'venueId' => $row->venueId,
@@ -87,6 +88,9 @@ class KabanaAddonsController extends Controller
                 
                 'featured' => '<div class="text-center"><i class="fa ' . ($row->is_featured ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
                 'status' => '<div class="text-center"><i class="fa ' . ($row->status ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
+                'created_by' => $row->createdBy->name,
+                'updated_by' => $get_cabanaaddon?->updatedBy?->name ?? 'N/A',
+                'updated_at' => $row->updated_at->format('Y-m-d'),
                 'options' => '<div class="dropdown">
                                 <button type="button" class="btn btn-sm light dk dropdown-toggle" data-toggle="dropdown">
                                     <i class="material-icons">&#xe5d4;</i> Options
@@ -147,6 +151,8 @@ class KabanaAddonsController extends Controller
                         $cabanaAddon->ticketSlug = $matchedTicket['ticketSlug'];
                         $cabanaAddon->ticketCategory = $matchedTicket['ticketCategory'];
                         $cabanaAddon->price = $matchedTicket['price'];
+                        $cabanaAddon->updated_by = Auth::user()->id;
+                        $cabanaAddon->updated_at = now();
                         $cabanaAddon->save();
                     }
                 }

@@ -6,25 +6,29 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class SeasonPass extends Model
+class ApiLog extends Model
 {
     use HasFactory;
 
-    protected $table = 'season_passes';
+    protected $table = 'api_logs';
 
     protected $fillable = [
         'slug',
-        'auth_code',
-        'title',
-        'description',
-        'created_by',
-        'updated_by',
+        'type',
+        'order_number',
+        'endpoint',
+        'request',
+        'response',
+        'message',
         'status',
     ];
 
     protected $hidden = [];
 
-    protected $casts = [];
+    protected $casts = [
+        'request' => 'array',
+        'response' => 'array',
+    ];
 
     protected $appends = [];
     
@@ -36,26 +40,10 @@ class SeasonPass extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->slug = $model->generateUniqueSlug($model->title);
+            $model->slug = $model->generateUniqueSlug($model->type);
         });
     }
-
-    public function media_slider()
-    {
-        return $this->hasMany(Media::class, 'module_id')->where('module','season_pass');
-    }
-    public function products()
-    {
-        return $this->hasMany(SeasonPassAddon::class, 'season_passes_slug','slug')->where('status','1');
-    }
-    public function createdBy()
-    {
-        return $this->belongsTo(User::class, 'created_by','id');
-    }
-    public function updatedBy()
-    {
-        return $this->belongsTo(User::class, 'updated_by','id');
-    }
+    
     /**
      * Generate a unique slug for the birthday package.
      */

@@ -39,7 +39,7 @@ class BirthdayAddonsController extends Controller
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
         try {
             
-            $getFeaturedCabana = BirthdayPackages::with(['cabanas','addons','media_slider','media_cover'])->where('status', '=', '1')->orderby('id', 'asc')->get();
+            $getFeaturedCabana = BirthdayPackages::with(['cabanas','addons','media_slider','media_cover','createdBy','updatedBy'])->where('status', '=', '1')->orderby('id', 'asc')->get();
             // Paginate
             $perPage = 10;
             $currentPage = LengthAwarePaginator::resolveCurrentPage();
@@ -63,7 +63,7 @@ class BirthdayAddonsController extends Controller
     public function getData(Request $request)
     {
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
-        $query = BirthdayPackages::with(['cabanas','addons','media_slider','media_cover'])->where('status', '=', '1');
+        $query = BirthdayPackages::with(['cabanas','addons','media_slider','media_cover','createdBy','updatedBy'])->where('status', '=', '1');
         if ($request->has('search') && $request->search['value'] != '') {
             $search = $request->search['value'];
             $query->where(function ($q) use ($search) {
@@ -90,6 +90,7 @@ class BirthdayAddonsController extends Controller
 
         $result = [];
         foreach ($data as $row) {
+            $get_bday_addon = BirthdayAddon::with(['createdBy','updatedBy'])->where('birthday_slug', $row->slug)->first();
             $result[] = [
                 'id' => $row->id,
                 'check' => '<label class="ui-check m-a-0">
@@ -101,6 +102,9 @@ class BirthdayAddonsController extends Controller
                 'price' => '$' . number_format($row->price, 2),
                 'addons' => '<div class="text-center">'.count($row->addons).'</div>',
                 'status' => '<div class="text-center"><i class="fa ' . ($row->status ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
+                'created_by' => $row->createdBy->name,
+                'updated_by' => $get_bday_addon->updatedBy->name ?? 'N/A',
+                'updated_at' => $row->updated_at->format('Y-m-d'),
                 'options' => '<div class="dropdown">
                                 <button type="button" class="btn btn-sm light dk dropdown-toggle" data-toggle="dropdown">
                                     <i class="material-icons">&#xe5d4;</i> Options
@@ -161,6 +165,8 @@ class BirthdayAddonsController extends Controller
                         $cabanaAddon->ticketSlug = $matchedTicket['ticketSlug'];
                         $cabanaAddon->ticketCategory = $matchedTicket['ticketCategory'];
                         $cabanaAddon->price = $matchedTicket['price'];
+                        $cabanaAddon->updated_by = Auth::user()->id;
+                        $cabanaAddon->updated_at = now();
                         $cabanaAddon->save();
                     }
                 }

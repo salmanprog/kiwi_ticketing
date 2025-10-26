@@ -29,6 +29,10 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
         <div flex class="hide-scroll">
             <nav class="scroll nav-active-primary">
 
+                @php
+                    $userRole = Auth::user()->permissionsGroup->name ?? '';
+                    $dataSections = explode(',', Auth::user()->permissionsGroup->data_sections);
+                @endphp
                 <ul class="nav" ui-nav>
                     <li class="nav-header hidden-folded">
                         <small class="text-muted">{{ __('backend.main') }}</small>
@@ -40,6 +44,9 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                   </span>
                             <span class="nav-text">{{ __('backend.dashboard') }}</span>
                         </a>
+                    </li>
+                    <li class="nav-header hidden-folded m-t-sm">
+                        <small class="text-muted">{{ __('backend.siteData') }}</small>
                     </li>
                     <li class="nav-header hidden-folded m-t-sm">
                         <small class="text-muted">{{ __('Tickets Managment') }}</small>
@@ -56,7 +63,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         $transactionActive = in_array($current, ['transactionorders','updatetransactionorders']);
                         $emailTemplateActive = in_array($current, ['emailTemplate','emailTemplateCreate','emailTemplateEdit','emailTemplateStore','emailTemplateUpdate','emailTemplateDestroy','smtpConfigure','emailLogs']);
                         ?>
-                    <li class="{{ $cabanaActive ? 'active' : '' }}" >
+                    <!-- <li class="{{ $cabanaActive ? 'active' : '' }}" >
                         <a>
                             <span class="nav-caret">
                             <i class="fa fa-caret-down"></i>
@@ -98,7 +105,36 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 </a>
                             </li>
                         </ul>
-                    </li>
+                    </li> -->
+                    
+
+                    @if($userRole == 'Webmaster' || in_array(16, $dataSections))
+                        <li class="{{ $cabanaActive ? 'active' : '' }}">
+                            <a>
+                                <span class="nav-caret"><i class="fa fa-caret-down"></i></span>
+                                <span class="nav-icon"><i class="material-icons">&#xe156;</i></span>
+                                <span class="nav-text">{{ __('Cabana Management') }}</span>
+                            </a>
+                            <ul class="nav-sub">
+                                <li class="{{ $current === 'cabana' ? 'active' : '' }}">
+                                    <a href="{{ route('cabana') }}">
+                                        <span class="nav-text">{{ __('All Cabana') }}</span>
+                                    </a>
+                                </li>
+                                <li class="{{ $current === 'kabanaddons' ? 'active' : '' }}">
+                                    <a href="{{ route('kabanaddons') }}">
+                                        <span class="nav-text">{{ __('Cabana Addon') }}</span>
+                                    </a>
+                                </li>
+                                <li class="{{ $current === 'kabanaorders' ? 'active' : '' }}">
+                                    <a href="{{ route('kabanaorders') }}">
+                                        <span class="nav-text">{{ __('Cabana Orders') }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+                    @if($userRole == 'Webmaster' || in_array(17, $dataSections))
                     <li class="{{ $birthdayActive ? 'active' : '' }}" >
                         <a>
                             <span class="nav-caret">
@@ -142,6 +178,8 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             </li>
                         </ul>
                     </li>
+                    @endif
+                    @if($userRole == 'Webmaster' || in_array(18, $dataSections))
                     <li class="{{ $generalTicketActive ? 'active' : '' }}" >
                         <a>
                             <span class="nav-caret">
@@ -193,6 +231,8 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             </li>
                         </ul>
                     </li>
+                    @endif
+                    @if($userRole == 'Webmaster' || in_array(19, $dataSections))
                     <li class="{{ $seasonpassActive ? 'active' : '' }}" >
                         <a>
                             <span class="nav-caret">
@@ -233,6 +273,8 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             </li>
                         </ul>
                     </li>
+                    @endif
+                    @if($userRole == 'Webmaster' || in_array(20, $dataSections))
                     <li class="{{ $offerCreationActive ? 'active' : '' }}" >
                         <a>
                             <span class="nav-caret">
@@ -273,6 +315,8 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             </li>
                         </ul>
                     </li>
+                    @endif
+                    @if($userRole == 'Webmaster' || in_array(21, $dataSections))
                     <li class="nav-header hidden-folded m-t-sm">
                         <small class="text-muted">{{ __('Coupon Managment') }}</small>
                     </li>
@@ -298,6 +342,8 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             </li>
                         </ul>
                     </li>
+                    @endif
+                    @if($userRole == 'Webmaster' || in_array(22, $dataSections))
                     <li class="nav-header hidden-folded m-t-sm">
                         <small class="text-muted">{{ __('Transactions') }}</small>
                     </li>
@@ -332,6 +378,8 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             </li>
                         </ul>
                     </li>
+                    @endif
+                    @if($userRole == 'Webmaster')
                     <li class="nav-header hidden-folded m-t-sm">
                         <small class="text-muted">{{ __('Email Setting') }}</small>
                     </li>
@@ -375,6 +423,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             </li>
                         </ul>
                     </li>
+                    @endif
                     @if(@Auth::user()->permissionsGroup->roles_status || (Helper::GeneralWebmasterSettings("settings_status") && @Auth::user()->permissionsGroup->settings_status) || @Auth::user()->permissionsGroup->webmaster_status)
                         <li class="nav-header hidden-folded m-t-sm">
                             <small class="text-muted">{{ __('backend.settings') }}</small>
@@ -386,14 +435,14 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         $currentFolder = "users"; // Put folder name here
                         $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
                         ?>
-                        <!-- <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
+                        <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} >
                             <a href="{{ route('users') }}">
 <span class="nav-icon">
 <i class="material-icons">&#xe7fb;</i>
 </span>
                                 <span class="nav-text">{{ __('backend.usersPermissions') }}</span>
                             </a>
-                        </li> -->
+                        </li>
 
                     @endif
                     @if(Helper::GeneralWebmasterSettings("settings_status"))

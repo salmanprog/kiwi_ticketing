@@ -20,6 +20,8 @@ class BirthdayPackages extends Model
         'banner_image',
         'price',
         'map_link',
+        'created_by',
+        'updated_by',
         'status'
     ];
 
@@ -63,6 +65,14 @@ class BirthdayPackages extends Model
     public function addons()
     {
         return $this->hasMany(BirthdayAddon::class, 'birthday_slug', 'slug');
+    }
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by','id');
+    }
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by','id');
     }
     /**
      * Generate a unique slug for the birthday package.

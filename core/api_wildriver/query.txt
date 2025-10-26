@@ -1,17 +1,18 @@
-CREATE TABLE `smartend_email_logs` (
+CREATE TABLE `smartend_api_logs` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `order_number` varchar(191) DEFAULT NULL,
-  `identifier` varchar(191) DEFAULT NULL,
-  `subject` text DEFAULT NULL,
-  `content` longtext NOT NULL,
+  `endpoint` varchar(191) DEFAULT NULL,
+  `request` longtext NOT NULL,
+  `response` longtext NOT NULL,
+  `message` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-ALTER TABLE `smartend_email_logs`
+ALTER TABLE `smartend_api_logs`
   ADD PRIMARY KEY (`id`)
 
-ALTER TABLE `smartend_email_logs`
+ALTER TABLE `smartend_api_logs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1
  
 ALTER TABLE `smartend_email_logs` ADD `slug` VARCHAR(255) NOT NULL AFTER `id`;

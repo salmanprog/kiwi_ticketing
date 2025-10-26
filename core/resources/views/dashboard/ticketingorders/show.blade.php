@@ -87,7 +87,7 @@
                         </div>
                         <div class="col-md-3 p-3 text-center">
                             <strong>Status</strong><br>
-                            Paid
+                            {{ ucwords(str_replace('_', ' ', $get_cabana_orders->order_status)) }}
                         </div>
                     </div>
 

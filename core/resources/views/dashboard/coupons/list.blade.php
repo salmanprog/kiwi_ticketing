@@ -46,6 +46,9 @@
                             <th>{{ __('Type') }}</th>
                             <th>{{ __('Coupon Code') }}</th>
                             <th>{{ __('Status') }}</th>
+                            <th>{{ __('createdBy') }}</th>
+                            <th>{{ __('updatedBy') }}</th>
+                            <th>{{ __('updatedAt') }}</th>
                             <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
                         </tr>
                         </thead>
@@ -101,9 +104,9 @@
                                     {{ __('backend.of') }} <strong>{{ $paginated->total() }}</strong> {{ __('backend.records') }}
                                 </small>
                             </div> -->
-                            <div class="col-sm-6 text-right text-center-xs">
+                            <!-- <div class="col-sm-6 text-right text-center-xs">
                                 {!! $paginated->links() !!}
-                            </div>
+                            </div> -->
                        
                     </div>
                 </footer>
@@ -149,6 +152,9 @@
                     { data: 'package_type' },
                     { data: 'coupon_code' },
                     { data: 'status', orderable: false, searchable: false },
+                    { data: 'created_by', orderable: false, searchable: false },
+                    { data: 'updated_by', orderable: false, searchable: false },
+                    { data: 'updated_at', orderable: false, searchable: false },
                     { data: 'options', orderable: false, searchable: false }
                 ],
                 order: [[1, 'desc']],

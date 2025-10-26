@@ -35,7 +35,7 @@ class GeneralTicketAddonController extends Controller
     {
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-        $general_ticket_addon = GeneralTicketAddon::with(['media_slider'])->where('auth_code',$authCode)->orderby('id', 'desc')->get();
+        $general_ticket_addon = GeneralTicketAddon::with(['media_slider','createdBy','updatedBy'])->where('auth_code',$authCode)->orderby('id', 'desc')->get();
         $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $collection = collect($general_ticket_addon);
@@ -53,7 +53,7 @@ class GeneralTicketAddonController extends Controller
     {
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
-        $query = GeneralTicketAddon::with(['media_slider'])->where('auth_code',$authCode);
+        $query = GeneralTicketAddon::with(['media_slider','createdBy','updatedBy'])->where('auth_code',$authCode);
         if ($request->has('search') && $request->search['value'] != '') {
             $search = $request->search['value'];
             $query->where(function ($q) use ($search) {
@@ -99,6 +99,9 @@ class GeneralTicketAddonController extends Controller
                 'new_price' => '$' . number_format($row->new_price, 2),
                 'is_primary' => '<div class="text-center"><i class="fa ' . ($row->is_primary ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
                  'status' => '<div class="text-center"><i class="fa ' . ($row->status ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
+                'created_by' => $row->createdBy->name,
+                'updated_by' => $row->updatedBy->name ?? 'N/A',
+                'updated_at' => $row->updated_at->format('Y-m-d'),
                 'options' => '<div class="dropdown">
                                 <button type="button" class="btn btn-sm light dk dropdown-toggle" data-toggle="dropdown">
                                     <i class="material-icons">&#xe5d4;</i> Options
@@ -246,6 +249,7 @@ class GeneralTicketAddonController extends Controller
                 $ticketAddon->new_price = $request->new_price;
                 $ticketAddon->is_new_price_show = $request->is_new_price_show;
                 $ticketAddon->description = $request->description;
+                $ticketAddon->created_by = Auth::user()->id;
                 $ticketAddon->status = $request->status;
                 $ticketAddon->save();
                 
@@ -357,7 +361,9 @@ class GeneralTicketAddonController extends Controller
             $ticketAddon->new_price = $request->new_price;
             $ticketAddon->is_new_price_show = $request->is_new_price_show;
             $ticketAddon->description = $request->description;
+            $ticketAddon->updated_by = Auth::user()->id;
             $ticketAddon->status = $request->status;
+            $ticketAddon->updated_at = now();
             $ticketAddon->save();
             if(count($uploadedFileNames) > 0){
                 for($i=0;$i<count($uploadedFileNames);$i++){

@@ -42,8 +42,8 @@ class UsersController extends Controller
                 'asc')->paginate(config('smartend.backend_pagination'));
             $Permissions = Permissions::where('created_by', '=', Auth::user()->id)->orderby('id', 'asc')->get();
         } else {
-            $Users = User::orderby('id', 'asc')->paginate(config('smartend.backend_pagination'));
-            $Permissions = Permissions::orderby('id', 'asc')->get();
+            $Users = User::orderby('id', 'asc')->where('id','<>',1)->whereNotIn('permissions_id',[1,3])->paginate(config('smartend.backend_pagination'));
+            $Permissions = Permissions::whereNotIn('id',[1,3])->orderby('id', 'asc')->get();
         }
         return view("dashboard.users.list", compact("Users", "Permissions", "GeneralWebmasterSections"));
     }
@@ -58,7 +58,7 @@ class UsersController extends Controller
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
         // General END
-        $Permissions = Permissions::orderby('id', 'asc')->get();
+        $Permissions = Permissions::whereNotIn('id',[1,3])->orderby('id', 'asc')->get();
 
         return view("dashboard.users.create", compact("GeneralWebmasterSections", "Permissions"));
     }
@@ -125,7 +125,7 @@ class UsersController extends Controller
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
         // General END
-        $Permissions = Permissions::orderby('id', 'asc')->get();
+        $Permissions = Permissions::whereNotIn('id',[1,3])->orderby('id', 'asc')->get();
 
         if (@Auth::user()->permissionsGroup->view_status) {
             $Users = User::where('created_by', '=', Auth::user()->id)->orwhere('id', '=', Auth::user()->id)->find($id);
@@ -412,24 +412,47 @@ class UsersController extends Controller
         }
     }
 
+    // public function permissions_destroy($id)
+    // {
+    //     // Check Permissions
+    //     if (!@Auth::user()->permissionsGroup->roles_status) {
+    //         return redirect()->route('NoPermission');
+    //     }
+    //     if (@Auth::user()->permissionsGroup->view_status) {
+    //         $Permissions = Permissions::where('created_by', '=', Auth::user()->id)->find($id);
+    //     } else {
+    //         $Permissions = Permissions::find($id);
+    //     }
+    //     if (!empty($Permissions) && $id != 1 && $id != Auth::user()->permissions_id) {
+    //         User::where('permissions_id', $id)->delete();
+    //         $Permissions->delete();
+    //         return redirect()->action('Dashboard\UsersController@index')->with('doneMessage', __('backend.deleteDone'));
+    //     } else {
+    //         return redirect()->action('Dashboard\UsersController@index');
+    //     }
+    // }
     public function permissions_destroy($id)
     {
-        // Check Permissions
         if (!@Auth::user()->permissionsGroup->roles_status) {
             return redirect()->route('NoPermission');
         }
         if (@Auth::user()->permissionsGroup->view_status) {
-            $Permissions = Permissions::where('created_by', '=', Auth::user()->id)->find($id);
+            $Permissions = Permissions::where('created_by', Auth::user()->id)->find($id);
         } else {
             $Permissions = Permissions::find($id);
         }
-        if (!empty($Permissions) && $id != 1 && $id != Auth::user()->permissions_id) {
-            User::where('permissions_id', $id)->delete();
-            $Permissions->delete();
-            return redirect()->action('Dashboard\UsersController@index')->with('doneMessage', __('backend.deleteDone'));
-        } else {
-            return redirect()->action('Dashboard\UsersController@index');
+        if (empty($Permissions) || $id == 1 || $id == Auth::user()->permissions_id) {
+            return redirect()->action('Dashboard\UsersController@index')
+                ->with('errorMessage', __('backend.permissionProtected'));
         }
+        $userCount = User::where('permissions_id', $id)->count();
+        if ($userCount > 0) {
+            return redirect()->action('Dashboard\UsersController@index')
+                ->with('errorMessage', __('This permission is assigned to one or more users and cannot be deleted.'));
+        }
+        $Permissions->delete();
+        return redirect()->action('Dashboard\UsersController@index')
+            ->with('doneMessage', __('backend.deleteDone'));
     }
 
     public function update_custom_home(Request $request, $id)

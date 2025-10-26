@@ -34,7 +34,7 @@ class GeneralTicketPackagesController extends Controller
         // General for all pages
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-        $general_ticket_packages = GeneralTicketPackages::with(['media_slider'])->where('auth_code',$authCode)->get();
+        $general_ticket_packages = GeneralTicketPackages::with(['media_slider','createdBy','updatedBy'])->where('auth_code',$authCode)->get();
          // Paginate
         $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
@@ -52,7 +52,7 @@ class GeneralTicketPackagesController extends Controller
     public function getData(Request $request)
     {
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
-        $query = GeneralTicketPackages::with(['media_slider','general_addons'])->where('auth_code',$authCode);
+        $query = GeneralTicketPackages::with(['media_slider','general_addons','createdBy','updatedBy'])->where('auth_code',$authCode);
         if ($request->has('search') && $request->search['value'] != '') {
             $search = $request->search['value'];
             $query->where(function ($q) use ($search) {
@@ -89,6 +89,9 @@ class GeneralTicketPackagesController extends Controller
                 'slug' => $row->slug,
                 'addons' => '<div class="text-center">'.count($row->general_addons).'</div>',
                 'status' => '<div class="text-center"><i class="fa ' . ($row->status ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
+                'created_by' => $row->createdBy->name,
+                'updated_by' => $row->updatedBy->name ?? 'N/A',
+                'updated_at' => $row->updated_at->format('Y-m-d'),
                 'options' => '<div class="dropdown">
                                 <button type="button" class="btn btn-sm light dk dropdown-toggle" data-toggle="dropdown">
                                     <i class="material-icons">&#xe5d4;</i> Options
@@ -153,6 +156,7 @@ class GeneralTicketPackagesController extends Controller
         $generalTicketPackage->auth_code  = $authCode;
         $generalTicketPackage->title  = $request->title;
         $generalTicketPackage->description = $request->description;
+        $generalTicketPackage->created_by = Auth::user()->id;
         $generalTicketPackage->status = $request->status;
         $generalTicketPackage->save();
         
@@ -236,7 +240,9 @@ class GeneralTicketPackagesController extends Controller
 
             $generalTicketPackages->title  = $request->title;
             $generalTicketPackages->description = $request->description;
+            $generalTicketPackages->updated_by = Auth::user()->id;
             $generalTicketPackages->status = $request->status;
+            $generalTicketPackages->updated_at = now();
             $generalTicketPackages->save();
 
             if(count($uploadedFileNames) > 0){

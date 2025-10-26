@@ -24,6 +24,8 @@ class Coupons extends Model
         'discount_type',
         'coupon_total_limit',
         'coupon_use_limit',
+        'created_by',
+        'updated_by',
         'status'
     ];
 
@@ -44,6 +46,16 @@ class Coupons extends Model
             $model->slug = $model->generateUniqueSlug($model->title);
         });
     }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by','id');
+    }
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by','id');
+    }
+
     /**
      * Generate a unique slug for the Coupons.
      */

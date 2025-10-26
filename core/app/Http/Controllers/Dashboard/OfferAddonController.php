@@ -35,7 +35,7 @@ class OfferAddonController extends Controller
     {
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-        $offer_addon = OfferAddon::with(['media_slider'])->where('auth_code',$authCode)->orderby('id', 'desc')->get();
+        $offer_addon = OfferAddon::with(['media_slider','createdBy','updatedBy'])->where('auth_code',$authCode)->orderby('id', 'desc')->get();
         $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $collection = collect($offer_addon);
@@ -53,7 +53,7 @@ class OfferAddonController extends Controller
     {
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
-        $query = OfferAddon::with(['media_slider'])->where('auth_code',$authCode);
+        $query = OfferAddon::with(['media_slider','createdBy','updatedBy'])->where('auth_code',$authCode);
         if ($request->has('search') && $request->search['value'] != '') {
             $search = $request->search['value'];
             $query->where(function ($q) use ($search) {
@@ -96,6 +96,9 @@ class OfferAddonController extends Controller
                 'ticketCategory' => $row->ticketCategory,
                 'price' => '$' . number_format($external['price'], 2),
                 'is_featured' => '<div class="text-center"><i class="fa ' . ($row->is_featured ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
+                'created_by' => $row->createdBy->name,
+                'updated_by' => $row->updatedBy->name ?? 'N/A',
+                'updated_at' => $row->updated_at->format('Y-m-d'),
                 'options' => '<div class="dropdown">
                                 <button type="button" class="btn btn-sm light dk dropdown-toggle" data-toggle="dropdown">
                                     <i class="material-icons">&#xe5d4;</i> Options
@@ -237,6 +240,7 @@ class OfferAddonController extends Controller
                 $offerAddon->ticketCategory = $tickets_arr['ticket_addon'][0]['ticketCategory'];
                 $offerAddon->price = $tickets_arr['ticket_addon'][0]['price'];
                 $offerAddon->description = $request->description;
+                $offerAddon->created_by = Auth::user()->id;
                 $offerAddon->status = $request->status;
                 $offerAddon->save();
                 
@@ -339,7 +343,9 @@ class OfferAddonController extends Controller
             }
             $offerAddon->is_featured = $request->is_featured;
             $offerAddon->description = $request->description;
+            $offerAddon->updated_by = Auth::user()->id;
             $offerAddon->status = $request->status;
+            $offerAddon->updated_at = now();
             $offerAddon->save();
             if(count($uploadedFileNames) > 0){
                 for($i=0;$i<count($uploadedFileNames);$i++){

@@ -33,7 +33,7 @@
                 </div>
 
 
-                <div class="form-group row">
+                <div class="form-group row" style="display:none;">
                     <label for="permissions1"
                            class="col-sm-2 form-control-label">{!!  __('backend.dataManagements') !!}</label>
                     <div class="col-sm-10">
@@ -91,7 +91,7 @@
                 </div>
 
 
-                <div class="form-group row">
+                <div class="form-group row" style="display:none;">
                     <label for="analytics_status"
                            class="col-sm-2 form-control-label">{!!  __('backend.activeApps') !!}
                     </label>
@@ -229,7 +229,7 @@
                 </div>
 
 
-                <div class="form-group row">
+                <div class="form-group row" style="display:none;">
                     <label for="add_status1"
                            class="col-sm-2 form-control-label">{!!  __('backend.topicsStatus') !!}</label>
                     <div class="col-sm-10">
@@ -248,7 +248,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row" style="display:none;">
                     <label for="add_status1"
                            class="col-sm-2 form-control-label">{!!  __('backend.addPermission') !!}</label>
                     <div class="col-sm-10">
@@ -267,7 +267,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row" style="display:none;">
                     <label for="edit_status1"
                            class="col-sm-2 form-control-label">{!!  __('backend.editPermission') !!}</label>
                     <div class="col-sm-10">
@@ -286,7 +286,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row" style="display:none;">
                     <label for="delete_status1"
                            class="col-sm-2 form-control-label">{!!  __('backend.deletePermission') !!}</label>
                     <div class="col-sm-10">

@@ -34,7 +34,7 @@ class OfferCreationPackagesController extends Controller
         // General for all pages
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-        $offer_creation_packages = OfferCreation::with(['media_slider'])->where('auth_code',$authCode)->get();
+        $offer_creation_packages = OfferCreation::with(['media_slider','createdBy','updatedBy'])->where('auth_code',$authCode)->get();
          // Paginate
         $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
@@ -52,7 +52,7 @@ class OfferCreationPackagesController extends Controller
     public function getData(Request $request)
     {
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
-        $query = OfferCreation::with(['media_slider'])->where('auth_code',$authCode);
+        $query = OfferCreation::with(['media_slider','createdBy','updatedBy'])->where('auth_code',$authCode);
         if ($request->has('search') && $request->search['value'] != '') {
             $search = $request->search['value'];
             $query->where(function ($q) use ($search) {
@@ -89,6 +89,9 @@ class OfferCreationPackagesController extends Controller
                 'offerType' => '<a class="dropdown-item" href="' . route('offercreationpackagesEdit', $row->slug) . '">'.($row->offerType == 'any_day') ? 'Any Day' : 'Specific Date'.'</a>',
                 'slug' => $row->slug,
                 'status' => '<div class="text-center"><i class="fa ' . ($row->status ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
+                'created_by' => $row->createdBy->name,
+                'updated_by' => $row->updatedBy->name ?? 'N/A',
+                'updated_at' => $row->updated_at->format('Y-m-d'),
                 'options' => '<div class="dropdown">
                                 <button type="button" class="btn btn-sm light dk dropdown-toggle" data-toggle="dropdown">
                                     <i class="material-icons">&#xe5d4;</i> Options
@@ -157,6 +160,7 @@ class OfferCreationPackagesController extends Controller
         $offerCreationPackage->description = $request->description;
         $offerCreationPackage->from_date = $request->from_date;
         $offerCreationPackage->to_date = $request->to_date;
+        $offerCreationPackage->created_by = Auth::user()->id;
         $offerCreationPackage->status = $request->status;
         $offerCreationPackage->save();
         
@@ -242,7 +246,9 @@ class OfferCreationPackagesController extends Controller
             $offerCreationPackages->description = $request->description;
             $offerCreationPackages->from_date = $request->from_date;
             $offerCreationPackages->to_date = $request->to_date;
+            $offerCreationPackages->updated_by = Auth::user()->id;
             $offerCreationPackages->status = $request->status;
+            $offerCreationPackages->updated_at = now();
             $offerCreationPackages->save();
 
             if(count($uploadedFileNames) > 0){

@@ -22,7 +22,9 @@ class GeneralTicketAddon extends Model
         'ticketCategory',
         'price',
         'new_price',
-        'is_new_price_show'
+        'is_new_price_show',
+        'created_by',
+        'updated_by',
     ];
 
     /**
@@ -62,6 +64,15 @@ class GeneralTicketAddon extends Model
         return $this->hasMany(Media::class, 'module_id')->where('module','general_ticket_addon');
     }
 
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by','id');
+    }
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by','id');
+    }
+    
     public function generateUniqueSlug($title)
     {
         $slug = Str::slug($title);

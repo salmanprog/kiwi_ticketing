@@ -16,7 +16,9 @@ class CabanaAddon extends Model
         'ticketType',
         'ticketSlug',
         'ticketCategory',
-        'price'
+        'price',
+        'created_by',
+        'updated_by',
     ];
 
     /**
@@ -42,5 +44,12 @@ class CabanaAddon extends Model
     protected $appends = [
     ];
 
-  
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by','id');
+    }
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by','id');
+    }
 }

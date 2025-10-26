@@ -33,7 +33,7 @@ class CouponController extends Controller
     {
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-        $coupons = Coupons::get();
+        $coupons = Coupons::with(['createdBy','updatedBy'])->get();
          // Paginate
         $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
@@ -51,7 +51,7 @@ class CouponController extends Controller
     public function getData(Request $request)
     {
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
-        $query = Coupons::query();
+        $query = Coupons::with(['createdBy','updatedBy']);
         if ($request->has('search') && $request->search['value'] != '') {
             $search = $request->search['value'];
             $query->where(function ($q) use ($search) {
@@ -95,6 +95,9 @@ class CouponController extends Controller
                 // 'coupon_total_limit' => $row->coupon_total_limit,
                 // 'coupon_use_limit' => $row->coupon_use_limit,
                 'status' => '<div class="text-center"><i class="fa ' . ($row->status ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
+                'created_by' => $row->createdBy->name,
+                'updated_by' => $row->updatedBy->name ?? 'N/A',
+                'updated_at' => $row->updated_at->format('Y-m-d'),
                 'options' => '<div class="dropdown">
                                 <button type="button" class="btn btn-sm light dk dropdown-toggle" data-toggle="dropdown">
                                     <i class="material-icons">&#xe5d4;</i> Options
@@ -147,6 +150,7 @@ class CouponController extends Controller
         $couponsPackages->discount_type = $request->discount_type;
         $couponsPackages->coupon_total_limit = $request->coupon_total_limit;
         $couponsPackages->coupon_use_limit = '0';
+        $couponsPackages->created_by = Auth::user()->id;
         $couponsPackages->status = $request->status;
         $couponsPackages->save();
         
@@ -187,7 +191,9 @@ class CouponController extends Controller
             $couponsPackages->discount  = $request->discount;
             $couponsPackages->discount_type = $request->discount_type;
             $couponsPackages->coupon_total_limit = $request->coupon_total_limit;
+            $couponsPackages->updated_by = Auth::user()->id;
             $couponsPackages->status = $request->status;
+            $couponsPackages->updated_at = now();
             $couponsPackages->save();
             
             return redirect()->action('Dashboard\CouponController@edit', [$id])->with('doneMessage',
