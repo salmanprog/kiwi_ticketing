@@ -35,6 +35,7 @@ use App\Http\Controllers\Dashboard\OfferCreationPackagesController;
 use App\Http\Controllers\Dashboard\OfferAddonController;
 use App\Http\Controllers\Dashboard\EmailController;
 use App\Http\Controllers\Dashboard\EmailLogsController;
+use App\Http\Controllers\Dashboard\LogController;
 use Illuminate\Support\Facades\Route;
 
 // Admin Home
@@ -412,6 +413,13 @@ Route::get('/email-logs', [EmailLogsController::class, 'index'])->name('emailsLo
 Route::post('/email-logs/data', [EmailLogsController::class, 'getData'])->name('emailsLogs.data');
 Route::get('/email/{id}/view', [EmailLogsController::class, 'show'])->name('emailShow');
 Route::get('/resend/{id}/email', [EmailLogsController::class, 'resendmail'])->name('emailResend');
+// Orders Logs Templates
+Route::get('/orders-logs', [LogController::class, 'index'])->name('ordersLogs');
+Route::get('/orders-failed-logs', [LogController::class, 'orderFailedLogs'])->name('ordersfailedLogs');
+Route::get('/payment-logs', [LogController::class, 'paymentLogs'])->name('paymentLogs');
+Route::get('/payment-failed-logs', [LogController::class, 'paymentFailedLogs'])->name('paymentfailLogs');
+Route::post('/orders-logs/data', [LogController::class, 'getData'])->name('ordersLogs.data');
+Route::get('/orders-logs/{id}/view', [LogController::class, 'show'])->name('ordersLogsShow');
 // Menus
 Route::post('/menus/store/parent', [MenusController::class, 'storeMenu'])->name('parentMenusStore');
 Route::get('/menus/parent/{id}/edit', [MenusController::class, 'editMenu'])->name('parentMenusEdit');

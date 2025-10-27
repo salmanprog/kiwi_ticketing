@@ -61,6 +61,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         $couponActive = in_array($current, ['coupon', 'couponCreate', 'couponEdit', 'couponStore','couponUpdate','couponDestroy']);
                         $offerCreationActive = in_array($current, ['offercreationpackages','offercreationpackagesEdit','offercreationpackagesCreate','offercreationpackagesStore','offercreationpackagesUpdate','offercreationpackagesDestroy','offeraddon','offeraddonCreate','offeraddonStore','offeraddonEdit','offeraddonUpdate','offeraddonDestroy','offercreationpackagesorders','offercreationpackagesordersdetail']);
                         $transactionActive = in_array($current, ['transactionorders','updatetransactionorders']);
+                        $LogsActive = in_array($current, ['ordersLogs','ordersfailedLogs','paymentLogs','paymentfailLogs','ordersLogsShow']);
                         $emailTemplateActive = in_array($current, ['emailTemplate','emailTemplateCreate','emailTemplateEdit','emailTemplateStore','emailTemplateUpdate','emailTemplateDestroy','smtpConfigure','emailLogs']);
                         ?>
                     <!-- <li class="{{ $cabanaActive ? 'active' : '' }}" >
@@ -374,6 +375,69 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             }}">
                                 <a href="{{ route('updatetransactionorders') }}">
                                     <span class="nav-text">{{ __('Update & Upgrade Transactions') }}</span>
+                                </a>
+                            </li>
+                            <li class="{{ 
+                                $current === 'ordersLogs' 
+                                || Str::startsWith($current, 'ordersLogs') 
+                                ? 'active' : '' 
+                            }}">
+                                <a href="{{ route('ordersLogs') }}">
+                                    <span class="nav-text">{{ __('Order Logs') }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    @endif
+                    @if($userRole == 'Webmaster' || in_array(22, $dataSections))
+                    <li class="nav-header hidden-folded m-t-sm">
+                        <small class="text-muted">{{ __('Logs') }}</small>
+                    </li>
+                    <li class="{{ $LogsActive ? 'active' : '' }}" >
+                        <a>
+                            <span class="nav-caret">
+                            <i class="fa fa-caret-down"></i>
+                            </span>
+                            <span class="nav-icon">
+                            <i class="material-icons">&#xe02f;</i>
+                            </span>
+                            <span class="nav-text">{{ __('All Logs') }}</span>
+                        </a>
+                        <ul class="nav-sub">
+                            <li class="{{ 
+                                $current === 'ordersLogs' 
+                                || Str::startsWith($current, 'ordersLogs') 
+                                ? 'active' : '' 
+                            }}">
+                                <a href="{{ route('ordersLogs') }}">
+                                    <span class="nav-text">{{ __('Order Success Logs') }}</span>
+                                </a>
+                            </li>
+                            <li class="{{ 
+                                $current === 'ordersfailedLogs' 
+                                || Str::startsWith($current, 'ordersfailedLogs') 
+                                ? 'active' : '' 
+                            }}">
+                                <a href="{{ route('ordersfailedLogs') }}">
+                                    <span class="nav-text">{{ __('Order Failed Logs') }}</span>
+                                </a>
+                            </li>
+                            <li class="{{ 
+                                $current === 'paymentLogs' 
+                                || Str::startsWith($current, 'paymentLogs') 
+                                ? 'active' : '' 
+                            }}">
+                                <a href="{{ route('paymentLogs') }}">
+                                    <span class="nav-text">{{ __('Payment Success Logs') }}</span>
+                                </a>
+                            </li>
+                            <li class="{{ 
+                                $current === 'paymentfailLogs' 
+                                || Str::startsWith($current, 'paymentfailLogs') 
+                                ? 'active' : '' 
+                            }}">
+                                <a href="{{ route('paymentfailLogs') }}">
+                                    <span class="nav-text">{{ __('Payment Failed Logs') }}</span>
                                 </a>
                             </li>
                         </ul>
