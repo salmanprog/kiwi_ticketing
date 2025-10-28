@@ -22,6 +22,8 @@ class SeasonPassAddon extends Model
         'new_price',
         'is_new_price_show',
         'is_featured',
+        'created_by',
+        'updated_by',
         'status',
     ];
 
@@ -65,6 +67,15 @@ class SeasonPassAddon extends Model
     public function season_pass()
     {
         return $this->hasOne(SeasonPass::class, 'slug','season_passes_slug');
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by','id');
+    }
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by','id');
     }
 
     public function generateUniqueSlug($title)

@@ -15,6 +15,8 @@ class OfferCreationResource extends JsonResource
             'slug' => $this->slug,
             'offerType' => $this->offerType,
             'description' => $this->description,
+            'start_date' => $this->from_date,
+            'end_date' => $this->to_date,
             'slider_images' => MediaResource::collection($this->media_slider),
         ];
     }

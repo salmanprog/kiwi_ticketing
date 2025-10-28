@@ -20,7 +20,9 @@ class OfferAddon extends Model
         'ticketType',
         'ticketSlug',
         'ticketCategory',
-        'price'
+        'price',
+        'created_by',
+        'updated_by',
     ];
 
     /**
@@ -60,6 +62,15 @@ class OfferAddon extends Model
         return $this->hasMany(Media::class, 'module_id')->where('module','offer_addon');
     }
 
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by','id');
+    }
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by','id');
+    }
+    
     public function generateUniqueSlug($title)
     {
         $slug = Str::slug($title);

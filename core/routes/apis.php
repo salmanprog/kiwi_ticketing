@@ -68,7 +68,12 @@ Route::post('/order-payment', 'StripeController@createPaymentIntent');
 
 Route::post('/order-create', 'OrderController@OrderCreate');
 Route::post('/order-update', 'OrderController@OrderUpdate');
+Route::post('/order-paid', 'OrderController@OrderPaid');
 Route::get('/order/{slug}', 'OrderController@getBySlug');
+
+//Logs
+Route::post('/generate-log', 'LogController@store');
+
 //Email
 Route::post('/send-email', 'EmailController@sendEmail');
 

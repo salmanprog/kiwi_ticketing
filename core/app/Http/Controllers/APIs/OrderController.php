@@ -10,6 +10,7 @@ use App\Models\Transaction;
 use App\Models\OrderCoupon;
 use App\Models\Coupons;
 use App\Models\User;
+use App\Models\ApiLog;
 use App\Http\Resources\OrderResource;
 use Carbon\Carbon;
 use App\Helpers\OrdersHelper;
@@ -37,6 +38,7 @@ class OrderController extends BaseAPIController
             'totalAmount' => 'required|numeric',
             'purchases' => 'required|array',
             'package_id' => 'required',
+            'order_status' => 'required|in:unpaid_order,paid_order',
         ]);
 
         if ($validator->fails()) {
@@ -81,6 +83,7 @@ class OrderController extends BaseAPIController
                 $order->transactionId = isset($orderData['transactionId']) ? $orderData['transactionId'] : $request->transactionId;
                 $order->totalOrderRefundedAmount = isset($orderData['totalOrderRefundedAmount']) ? $orderData['totalOrderRefundedAmount'] : '0';
                 $order->user_id  = $request->user_id;
+                $order->order_status  = $request->order_status;
                 $order->save();
                // return $this->sendResponse(200, 'Generate Order', $get_order);
 
@@ -92,6 +95,8 @@ class OrderController extends BaseAPIController
                         $ordertickets->visualId = $ticket['visualId'];
                         $ordertickets->childVisualId = $ticket['childVisualId'];
                         $ordertickets->parentVisualId = $ticket['parentVisualId'];
+                        $ordertickets->ticketType = $ticket['ticketType'];
+                        $ordertickets->ticketSlug = $ticket['ticketSlug'];
                         $ordertickets->description = $ticket['description'];
                         $ordertickets->seat = $ticket['seat'];
                         $ordertickets->price = $ticket['price'];
@@ -113,6 +118,7 @@ class OrderController extends BaseAPIController
                         $ordertickets->isSeasonPassRenewal = $ticket['isSeasonPassRenewal'];
                         $ordertickets->isSeasonPass = $ticket['isSeasonPass'];
                         $ordertickets->totalOrderRefundedAmount = $ticket['totalOrderRefundedAmount'];
+                        $ordertickets->ticket_status = 'ticket_unpaid';
                         $ordertickets->save();
                     }
                 }
@@ -154,14 +160,31 @@ class OrderController extends BaseAPIController
 
                 $order_type =  OrdersHelper::order_types($order->type);
                 $get_order = Order::with(['customer','purchases','apply_coupon','transaction',$order_type])->where('id',$order->id)->first();
-                $emailSent = MailHelper::orderConfirmationEmail($get_order,'new_order');
+                //$emailSent = MailHelper::orderConfirmationEmail($get_order,'new_order');
                 //$get_order = Order::with(['customer','purchases','transaction'])->where('id',$order->id)->first();
                 $resource = OrderResource::make($get_order);
+                ApiLog::create([
+                    'type' => 'order',
+                    'order_number' => $order->slug,
+                    'endpoint' => 'order-create',
+                    'status' => 'success',
+                    'request' => $request->all(),
+                    'response' => $resource,
+                    'message' => 'Order has been successfully created',
+                ]);
                 return $this->sendResponse(200, 'Your Order has been successfully created', $resource);
             }
 
         } catch (\Exception $e) {
-             return $this->sendResponse(400, 'Server Error', $e->getMessage());
+            ApiLog::create([
+                'type' => 'order',
+                'endpoint' => 'order-create',
+                'status' => 'failed',
+                'request' => $request->all(),
+                'response' => ['error' => $e->getMessage()],
+                'message' => 'Server Error',
+            ]);
+            return $this->sendResponse(400, 'Server Error', $e->getMessage());
         }
     }
 
@@ -247,6 +270,8 @@ class OrderController extends BaseAPIController
                             $ordertickets->visualId = $ticket['visualId'];
                             $ordertickets->childVisualId = $ticket['childVisualId'] ?? null;
                             $ordertickets->parentVisualId = $ticket['parentVisualId'] ?? null;
+                            $ordertickets->ticketType = $ticket['ticketType'] ?? null;
+                            $ordertickets->ticketSlug = $ticket['ticketSlug'] ?? null;
                             $ordertickets->description = $ticket['description'] ?? null;
                             $ordertickets->seat = $ticket['seat'] ?? null;
                             $ordertickets->price = $ticket['price'];
@@ -276,6 +301,8 @@ class OrderController extends BaseAPIController
                             $orderNewtickets->visualId = $ticket['visualId'];
                             $orderNewtickets->childVisualId = $ticket['childVisualId'] ?? null;
                             $orderNewtickets->parentVisualId = $ticket['parentVisualId'] ?? null;
+                            $orderNewtickets->ticketType = $ticket['ticketType'] ?? null;
+                            $orderNewtickets->ticketSlug = $ticket['ticketSlug'] ?? null;
                             $orderNewtickets->description = $ticket['description'] ?? null;
                             $orderNewtickets->seat = $ticket['seat'] ?? null;
                             $orderNewtickets->price = $ticket['price'];
@@ -351,11 +378,81 @@ class OrderController extends BaseAPIController
                 //$get_order = Order::with(['customer','purchases','transaction'])->where('id',$order->id)->first();
                 $emailSent = MailHelper::orderConfirmationEmail($get_order,'update_order');
                 $resource = OrderResource::make($get_order);
+                ApiLog::create([
+                    'type' => 'order',
+                    'order_number' => $order_new->slug,
+                    'endpoint' => 'order-update',
+                    'status' => 'success',
+                    'request' => $request->all(),
+                    'response' => $resource,
+                    'message' => 'Order has been successfully updated',
+                ]);
                 return $this->sendResponse(200, 'Your Order has been successfully updated', $resource);
             }
 
         } catch (\Exception $e) {
-             return $this->sendResponse(400, 'Server Error', $e->getMessage());
+            ApiLog::create([
+                'type' => 'order',
+                'endpoint' => 'order-update',
+                'status' => 'failed',
+                'request' => $request->all(),
+                'response' => ['error' => $e->getMessage()],
+                'message' => 'Server Error',
+            ]);
+            return $this->sendResponse(400, 'Server Error', $e->getMessage());
+        }
+    }
+
+    public function OrderPaid(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'orderNumber' => 'required|string',
+            'transactionId' => 'nullable|string',
+            'order_status' => 'required|in:unpaid_order,paid_order',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendResponse(400, 'Validation Error', $validator->errors());
+        }
+        try {
+            $order_number = strtolower($request->orderNumber);
+            $update_order = Order::where('slug',$order_number)->first();
+            $update_order->transactionId  = $request->transactionId;
+            $update_order->order_status  = $request->order_status;
+            $update_order->updated_at  = Carbon::now();
+            $update_order->save();
+
+            $update_ticket_status = OrderTickets::where('order_id',$update_order->id)->update(['ticket_status'=>'ticket_paid']);
+
+            $transaction_update = Transaction::where('order_id',$update_order->id)->first();
+            $transaction_update->transactionId = $request->transactionId;
+            $transaction_update->save();
+
+            $order_type =  OrdersHelper::order_types($update_order->type);
+            $get_order = Order::with(['customer','purchases','apply_coupon','transaction',$order_type])->where('id',$update_order->id)->first();
+            $emailSent = MailHelper::orderConfirmationEmail($get_order,'new_order');
+            $resource = OrderResource::make($get_order);
+            ApiLog::create([
+                'type' => 'order',
+                'order_number' => $get_order->slug,
+                'endpoint' => 'order-create',
+                'status' => 'success',
+                'request' => $request->all(),
+                'response' => $resource,
+                'message' => 'Order has been successfully paid',
+            ]);
+            return $this->sendResponse(200, 'Your Order has been successfully paid', $resource);
+
+        } catch (\Exception $e) {
+            ApiLog::create([
+                'type' => 'order',
+                'endpoint' => 'order-create',
+                'status' => 'failed',
+                'request' => $request->all(),
+                'response' => ['error' => $e->getMessage()],
+                'message' => 'Server Error',
+            ]);
+            return $this->sendResponse(400, 'Server Error', $e->getMessage());
         }
     }
 

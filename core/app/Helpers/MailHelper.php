@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use Illuminate\Support\Facades\Mail;
 use App\Models\Email;
+use App\Models\EmailLogs;
 
 class MailHelper
 {
@@ -116,9 +117,25 @@ class MailHelper
                     $message->subject($email_subject);
                 });
             }
+            EmailLogs::create([
+                'order_number' => strtoupper($data->slug),
+                'email'        => $data->customer->email,
+                'identifier'   => $identifier,
+                'subject'      => $email_subject,
+                'content'      => $parsed_content,
+                'status'       => '1',
+            ]);
             return true;
         } catch (\Exception $e) {
             \Log::error('Mail send failed: ' . $e->getMessage());
+            EmailLogs::create([
+                'order_number' => strtoupper($data->slug),
+                'email'        => $data->customer->email,
+                'identifier'   => $identifier,
+                'subject'      => $email_subject,
+                'content'      => $parsed_content,
+                'status'       => '0',
+            ]);
             return false;
         }
     }

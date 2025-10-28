@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('LandingPage Product'))
+@section('title', __('SeasonPass Product'))
 @section('content')
 <style>
     div.dataTables_wrapper div.dataTables_processing {
@@ -19,7 +19,7 @@
         <h3>{{ __('Product') }}</h3>
         <small>
             <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-            <a href="">{{ __('landing-page-product') }}</a>
+            <a href="">{{ __('season-pass-product') }}</a>
         </small>
     </div>
      <div class="row p-a pull-right" style="margin-top: -70px;">
@@ -47,6 +47,9 @@
                     <th>{{ __('Product Price') }}</th>
                     <th>{{ __('Product New Price') }}</th>
                     <th>{{ __('Status') }}</th>
+                    <th>{{ __('createdBy') }}</th>
+                    <th>{{ __('updatedBy') }}</th>
+                    <th>{{ __('updatedAt') }}</th>
                     <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
                 </tr>
                 </thead>
@@ -150,6 +153,9 @@
                     { data: 'price' },
                     { data: 'new_price' },
                     { data: 'status', orderable: false, searchable: false },
+                    { data: 'created_by', orderable: false, searchable: false },
+                    { data: 'updated_by', orderable: false, searchable: false },
+                    { data: 'updated_at', orderable: false, searchable: false },
                     { data: 'options', orderable: false, searchable: false }
                 ],
                 order: [[1, 'desc']],

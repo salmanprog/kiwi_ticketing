@@ -18,7 +18,20 @@ class OfferCreationController extends BaseAPIController
         $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
-        $generalTicket = OfferCreation::with(['media_slider','addons'])->where('auth_code',$authCode)->where('status','1')->get();
+        $today = Carbon::today();
+        //$generalTicket = OfferCreation::with(['media_slider','addons'])->where('auth_code',$authCode)->where('status','1')->get();
+        $generalTicket = OfferCreation::with(['media_slider', 'addons'])
+    ->where('auth_code', $authCode)
+    ->where('status', '1')
+    ->where(function ($query) use ($today) {
+        $query->whereNull('from_date')
+              ->orWhere('from_date', '<=', $today);
+    })
+    ->where(function ($query) use ($today) {
+        $query->whereNull('to_date')
+              ->orWhere('to_date', '>=', $today);
+    })
+    ->get();
          if ($generalTicket->isEmpty()) {
             return $this->sendResponse(200, 'Retrieved Offers Listing', []);
         }
@@ -60,6 +73,7 @@ class OfferCreationController extends BaseAPIController
                     ->where('auth_code', $authCode)
                     ->where('offerSlug', $slug)
                     ->whereIn('ticketSlug', $ticketSlugs)
+                    ->where('status', '1')
                     ->get()
                     ->keyBy('ticketSlug');
                 

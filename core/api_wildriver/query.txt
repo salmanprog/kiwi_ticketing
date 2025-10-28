@@ -1,25 +1,30 @@
-CREATE TABLE `smartend_email_template` (
+CREATE TABLE `smartend_api_logs` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `identifier` varchar(191) DEFAULT NULL,
-  `subject` text DEFAULT NULL,
-  `content` longtext NOT NULL,
+  `order_number` varchar(191) DEFAULT NULL,
+  `endpoint` varchar(191) DEFAULT NULL,
+  `request` longtext NOT NULL,
+  `response` longtext NOT NULL,
+  `message` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-ALTER TABLE `smartend_email_template`
+ALTER TABLE `smartend_api_logs`
   ADD PRIMARY KEY (`id`)
 
-ALTER TABLE `smartend_email_template`
+ALTER TABLE `smartend_api_logs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1
  
- ALTER TABLE `smartend_order` ADD `order_status` ENUM('paid_order','update_order','upgrade_order') NOT NULL DEFAULT 'paid_order' AFTER `totalOrderRefundedAmount`;
- 
- ALTER TABLE `smartend_order_tickets` ADD `ticket_status` ENUM('ticket_paid','ticket_update','ticket_upgrade','new_ticket') NOT NULL DEFAULT 'ticket_paid' AFTER `totalOrderRefundedAmount`;
+ALTER TABLE `smartend_email_logs` ADD `slug` VARCHAR(255) NOT NULL AFTER `id`;
+ALTER TABLE `smartend_email_logs` ADD `email` VARCHAR(255) NOT NULL AFTER `order_number`;
+ALTER TABLE `smartend_email_logs` ADD `status` ENUM('0','1') NOT NULL DEFAULT '1' AFTER `content`;
 
 
+ALTER TABLE `smartend_offer_creation_packages` ADD `from_date` VARCHAR(255) NULL DEFAULT NULL AFTER `description`;
+ALTER TABLE `smartend_offer_creation_packages` ADD `to_date` VARCHAR(255) NULL DEFAULT NULL AFTER `from_date`;
 
- ALTER TABLE `smartend_order` ADD `parent_order` VARCHAR(255) NULL DEFAULT '0' AFTER `slug`;
+ALTER TABLE `smartend_order_tickets` ADD `ticketSlug` VARCHAR(255) NULL DEFAULT NULL AFTER `ticketType`;
+ALTER TABLE `smartend_cabana` ADD `title` VARCHAR(255) NULL DEFAULT NULL AFTER `auth_code`;
 -----------------------------------------------------------------------------------------
 http://dev-dynamicpricing-env.eba-tkbnkmbm.us-east-1.elasticbeanstalk.com/Pricing/UpdateOrder
 {

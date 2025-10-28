@@ -41,7 +41,7 @@ class SeasonPassAddonsController extends Controller
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
         try {
             
-            $getSeasonPass = SeasonPassAddon::with(['media_slider','season_pass'])->where('auth_code', $authCode)->orderby('id', 'desc')->get();
+            $getSeasonPass = SeasonPassAddon::with(['media_slider','season_pass','createdBy','updatedBy'])->where('auth_code', $authCode)->orderby('id', 'desc')->get();
             // Paginate
             $perPage = 10;
             $currentPage = LengthAwarePaginator::resolveCurrentPage();
@@ -66,7 +66,7 @@ class SeasonPassAddonsController extends Controller
     {
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
-        $query = SeasonPassAddon::with(['media_slider','season_pass'])->where('auth_code', $authCode);
+        $query = SeasonPassAddon::with(['media_slider','season_pass','createdBy','updatedBy'])->where('auth_code', $authCode);
         if ($request->has('search') && $request->search['value'] != '') {
             $search = $request->search['value'];
             $query->where(function ($q) use ($search) {
@@ -110,6 +110,9 @@ class SeasonPassAddonsController extends Controller
                 'price' => '$' . number_format($external['price'], 2),
                 'new_price' => '$' . number_format($row->new_price, 2),
                 'status' => '<div class="text-center"><i class="fa ' . ($row->status ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
+                'created_by' => $row->createdBy->name,
+                'updated_by' => $row->updatedBy->name ?? 'N/A',
+                'updated_at' => $row->updated_at->format('Y-m-d'),
                 'options' => '<div class="dropdown">
                                 <button type="button" class="btn btn-sm light dk dropdown-toggle" data-toggle="dropdown">
                                     <i class="material-icons">&#xe5d4;</i> Options
@@ -240,6 +243,7 @@ class SeasonPassAddonsController extends Controller
                 $seasonpassAddon->new_price = $request->new_price;
                 $seasonpassAddon->is_new_price_show = $request->is_new_price_show;
                 $seasonpassAddon->is_featured = $request->is_featured;
+                $seasonpassAddon->created_by = Auth::user()->id;
                 $seasonpassAddon->status = $request->status;
                 $seasonpassAddon->save();
 
@@ -344,7 +348,9 @@ class SeasonPassAddonsController extends Controller
         $seasonPassUpdate->new_price = $request->new_price;
         $seasonPassUpdate->is_new_price_show = $request->is_new_price_show;
         $seasonPassUpdate->is_featured = $request->is_featured;
+        $seasonPassUpdate->updated_by = Auth::user()->id;
         $seasonPassUpdate->status = $request->status;
+        $seasonPassUpdate->updated_at = now();
         $seasonPassUpdate->save();
         
 

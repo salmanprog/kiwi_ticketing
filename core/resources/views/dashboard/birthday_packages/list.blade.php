@@ -46,6 +46,9 @@
                             <th>{{ __('Price') }}</th>
                             <th>{{ __('Total Cabana') }}</th>
                             <th>{{ __('Status') }}</th>
+                            <th>{{ __('createdBy') }}</th>
+                            <th>{{ __('updatedBy') }}</th>
+                            <th>{{ __('updatedAt') }}</th>
                             <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
                         </tr>
                         </thead>
@@ -149,6 +152,9 @@
                     { data: 'price' },
                     { data: 'cabanas' },
                     { data: 'status', orderable: false, searchable: false },
+                    { data: 'created_by', orderable: false, searchable: false },
+                    { data: 'updated_by', orderable: false, searchable: false },
+                    { data: 'updated_at', orderable: false, searchable: false },
                     { data: 'options', orderable: false, searchable: false }
                 ],
                 order: [[1, 'desc']],

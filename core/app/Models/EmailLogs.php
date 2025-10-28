@@ -6,22 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class BirthdayPackages extends Model
+class EmailLogs extends Model
 {
     use HasFactory;
 
-    protected $table = 'birthday_packages';
+    protected $table = 'email_logs';
 
     protected $fillable = [
         'slug',
-        'title',
-        'description',
-        'image_url',
-        'banner_image',
-        'price',
-        'map_link',
-        'created_by',
-        'updated_by',
+        'order_number',
+        'email',
+        'identifier',
+        'subject',
+        'content',
         'status'
     ];
 
@@ -39,7 +36,7 @@ class BirthdayPackages extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->slug = $model->generateUniqueSlug($model->title);
+            $model->slug = $model->generateUniqueSlug($model->identifier);
         });
 
         // static::updating(function ($model) {
@@ -48,31 +45,6 @@ class BirthdayPackages extends Model
         //         $model->slug = $model->generateUniqueSlug($model->title);
         //     }
         // });
-    }
-
-    public function media_slider()
-    {
-        return $this->hasMany(Media::class, 'module_id')->where('module','birthday_packages');
-    }
-    public function media_cover()
-    {
-        return $this->hasMany(Media::class, 'module_id')->where('module','birthday_cover_photo');
-    }
-    public function cabanas()
-    {
-        return $this->hasMany(BirthdayCabanas::class, 'birthday_package_id');
-    }
-    public function addons()
-    {
-        return $this->hasMany(BirthdayAddon::class, 'birthday_slug', 'slug');
-    }
-    public function createdBy()
-    {
-        return $this->belongsTo(User::class, 'created_by','id');
-    }
-    public function updatedBy()
-    {
-        return $this->belongsTo(User::class, 'updated_by','id');
     }
     /**
      * Generate a unique slug for the birthday package.

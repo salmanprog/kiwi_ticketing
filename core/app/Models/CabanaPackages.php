@@ -16,12 +16,15 @@ class CabanaPackages extends Model
         'slug',
         'auth_code',
         'venueId',
+        'title',
         'ticketType',
         'ticketSlug',
         'ticketCategory',
         'price',
         'description',
         'is_featured',
+        'created_by',
+        'updated_by',
         'status'
     ];
 
@@ -50,6 +53,14 @@ class CabanaPackages extends Model
     public function cabana_addon()
     {
         return $this->hasMany(CabanaAddon::class, 'cabanaSlug','ticketSlug');
+    }
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by','id');
+    }
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by','id');
     }
     /**
      * Generate a unique slug for the birthday package.

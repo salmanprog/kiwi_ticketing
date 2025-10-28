@@ -160,7 +160,7 @@
                             </div>
                             <!-- / .modal -->
                             @if(@Auth::user()->permissionsGroup->settings_status)
-                                <select name="action" id="action" class="form-control c-select w-sm inline v-middle"
+                                <!-- <select name="action" id="action" class="form-control c-select w-sm inline v-middle"
                                         required>
                                     <option value="">{{ __('backend.bulkAction') }}</option>
                                     <option value="activate">{{ __('backend.activeSelected') }}</option>
@@ -173,7 +173,7 @@
                                         style="display: none"
                                         data-target="#m-all" ui-toggle-class="bounce"
                                         ui-target="#animate">{{ __('backend.apply') }}
-                                </button>
+                                </button> -->
                             @endif
                         </div>
 

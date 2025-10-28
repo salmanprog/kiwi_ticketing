@@ -88,7 +88,7 @@
                 </div>
 
                 @if(@Auth::user()->permissionsGroup->webmaster_status)
-                    <div class="form-group row">
+                    <div class="form-group row" style="display:none">
                         <label for="permissions1"
                                class="col-sm-2 form-control-label">{!!  __('backend.Permission') !!}</label>
                         <div class="col-sm-10">

@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Offers'))
+@section('title', __('Update & Upgrade Transaction'))
 @section('content')
 <style>
     div.dataTables_wrapper div.dataTables_processing {
@@ -16,44 +16,64 @@
 <div class="padding">
 <div class="box">
     <div class="box-header dker">
-        <h3>{{ __('Offers') }}</h3>
+        <h3>{{ __('Update & Upgrade Transaction') }}</h3>
         <small>
             <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-            <a href="">{{ __('offers') }}</a>
+            <a href="">{{ __('update-upgrade-transaction') }}</a>
         </small>
     </div>
-     <div class="row p-a pull-right" style="margin-top: -70px;">
-        <div class="col-sm-12">
-            <a class="btn btn-fw primary" href="{{route('offercreationpackagesCreate')}}">
-                <i class="material-icons">&#xe7fe;</i>
-                &nbsp; {{ __('Add New Offer') }}
-            </a>
-        </div>
+    <div class="box-tool box-tool-lg">
+        <ul class="nav">
+            <li class="nav-item inline">
+                <a class="btn primary" href="Javascript:void(0);">
+                    <i class="material-icons">&#xe02e;</i>
+                    <strong>Total Earnings:</strong> <span id="total-earnings">$0.00</span>
+                </a>
+            </li>
+            <li class="nav-item inline">
+                <button type="button" class="btn info" id="filter_btn" title="{{ __('Advance Search') }}"
+                        data-toggle="tooltip">
+                    <i class="fa fa-search"></i>
+                </button>
+            </li>
+            <li class="nav-item inline">
+                <button type="button" class="btn success" id="excel_btn" title="{{ __('backend.export') }}"
+                        data-toggle="tooltip"
+                        onclick="print_as('excel')">
+                    <i class="fa fa-file-excel-o"></i>
+                </button>
+            </li>
+        </ul>
     </div>
-    <div class="table-responsive">
-                    <table class="table table-bordered m-a-0" id="offers_packages">
-                        <thead class="dker">
-                        <tr>
-                            <th class="width20 dker">
-                                <label class="ui-check m-a-0">
-                                    <input id="checkAll" type="checkbox"><i></i>
-                                </label>
-                            </th>
-                            <th>{{ __('ID') }}</th>
-                            <th>{{ __('Title') }}</th>
-                            <th>{{ __('Type') }}</th>
-                            <th>{{ __('Slug') }}</th>
-                            <th>{{ __('Status') }}</th>
-                            <th>{{ __('createdBy') }}</th>
-                            <th>{{ __('updatedBy') }}</th>
-                            <th>{{ __('updatedAt') }}</th>
-                            <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
-                        </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                    
-        </div>
+    <div class="box-tool box-tool-lg">
+    </div>
+        <div>
+            <div class="table-responsive">
+                @include("dashboard.transaction.search")
+                <table class="table table-bordered m-a-0" id="update_transactions">
+                    <thead class="dker">
+                    <tr>
+                        <th class="width20 dker">
+                            <label class="ui-check m-a-0">
+                                <input id="checkAll" type="checkbox"><i></i>
+                            </label>
+                        </th>
+                        <th>{{ __('ID') }}</th>
+                        <th>{{ __('Package') }}</th>
+                        <th>{{ __('Order Type') }}</th>
+                        <th>{{ __('Customer Name') }}</th>
+                        <th>{{ __('Customer Email') }}</th>
+                        <th>{{ __('Total') }}</th>
+                        <th>{{ __('Status') }}</th>
+                        <th>{{ __('Order Status') }}</th>
+                        <th>{{ __('OrderDate') }}</th>
+                        <th>{{ __('CreatedAt') }}</th>
+                        <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         <footer class="dker p-a">
                     <div class="row">
                         <div class="col-sm-3 hidden-xs">
@@ -102,9 +122,9 @@
                                     {{ __('backend.of') }} <strong>{{ $paginated->total() }}</strong> {{ __('backend.records') }}
                                 </small>
                             </div> -->
-                            <div class="col-sm-6 text-right text-center-xs">
+                            <!-- <div class="col-sm-6 text-right text-center-xs">
                                 {!! $paginated->links() !!}
-                            </div>
+                            </div> -->
                        
                     </div>
                 </footer>
@@ -114,7 +134,7 @@
 
 @endsection
 @push("after-scripts")
-<script src="{{ asset('assets/dashboard/js/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/datatables/datatables.min.js') }}"></script>
     <script type="text/javascript">
         $("#checkAll").click(function () {
             $('input:checkbox').not(this).prop('checked', this.checked);
@@ -129,29 +149,37 @@
             }
         });
         $(document).ready(function () {
-            var dataTable = $("#offers_packages").DataTable({
+            var dataTable = $("#update_transactions").DataTable({
                 processing: true,
                 serverSide: true,
                 searching: true,
                 ajax: {
-                    url: "{{ route('offercreationpackages.data') }}",
+                    url: "{{ route('updatetransaction.data') }}",
                     type: "POST",
                     data: function (data) {
                         data._token = "{{ csrf_token() }}";
                         data.find_q = $('#find_q').val();
+                        data.type = $('#find_type').val();
+                        data.package_id = $('#find_package').val();
+                        data.from_date = $('#from_date').val();
+                        data.to_date = $('#to_date').val();
+                        data.order_status = $('#find_order_status').val();
+                        data.route = 'transactionordersdetail';
                     }
                 },
                dom: '<"row"<"col-sm-6"f><"col-sm-6"l>>rtip',
                 columns: [
                     { data: 'check', orderable: false, searchable: false },
                     { data: 'id' },
-                    { data: 'title' },
-                    { data: 'offerType' },
-                    { data: 'slug' },
-                    { data: 'status', orderable: false, searchable: false },
-                    { data: 'created_by', orderable: false, searchable: false },
-                    { data: 'updated_by', orderable: false, searchable: false },
-                    { data: 'updated_at', orderable: false, searchable: false },
+                    { data: 'package' },
+                    { data: 'type' },
+                    { data: 'customerName' },
+                    { data: 'customerEmail' },
+                    { data: 'orderTotal' },
+                    { data: 'status' },
+                    { data: 'order_status' },
+                    { data: 'orderDate' },
+                    { data: 'createdAt' },
                     { data: 'options', orderable: false, searchable: false }
                 ],
                 order: [[1, 'desc']],
@@ -173,8 +201,35 @@
             });
             $.fn.dataTable.ext.errMode = 'none';
 
-           
+           $('#update_transactions').on('xhr.dt', function (e, settings, json, xhr) {
+                if (json.totalEarnings !== undefined) {
+                    $('#total-earnings').text(json.totalEarnings);
+                }
+            });
+            $('#search-btn').on('click', function () {
+                $("#search_submit_stat").val(""); 
+                $("#filter_form").submit();
+            });
+            $('#filter_form').submit(function () {
+                if ($("#search_submit_stat").val() === "") {
+                    dataTable.draw();
+                    return false;
+                }
+            });
+            $("#filter_btn").on('click', function () {
+                $("#filter_div").slideToggle();
+            });
         });
+
+        function print_as(stat) {
+            $("#search_submit_stat").val(stat);
+            $("#filter_form").attr('action', '{{ route("transactionPrint") }}');
+            $("#filter_form").attr('target', '_blank');
+            $("#filter_form").submit();
+            $("#filter_form").attr('action', '{{ route("transactionPrint") }}');
+            $("#search_submit_stat").val("");
+            $("#filter_form").attr('target', '');
+        }
     </script>
 
 @endpush

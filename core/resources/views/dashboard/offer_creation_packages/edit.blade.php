@@ -71,6 +71,22 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label for="title"
+                                class="col-sm-2 form-control-label">{!!  __('Start Date') !!}
+                        </label>
+                        <div class="col-sm-10">
+                            {!! Form::text('from_date',old('from_date', $offer_creation_packages->from_date ?? ''), array('placeholder' => '','class' => 'form-control datepicker','id'=>'from_date')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="title"
+                                class="col-sm-2 form-control-label">{!!  __('End Date') !!}
+                        </label>
+                        <div class="col-sm-10">
+                            {!! Form::text('to_date',old('to_date', $offer_creation_packages->to_date ?? ''), array('placeholder' => '','class' => 'form-control datepicker','id'=>'to_date')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label for="photo"
                                 class="col-sm-2 form-control-label">{!!  __('Image') !!}</label>
                         <div class="col-sm-10">
@@ -147,6 +163,7 @@
 @endsection
 @push("after-scripts")
     <script src="{{ asset("assets/dashboard/js/iconpicker/fontawesome-iconpicker.js") }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script>
         $(function () {
             $('.icp-auto').iconpicker({placement: '{{ (@Helper::currentLanguage()->direction=="rtl")?"topLeft":"topRight" }}'});
@@ -162,5 +179,33 @@
             document.getElementById('media_delete_' + id).value = '0';
             document.getElementById('undo_' + id).style.display = 'none';
         }
+        $(function () {
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true,
+                clearBtn: true
+            });
+
+            $('#from_date').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true
+            }).on('changeDate', function (e) {
+                let startDate = e.date;
+                $('#to_date').datepicker('setStartDate', startDate);
+
+                let currentToDate = $('#to_date').datepicker('getDate');
+                if (currentToDate && currentToDate < startDate) {
+                    $('#to_date').datepicker('clearDate'); // ✅ Corrected method
+                }
+            });
+
+            $('#to_date').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true
+            });
+        });
     </script>
 @endpush

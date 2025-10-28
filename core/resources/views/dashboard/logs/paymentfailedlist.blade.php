@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Offers'))
+@section('title', __('Payment Failed Logs'))
 @section('content')
 <style>
     div.dataTables_wrapper div.dataTables_processing {
@@ -16,44 +16,37 @@
 <div class="padding">
 <div class="box">
     <div class="box-header dker">
-        <h3>{{ __('Offers') }}</h3>
+        <h3>{{ __('Payment Failed Logs') }}</h3>
         <small>
             <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-            <a href="">{{ __('offers') }}</a>
+            <a href="">{{ __('payment-failed-logs') }}</a>
         </small>
     </div>
-     <div class="row p-a pull-right" style="margin-top: -70px;">
-        <div class="col-sm-12">
-            <a class="btn btn-fw primary" href="{{route('offercreationpackagesCreate')}}">
-                <i class="material-icons">&#xe7fe;</i>
-                &nbsp; {{ __('Add New Offer') }}
-            </a>
-        </div>
+    <div class="box-tool box-tool-lg">
     </div>
-    <div class="table-responsive">
-                    <table class="table table-bordered m-a-0" id="offers_packages">
-                        <thead class="dker">
-                        <tr>
-                            <th class="width20 dker">
-                                <label class="ui-check m-a-0">
-                                    <input id="checkAll" type="checkbox"><i></i>
-                                </label>
-                            </th>
-                            <th>{{ __('ID') }}</th>
-                            <th>{{ __('Title') }}</th>
-                            <th>{{ __('Type') }}</th>
-                            <th>{{ __('Slug') }}</th>
-                            <th>{{ __('Status') }}</th>
-                            <th>{{ __('createdBy') }}</th>
-                            <th>{{ __('updatedBy') }}</th>
-                            <th>{{ __('updatedAt') }}</th>
-                            <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
-                        </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                    
-        </div>
+        <div>
+            <div class="table-responsive">
+                <table class="table table-bordered m-a-0" id="logs">
+                    <thead class="dker">
+                    <tr>
+                        <th class="width20 dker">
+                            <label class="ui-check m-a-0">
+                                <input id="checkAll" type="checkbox"><i></i>
+                            </label>
+                        </th>
+                        <th>{{ __('ID') }}</th>
+                        <th>{{ __('Type') }}</th>
+                        <th>{{ __('Order Number') }}</th>
+                        <th>{{ __('End Point') }}</th>
+                        <th>{{ __('Error') }}</th>
+                        <th>{{ __('Status') }}</th>
+                        <th>{{ __('CreatedAt') }}</th>
+                        <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         <footer class="dker p-a">
                     <div class="row">
                         <div class="col-sm-3 hidden-xs">
@@ -102,9 +95,9 @@
                                     {{ __('backend.of') }} <strong>{{ $paginated->total() }}</strong> {{ __('backend.records') }}
                                 </small>
                             </div> -->
-                            <div class="col-sm-6 text-right text-center-xs">
+                            <!-- <div class="col-sm-6 text-right text-center-xs">
                                 {!! $paginated->links() !!}
-                            </div>
+                            </div> -->
                        
                     </div>
                 </footer>
@@ -114,7 +107,7 @@
 
 @endsection
 @push("after-scripts")
-<script src="{{ asset('assets/dashboard/js/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/datatables/datatables.min.js') }}"></script>
     <script type="text/javascript">
         $("#checkAll").click(function () {
             $('input:checkbox').not(this).prop('checked', this.checked);
@@ -129,15 +122,17 @@
             }
         });
         $(document).ready(function () {
-            var dataTable = $("#offers_packages").DataTable({
+            var dataTable = $("#logs").DataTable({
                 processing: true,
                 serverSide: true,
                 searching: true,
                 ajax: {
-                    url: "{{ route('offercreationpackages.data') }}",
+                    url: "{{ route('ordersLogs.data') }}",
                     type: "POST",
                     data: function (data) {
                         data._token = "{{ csrf_token() }}";
+                        data.type = "payment";
+                        data.status = "failed";
                         data.find_q = $('#find_q').val();
                     }
                 },
@@ -145,13 +140,12 @@
                 columns: [
                     { data: 'check', orderable: false, searchable: false },
                     { data: 'id' },
-                    { data: 'title' },
-                    { data: 'offerType' },
-                    { data: 'slug' },
+                    { data: 'type' },
+                    { data: 'order_number' },
+                    { data: 'endpoint' },
+                    { data: 'message' },
                     { data: 'status', orderable: false, searchable: false },
-                    { data: 'created_by', orderable: false, searchable: false },
-                    { data: 'updated_by', orderable: false, searchable: false },
-                    { data: 'updated_at', orderable: false, searchable: false },
+                    { data: 'created_at', orderable: false, searchable: false },
                     { data: 'options', orderable: false, searchable: false }
                 ],
                 order: [[1, 'desc']],

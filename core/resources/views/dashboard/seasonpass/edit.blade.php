@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('LandingPage Sale'))
+@section('title', __('SeasonPass Sale'))
 @push("after-styles")
     <link href="{{ asset("assets/dashboard/js/iconpicker/fontawesome-iconpicker.min.css") }}" rel="stylesheet">
     <!--[if lt IE 9]>

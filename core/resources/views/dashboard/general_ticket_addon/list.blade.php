@@ -48,6 +48,9 @@
                             <th>{{ __('New Price') }}</th>
                             <th>{{ __('Primary Product') }}</th>
                             <th>{{ __('Status') }}</th>
+                            <th>{{ __('createdBy') }}</th>
+                            <th>{{ __('updatedBy') }}</th>
+                            <th>{{ __('updatedAt') }}</th>
                             <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
                         </tr>
                         </thead>
@@ -180,6 +183,9 @@
                     { data: 'new_price' },
                     { data: 'is_primary', orderable: false, searchable: false },
                     { data: 'status', orderable: false, searchable: false },
+                    { data: 'created_by', orderable: false, searchable: false },
+                    { data: 'updated_by', orderable: false, searchable: false },
+                    { data: 'updated_at', orderable: false, searchable: false },
                     { data: 'options', orderable: false, searchable: false }
                 ],
                 order: [[1, 'desc']],

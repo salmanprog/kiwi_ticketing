@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('LandingPage Orders'))
+@section('title', __('SeasonPass Orders'))
 @section('content')
 <style>
     div.dataTables_wrapper div.dataTables_processing {
@@ -19,7 +19,7 @@
         <h3>{{ __('Orders') }}</h3>
         <small>
             <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-            <a href="">{{ __('landing-page') }}</a>
+            <a href="">{{ __('season-pass-page') }}</a>
         </small>
     </div>
     <div class="box-tool box-tool-lg">

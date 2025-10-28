@@ -87,7 +87,7 @@
                         </div>
                         <div class="col-md-3 p-3 text-center">
                             <strong>Status</strong><br>
-                            Paid
+                            {{ ucwords(str_replace('_', ' ', $get_cabana_orders->order_status)) }}
                         </div>
                     </div>
 
@@ -195,7 +195,7 @@
                                 <div class="row mb-4" style="margin-bottom: 40px;">
                                     <div class="col-md-3 p-3 text-center">
                                         <strong>Ticket Type</strong><br>
-                                        {{ optional($ticket->ticketType)->title ?? 'N/A' }}
+                                        {{ $ticket->ticketType ?? 'N/A' }}
                                     </div>
                                     <div class="col-md-3 p-3 text-center">
                                         <strong>Description</strong><br>

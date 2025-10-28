@@ -34,7 +34,7 @@ class BirthdayPackagesController extends Controller
     {
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-        $birthday_packages = BirthdayPackages::with(['cabanas','media_slider','media_cover'])->get();
+        $birthday_packages = BirthdayPackages::with(['cabanas','media_slider','media_cover','createdBy','updatedBy'])->get();
          // Paginate
         $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
@@ -52,7 +52,7 @@ class BirthdayPackagesController extends Controller
     public function getData(Request $request)
     {
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
-        $query = BirthdayPackages::with(['cabanas','media_slider','media_cover']);
+        $query = BirthdayPackages::with(['cabanas','media_slider','media_cover','createdBy','updatedBy']);
         if ($request->has('search') && $request->search['value'] != '') {
             $search = $request->search['value'];
             $query->where(function ($q) use ($search) {
@@ -90,6 +90,9 @@ class BirthdayPackagesController extends Controller
                 'price' => '$' . number_format($row->price, 2),
                 'cabanas' => '<div class="text-center">'.count($row->cabanas).'</div>',
                 'status' => '<div class="text-center"><i class="fa ' . ($row->status ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
+                'created_by' => $row->createdBy->name,
+                'updated_by' => ($row->updated_by == 0) ? 'N/A' : $row->updatedBy->name,
+                'updated_at' => $row->updated_at->format('Y-m-d'),
                 'options' => '<div class="dropdown">
                                 <button type="button" class="btn btn-sm light dk dropdown-toggle" data-toggle="dropdown">
                                     <i class="material-icons">&#xe5d4;</i> Options
@@ -217,6 +220,7 @@ class BirthdayPackagesController extends Controller
         $birthdayPackages->description = $request->description;
         $birthdayPackages->price  = $request->price;
         $birthdayPackages->map_link = $request->map_link;
+        $birthdayPackages->created_by = Auth::user()->id;
         $birthdayPackages->status = $request->status;
         $birthdayPackages->save();
 
@@ -393,7 +397,9 @@ class BirthdayPackagesController extends Controller
             $birthdayPackages->description = $request->description;
             $birthdayPackages->price  = $request->price;
             $birthdayPackages->map_link = $request->map_link;
+            $birthdayPackages->updated_by = Auth::user()->id;
             $birthdayPackages->status = $request->status;
+            $birthdayPackages->updated_at = now();
             $birthdayPackages->save();
             if(count($uploadedFileNames) > 0){
                 for($i=0;$i<count($uploadedFileNames);$i++){

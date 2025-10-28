@@ -18,6 +18,7 @@ class OrderTickets extends Model
         'childVisualId',
         'VisualIdStockCount',
         'ticketType',
+        'ticketSlug',
         'description',
         'seat',
         'price',

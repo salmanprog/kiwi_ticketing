@@ -18,7 +18,11 @@ class OfferCreation extends Model
         'offerType',
         'title',
         'description',
+        'from_date',
+        'to_date',
         'image_url',
+        'created_by',
+        'updated_by',
         'status'
     ];
 
@@ -48,6 +52,15 @@ class OfferCreation extends Model
     public function addons()
     {
         return $this->hasMany(OfferAddon::class, 'offerSlug', 'slug');
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by','id');
+    }
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by','id');
     }
     /**
      * Generate a unique slug for the general package.

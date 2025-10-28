@@ -35,7 +35,7 @@ class CabanaPackagesController extends Controller
         // General for all pages
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-        $cabana_packages = CabanaPackages::with(['media_slider'])->where('auth_code', $authCode)->get();
+        $cabana_packages = CabanaPackages::with(['media_slider','createdBy','updatedBy'])->where('auth_code', $authCode)->get();
          // Paginate
         $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
@@ -54,7 +54,7 @@ class CabanaPackagesController extends Controller
     {
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
-        $query = CabanaPackages::with(['media_slider','cabana_addon'])->where('auth_code', $authCode);
+        $query = CabanaPackages::with(['media_slider','cabana_addon','createdBy','updatedBy'])->where('auth_code', $authCode);
         if ($request->has('search') && $request->search['value'] != '') {
             $search = $request->search['value'];
             $query->where(function ($q) use ($search) {
@@ -101,6 +101,9 @@ class CabanaPackagesController extends Controller
                 'addon' => '<div class="text-center">'.count($row->cabana_addon).'</div>',
                 'featured' => '<div class="text-center"><i class="fa ' . ($row->is_featured ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
                 'status' => '<div class="text-center"><i class="fa ' . ($row->status ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
+                'created_by' => $row->createdBy->name,
+                'updated_by' => $row->updatedBy->name ?? 'N/A',
+                'updated_at' => $row->updated_at->format('Y-m-d'),
                 'options' => '<div class="dropdown">
                                 <button type="button" class="btn btn-sm light dk dropdown-toggle" data-toggle="dropdown">
                                     <i class="material-icons">&#xe5d4;</i> Options
@@ -228,6 +231,7 @@ class CabanaPackagesController extends Controller
                 }
                 $cabanaPackage = new CabanaPackages;
                 $cabanaPackage->auth_code  = Helper::GeneralSiteSettings('auth_code_en');
+                $cabanaPackage->title  = $tickets_arr[0]['ticketType'];
                 $cabanaPackage->venueId = $tickets_arr[0]['venueId'];
                 $cabanaPackage->ticketType  = $tickets_arr[0]['ticketType'];
                 $cabanaPackage->ticketSlug = $tickets_arr[0]['ticketSlug'];
@@ -235,6 +239,7 @@ class CabanaPackagesController extends Controller
                 $cabanaPackage->price = $tickets_arr[0]['price'];
                 $cabanaPackage->description = $request->description;
                 $cabanaPackage->is_featured = $request->is_featured;
+                $cabanaPackage->created_by = Auth::user()->id;
                 $cabanaPackage->status = $request->status;
                 $cabanaPackage->save();
 
@@ -324,7 +329,9 @@ class CabanaPackagesController extends Controller
         }
         $cabanaPackagesUpdate->description = $request->description;
         $cabanaPackagesUpdate->is_featured = $request->is_featured;
+        $cabanaPackagesUpdate->updated_by = Auth::user()->id;
         $cabanaPackagesUpdate->status = $request->status;
+        $cabanaPackagesUpdate->updated_at = now();
         $cabanaPackagesUpdate->save();
         
 

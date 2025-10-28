@@ -34,6 +34,8 @@ use App\Http\Controllers\Dashboard\CouponController;
 use App\Http\Controllers\Dashboard\OfferCreationPackagesController;
 use App\Http\Controllers\Dashboard\OfferAddonController;
 use App\Http\Controllers\Dashboard\EmailController;
+use App\Http\Controllers\Dashboard\EmailLogsController;
+use App\Http\Controllers\Dashboard\LogController;
 use Illuminate\Support\Facades\Route;
 
 // Admin Home
@@ -378,6 +380,8 @@ Route::get('/offer-addon/destroy/{id}', [OfferAddonController::class, 'destroy']
 // Transactions
 Route::get('/transaction', [OrderController::class, 'getTransactions'])->name('transactionorders');
 Route::post('/transactions', [OrderController::class, 'getTransaction'])->name('transaction.data');
+Route::get('update/transaction', [OrderController::class, 'getUpdateUpgradeTransactions'])->name('updatetransactionorders');
+Route::post('update/transactions', [OrderController::class, 'getUpdateTransaction'])->name('updatetransaction.data');
 Route::get('/transactions-detail/{slug}', [OrderController::class, 'getByOrderSlug'])->name('transactionordersdetail');
 Route::get('/transactions/orders/print', [OrderController::class, 'print'])->name('transactionPrint');
 Route::get('/transactions/orders/cabanaprint', [OrderController::class, 'printCabana'])->name('cabanaPrint');
@@ -404,6 +408,18 @@ Route::post('/email-template/{id}/update', [EmailController::class, 'update'])->
 Route::get('/email-template/destroy/{id}', [EmailController::class, 'destroy'])->name('emailTemplateDestroy');
 Route::get('/smtp-configure', [EmailController::class, 'smtpConfigure'])->name('smtpConfigure');
 Route::post('/smtp-configure/update', [EmailController::class, 'updateSmtp'])->name('smtpUpdate');
+// Email Logs Templates
+Route::get('/email-logs', [EmailLogsController::class, 'index'])->name('emailsLogs');
+Route::post('/email-logs/data', [EmailLogsController::class, 'getData'])->name('emailsLogs.data');
+Route::get('/email/{id}/view', [EmailLogsController::class, 'show'])->name('emailShow');
+Route::get('/resend/{id}/email', [EmailLogsController::class, 'resendmail'])->name('emailResend');
+// Orders Logs Templates
+Route::get('/orders-logs', [LogController::class, 'index'])->name('ordersLogs');
+Route::get('/orders-failed-logs', [LogController::class, 'orderFailedLogs'])->name('ordersfailedLogs');
+Route::get('/payment-logs', [LogController::class, 'paymentLogs'])->name('paymentLogs');
+Route::get('/payment-failed-logs', [LogController::class, 'paymentFailedLogs'])->name('paymentfailLogs');
+Route::post('/orders-logs/data', [LogController::class, 'getData'])->name('ordersLogs.data');
+Route::get('/orders-logs/{id}/view', [LogController::class, 'show'])->name('ordersLogsShow');
 // Menus
 Route::post('/menus/store/parent', [MenusController::class, 'storeMenu'])->name('parentMenusStore');
 Route::get('/menus/parent/{id}/edit', [MenusController::class, 'editMenu'])->name('parentMenusEdit');

@@ -38,7 +38,7 @@ class SeasonPassController extends Controller
         $date = Carbon::today()->toDateString();
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-        $getTicketSeasonPass = SeasonPass::with(['media_slider','products'])->where('auth_code', $authCode)->orderby('id', 'desc')->get();
+        $getTicketSeasonPass = SeasonPass::with(['media_slider','products','createdBy','updatedBy'])->where('auth_code', $authCode)->orderby('id', 'desc')->get();
         $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $paginated = new LengthAwarePaginator(
@@ -54,7 +54,7 @@ class SeasonPassController extends Controller
     public function getData(Request $request)
     {
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
-        $query = SeasonPass::with(['media_slider','products'])->where('auth_code', $authCode);
+        $query = SeasonPass::with(['media_slider','products','createdBy','updatedBy'])->where('auth_code', $authCode);
         if ($request->has('search') && $request->search['value'] != '') {
             $search = $request->search['value'];
             $query->where(function ($q) use ($search) {
@@ -91,6 +91,9 @@ class SeasonPassController extends Controller
                 'slug' => $row->slug,
                 'products' => '<div class="text-center">'.count($row->products).'</div>',
                 'status' => '<div class="text-center"><i class="fa ' . ($row->status ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
+                'created_by' => $row->createdBy->name,
+                'updated_by' => $row->updatedBy->name ?? 'N/A',
+                'updated_at' => $row->updated_at->format('Y-m-d'),
                 'options' => '<div class="dropdown">
                                 <button type="button" class="btn btn-sm light dk dropdown-toggle" data-toggle="dropdown">
                                     <i class="material-icons">&#xe5d4;</i> Options
@@ -154,6 +157,7 @@ class SeasonPassController extends Controller
         $seasonpassTickets->auth_code  = Helper::GeneralSiteSettings('auth_code_en');
         $seasonpassTickets->title = $request->title;
         $seasonpassTickets->description = $request->description;
+        $seasonpassTickets->created_by = Auth::user()->id;
         $seasonpassTickets->status = $request->status;
         $seasonpassTickets->save();
         
@@ -233,7 +237,9 @@ class SeasonPassController extends Controller
         }
         $seasonPassUpdate->title = $request->title;
         $seasonPassUpdate->description = $request->description;
+        $seasonPassUpdate->updated_by = Auth::user()->id;
         $seasonPassUpdate->status = $request->status;
+        $seasonPassUpdate->updated_at = now();
         $seasonPassUpdate->save();
         
         SeasonPassAddon::where('season_passes_slug', $id)->update([

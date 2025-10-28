@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Offers'))
+@section('title', __('Email Logs'))
 @section('content')
 <style>
     div.dataTables_wrapper div.dataTables_processing {
@@ -16,22 +16,15 @@
 <div class="padding">
 <div class="box">
     <div class="box-header dker">
-        <h3>{{ __('Offers') }}</h3>
+        <h3>{{ __('Email Logs') }}</h3>
         <small>
             <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-            <a href="">{{ __('offers') }}</a>
+            <a href="">{{ __('email-logs') }}</a>
         </small>
     </div>
-     <div class="row p-a pull-right" style="margin-top: -70px;">
-        <div class="col-sm-12">
-            <a class="btn btn-fw primary" href="{{route('offercreationpackagesCreate')}}">
-                <i class="material-icons">&#xe7fe;</i>
-                &nbsp; {{ __('Add New Offer') }}
-            </a>
-        </div>
-    </div>
-    <div class="table-responsive">
-                    <table class="table table-bordered m-a-0" id="offers_packages">
+    
+        <div class="table-responsive">
+                    <table class="table table-bordered m-a-0" id="email_logs">
                         <thead class="dker">
                         <tr>
                             <th class="width20 dker">
@@ -40,13 +33,11 @@
                                 </label>
                             </th>
                             <th>{{ __('ID') }}</th>
-                            <th>{{ __('Title') }}</th>
-                            <th>{{ __('Type') }}</th>
-                            <th>{{ __('Slug') }}</th>
+                            <th>{{ __('Order Number') }}</th>
+                            <th>{{ __('Email To') }}</th>
+                            <th>{{ __('Identifier') }}</th>
+                            <th>{{ __('Subject') }}</th>
                             <th>{{ __('Status') }}</th>
-                            <th>{{ __('createdBy') }}</th>
-                            <th>{{ __('updatedBy') }}</th>
-                            <th>{{ __('updatedAt') }}</th>
                             <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
                         </tr>
                         </thead>
@@ -102,9 +93,9 @@
                                     {{ __('backend.of') }} <strong>{{ $paginated->total() }}</strong> {{ __('backend.records') }}
                                 </small>
                             </div> -->
-                            <div class="col-sm-6 text-right text-center-xs">
+                            <!-- <div class="col-sm-6 text-right text-center-xs">
                                 {!! $paginated->links() !!}
-                            </div>
+                            </div> -->
                        
                     </div>
                 </footer>
@@ -129,12 +120,12 @@
             }
         });
         $(document).ready(function () {
-            var dataTable = $("#offers_packages").DataTable({
+            var dataTable = $("#email_logs").DataTable({
                 processing: true,
                 serverSide: true,
                 searching: true,
                 ajax: {
-                    url: "{{ route('offercreationpackages.data') }}",
+                    url: "{{ route('emailsLogs.data') }}",
                     type: "POST",
                     data: function (data) {
                         data._token = "{{ csrf_token() }}";
@@ -145,13 +136,11 @@
                 columns: [
                     { data: 'check', orderable: false, searchable: false },
                     { data: 'id' },
-                    { data: 'title' },
-                    { data: 'offerType' },
-                    { data: 'slug' },
+                    { data: 'order_number' },
+                    { data: 'email' },
+                    { data: 'identifier' },
+                    { data: 'Subject' },
                     { data: 'status', orderable: false, searchable: false },
-                    { data: 'created_by', orderable: false, searchable: false },
-                    { data: 'updated_by', orderable: false, searchable: false },
-                    { data: 'updated_at', orderable: false, searchable: false },
                     { data: 'options', orderable: false, searchable: false }
                 ],
                 order: [[1, 'desc']],
