@@ -593,9 +593,19 @@ body::before {
                 <li><i class="fas fa-mobile-alt"></i> Fully Responsive Design</li>
             </ul>
             
-            <div class="brand-footer">
-                <p>© 2025 KiwiTicketing. All rights reserved.</p>
-            </div>
+                       <div class="brand-footer">
+           <div class="p-a text-xs">
+              <div class="pull-right text-muted">
+                    &copy;<?php echo date("Y") ?> Copyright
+            <strong>KiwiTicketing {{ Helper::system_version() }}</strong>
+                    <a ui-scroll-to="content"><i class="fa fa-long-arrow-up p-x-sm"></i></a>
+        </div>
+        <div class="nav">
+            &nbsp;
+        </div>
+    </div>
+</div>
+
         </div>
     </div>
 

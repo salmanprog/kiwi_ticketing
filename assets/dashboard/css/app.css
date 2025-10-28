@@ -8077,7 +8077,7 @@ td .dker {
 }
 
 select.form-control:not([size]):not([multiple]) {
-    height: 2.375rem;
+    height: 3.375rem !important;
 }
 
 .sec-icon {

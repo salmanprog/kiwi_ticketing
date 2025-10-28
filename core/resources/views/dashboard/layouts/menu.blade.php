@@ -44,7 +44,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
             </a>
             <!-- brand -->
             <a class="navbar-brand" href="{{ route('adminHome') }}">
-                <img src="{{ asset('assets/dashboard/images/logo.png') }}" alt="Control">
+                <img src="{{ asset('assets/dashboard/images/favicon(kiwi).png') }}" alt="Control">
                 <span class="hidden-folded text-white inline">{{ __('Kiwi Ticketing') }}</span>
             </a>
             <!-- / brand -->
