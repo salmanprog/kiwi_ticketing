@@ -368,7 +368,7 @@
             <div class="section-modern">
                 <div class="section-title">
                     <i class="fas fa-info-circle"></i>
-                    {{ __('backend.basicInformation') }}
+                        Basic Information
                 </div>
                 
                 <div class="form-group-modern">
@@ -377,10 +377,10 @@
                         {!!  __('backend.title') !!}
                     </label>
                     <div style="flex: 1;">
-                        {!! Form::text('name','', array('placeholder' => __('backend.enterPermissionName'),'class' => 'form-control-modern','id'=>'name','required'=>'')) !!}
+                        {!! Form::text('name','', array('placeholder' => __('Permission Name'),'class' => 'form-control-modern','id'=>'name','required'=>'')) !!}
                         <div class="help-text">
                             <i class="fas fa-info-circle"></i>
-                            {{ __('backend.enterUniquePermissionName') }}
+                            Enter Unique Permission Name
                         </div>
                     </div>
                 </div>
@@ -396,7 +396,7 @@
                 <div class="form-group-modern">
                     <label class="form-label-modern">
                         <i class="fas fa-check-square"></i>
-                        {{ __('backend.selectSections') }}
+                         Select Sections
                     </label>
                     <div style="flex: 1;">
                         <div class="checkbox-modern-group">
@@ -425,7 +425,7 @@
                         </div>
                         <div class="help-text">
                             <i class="fas fa-lightbulb"></i>
-                            {{ __('backend.selectSectionsHelp') }}
+                            Select Sections Help
                         </div>
                     </div>
                 </div>

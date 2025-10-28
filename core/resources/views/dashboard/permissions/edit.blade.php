@@ -431,7 +431,7 @@
                 <div class="section-modern">
                     <div class="section-title">
                         <i class="fas fa-info-circle"></i>
-                        {{ __('backend.basicInformation') }}
+                        Basic Information
                     </div>
                     
                     <div class="form-group-modern">
@@ -476,7 +476,7 @@
                     <div class="form-group-modern">
                         <label class="form-label-modern">
                             <i class="fas fa-check-square"></i>
-                            {{ __('backend.selectSections') }}
+                            Select Sections
                         </label>
                         <div style="flex: 1;">
                             <div class="checkbox-modern-group">
