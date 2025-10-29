@@ -672,7 +672,7 @@ body::before {
         </form>
 
         <!-- Social Login Buttons -->
-        @if(config('smartend.facebook_status') || config('smartend.twitter_status') || config('smartend.google_status') || 
+        <!-- @if(config('smartend.facebook_status') || config('smartend.twitter_status') || config('smartend.google_status') || 
             config('smartend.linkedin_status') || config('smartend.github_status') || config('smartend.bitbucket_status'))
             <div class="social-divider">
                 <span>Or continue with</span>
@@ -715,10 +715,10 @@ body::before {
                     </a>
                 @endif
             </div>
-        @endif
+        @endif -->
 
         <!-- Additional Options -->
-        <div class="additional-options">
+        <!-- <div class="additional-options">
             @if(Helper::GeneralWebmasterSettings("register_status"))
                 <a href="{{ url('/'.config('smartend.backend_path').'/register') }}" class="register-btn">
                     <i class="fas fa-user-plus"></i> {{ __('backend.createNewAccount') }}
@@ -733,7 +733,7 @@ body::before {
              <a href="{{ url('/'.config('smartend.backend_path').'/password/reset') }}" class="forgot-link">
                 <i class="fas fa-key"></i> {{ __('backend.forgotPassword') }}
               </a>
-        </div>
+        </div> -->
 
         <div class="security-badge">
             <i class="fas fa-lock"></i>
