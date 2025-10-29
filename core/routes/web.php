@@ -3,9 +3,8 @@
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LanguageController;
-use App\Http\Controllers\SiteMapController;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,57 +19,36 @@ use Illuminate\Support\Facades\Route;
 
 // Language Route
 Route::post('/lang', [LanguageController::class, 'index'])->middleware('LanguageSwitcher')->name('lang');
-// For Language direct URL link
 Route::get('/lang/{lang}', [LanguageController::class, 'change'])->middleware('LanguageSwitcher')->name('langChange');
-Route::get('/locale/{lang}', [LanguageController::class, 'locale'])->middleware('LanguageSwitcher')->name('localeChange');
-// .. End of Language Route
-
-// Not Found
-Route::get('/{lang?}/404', [HomeController::class, 'page_404'])->name('NotFound');
-
-
-// RSS Feed Routes
-if (config('smartend.rss_status')) {
-    Route::feeds();
-}
 
 // Social Auth
 Route::get('/oauth/{driver}', [SocialAuthController::class, 'redirectToProvider'])->name('social.oauth');
 Route::get('/oauth/{driver}/callback', [SocialAuthController::class, 'handleProviderCallback'])->name('social.callback');
 
-Route::Group(['prefix' => config('smartend.backend_path')], function () {
+// ========== ROOT URL DIRECTLY ADMIN LOGIN PAR REDIRECT ==========
+Route::get('/', function () {
+    return redirect('/admin');
+});
+
+// ========== ADMIN AUTH ROUTES ==========
+Route::Group(['prefix' => 'admin'], function () {
     Auth::routes();
 });
 
-// Add your custom routes here
+// ========== PROTECTED ADMIN ROUTES ==========
+Route::middleware(['auth'])->prefix('admin')->group(function () {
+    Route::get('/admin', [App\Http\Controllers\HomeController::class, 'dashboard'])->name
+    ('admin.dashboard');
+    // ... baki admin panel routes
+});
 
+// ========== APIs FOR REACT FRONTEND ==========
+Route::prefix('api')->group(function () {
+    // APIs for React frontend
+});
 
-// Start of Frontend Routes
-// - site map
-Route::get('/sitemap.xml', [SiteMapController::class, 'siteMap'])->name('siteMap');
-Route::get('/{lang}/sitemap', [SiteMapController::class, 'siteMap'])->name('siteMapByLang');
+// ========== ALL OTHER URLs REDIRECT TO ADMIN LOGIN ==========
+Route::any('{any}', function () {
+    return redirect('/admin');
+})->where('any', '.*');
 
-// - Public form submit
-Route::post('/form-submit', [HomeController::class, 'form_submit'])->name('formSubmit');
-
-// - Newsletter form submit
-Route::post('/subscribe', [HomeController::class, 'subscribe_submit'])->name('subscribeSubmit');
-
-// - Comment form submit
-Route::post('/comment', [HomeController::class, 'comment_submit'])->name('commentSubmit');
-
-// - Order form submit
-Route::post('/order', [HomeController::class, 'order_submit'])->name('orderSubmit');
-
-// - Contact page form submit
-Route::post('/contact-submit', [HomeController::class, 'contact_submit'])->name('contactPageSubmit');
-
-// - Tags
-Route::get('/tag/{tag_slug?}', [HomeController::class, 'tag'])->name('tag');
-
-// - KabanaSetting
-Route::resource('kabanasetting', KabanaSettingController::class);
-
-// - All Other slugs
-Route::get('/{part1?}/{part2?}/{part3?}/{part4?}/{part5?}/{part6?}', [HomeController::class, 'seo'])->name("frontendRoute");
-// End of Frontend Route

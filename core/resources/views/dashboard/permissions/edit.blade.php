@@ -1,99 +1,491 @@
 @extends('dashboard.layouts.master')
 @section('title', __('backend.editPermissions'))
-@section('content')
-    <div class="padding">
-        <div class="box m-b-0">
-            <div class="box-header dker">
-                <h3><i class="material-icons">&#xe3c9;</i> {{ __('backend.editPermissions') }}</h3>
-                <small>
-                    <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-                    <a href="">{{ __('backend.settings') }}</a> /
-                    <a href="">{{ __('backend.usersPermissions') }}</a>
-                </small>
-            </div>
-            <div class="box-tool">
-                <ul class="nav">
-                    <li class="nav-item inline">
-                        <a class="nav-link" href="{{route("users")}}">
-                            <i class="material-icons md-18">×</i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+@push('after-styles')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Modern Green Theme */
+        :root {
+            --primary-green: #A0C242;
+            --primary-dark: #8AAE38;
+            --primary-light: #B8D46A;
+            --text-dark: #2c3e50;
+            --text-light: #6c757d;
+            --border-light: #e9ecef;
+            --bg-light: #f8f9fa;
+            --success-light: rgba(40, 167, 69, 0.1);
+            --danger-light: rgba(220, 53, 69, 0.1);
+            --info-light: rgba(23, 162, 184, 0.1);
+        }
 
-        <?php
-        $tab_1 = "active";
-        $tab_2 = "";
-        $tab_3 = "";
-        if (Session::has('tab')) {
-            if (Session::get('tab') == "home") {
-                $tab_1 = "";
-                $tab_2 = "active";
-                $tab_3 = "";
+        .modern-header {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 12px 12px 0 0;
+            margin-bottom: 0;
+            position: relative;
+        }
+
+        .modern-header h3 {
+            color: white;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .breadcrumb-modern {
+            background: transparent;
+            padding: 0;
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .breadcrumb-modern a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+        }
+
+        .breadcrumb-modern a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .modern-box {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-light);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        /* Tabs Modern */
+        .tabs-modern {
+            background: var(--bg-light);
+            border-bottom: 1px solid var(--border-light);
+            padding: 0 2rem;
+        }
+
+        .nav-tabs-modern {
+            display: flex;
+            gap: 0;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .nav-tab-modern {
+            padding: 1rem 1.5rem;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-tab-modern.active {
+            color: var(--primary-green);
+            border-bottom-color: var(--primary-green);
+            background: rgba(160, 194, 66, 0.05);
+        }
+
+        .nav-tab-modern:hover {
+            color: var(--primary-green);
+            background: rgba(160, 194, 66, 0.05);
+        }
+
+        .tab-content-modern {
+            padding: 2rem;
+        }
+
+        .tab-pane-modern {
+            display: none;
+        }
+
+        .tab-pane-modern.active {
+            display: block;
+        }
+
+        /* Form Styles */
+        .form-group-modern {
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .form-label-modern {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            flex: 0 0 250px;
+            padding-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-control-modern {
+            border: 2px solid var(--border-light);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+            width: 100%;
+        }
+
+        .form-control-modern:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(160, 194, 66, 0.1);
+            background: white;
+            outline: none;
+        }
+
+        /* Checkbox and Radio Modern Styles */
+        .checkbox-modern-group {
+            background: var(--bg-light);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .checkbox-item-modern {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .checkbox-item-modern:hover {
+            border-color: var(--primary-green);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .checkbox-item-modern input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkmark {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-light);
+            border-radius: 4px;
+            margin-right: 12px;
+            position: relative;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .checkbox-item-modern input[type="checkbox"]:checked + .checkmark {
+            background: var(--primary-green);
+            border-color: var(--primary-green);
+        }
+
+        .checkbox-item-modern input[type="checkbox"]:checked + .checkmark::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-size: 12px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Radio Group Styles */
+        .radio-group-modern {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .radio-item-modern {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            background: white;
+            border: 2px solid var(--border-light);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .radio-item-modern:hover {
+            border-color: var(--primary-green);
+        }
+
+        .radio-item-modern input[type="radio"] {
+            display: none;
+        }
+
+        .radiomark {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--border-light);
+            border-radius: 50%;
+            margin-right: 10px;
+            position: relative;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .radio-item-modern input[type="radio"]:checked + .radiomark {
+            border-color: var(--primary-green);
+        }
+
+        .radio-item-modern input[type="radio"]:checked + .radiomark::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--primary-green);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .radio-item-modern.checked {
+            border-color: var(--primary-green);
+        }
+
+        .radio-item-modern.checked .radio-label {
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        /* Button Styles */
+        .btn-modern-primary {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-dark) 100%);
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 2rem;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .btn-modern-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(160, 194, 66, 0.3);
+            color: white;
+        }
+
+        .btn-modern-default {
+            background: white;
+            border: 2px solid var(--border-light);
+            border-radius: 8px;
+            padding: 0.75rem 2rem;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-modern-default:hover {
+            border-color: var(--primary-green);
+            color: var(--primary-green);
+            transform: translateY(-1px);
+        }
+
+        .form-actions {
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-light);
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        /* Section Styles */
+        .section-modern {
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--primary-green);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .form-group-modern {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .form-label-modern {
+                flex: none;
+                margin-bottom: 0.75rem;
+            }
+            
+            .checkbox-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .radio-group-modern {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .btn-modern-primary,
+            .btn-modern-default {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .nav-tabs-modern {
+                flex-direction: column;
+            }
+            
+            .nav-tab-modern {
+                justify-content: center;
             }
         }
-        ?>
-        <div class="box nav-active-border b-info">
-            <ul class="nav nav-md">
-                <li class="nav-item inline">
-                    <a class="nav-link {{ $tab_1 }}" data-toggle="tab" data-target="#tab_details">
-                        <span class="text-md"><i class="material-icons">
-                                &#xe31e;</i> {{ __('backend.editPermissions') }}</span>
-                    </a>
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modern-box {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+@endpush
+
+@section('content')
+<div class="padding">
+    <div class="modern-box">
+        <!-- Header Section -->
+        <div class="modern-header">
+            <h3><i class="fas fa-edit"></i> {{ __('backend.editPermissions') }}</h3>
+            <nav class="breadcrumb-modern">
+                <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
+                <a href="">{{ __('backend.settings') }}</a> /
+                <a href="">{{ __('backend.usersPermissions') }}</a>
+            </nav>
+        </div>
+
+        <!-- Tabs Section -->
+        <!-- <div class="tabs-modern">
+            <ul class="nav-tabs-modern">
+                <li class="nav-tab-modern active" data-tab="tab_details">
+                    <i class="fas fa-edit"></i>
+                    <span>{{ __('backend.editPermissions') }}</span>
                 </li>
-                <li class="nav-item inline" style="display:none;">
-                    <a class="nav-link  {{ $tab_2 }}" data-toggle="tab" data-target="#tab_custom">
-                    <span class="text-md"><i class="material-icons">
-                            &#xe31f;</i> {{ __('backend.customHome') }}</span>
-                    </a>
+                <li class="nav-tab-modern" data-tab="tab_custom" style="display: none;">
+                    <i class="fas fa-home"></i>
+                    <span>{{ __('backend.customHome') }}</span>
                 </li>
             </ul>
-            <div class="tab-content clear b-t">
-                <div class="tab-pane  {{ $tab_1 }}" id="tab_details">
-                    <div class="box-body">
-                        {{Form::open(['route'=>['permissionsUpdate',$Permissions->id],'method'=>'POST'])}}
-                        <div class="form-group row">
-                            <label for="name"
-                                   class="col-sm-2 form-control-label">{!!  __('backend.title') !!}
-                            </label>
-                            <div class="col-sm-10">
-                                {!! Form::text('name',$Permissions->name, array('placeholder' => '','class' => 'form-control','id'=>'name','required'=>'')) !!}
+        </div> -->
+
+        <!-- Tab Content -->
+        <div class="tab-content-modern">
+            <!-- Details Tab -->
+            <div class="tab-pane-modern active" id="tab_details">
+                {{ Form::open(['route'=>['permissionsUpdate',$Permissions->id],'method'=>'POST', 'class' => 'modern-form']) }}
+
+                <!-- Basic Information Section -->
+                <div class="section-modern">
+                    <div class="section-title">
+                        <i class="fas fa-info-circle"></i>
+                        Basic Information
+                    </div>
+                    
+                    <div class="form-group-modern">
+                        <label for="name" class="form-label-modern">
+                            <i class="fas fa-tag"></i>
+                            {!!  __('backend.title') !!}
+                        </label>
+                        <div style="flex: 1;">
+                            {!! Form::text('name',$Permissions->name, array('placeholder' => __('backend.enterPermissionName'),'class' => 'form-control-modern','id'=>'name','required'=>'')) !!}
+                        </div>
+                    </div>
+
+                    <div class="form-group-modern">
+                        <label class="form-label-modern">
+                            <i class="fas fa-toggle-on"></i>
+                            {!!  __('backend.status') !!}
+                        </label>
+                        <div style="flex: 1;">
+                            <div class="radio-group-modern">
+                                <label class="radio-item-modern {{ $Permissions->status == 1 ? 'checked' : '' }}">
+                                    {!! Form::radio('status','1',($Permissions->status==1) ? true : false, array('id' => 'status1')) !!}
+                                    <span class="radiomark"></span>
+                                    <span class="radio-label">{{ __('backend.active') }}</span>
+                                </label>
+                                <label class="radio-item-modern {{ $Permissions->status == 0 ? 'checked' : '' }}">
+                                    {!! Form::radio('status','0',($Permissions->status==0) ? true : false, array('id' => 'status2')) !!}
+                                    <span class="radiomark"></span>
+                                    <span class="radio-label">{{ __('backend.notActive') }}</span>
+                                </label>
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        <div class="form-group row" style="display:none;">
-                            <label for="permissions1"
-                                   class="col-sm-2 form-control-label">{!!  __('backend.dataManagements') !!}</label>
-                            <div class="col-sm-10">
-                                <div class="radio">
-                                    <label class="ui-check ui-check-md" style="margin-bottom: 5px;">
-                                        {!! Form::radio('view_status','1',($Permissions->view_status==1) ? true : false, array('id' => 'view_status1','class'=>'has-value')) !!}
-                                        <i class="dark-white"></i>
-                                        {{ __('backend.dataManagements1') }}
-                                    </label>
-                                    <br>
-                                    <label class="ui-check ui-check-md" style="margin-bottom: 5px;">
-                                        {!! Form::radio('view_status','0',($Permissions->view_status==0) ? true : false, array('id' => 'view_status2','class'=>'has-value')) !!}
-                                        <i class="dark-white"></i>
-                                        {{ __('backend.dataManagements2') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="form-group row">
-                            <label for="data_sections0"
-                                   class="col-sm-2 form-control-label">{!!  __('backend.activeSiteSections') !!}
-                            </label>
-                            <div class="col-sm-10">
-                                <div class="b-a p-x p-t">
-                                <div class="row">
+                <!-- Site Sections Permissions -->
+                <div class="section-modern">
+                    <div class="section-title">
+                        <i class="fas fa-sitemap"></i>
+                        {!!  __('backend.activeSiteSections') !!}
+                    </div>
+                    
+                    <div class="form-group-modern">
+                        <label class="form-label-modern">
+                            <i class="fas fa-check-square"></i>
+                            Select Sections
+                        </label>
+                        <div style="flex: 1;">
+                            <div class="checkbox-modern-group">
+                                <div class="checkbox-grid">
                                     <?php
                                     $i = 0;
                                     $title_var = "title_" . @Helper::currentLanguage()->code;
                                     $title_var2 = "title_" . config('smartend.default_language');
+                                    $data_sections_arr = explode(",", $Permissions->data_sections);
                                     ?>
                                     @foreach($GeneralWebmasterSections as $WebSection)
                                         <?php
@@ -102,440 +494,168 @@
                                         } else {
                                             $WSectionTitle = $WebSection->$title_var2;
                                         }
-
-                                        $data_sections_arr = explode(",", $Permissions->data_sections);
+                                        $isChecked = in_array($WebSection->id, $data_sections_arr);
                                         ?>
-                                        <div class="col-sm-4">
-                                            <div class="checkbox">
-                                                <label class="ui-check">
-                                                    {!! Form::checkbox('data_sections[]',$WebSection->id,(in_array($WebSection->id,$data_sections_arr)) ? true : false, array('id' => 'data_sections'.$i)) !!}
-                                                    <i class="dark-white"></i><label
-                                                        for="data_sections{{$i}}">{!! $WSectionTitle !!}</label>
-                                                </label>
-                                            </div>
-                                        </div>
+                                        <label class="checkbox-item-modern {{ $isChecked ? 'checked' : '' }}">
+                                            {!! Form::checkbox('data_sections[]',$WebSection->id, $isChecked, array('id' => 'data_sections'.$i)) !!}
+                                            <span class="checkmark"></span>
+                                            <span class="checkbox-label">{!! $WSectionTitle !!}</span>
+                                        </label>
                                         <?php $i++; ?>
                                     @endforeach
-
-                                </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="form-group row" style="display:none;">
-                            <label for="analytics_status"
-                                   class="col-sm-2 form-control-label">{!!  __('backend.activeApps') !!}
-                            </label>
-                            <div class="col-sm-10">
-                                <div class="b-a p-x p-t">
-                                    <div class="row">
-
-                                        <div class="col-sm-4">
-                                            <div class="checkbox">
-                                                <label class="ui-check">
-                                                    {!! Form::checkbox('analytics_status','1',($Permissions->analytics_status==1) ? true : false, array('id' => 'analytics_status')) !!}
-                                                    <i class="dark-white"></i><label
-                                                        for="analytics_status">{{ __('backend.visitorsAnalytics') }}</label>
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-4">
-                                            <div class="checkbox">
-                                                <label class="ui-check">
-                                                    {!! Form::checkbox('newsletter_status','1',($Permissions->newsletter_status==1) ? true : false, array('id' => 'newsletter_status')) !!}
-                                                    <i class="dark-white"></i><label
-                                                        for="newsletter_status">{{ __('backend.newsletter') }}</label>
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-4">
-                                            <div class="checkbox">
-                                                <label class="ui-check">
-                                                    {!! Form::checkbox('inbox_status','1',($Permissions->inbox_status==1) ? true : false, array('id' => 'inbox_status')) !!}
-                                                    <i class="dark-white"></i><label
-                                                        for="inbox_status">{{ __('backend.siteInbox') }}</label>
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-4">
-                                            <div class="checkbox">
-                                                <label class="ui-check">
-                                                    {!! Form::checkbox('calendar_status','1',($Permissions->calendar_status==1) ? true : false, array('id' => 'calendar_status')) !!}
-                                                    <i class="dark-white"></i><label
-                                                        for="calendar_status">{{ __('backend.calendar') }}</label>
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-4">
-                                            <div class="checkbox">
-                                                <label class="ui-check">
-                                                    {!! Form::checkbox('banners_status','1',($Permissions->banners_status==1) ? true : false, array('id' => 'banners_status')) !!}
-                                                    <i class="dark-white"></i><label
-                                                        for="banners_status">{{ __('backend.adsBanners') }}</label>
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-4">
-                                            <div class="checkbox">
-                                                <label class="ui-check">
-                                                    {!! Form::checkbox('popups_status','1',($Permissions->popups_status==1) ? true : false, array('id' => 'popups_status')) !!}
-                                                    <i class="dark-white"></i><label
-                                                        for="popups_status">{{ __('backend.popups') }}</label>
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-4">
-                                            <div class="checkbox">
-                                                <label class="ui-check">
-                                                    {!! Form::checkbox('tags_status','1',($Permissions->tags_status==1) ? true : false, array('id' => 'tags_status')) !!}
-                                                    <i class="dark-white"></i><label
-                                                        for="tags_status">{{ __('backend.tags') }}</label>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="checkbox">
-                                                <label class="ui-check">
-                                                    {!! Form::checkbox('menus_status','1',($Permissions->menus_status==1) ? true : false, array('id' => 'menus_status')) !!}
-                                                    <i class="dark-white"></i><label
-                                                        for="menus_status">{{ __('backend.siteMenus') }}</label>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="checkbox">
-                                                <label class="ui-check">
-                                                    {!! Form::checkbox('file_manager_status','1',($Permissions->file_manager_status==1) ? true : false, array('id' => 'file_manager_status')) !!}
-                                                    <i class="dark-white"></i><label
-                                                        for="file_manager_status">{{ __('backend.fileManager') }}</label>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="checkbox">
-                                                <label class="ui-check">
-                                                    {!! Form::checkbox('roles_status','1',($Permissions->roles_status==1) ? true : false, array('id' => 'roles_status')) !!}
-                                                    <i class="dark-white"></i><label
-                                                        for="roles_status">{{ __('backend.usersPermissions') }}</label>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="checkbox">
-                                                <label class="ui-check">
-                                                    {!! Form::checkbox('settings_status','1',($Permissions->settings_status==1) ? true : false, array('id' => 'settings_status')) !!}
-                                                    <i class="dark-white"></i><label
-                                                        for="settings_status">{{ __('backend.generalSiteSettings') }}</label>
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-4">
-                                            <div class="checkbox">
-                                                <label class="ui-check">
-                                                    {!! Form::checkbox('webmaster_status','1',($Permissions->webmaster_status==1) ? true : false, array('id' => 'webmaster_status')) !!}
-                                                    <i class="dark-white"></i><label
-                                                        for="webmaster_status">{{ __('backend.generalSettings') }}</label>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="checkbox">
-                                                <label class="ui-check">
-                                                    {!! Form::checkbox('modules_status','1',($Permissions->modules_status==1) ? true : false, array('id' => 'modules_status')) !!}
-                                                    <i class="dark-white"></i><label
-                                                        for="modules_status">{{ __('backend.siteSectionsSettings') }}</label>
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group row" style="display:none;">
-                            <label for="add_status1"
-                                   class="col-sm-2 form-control-label">{!!  __('backend.topicsStatus') !!}</label>
-                            <div class="col-sm-10">
-                                <div class="radio">
-                                    <label class="ui-check ui-check-md" style="margin-bottom: 5px;">
-                                        {!! Form::radio('active_status','1',($Permissions->active_status==1) ? true : false, array('id' => 'active_status1','class'=>'has-value')) !!}
-                                        <i class="dark-white"></i>
-                                        {{ __('backend.active') }}
-                                    </label>
-                                    &nbsp; &nbsp;
-                                    <label class="ui-check ui-check-md" style="margin-bottom: 5px;">
-                                        {!! Form::radio('active_status','0',($Permissions->active_status==0) ? true : false, array('id' => 'active_status2','class'=>'has-value')) !!}
-                                        <i class="dark-white"></i>
-                                        {{ __('backend.notActive') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group row" style="display:none;">
-                            <label for="add_status1"
-                                   class="col-sm-2 form-control-label">{!!  __('backend.addPermission') !!}</label>
-                            <div class="col-sm-10">
-                                <div class="radio">
-                                    <label class="ui-check ui-check-md" style="margin-bottom: 5px;">
-                                        {!! Form::radio('add_status','1',($Permissions->add_status==1) ? true : false, array('id' => 'add_status1','class'=>'has-value')) !!}
-                                        <i class="dark-white"></i>
-                                        {{ __('backend.yes') }}
-                                    </label>
-                                    &nbsp; &nbsp;
-                                    <label class="ui-check ui-check-md" style="margin-bottom: 5px;">
-                                        {!! Form::radio('add_status','0',($Permissions->add_status==0) ? true : false, array('id' => 'add_status2','class'=>'has-value')) !!}
-                                        <i class="dark-white"></i>
-                                        {{ __('backend.no') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group row" style="display:none;">
-                            <label for="edit_status1"
-                                   class="col-sm-2 form-control-label">{!!  __('backend.editPermission') !!}</label>
-                            <div class="col-sm-10">
-                                <div class="radio">
-                                    <label class="ui-check ui-check-md" style="margin-bottom: 5px;">
-                                        {!! Form::radio('edit_status','1',($Permissions->edit_status==1) ? true : false, array('id' => 'edit_status1','class'=>'has-value')) !!}
-                                        <i class="dark-white"></i>
-                                        {{ __('backend.yes') }}
-                                    </label>
-                                    &nbsp; &nbsp;
-                                    <label class="ui-check ui-check-md" style="margin-bottom: 5px;">
-                                        {!! Form::radio('edit_status','0',($Permissions->edit_status==0) ? true : false, array('id' => 'edit_status2','class'=>'has-value')) !!}
-                                        <i class="dark-white"></i>
-                                        {{ __('backend.no') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group row" style="display:none;">
-                            <label for="delete_status1"
-                                   class="col-sm-2 form-control-label">{!!  __('backend.deletePermission') !!}</label>
-                            <div class="col-sm-10">
-                                <div class="radio">
-                                    <label class="ui-check ui-check-md" style="margin-bottom: 5px;">
-                                        {!! Form::radio('delete_status','1',($Permissions->delete_status==1) ? true : false, array('id' => 'delete_status1','class'=>'has-value')) !!}
-                                        <i class="dark-white"></i>
-                                        {{ __('backend.yes') }}
-                                    </label>
-                                    &nbsp; &nbsp;
-                                    <label class="ui-check ui-check-md" style="margin-bottom: 5px;">
-                                        {!! Form::radio('delete_status','0',($Permissions->delete_status==0) ? true : false, array('id' => 'delete_status2','class'=>'has-value')) !!}
-                                        <i class="dark-white"></i>
-                                        {{ __('backend.no') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="link_status"
-                                   class="col-sm-2 form-control-label">{!!  __('backend.status') !!}</label>
-                            <div class="col-sm-10">
-                                <div class="radio">
-                                    <label class="ui-check ui-check-md">
-                                        {!! Form::radio('status','1',($Permissions->status==1) ? true : false, array('id' => 'status1','class'=>'has-value')) !!}
-                                        <i class="dark-white"></i>
-                                        {{ __('backend.active') }}
-                                    </label>
-                                    &nbsp; &nbsp;
-                                    <label class="ui-check ui-check-md">
-                                        {!! Form::radio('status','0',($Permissions->status==0) ? true : false, array('id' => 'status2','class'=>'has-value')) !!}
-                                        <i class="dark-white"></i>
-                                        {{ __('backend.notActive') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row m-t-md">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-lg btn-primary  m-t"><i class="material-icons">
-                                        &#xe31b;</i> {!! __('backend.update') !!}</button>
-                                <a href="{{route("users")}}"
-                                   class="btn btn-lg btn-default m-t"><i class="material-icons">
-                                        &#xe5cd;</i> {!! __('backend.cancel') !!}</a>
-                            </div>
-                        </div>
-                        {{Form::close()}}
                     </div>
                 </div>
 
-                <div class="tab-pane  {{ $tab_2 }}" id="tab_custom">
-                    <div class="box-body">
-                        @include('dashboard.permissions.home.custom')
+                <!-- Application Permissions (Hidden but styled) -->
+                <div class="section-modern" style="display: none;">
+                    <div class="section-title">
+                        <i class="fas fa-th-large"></i>
+                        {!!  __('backend.activeApps') !!}
+                    </div>
+                    
+                    <div class="form-group-modern">
+                        <label class="form-label-modern">
+                            <i class="fas fa-plug"></i>
+                            {{ __('backend.applicationAccess') }}
+                        </label>
+                        <div style="flex: 1;">
+                            <div class="checkbox-modern-group">
+                                <div class="checkbox-grid">
+                                    <!-- Analytics -->
+                                    <label class="checkbox-item-modern {{ $Permissions->analytics_status == 1 ? 'checked' : '' }}">
+                                        {!! Form::checkbox('analytics_status','1',($Permissions->analytics_status==1) ? true : false, array('id' => 'analytics_status')) !!}
+                                        <span class="checkmark"></span>
+                                        <span class="checkbox-label">{{ __('backend.visitorsAnalytics') }}</span>
+                                    </label>
+
+                                    <!-- Newsletter -->
+                                    <label class="checkbox-item-modern {{ $Permissions->newsletter_status == 1 ? 'checked' : '' }}">
+                                        {!! Form::checkbox('newsletter_status','1',($Permissions->newsletter_status==1) ? true : false, array('id' => 'newsletter_status')) !!}
+                                        <span class="checkmark"></span>
+                                        <span class="checkbox-label">{{ __('backend.newsletter') }}</span>
+                                    </label>
+
+                                    <!-- Add other checkboxes similarly -->
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="submit" class="btn-modern-primary">
+                        <i class="fas fa-save"></i>
+                        {!! __('backend.update') !!}
+                    </button>
+                    <a href="{{ route('users') }}" class="btn-modern-default">
+                        <i class="fas fa-times"></i>
+                        {!! __('backend.cancel') !!}
+                    </a>
+                </div>
+
+                {{ Form::close() }}
             </div>
 
+            <!-- Custom Tab (Hidden) -->
+            <div class="tab-pane-modern" id="tab_custom" style="display: none;">
+                <div class="box-body">
+                    @include('dashboard.permissions.home.custom')
+                </div>
+            </div>
         </div>
     </div>
+</div>
 @endsection
 
-@push("after-scripts")
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#home_status2").click(function () {
-                $("#home_details_div").css("display", "none");
+@push('after-scripts')
+<script>
+    // Tab functionality
+    document.querySelectorAll('.nav-tab-modern').forEach(tab => {
+        tab.addEventListener('click', function() {
+            const tabId = this.getAttribute('data-tab');
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.nav-tab-modern').forEach(t => {
+                t.classList.remove('active');
             });
-            $("#home_status1").click(function () {
-                $("#home_details_div").css("display", "block");
+            
+            // Add active class to clicked tab
+            this.classList.add('active');
+            
+            // Hide all tab panes
+            document.querySelectorAll('.tab-pane-modern').forEach(pane => {
+                pane.classList.remove('active');
             });
-
-            $('#btn_update_form').submit(function (evt) {
-                evt.preventDefault();
-                $('#link_update_submit').html("<img src=\"{{ asset('assets/dashboard/images/loading.gif') }}\" style=\"height: 25px\"/> {!! __('backend.add') !!}");
-                $('#link_update_submit').prop('disabled', true);
-                var formData = new FormData(this);
-                var xhr = $.ajax({
-                    type: "POST",
-                    url: "<?php echo route("customLinksUpdate"); ?>",
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    success: function (result) {
-                        $('#btn_edit_errors').find("ul").html('');
-                        if (result.stat == 'success') {
-                            $('#btn_edit_errors').hide();
-                            document.getElementById("btn_update_form").reset();
-                            $('#link_edit').modal('hide');
-                            list_btns();
-                        } else {
-                            $.each(result.error, function (key, value) {
-                                $('#btn_edit_errors').find("ul").append('<li>' + value + '</li>');
-                            });
-                        }
-                        $('#link_update_submit').html("<i class=\"material-icons\">&#xe31b;</i> {!! __('backend.save') !!}");
-                        $('#link_update_submit').prop('disabled', false);
-                    }
-                });
-                console.log(xhr);
-                return false;
-            });
-            $('#btn_add_form').submit(function (evt) {
-                evt.preventDefault();
-                $('#btn_add_form_submit').html("<img src=\"{{ asset('assets/dashboard/images/loading.gif') }}\" style=\"height: 25px\"/> {!! __('backend.add') !!}");
-                $('#btn_add_form_submit').prop('disabled', true);
-                var formData = new FormData(this);
-                var xhr = $.ajax({
-                    type: "POST",
-                    url: "<?php echo route("customLinksStore"); ?>",
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    success: function (result) {
-                        $('#btn_add_errors').find("ul").html('');
-                        if (result.stat == 'success') {
-                            $('#btn_add_errors').hide();
-                            document.getElementById("btn_add_form").reset();
-                            $('#link_add').modal('hide');
-                            list_btns();
-                        } else {
-                            $('#btn_add_errors').css('display', 'block');
-                            $.each(result.error, function (key, value) {
-                                $('#btn_add_errors').find("ul").append('<li>' + value + '</li>');
-                            });
-                        }
-                        $('#btn_add_form_submit').html("{!! __('backend.add') !!}");
-                        $('#btn_add_form_submit').prop('disabled', false);
-                    }
-                });
-                console.log(xhr);
-                return false;
-            });
-            list_btns();
-
-            $('#btns_delete_btn').click(function () {
-                $(this).html("<img src=\"{{ asset('assets/dashboard/images/loading.gif') }}\" style=\"height: 25px\"/> {!! __('backend.yes') !!}");
-                var row_id = $(this).attr('row-id');
-                if (row_id != "") {
-                    $.ajax({
-                        type: "GET",
-                        url: "<?php echo route("customLinksDestroy"); ?>/" + row_id + "/{{ $Permissions->id }}",
-                        success: function (result) {
-                            if (result.stat == 'success') {
-                                $('#btns_delete_btn').html("{!! __('backend.yes') !!}");
-                                $('#btns-delete').modal('hide');
-                                $('.modal-backdrop').hide();
-                                list_btns();
-                            }
-                        }
-                    });
-                }
-            });
+            
+            // Show selected tab pane
+            document.getElementById(tabId).classList.add('active');
         });
+    });
 
-        function list_btns() {
-            $('#buttons_list').html("<div class=\"text-center\"><img class=\"m-b-1\" src=\"{{ asset('assets/dashboard/images/loading.gif') }}\" style=\"height: 35px;\"/></div>");
-            $.get("{{ route("customLinksList") }}/{{ $Permissions->id }}", function (data) {
-                $('#buttons_list').html(data);
-            });
+    // Checkbox functionality
+    document.querySelectorAll('.checkbox-item-modern').forEach(item => {
+        // Initialize checked state
+        const checkbox = item.querySelector('input[type="checkbox"]');
+        if (checkbox.checked) {
+            item.classList.add('checked');
         }
 
-        function setToDelLink(rid) {
-            $("#btns_delete_btn").attr("row-id", rid);
-            $('#btns-delete').modal('show');
-        }
+        item.addEventListener('click', function() {
+            checkbox.checked = !checkbox.checked;
+            this.classList.toggle('checked');
+            
+            // Add visual feedback
+            this.style.transform = 'translateY(-2px)';
+            setTimeout(() => {
+                this.style.transform = 'translateY(0)';
+            }, 150);
+        });
+    });
 
-        function setToEditLink(rid) {
-            $('#link_edit').modal('show');
-            $('#buttons_edit_details').html("<div class=\"text-center\"><img class=\"m-b-1\" src=\"{{ asset('assets/dashboard/images/loading.gif') }}\" style=\"height: 35px;\"/></div>");
-            $.get("{{ route("customLinksEdit") }}/" + rid + "/{{ $Permissions->id }}", function (data) {
-                $('#buttons_edit_details').html(data);
-            });
-        }
-    </script>
-
-    <script src="{{ asset("assets/dashboard/js/summernote/dist/summernote.js") }}"></script>
-    <script>
-        function sendFile(file, editor, welEditable, lang) {
-            data = new FormData();
-            data.append("file", file);
-            data.append("_token", "{{csrf_token()}}");
-            $.ajax({
-                data: data,
-                type: 'POST',
-                xhr: function () {
-                    var myXhr = $.ajaxSettings.xhr();
-                    if (myXhr.upload) myXhr.upload.addEventListener('progress', progressHandlingFunction, false);
-                    return myXhr;
-                },
-                url: "{{ route("topicsPhotosUpload") }}",
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (url) {
-                    var image = $('<img>').attr('src', '{{ asset("uploads/topics/") }}/' + url);
-                    @foreach(Helper::languagesList() as $ActiveLanguage)
-                        @if($ActiveLanguage->box_status)
-                    if (lang == "{{ $ActiveLanguage->code }}") {
-                        $('.summernote_{{ $ActiveLanguage->code }}').summernote("insertNode", image[0]);
-                    }
-                    @endif
-                    @endforeach
-                }
-            });
-        }
-
-        // update progress bar
-        function progressHandlingFunction(e) {
-            if (e.lengthComputable) {
-                $('progress').attr({value: e.loaded, max: e.total});
-                // reset progress on complete
-                if (e.loaded == e.total) {
-                    $('progress').attr('value', '0.0');
-                }
+    // Radio button functionality
+    document.querySelectorAll('.radio-item-modern').forEach(item => {
+        item.addEventListener('click', function() {
+            const radio = this.querySelector('input[type="radio"]');
+            if (!radio.checked) {
+                radio.checked = true;
+                
+                // Remove checked state from siblings
+                const name = radio.getAttribute('name');
+                document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+                    r.closest('.radio-item-modern').classList.remove('checked');
+                });
+                
+                // Add checked state to current
+                this.classList.add('checked');
+                
+                // Add visual feedback
+                this.style.transform = 'translateY(-2px)';
+                setTimeout(() => {
+                    this.style.transform = 'translateY(0)';
+                }, 150);
             }
-        }
-    </script>
+        });
+    });
+
+    // Form submission enhancement
+    document.querySelector('.modern-form').addEventListener('submit', function(e) {
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+        submitBtn.disabled = true;
+        
+        // Re-enable after 3 seconds if form doesn't submit (fallback)
+        setTimeout(() => {
+            if (submitBtn.disabled) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        }, 3000);
+    });
+</script>
 @endpush

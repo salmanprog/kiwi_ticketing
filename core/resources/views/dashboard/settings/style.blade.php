@@ -1,23 +1,37 @@
-<div class="tab-pane {{  ( Session::get('active_tab') == 'styleTab' || Session::get('active_tab') =="") ? 'active' : '' }}" id="tab-5">
-    <div class="p-a-md"><h5><i class="material-icons">&#xe41d;</i>
-            &nbsp; {!!  __('backend.styleSettings') !!}</h5></div>
+<div class="tab-pane {{ (Session::get('active_tab') == 'styleTab' || Session::get('active_tab') == '') ? 'active' : '' }}" id="tab-5">
+    <div class="p-a-md">
+        <h5 style="display: flex; align-items: center; gap: 10px; color: #2c3e50; font-weight: 600; margin-bottom: 1.5rem;">
+            <i class="fas fa-palette" style="color: #A0C242;"></i>
+            {!! __('backend.styleSettings') !!}
+        </h5>
+    </div>
+    
     <div class="p-a-md col-md-12">
-
         <div class="form-group row">
             @foreach(Helper::languagesList() as $ActiveLanguage)
-                <div class="col-sm-6 m-b-2">
-                    <label>{!!  __('backend.siteLogo') !!}</label> {!! @Helper::languageName($ActiveLanguage) !!}
+                <div class="col-sm-6 m-b-2" style="margin-bottom: 2rem;">
+                    <label style="font-weight: 600; color: #2c3e50; margin-bottom: 0.75rem; display: block;">
+                        {!! __('backend.siteLogo') !!} 
+                        <span style="background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%); color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 8px;">
+                            {!! @Helper::languageName($ActiveLanguage) !!}
+                        </span>
+                    </label>
+                    
                     @if($Setting->{'style_logo_'.@$ActiveLanguage->code}!="")
                         <div class="row">
                             <div class="col-sm-12">
-                                <div class="col-sm-12 box p-a-xs text-center">
+                                <div class="col-sm-12" style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; border: 2px dashed #e9ecef; margin-bottom: 1rem; text-align: center;">
                                     <a target="_blank"
-                                       href="{{ asset('uploads/settings/'.$Setting->{'style_logo_'.@$ActiveLanguage->code}) }}"><img
-                                            src="{{ asset('uploads/settings/'.$Setting->{'style_logo_'.@$ActiveLanguage->code}) }}"
-                                            class="img-responsive" id="style_logo_{{ @$ActiveLanguage->code }}_prv"
-                                            style="width: auto;max-width: 260px;max-height: 60px">
+                                       href="{{ asset('uploads/settings/'.$Setting->{'style_logo_'.@$ActiveLanguage->code}) }}" 
+                                       style="text-decoration: none; color: inherit;">
+                                        <img src="{{ asset('uploads/settings/'.$Setting->{'style_logo_'.@$ActiveLanguage->code}) }}"
+                                             class="img-responsive" 
+                                             id="style_logo_{{ @$ActiveLanguage->code }}_prv"
+                                             style="width: auto; max-width: 260px; max-height: 60px; margin: 0 auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                                         <br>
-                                        <small>{{ $Setting->{'style_logo_'.@$ActiveLanguage->code} }}</small>
+                                        <small style="color: #6c757d; font-size: 0.85rem; margin-top: 0.5rem; display: inline-block; background: white; padding: 4px 12px; border-radius: 16px; border: 1px solid #e9ecef;">
+                                            {{ $Setting->{'style_logo_'.@$ActiveLanguage->code} }}
+                                        </small>
                                     </a>
                                 </div>
                             </div>
@@ -25,27 +39,45 @@
                     @else
                         <div class="row">
                             <div class="col-sm-12">
-                                <div class="col-sm-12 box p-a-xs text-center">
-                                    <img
-                                        src="{{ asset('uploads/settings/nologo.png') }}"
-                                        class="img-responsive" id="style_logo_{{ @$ActiveLanguage->code }}_prv"
-                                        style="width: auto;max-width: 260px;max-height: 60px">
+                                <div class="col-sm-12" style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; border: 2px dashed #e9ecef; margin-bottom: 1rem; text-align: center;">
+                                    <img src="{{ asset('uploads/settings/nologo.png') }}"
+                                         class="img-responsive" 
+                                         id="style_logo_{{ @$ActiveLanguage->code }}_prv"
+                                         style="width: auto; max-width: 260px; max-height: 60px; margin: 0 auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); opacity: 0.6;">
                                     <br>
-                                    <small>nologo.png</small>
-
+                                    <small style="color: #6c757d; font-size: 0.85rem; margin-top: 0.5rem; display: inline-block; background: white; padding: 4px 12px; border-radius: 16px; border: 1px solid #e9ecef;">
+                                        nologo.png
+                                    </small>
                                 </div>
                             </div>
                         </div>
                     @endif
-                    {!! Form::file('style_logo_'.@$ActiveLanguage->code, array('class' => 'form-control','id'=>'style_logo_'.@$ActiveLanguage->code,'accept'=>'image/*')) !!}
-                    <small>
-                        <i class="material-icons">&#xe8fd;</i>( 260x60 px ) -
-                        {!!  __('backend.imagesTypes') !!}
+                    
+                    <div style="position: relative; margin-bottom: 0.5rem;">
+                        {!! Form::file('style_logo_'.@$ActiveLanguage->code, array(
+                            'class' => 'form-control',
+                            'id'=>'style_logo_'.@$ActiveLanguage->code,
+                            'accept'=>'image/*',
+                            'style' => 'position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer;'
+                        )) !!}
+                        <label for="style_logo_{{ @$ActiveLanguage->code }}" 
+                               style="display: flex; align-items: center; gap: 10px; padding: 0.75rem 1rem; background: white; border: 2px dashed #A0C242; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; margin: 0;">
+                            <i class="fas fa-cloud-upload-alt" style="color: #A0C242;"></i>
+                            <span style="color: #5A6E1E; font-weight: 500;">Choose new logo file</span>
+                        </label>
+                    </div>
+                    
+                    <small style="display: flex; align-items: center; gap: 6px; color: #6c757d; font-size: 0.85rem;">
+                        <i class="fas fa-info-circle" style="color: #A0C242;"></i>
+                        ( 260x60 px ) - {!! __('backend.imagesTypes') !!}
                     </small>
                 </div>
             @endforeach
         </div>
-        <hr>
+    
+
+
+
         <!-- <div class="form-group row">
             <div class="col-sm-6">
                 <label for="style_fav">{!!  __('backend.favicon') !!}</label>
