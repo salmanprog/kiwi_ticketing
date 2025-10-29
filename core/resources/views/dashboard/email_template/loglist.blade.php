@@ -45,7 +45,7 @@
     }
 
     .table-responsive {
-        overflow: visible !important;
+        /* overflow: visible !important; */
     }
 
     .table-modern {
@@ -214,7 +214,7 @@
         
         /* Allow horizontal scroll only on mobile */
         .table-responsive {
-            overflow-x: auto !important;
+            /* overflow-x: auto !important; */
         }
         
         .table-modern {

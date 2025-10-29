@@ -89,9 +89,9 @@
                     </table>
                     
         </div>
-        <footer class="dker p-a">
-                    <div class="row">
-                        <div class="col-sm-3 hidden-xs">
+        <!-- <footer class="dker p-a"> -->
+                    <!-- <div class="row"> -->
+                        <!-- <div class="col-sm-3 hidden-xs"> -->
                             <!-- .modal -->
                             <div id="m-all" class="modal fade" data-backdrop="true">
                                 <div class="modal-dialog" id="animate">
@@ -114,7 +114,7 @@
                                 </div>
                             </div>
                             <!-- / .modal -->
-                            @if(@Auth::user()->permissionsGroup->settings_status)
+                            <!-- @if(@Auth::user()->permissionsGroup->settings_status) -->
                                 <!-- <select name="action" id="action" class="form-control c-select w-sm inline v-middle"
                                         required>
                                     <option value="">{{ __('backend.bulkAction') }}</option>
@@ -129,20 +129,20 @@
                                         data-target="#m-all" ui-toggle-class="bounce"
                                         ui-target="#animate">{{ __('backend.apply') }}
                                 </button> -->
-                            @endif
-                        </div>
+                            <!-- @endif -->
+                        <!-- </div> -->
                             <!-- <div class="col-sm-3 text-center">
                                 <small class="text-muted inline m-t-sm m-b-sm">
                                     {{ __('backend.showing') }} {{ $paginated->firstItem() }} - {{ $paginated->lastItem() }}
                                     {{ __('backend.of') }} <strong>{{ $paginated->total() }}</strong> {{ __('backend.records') }}
                                 </small>
                             </div> -->
-                            <div class="col-sm-6 text-right text-center-xs">
-                                {!! $paginated->links() !!}
-                            </div>
+                            <!-- <div class="col-sm-6 text-right text-center-xs"> -->
+                                <!-- {!! $paginated->links() !!} -->
+                            <!-- </div> -->
                        
-                    </div>
-                </footer>
+                    <!-- </div> -->
+                <!-- </footer> -->
     
 </div>
 </div>

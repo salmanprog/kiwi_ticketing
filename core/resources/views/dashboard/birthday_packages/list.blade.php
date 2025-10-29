@@ -91,32 +91,34 @@
                     </table>
                     
         </div>
-        <footer class="dker p-a">
-                    <div class="row">
-                        <div class="col-sm-3 hidden-xs">
-                            <!-- .modal -->
-                            <div id="m-all" class="modal fade" data-backdrop="true">
-                                <div class="modal-dialog" id="animate">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">{{ __('backend.confirmation') }}</h5>
-                                        </div>
-                                        <div class="modal-body text-center p-lg">
-                                            <p>
-                                                {{ __('backend.confirmationDeleteMsg') }}
-                                            </p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn dark-white p-x-md"
-                                                    data-dismiss="modal">{{ __('backend.no') }}</button>
-                                            <button type="submit"
-                                                    class="btn danger p-x-md">{{ __('backend.yes') }}</button>
-                                        </div>
-                                    </div><!-- /.modal-content -->
+              <!-- .modal -->
+                    <div id="m-all" class="modal fade" data-backdrop="true">
+                        <div class="modal-dialog" id="animate">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">{{ __('backend.confirmation') }}</h5>
+                                </div>
+                                <div class="modal-body text-center p-lg">
+                                    <p>
+                                        {{ __('backend.confirmationDeleteMsg') }}
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn dark-white p-x-md"
+                                            data-dismiss="modal">{{ __('backend.no') }}</button>
+                                    <button type="submit"
+                                            class="btn danger p-x-md">{{ __('backend.yes') }}</button>
                                 </div>
                             </div>
-                            <!-- / .modal -->
-                            @if(@Auth::user()->permissionsGroup->settings_status)
+                        </div>
+                    </div>
+                <!-- /.modal-content -->
+        <!-- <footer class="dker p-a">
+                    <div class="row">
+                        <div class="col-sm-3 hidden-xs"> -->
+                       
+                                <!-- / .modal -->
+                            <!-- @if(@Auth::user()->permissionsGroup->settings_status) -->
                                 <!-- <select name="action" id="action" class="form-control c-select w-sm inline v-middle"
                                         required>
                                     <option value="">{{ __('backend.bulkAction') }}</option>
@@ -131,20 +133,20 @@
                                         data-target="#m-all" ui-toggle-class="bounce"
                                         ui-target="#animate">{{ __('backend.apply') }}
                                 </button> -->
-                            @endif
-                        </div>
+                            <!-- @endif -->
+                        <!-- </div> -->
                             <!-- <div class="col-sm-3 text-center">
                                 <small class="text-muted inline m-t-sm m-b-sm">
                                     {{ __('backend.showing') }} {{ $paginated->firstItem() }} - {{ $paginated->lastItem() }}
                                     {{ __('backend.of') }} <strong>{{ $paginated->total() }}</strong> {{ __('backend.records') }}
                                 </small>
                             </div> -->
-                            <div class="col-sm-6 text-right text-center-xs">
+                            <!-- <div class="col-sm-6 text-right text-center-xs">
                                 {!! $paginated->links() !!}
-                            </div>
+                            </div> -->
                        
-                    </div>
-                </footer>
+                    <!-- </div> -->
+                <!-- </footer> -->
     
 </div>
 </div>

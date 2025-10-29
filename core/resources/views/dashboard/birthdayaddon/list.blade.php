@@ -90,11 +90,11 @@
                     </table>
                     
         </div>
-        <footer class="dker p-a">
-                    <div class="row">
-                        <div class="col-sm-3 hidden-xs">
+        <!-- <footer class="dker p-a"> -->
+                    <!-- <div class="row"> -->
+                        <!-- <div class="col-sm-3 hidden-xs"> -->
                          
-                            @if(@Auth::user()->permissionsGroup->settings_status)
+                            <!-- @if(@Auth::user()->permissionsGroup->settings_status) -->
                                 <!-- <select name="action" id="action" class="form-control c-select w-sm inline v-middle"
                                         required>
                                     <option value="">{{ __('backend.bulkAction') }}</option>
@@ -109,9 +109,9 @@
                                         data-target="#m-all" ui-toggle-class="bounce"
                                         ui-target="#animate">{{ __('backend.apply') }}
                                 </button> -->
-                            @endif
-                        </div>
-                            <div class="col-sm-3 text-center">
+                            <!-- @endif -->
+                        <!-- </div> -->
+                            <!-- <div class="col-sm-3 text-center">
                                 <small class="text-muted inline m-t-sm m-b-sm">
                                     {{ __('backend.showing') }} {{ $paginated->firstItem() }} - {{ $paginated->lastItem() }}
                                     {{ __('backend.of') }} <strong>{{ $paginated->total() }}</strong> {{ __('backend.records') }}
@@ -119,10 +119,10 @@
                             </div>
                             <div class="col-sm-6 text-right text-center-xs">
                                 {!! $paginated->links() !!}
-                            </div>
+                            </div> -->
                        
-                    </div>
-                </footer>
+                    <!-- </div> -->
+            <!-- </footer> -->
 </div>
 </div>
 
