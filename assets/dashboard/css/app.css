@@ -8153,11 +8153,104 @@ table.dataTable thead>tr>td.sorting {
     background: rgba(0, 0, 0, .03) !important;
 }
 
-.dataTables_length {
-    display: none;
+/* .dataTables_length {
+ 
 }
 .dataTables_filter {
-    display: none;
+  
+} */
+
+.dataTables_length {
+    float: right;
+    margin-bottom: 15px;
+}
+
+.dataTables_filter {
+    float: right;
+      float: left;
+    margin-bottom: 15px;
+}
+
+.dataTables_length label {
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dataTables_filter label {
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dataTables_length select {
+    width: auto !important;
+    display: inline-block;
+    padding: 6px 12px;
+    border: 1px solid rgba(149, 184, 61, 0.3);
+    border-radius: 6px;
+    background-color: white;
+    color: #555;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.dataTables_length select:focus {
+    border-color: #95b83d;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(149, 184, 61, 0.2);
+}
+
+.dataTables_filter input {
+    width: auto !important;
+    display: inline-block;
+    padding: 6px 12px;
+    border: 1px solid rgba(149, 184, 61, 0.3);
+    border-radius: 6px;
+    background-color: white;
+    color: #555;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    margin-left: 8px;
+}
+
+.dataTables_filter input:focus {
+    border-color: #95b83d;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(149, 184, 61, 0.2);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .dataTables_length,
+    .dataTables_filter {
+        float: none;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    
+    .dataTables_length label,
+    .dataTables_filter label {
+        justify-content: center;
+    }
+    
+    .dataTables_filter input {
+        margin-left: 8px;
+        width: 150px !important;
+    }
+}
+
+/* Clear floats */
+.dataTables_wrapper:after {
+    content: "";
+    display: table;
+    clear: both;
 }
 
 .m-b-5p {
