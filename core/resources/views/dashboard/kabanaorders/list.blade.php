@@ -3,15 +3,48 @@
 @section('content')
 <style>
     div.dataTables_wrapper div.dataTables_processing {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 200px;
-    margin-left: -100px;
-    margin-top: -26px;
-    text-align: center;
-    padding: 1em 0;
-}
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 200px;
+        margin-left: -100px;
+        margin-top: -26px;
+        text-align: center;
+        padding: 1em 0;
+    }
+     .box-header.dker {
+            background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%) !important;
+            color: white;
+             border-radius: 5px 5px 0 0;
+             font-size: 18px;
+        }
+        .box-header.dker h3 {
+            font-size: 22px;
+            font-weight: 700;
+        }
+        .box-tool {
+            color: white;
+        }
+        .primary
+          {
+            background: #A0C242 !important;
+            border-color: #A0C242 !important;
+        }
+        
+        .info
+          {
+            background: #A0C242 !important;
+            border-color: #A0C242 !important;
+        }
+        .success
+          {
+            background: #A0C242 !important;
+            border-color: #A0C242 !important;
+        }
+        .btn-primary:hover {
+            background: #8AAE38 !important;
+            border-color: #8AAE38 !important;
+        }
     </style>
 <div class="padding">
 <div class="box">

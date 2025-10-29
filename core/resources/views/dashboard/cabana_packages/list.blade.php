@@ -11,8 +11,43 @@
     margin-top: -26px;
     text-align: center;
     padding: 1em 0;
-}
-    </style>
+    }
+     .box-header.dker {
+            background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%) !important;
+            color: white;
+             border-radius: 5px 5px 0 0;
+             font-size: 18px;
+        }
+        .box-header.dker h3 {
+            font-size: 22px;
+            font-weight: 700;
+        }
+        .box-tool {
+            color: white;
+        }
+        .primary
+          {
+            background: #A0C242 !important;
+            border-color: #A0C242 !important;
+        }
+        
+        .info
+          {
+            background: #A0C242 !important;
+            border-color: #A0C242 !important;
+        }
+        .success
+          {
+            background: #A0C242 !important;
+            border-color: #A0C242 !important;
+        }
+        .btn-primary:hover {
+            background: #8AAE38 !important;
+            border-color: #8AAE38 !important;
+        }
+    
+    
+</style>
 <div class="padding">
 <div class="box">
     <div class="box-header dker">
@@ -33,32 +68,31 @@
             </ul>
         </div>
         <div class="table-responsive">
-                    <table class="table table-bordered m-a-0" id="cabana_packages">
-                        <thead class="dker">
-                        <tr>
-                            <th class="width20 dker">
-                                <label class="ui-check m-a-0">
-                                    <input id="checkAll" type="checkbox"><i></i>
-                                </label>
-                            </th>
-                            <th>{{ __('ID') }}</th>
-                            <th>{{ __('venueId') }}</th>
-                            <th>{{ __('Name') }}</th>
-                            <th>{{ __('Slug') }}</th>
-                            <th>{{ __('Category') }}</th>
-                            <th>{{ __('Price') }}</th>
-                            <th>{{ __('Addon') }}</th>
-                            <th>{{ __('Featured') }}</th>
-                            <th>{{ __('Status') }}</th>
-                            <th>{{ __('createdBy') }}</th>
-                            <th>{{ __('updatedBy') }}</th>
-                            <th>{{ __('updatedAt') }}</th>
-                            <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
-                        </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                    
+            <table class="table table-bordered m-a-0" id="cabana_packages">
+                <thead class="dker">
+                <tr>
+                    <th class="width20 dker">
+                        <label class="ui-check m-a-0">
+                            <input id="checkAll" type="checkbox"><i></i>
+                        </label>
+                    </th>
+                    <th>{{ __('ID') }}</th>
+                    <th>{{ __('venueId') }}</th>
+                    <th>{{ __('Name') }}</th>
+                    <th>{{ __('Slug') }}</th>
+                    <th>{{ __('Category') }}</th>
+                    <th>{{ __('Price') }}</th>
+                    <th>{{ __('Addon') }}</th>
+                    <th>{{ __('Featured') }}</th>
+                    <th>{{ __('Status') }}</th>
+                    <th>{{ __('createdBy') }}</th>
+                    <th>{{ __('updatedBy') }}</th>
+                    <th>{{ __('updatedAt') }}</th>
+                    <th class="text-center" style="width:200px;">{{ __('backend.options') }}</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>          
         </div>
         <footer class="dker p-a">
                     <div class="row">
