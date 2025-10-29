@@ -665,7 +665,7 @@ body::before {
                 <label for="remember">{{ __('backend.keepMeSignedIn') }}</label>
             </div>
             
-            <!-- Submit Button -->
+            <!-- Submit Button new -->
             <button type="submit" id="login_form_submit" class="submit-btn">
                 <span>{{ __('backend.signIn') }}</span>
             </button>
