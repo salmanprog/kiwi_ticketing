@@ -5,6 +5,24 @@
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+      <style>
+        .box-header.dker {
+            background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%) !important;
+            color: white;
+            border-radius: 5px 5px 0 0;
+        }
+        .box-tool {
+            color: white;
+        }
+        .btn-primary {
+            background: #A0C242 !important;
+            border-color: #A0C242 !important;
+        }
+        .btn-primary:hover {
+            background: #8AAE38 !important;
+            border-color: #8AAE38 !important;
+        }
+    </style>
 @endpush
 @section('content')
 <div class="padding">

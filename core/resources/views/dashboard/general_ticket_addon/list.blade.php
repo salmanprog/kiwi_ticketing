@@ -12,6 +12,23 @@
     text-align: center;
     padding: 1em 0;
 }
+        .box-header.dker {
+            background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%) !important;
+            color: white;
+            border-radius: 5px 5px 0 0;
+        }
+        .box-tool {
+            color: white;
+        }
+        .btn-fw{
+            background: #A0C242 !important;
+            border-color: #A0C242 !important;
+        }
+        .btn-primary:hover {
+            background: #8AAE38 !important;
+            border-color: #8AAE38 !important;
+        }
+    
     </style>
 <div class="padding">
 <div class="box">

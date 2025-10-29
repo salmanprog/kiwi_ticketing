@@ -8,6 +8,7 @@
     
     <div class="p-a-md col-md-12">
         <div class="form-group row">
+            <!-- Logo Section -->
             @foreach(Helper::languagesList() as $ActiveLanguage)
                 <div class="col-sm-6 m-b-2" style="margin-bottom: 2rem;">
                     <label style="font-weight: 600; color: #2c3e50; margin-bottom: 0.75rem; display: block;">
@@ -18,38 +19,30 @@
                     </label>
                     
                     @if($Setting->{'style_logo_'.@$ActiveLanguage->code}!="")
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="col-sm-12" style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; border: 2px dashed #e9ecef; margin-bottom: 1rem; text-align: center;">
-                                    <a target="_blank"
-                                       href="{{ asset('uploads/settings/'.$Setting->{'style_logo_'.@$ActiveLanguage->code}) }}" 
-                                       style="text-decoration: none; color: inherit;">
-                                        <img src="{{ asset('uploads/settings/'.$Setting->{'style_logo_'.@$ActiveLanguage->code}) }}"
-                                             class="img-responsive" 
-                                             id="style_logo_{{ @$ActiveLanguage->code }}_prv"
-                                             style="width: auto; max-width: 260px; max-height: 60px; margin: 0 auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                                        <br>
-                                        <small style="color: #6c757d; font-size: 0.85rem; margin-top: 0.5rem; display: inline-block; background: white; padding: 4px 12px; border-radius: 16px; border: 1px solid #e9ecef;">
-                                            {{ $Setting->{'style_logo_'.@$ActiveLanguage->code} }}
-                                        </small>
-                                    </a>
-                                </div>
-                            </div>
+                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; border: 2px dashed #e9ecef; margin-bottom: 1rem; text-align: center;">
+                            <a target="_blank"
+                               href="{{ asset('uploads/settings/'.$Setting->{'style_logo_'.@$ActiveLanguage->code}) }}" 
+                               style="text-decoration: none; color: inherit;">
+                                <img src="{{ asset('uploads/settings/'.$Setting->{'style_logo_'.@$ActiveLanguage->code}) }}"
+                                     class="img-responsive" 
+                                     id="style_logo_{{ @$ActiveLanguage->code }}_prv"
+                                     style="width: auto; max-width: 260px; max-height: 60px; margin: 0 auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                <br>
+                                <small style="color: #6c757d; font-size: 0.85rem; margin-top: 0.5rem; display: inline-block; background: white; padding: 4px 12px; border-radius: 16px; border: 1px solid #e9ecef;">
+                                    {{ $Setting->{'style_logo_'.@$ActiveLanguage->code} }}
+                                </small>
+                            </a>
                         </div>
                     @else
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="col-sm-12" style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; border: 2px dashed #e9ecef; margin-bottom: 1rem; text-align: center;">
-                                    <img src="{{ asset('uploads/settings/nologo.png') }}"
-                                         class="img-responsive" 
-                                         id="style_logo_{{ @$ActiveLanguage->code }}_prv"
-                                         style="width: auto; max-width: 260px; max-height: 60px; margin: 0 auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); opacity: 0.6;">
-                                    <br>
-                                    <small style="color: #6c757d; font-size: 0.85rem; margin-top: 0.5rem; display: inline-block; background: white; padding: 4px 12px; border-radius: 16px; border: 1px solid #e9ecef;">
-                                        nologo.png
-                                    </small>
-                                </div>
-                            </div>
+                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; border: 2px dashed #e9ecef; margin-bottom: 1rem; text-align: center;">
+                            <img src="{{ asset('uploads/settings/nologo.png') }}"
+                                 class="img-responsive" 
+                                 id="style_logo_{{ @$ActiveLanguage->code }}_prv"
+                                 style="width: auto; max-width: 260px; max-height: 60px; margin: 0 auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); opacity: 0.6;">
+                            <br>
+                            <small style="color: #6c757d; font-size: 0.85rem; margin-top: 0.5rem; display: inline-block; background: white; padding: 4px 12px; border-radius: 16px; border: 1px solid #e9ecef;">
+                                nologo.png
+                            </small>
                         </div>
                     @endif
                     
@@ -73,8 +66,69 @@
                     </small>
                 </div>
             @endforeach
+            
+            <!-- Favicon Section - Same Row -->
+            <div class="col-sm-6" style="margin-bottom: 2rem;">
+                <label style="font-weight: 600; color: #2c3e50; margin-bottom: 0.75rem; display: block;">
+                    <i class="fas fa-star" style="color: #FFD700;"></i> {!! __('backend.favicon') !!}
+                    <span style="background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 8px;">
+                        BROWSER ICON
+                    </span>
+                </label>
+                
+                @if($Setting->style_fav!="")
+                    <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; border: 2px dashed #e9ecef; margin-bottom: 1rem; text-align: center;">
+                        <a target="_blank"
+                           href="{{ asset('uploads/settings/'.$Setting->style_fav) }}" 
+                           style="text-decoration: none; color: inherit;">
+                            <img src="{{ asset('uploads/settings/'.$Setting->style_fav) }}"
+                                 class="img-responsive" 
+                                 id="style_fav_prv"
+                                 style="max-width: 60px; height: 60px; margin: 0 auto; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                            <br>
+                            <small style="color: #6c757d; font-size: 0.85rem; margin-top: 0.5rem; display: inline-block; background: white; padding: 4px 12px; border-radius: 16px; border: 1px solid #e9ecef;">
+                                {{ $Setting->style_fav }}
+                            </small>
+                        </a>
+                    </div>
+                @else
+                    <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; border: 2px dashed #e9ecef; margin-bottom: 1rem; text-align: center;">
+                        <a target="_blank"
+                           href="{{ asset('uploads/settings/nofav.png') }}" 
+                           style="text-decoration: none; color: inherit;">
+                            <img src="{{ asset('uploads/settings/nofav.png') }}"
+                                 class="img-responsive" 
+                                 id="style_fav_prv"
+                                 style="max-width: 60px; height: 60px; margin: 0 auto; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); opacity: 0.6;">
+                            <br>
+                            <small style="color: #6c757d; font-size: 0.85rem; margin-top: 0.5rem; display: inline-block; background: white; padding: 4px 12px; border-radius: 16px; border: 1px solid #e9ecef;">
+                                nofav.png
+                            </small>
+                        </a>
+                    </div>
+                @endif
+                
+                <div style="position: relative; margin-bottom: 0.5rem;">
+                    {!! Form::file('style_fav', array(
+                        'class' => 'form-control',
+                        'id'=>'style_fav',
+                        'accept'=>'image/*',
+                        'style' => 'position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer;'
+                    )) !!}
+                    <label for="style_fav" 
+                           style="display: flex; align-items: center; gap: 10px; padding: 0.75rem 1rem; background: white; border: 2px dashed #FFD700; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; margin: 0;">
+                        <i class="fas fa-cloud-upload-alt" style="color: #FFD700;"></i>
+                        <span style="color: #B8860B; font-weight: 500;">Choose favicon file</span>
+                    </label>
+                </div>
+                
+                <small style="display: flex; align-items: center; gap: 6px; color: #6c757d; font-size: 0.85rem;">
+                    <i class="fas fa-info-circle" style="color: #FFD700;"></i>
+                    ( 32x32 px ) - {!! __('backend.imagesTypes') !!}
+                </small>
+            </div>
         </div>
-    
+   
 
 
 
