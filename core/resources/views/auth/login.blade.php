@@ -177,6 +177,9 @@ body::before {
 .brand-footer {
     margin-top: auto;
     font-size: 0.9rem;
+     display: flex;
+    align-items: center;
+    justify-content: center;
     opacity: 0.8;
 }
 
@@ -578,7 +581,11 @@ body::before {
         <div class="brand-content">
           <div class="brand-logo">
               <img src="{{ asset('assets/dashboard/images/favicon(kiwi).png') }}" alt="Icons">
-                <h1>KiwiTicketing</h1>
+                <h1>
+  <span style="font-weight: 300;">Kiwi</span>
+  <span style="font-weight: 700;">Ticketing</span>
+</h1>
+
             </div>
             
             <p class="brand-tagline">

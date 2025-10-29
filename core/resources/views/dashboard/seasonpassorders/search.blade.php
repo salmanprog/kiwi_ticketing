@@ -137,7 +137,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
 @endpush
 
-<div style="background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%); padding: 1.5rem; margin-top:4px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 2rem;" id="filter_div">
+<div style="background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%); padding: 1.5rem; margin-top:4px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);" id="filter_div">
     <div style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 10px; padding: 1.5rem; border: 1px solid rgba(255, 255, 255, 0.2);">
         {{Form::open(['route'=>['seasonpassorders'],'method'=>'GET','id'=>'filter_form','target'=>''])}}
         <input type="hidden" name="stat" id="search_submit_stat" value="">

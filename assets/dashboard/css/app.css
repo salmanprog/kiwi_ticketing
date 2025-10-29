@@ -559,6 +559,7 @@ sup {
     padding-top: .5rem;
     padding-bottom: .5rem;
     margin-bottom: 0;
+    font-weight: 500;
 }
 
 .custom-select {
@@ -1287,44 +1288,79 @@ a.list-group-item.hover {
 .collapse.in .dropdown-menu-scale {
     display: none;
 }
-
+/* New  */
+.dataTables_info{
+    color: #95b83d !important;
+    font-weight: 600;
+    padding: 12px 0;
+    font-size: 14px;
+    margin-top: 8px;
+    text-align: left;
+}
+.pagination{
+ display: flex;
+ justify-content: end;
+}
 .pagination .page-item,
 .pagination>li>a,
 .pagination>li>span,
 .pager .page-item,
 .pager>li>a,
 .pager>li>span {
-    color: inherit !important;
+    color: #666 !important;
     background-color: transparent !important;
-    border-color: rgba(120, 130, 140, .2) !important;
+    border: 1px solid rgba(149, 184, 61, 0.3) !important;
+    margin: 0 3px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
 }
 
-.pagination .page-item:hover,
-.pagination .page-item:focus,
-.pagination>li>a:hover,
-.pagination>li>a:focus,
-.pagination>li>span:hover,
-.pagination>li>span:focus,
-.pager .page-item:hover,
-.pager .page-item:focus,
-.pager>li>a:hover,
-.pager>li>a:focus,
-.pager>li>span:hover,
-.pager>li>span:focus {
-    border-color: rgba(120, 130, 140, .2);
-    background-color: rgba(0, 0, 0, 0.065);
-    color: inherit;
+/* Normal items hover */
+.pagination .page-item:not(.active):hover,
+.pagination>li:not(.active)>a:hover,
+.pagination>li:not(.active)>span:hover,
+.pager .page-item:not(.active):hover,
+.pager>li:not(.active)>a:hover,
+.pager>li:not(.active)>span:hover {
+    border-color: #95b83d;
+    background-color: rgba(149, 184, 61, 0.1);
+    color: #95b83d !important;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(149, 184, 61, 0.2);
 }
 
+/* Active page - no hover effect change */
 .pagination .page-item.active,
+.pagination .page-item.active:hover,
 .pagination>.active>a,
+.pagination>.active>a:hover,
 .pagination>.active>span,
+.pagination>.active>span:hover,
 .pager .page-item.active,
+.pager .page-item.active:hover,
 .pager>.active>a,
-.pager>.active>span {
+.pager>.active>a:hover,
+.pager>.active>span,
+.pager>.active>span:hover {
     color: white !important;
-    background-color: #0cc2aa !important;
-    border-color: #0cc2aa !important;
+    background-color: #95b83d !important;
+    border-color: #95b83d !important;
+    box-shadow: 0 2px 10px rgba(149, 184, 61, 0.4);
+    transform: translateY(-1px);
+    cursor: default;
+}
+
+.pagination .page-item.disabled,
+.pagination>.disabled>a,
+.pagination>.disabled>span,
+.pager .page-item.disabled,
+.pager>.disabled>a,
+.pager>.disabled>span {
+    color: #ccc !important;
+    background-color: #f8f9fa !important;
+    border-color: #e9ecef !important;
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 .pagination>li {
@@ -1335,27 +1371,59 @@ a.list-group-item.hover {
 .pagination>li>a {
     position: relative;
     float: left;
-    padding: 0.5rem 0.75rem;
-    margin-left: -1px;
-    line-height: 1.5;
-    color: #0275d8;
+    padding: 8px 12px;
+    margin: 0 2px;
+    line-height: 1.4;
+    color: #555;
     text-decoration: none;
     background-color: #fff;
-    border: 1px solid #ddd;
+    border: 1px solid rgba(149, 184, 61, 0.3);
+    border-radius: 6px;
+    min-width: 38px;
+    text-align: center;
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
 
-.pagination>li>a:focus {
-    color: #014c8c;
-    background-color: #eceeef;
-    border-color: #ddd;
+/* Normal links hover */
+.pagination>li>a:not(.active):hover {
+    color: #95b83d !important;
+    background-color: rgba(149, 184, 61, 0.1);
+    border-color: #95b83d;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(149, 184, 61, 0.2);
 }
 
-.pagination>li>a:hover {
-    color: #014c8c;
-    background-color: #eceeef;
-    border-color: #ddd;
+.pagination>li>a:not(.active):focus {
+    color: #95b83d;
+    background-color: rgba(149, 184, 61, 0.05);
+    border-color: #95b83d;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(149, 184, 61, 0.2);
 }
 
+/* Active link - always white */
+.pagination>li>a.active,
+.pagination>li>a.active:hover,
+.pagination>li>a.active:focus {
+    color: white !important;
+    background-color: #95b83d !important;
+    border-color: #95b83d !important;
+    box-shadow: 0 2px 10px rgba(149, 184, 61, 0.4);
+    transform: translateY(-1px);
+    cursor: default;
+}
+
+/* Responsive spacing */
+@media (max-width: 768px) {
+    .pagination>li>a {
+        padding: 6px 10px;
+        margin: 0 1px;
+        min-width: 34px;
+        font-size: 14px;
+    }
+}
+/* new end */
 .pager {
     padding-left: 0;
     margin-top: 1rem;
@@ -3780,9 +3848,14 @@ body {
 .ui-select-bootstrap>.ui-select-choices {
     overflow-y: scroll;
 }
+/* Hello bhai */
 
 .box .dataTables_wrapper {
-    padding-top: 10px;
+    padding: 15px 20px;
+    border-radius: 12px;
+    /* box-shadow: 0 4px 20px #dae6be; */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    /* margin: 20px; */
 }
 
 .box .dataTables_wrapper>.row {
@@ -3795,8 +3868,67 @@ body {
 
 .dataTables_wrapper.form-inline .form-control {
     width: auto;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    padding: 8px 12px;
+    transition: all 0.3s ease;
 }
 
+.dataTables_wrapper.form-inline .form-control:focus {
+    border-color: #4db6ac;
+    box-shadow: 0 0 0 2px #95b83d;
+    outline: none;
+}
+
+/* Table Styles */
+.box .dataTables_wrapper table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Glassmorphism Table Header Styles */
+.box .dataTables_wrapper table thead th {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #95b83d;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    border: none;
+    font-size: 14px;
+    position: relative;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Table Body Styles */
+.box .dataTables_wrapper table tbody td {
+    padding: 10px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    background-color: white;
+    transition: all 0.3s ease;
+}
+
+/* Hover effect on table rows */
+.box .dataTables_wrapper table tbody tr:hover td {
+    background-color: #f8f9fa;
+}
+
+/* Alternating row colors */
+.box .dataTables_wrapper table tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.box .dataTables_wrapper table th:not(:last-child),
+.box .dataTables_wrapper table td:not(:last-child) {
+    border-right: 1px solid #e0e0e0;
+}
+
+/* Hello  bhai */
 .footable-odd {
     background-color: rgba(0, 0, 0, 0.025) !important;
 }
@@ -7943,9 +8075,9 @@ fieldset[disabled] .md-switch input+i:after {
 }
 
 .form-control {
-    border-color: rgba(120, 130, 140, .2);
-    border-radius: 0;
-    min-height: 2.375rem;
+    /* border-color: #95b83d; */
+    border-radius: 10px;
+    /* min-height: 2.375rem; */
 }
 
 .btn-group-sm>.btn,
@@ -8022,7 +8154,10 @@ table.dataTable thead>tr>td.sorting {
 }
 
 .dataTables_length {
-    text-align: right;
+    display: none;
+}
+.dataTables_filter {
+    display: none;
 }
 
 .m-b-5p {
@@ -8067,7 +8202,7 @@ td .dker {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center top;
-    background-image: url('../images/kiwibg.jpg');
+    background-image: url('../images/kiwibg2.png');
     min-height: 500px;
 }
 

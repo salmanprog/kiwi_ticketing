@@ -131,7 +131,7 @@
                 {{Form::open(['route'=>['adminSearch'],'method'=>'GET', 'role'=>'search', 'class' => "navbar-form form-inline pull-right pull-none-sm navbar-item v-m" ])}}
 
                 <div class="form-group l-h m-a-0">
-                    <div class="input-group" style="border-radius: 20px; overflow: hidden; border: 1px solid #e9ecef;">
+                    <div class="input-group" style="border-radius: 20px; overflow: hidden;">
                         <input type="text" name="q" class="form-control p-x border-0" autocomplete="off"
                                placeholder="{{ __('backend.search') }}..." style="background: transparent;">
                         <span class="input-group-btn">
