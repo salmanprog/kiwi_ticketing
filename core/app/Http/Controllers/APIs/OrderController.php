@@ -38,6 +38,10 @@ class OrderController extends BaseAPIController
             'totalAmount' => 'required|numeric',
             'purchases' => 'required|array',
             'package_id' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'phone' => 'required',
+            'email' => 'required',
             'order_status' => 'required|in:unpaid_order,paid_order',
         ]);
 
@@ -57,7 +61,18 @@ class OrderController extends BaseAPIController
                 $get_order = Http::get($baseUrl.'/Pricing/QueryOrder2?orderId='.$data['data'][0]['orderNumber'].'&authcode='.$authCode);
                 $get_order = $get_order->json();
                 $orderData = $data['data'][0];
-                $get_user = User::where('id',$request->user_id)->first();
+                //$get_user = User::where('id',$request->user_id)->first();
+                $get_user = User::firstOrCreate(
+                    ['email' => $request->email],
+                    [
+                        'name' => $request->first_name . ' ' . $request->last_name,
+                        'phone' => $request->phone,
+                        'password' => bcrypt('Test@123'),
+                        'permissions_id' => 3,
+                        'status' => 0,
+                        'created_by' => 1
+                    ]
+                );
                 $nameParts = explode(' ', trim($get_user->name));
                 $order = new Order;
                 $order->auth_code  = Helper::GeneralSiteSettings('auth_code_en',true);
@@ -82,7 +97,7 @@ class OrderController extends BaseAPIController
                 $order->promoCode = isset($request->promoCode) ? $request->promoCode : 'N/A';
                 $order->transactionId = isset($orderData['transactionId']) ? $orderData['transactionId'] : $request->transactionId;
                 $order->totalOrderRefundedAmount = isset($orderData['totalOrderRefundedAmount']) ? $orderData['totalOrderRefundedAmount'] : '0';
-                $order->user_id  = $request->user_id;
+                $order->user_id  = $get_user->id;
                 $order->order_status  = $request->order_status;
                 $order->save();
                // return $this->sendResponse(200, 'Generate Order', $get_order);

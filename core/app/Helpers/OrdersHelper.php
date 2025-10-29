@@ -22,7 +22,18 @@ class OrdersHelper
         if (is_string($requestPayload)) {
             $requestPayload = json_decode($requestPayload, true);
         }
-        $get_customer_obj = User::where('id',$requestPayload['user_id'])->first();
+        //$get_customer_obj = User::where('id',$requestPayload['user_id'])->first();
+        $get_customer_obj = User::firstOrCreate(
+                ['email' => $requestPayload['email']],
+                [
+                    'name' => $requestPayload['first_name'] . ' ' . $requestPayload['last_name'],
+                    'phone' => $requestPayload['phone'],
+                    'password' => bcrypt('Test@123'),
+                    'permissions_id' => 3,
+                    'status' => 0,
+                    'created_by' => 1
+                ]
+            );
         $get_package = OrdersHelper::getPackagesByType($requestPayload['type'],$requestPayload['package_id']);
         $package_initials = substr($get_package->name, 0, 2);
         $prefixMap = [
