@@ -12,45 +12,152 @@ $mnu_title_var = "title_" . @Helper::currentLanguage()->code;
 $mnu_title_var2 = "title_" . config('smartend.default_language');
 ?>
 <style>
-/* Active State Green Theme */
+/* Premium Green Theme with Modern Design */
 .nav-active-primary .nav > li.active > a {
-    background-color: rgba(160, 194, 66, 0.1) !important;
-    border-left-color: #A0C242 !important;
-    color: #A0C242 !important;
+    background: linear-gradient(135deg, #9FC23F 0%, #8AAE38 100%) !important;
+    border-left-color: #ffffff !important;
+    color: #ffffff !important;
+    border-radius: 12px !important;
+    margin: 4px 12px !important;
+    box-shadow: 0 4px 15px rgba(159, 194, 63, 0.3) !important;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.nav-active-primary .nav > li.active > a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: #ffffff;
+    border-radius: 3px;
 }
 
 .nav-active-primary .nav > li.active > a .nav-icon i {
-    color: #A0C242 !important;
+    color: #ffffff !important;
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
 }
 
 .nav-sub > li.active > a {
-    background-color: rgba(160, 194, 66, 0.1) !important;
+    background: linear-gradient(135deg, rgba(160, 194, 66, 0.15) 0%, rgba(138, 174, 56, 0.1) 100%) !important;
     color: #A0C242 !important;
     border-left: 3px solid #A0C242 !important;
+    border-radius: 8px !important;
+    margin: 2px 8px !important;
+    font-weight: 600 !important;
+    position: relative;
 }
 
-/* Hover effects */
+.nav-sub > li.active > a::after {
+    content: '';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    background: #A0C242;
+    border-radius: 50%;
+}
+
+/* Premium Hover effects */
 .nav-active-primary .nav > li > a:hover {
-    background-color: rgba(160, 194, 66, 0.05) !important;
+    background: rgba(160, 194, 66, 0.08) !important;
     color: #A0C242 !important;
+    border-radius: 12px !important;
+    margin: 4px 12px !important;
+    transform: translateX(4px);
+    box-shadow: 0 2px 8px rgba(160, 194, 66, 0.2) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.nav-sub > li > a:hover {
+    background: rgba(160, 194, 66, 0.05) !important;
+    color: #A0C242 !important;
+    border-radius: 8px !important;
+    margin: 2px 8px !important;
+    transform: translateX(2px);
+    transition: all 0.2s ease !important;
+}
+/* Sabse last li item ko identify karo aur margin do */
+.nav-active-primary .nav > li:last-of-type {
+    margin-bottom: 30px !important;
+    padding-bottom: 10px !important;
+}
+/* Premium animations */
+.nav-active-primary .nav > li > a {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    border-radius: 12px !important;
+    margin: 4px 12px !important;
+}
+
+.nav-sub > li > a {
+    transition: all 0.2s ease !important;
+    border-radius: 8px !important;
+    margin: 2px 8px !important;
+}
+
+/* Premium icons styling */
+.nav-active-primary .nav > li > a .nav-icon {
+    transition: transform 0.3s ease !important;
+}
+
+.nav-active-primary .nav > li > a:hover .nav-icon {
+    transform: scale(1.1);
+}
+
+/* Premium submenu styling */
+.nav-sub {
+    background: rgba(248, 250, 252, 0.8) !important;
+    border-radius: 0 0 12px 12px !important;
+    margin: 0 12px 8px 12px !important;
+    backdrop-filter: blur(10px);
+}
+
+/* Premium scrollbar */
+.nav-active-primary ::-webkit-scrollbar {
+    width: 6px;
+}
+
+.nav-active-primary ::-webkit-scrollbar-track {
+    background: rgba(160, 194, 66, 0.1);
+    border-radius: 10px;
+}
+
+.nav-active-primary ::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #9FC23F 0%, #8AAE38 100%);
+    border-radius: 10px;
+}
+
+.nav-active-primary ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #8AAE38 0%, #7A9A32 100%);
 }
 </style>
 <div id="aside" class="app-aside modal fade folded md nav-expand">
     <div class="left navside white" layout="column" style="background: #ffffff; border-right: 1px solid #e9ecef;">
 
-       <div class="navbar navbar-md no-radius" style="background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%);">
+       <div class="navbar navbar-md no-radius">
             <a class="hidden-folded inline folded-toggle m-t p-t-xs pull-right">
-                <i class="material-icons  md-24 opacity">&#xe5d2;</i>
+                     <svg class="toggle-sidebar d-lg-block d-none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M20 3H4C2.89543 3 2 3.89543 2 5V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V5C22 3.89543 21.1046 3 20 3Z" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M9 3V21" stroke="#ccc" stroke-width="2"></path>
+            </svg>
             </a>
-            <!-- brand -->
-            <a class="navbar-brand" href="{{ route('adminHome') }}">
-                <img src="{{ asset('assets/dashboard/images/favicon(kiwi).png') }}" alt="Control">
-                <span class="hidden-folded text-white inline">{{ __('Kiwi Ticketing') }}</span>
-            </a>
-            <!-- / brand -->
+               <div class="p-a-md text-center">
+                @if(Helper::GeneralSiteSettings("style_logo_" . @Helper::currentLanguage()->code) !="")
+                    <img alt="logo"
+                         src="{{ URL::to('uploads/settings/'.Helper::GeneralSiteSettings("style_logo_" . @Helper::currentLanguage()->code)) }}">
+                @else
+                    <img alt="" src="{{ URL::to('uploads/settings/nologo.png') }}">
+                @endif
+            </div>
         </div>
-        
-        
+
+
         <div flex class="hide-scroll">
             <nav class="scroll nav-active-primary" style="background: #ffffff;">
 
@@ -70,11 +177,11 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <span class="nav-text">{{ __('backend.dashboard') }}</span>
                         </a>
                     </li>
-                    
+
                     <li class="nav-header hidden-folded m-t-sm">
                         <small class="text-muted" style="color: #6c757d !important;">{{ __('Tickets Management') }}</small>
                     </li>
-                     
+
                     <?php
                         $currentFolder = "kabanasetting";
                         $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
@@ -88,7 +195,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         $LogsActive = in_array($current, ['ordersLogs','ordersfailedLogs','paymentLogs','paymentfailLogs','ordersLogsShow']);
                         $emailTemplateActive = in_array($current, ['emailTemplate','emailTemplateCreate','emailTemplateEdit','emailTemplateStore','emailTemplateUpdate','emailTemplateDestroy','smtpConfigure','emailLogs']);
                     ?>
-                    
+
                     <!-- Cabana Management -->
                     @if($userRole == 'Webmaster' || in_array(16, $dataSections))
                     <li class="{{ $cabanaActive ? 'active' : '' }}" style="border-left: 3px solid transparent;">
@@ -102,31 +209,31 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <span class="nav-text">{{ __('Cabana Management') }}</span>
                         </a>
                         <ul class="nav-sub" style="background: #f8f9fa;">
-                            <li class="{{ 
-                                $current === 'cabana' 
-                                || Str::startsWith($current, 'cabana') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'cabana'
+                                || Str::startsWith($current, 'cabana')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('cabana') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('All Cabana') }}</span>
                                 </a>
                             </li>
 
-                            <li class="{{ 
-                                $current === 'kabanaddons' 
-                                || Str::startsWith($current, 'kabanaaddonEdit') 
-                                || Str::startsWith($current, 'kabanaddons') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'kabanaddons'
+                                || Str::startsWith($current, 'kabanaaddonEdit')
+                                || Str::startsWith($current, 'kabanaddons')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('kabanaddons') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('Cabana Addon') }}</span>
                                 </a>
                             </li>
 
-                            <li class="{{ 
-                                $current === 'kabanaorders' 
-                                || Str::startsWith($current, 'kabanaorders') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'kabanaorders'
+                                || Str::startsWith($current, 'kabanaorders')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('kabanaorders') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('Cabana Orders') }}</span>
@@ -135,7 +242,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         </ul>
                     </li>
                     @endif
-                    
+
                     <!-- Package Management -->
                     @if($userRole == 'Webmaster' || in_array(17, $dataSections))
                     <li class="{{ $birthdayActive ? 'active' : '' }}" style="border-left: 3px solid transparent;">
@@ -150,30 +257,30 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         </a>
 
                         <ul class="nav-sub" style="background: #f8f9fa;">
-                            <li class="{{ 
-                                $current === 'birthdaypackages' || 
-                                Str::startsWith($current, 'birthdaypackages') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'birthdaypackages' ||
+                                Str::startsWith($current, 'birthdaypackages')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('birthdaypackages') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('All Packages') }}</span>
                                 </a>
                             </li>
 
-                            <li class="{{ 
-                                $current === 'birthdayaddon' || 
-                                Str::startsWith($current, 'birthdayaddon') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'birthdayaddon' ||
+                                Str::startsWith($current, 'birthdayaddon')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('birthdayaddon') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('Packages Addon') }}</span>
                                 </a>
                             </li>
 
-                            <li class="{{ 
-                                $current === 'birthdayorders' || 
-                                Str::startsWith($current, 'birthdayorders') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'birthdayorders' ||
+                                Str::startsWith($current, 'birthdayorders')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('birthdayorders') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('Packages Orders') }}</span>
@@ -182,7 +289,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         </ul>
                     </li>
                     @endif
-                    
+
                     <!-- Platform Management -->
                     @if($userRole == 'Webmaster' || in_array(18, $dataSections))
                     <li class="{{ $generalTicketActive ? 'active' : '' }}" style="border-left: 3px solid transparent;">
@@ -196,30 +303,30 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <span class="nav-text">{{ __('Platform Management') }}</span>
                         </a>
                         <ul class="nav-sub" style="background: #f8f9fa;">
-                            <li class="{{ 
-                                $current === 'generaltickets' 
-                                || Str::startsWith($current, 'generaltickets') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'generaltickets'
+                                || Str::startsWith($current, 'generaltickets')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('generalticketpackages') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('General Packages') }}</span>
                                 </a>
                             </li>
 
-                           <li class="{{ 
-                                $current === 'generalticketsaddon' 
-                                || Str::startsWith($current, 'generalticketsaddon') 
-                                ? 'active' : '' 
+                           <li class="{{
+                                $current === 'generalticketsaddon'
+                                || Str::startsWith($current, 'generalticketsaddon')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('generalticketsaddon') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('General Package Addon') }}</span>
                                 </a>
                             </li>
 
-                             <li class="{{ 
-                                $current === 'generalticketsorders' 
-                                || Str::startsWith($current, 'generalticketsorders') 
-                                ? 'active' : '' 
+                             <li class="{{
+                                $current === 'generalticketsorders'
+                                || Str::startsWith($current, 'generalticketsorders')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('generalticketsorders') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('General Tickets Orders') }}</span>
@@ -228,7 +335,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         </ul>
                     </li>
                     @endif
-                    
+
                     <!-- SeasonPass Management -->
                     @if($userRole == 'Webmaster' || in_array(19, $dataSections))
                     <li class="{{ $seasonpassActive ? 'active' : '' }}" style="border-left: 3px solid transparent;">
@@ -242,28 +349,28 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <span class="nav-text">{{ __('SeasonPass Management') }}</span>
                         </a>
                         <ul class="nav-sub" style="background: #f8f9fa;">
-                            <li class="{{ 
-                                $current === 'seasonpass' 
-                                || Str::startsWith($current, 'seasonpass') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'seasonpass'
+                                || Str::startsWith($current, 'seasonpass')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('seasonpass') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('SeasonPass Sale') }}</span>
                                 </a>
                             </li>
-                            <li class="{{ 
-                                $current === 'seasonpass' 
-                                || Str::startsWith($current, 'seasonpass') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'seasonpass'
+                                || Str::startsWith($current, 'seasonpass')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('seasonpassaddon') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('SeasonPass Products') }}</span>
                                 </a>
                             </li>
-                            <li class="{{ 
-                                $current === 'seasonpass' 
-                                || Str::startsWith($current, 'seasonpass') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'seasonpass'
+                                || Str::startsWith($current, 'seasonpass')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('seasonpassorders') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('SeasonPass Orders') }}</span>
@@ -272,7 +379,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         </ul>
                     </li>
                     @endif
-                    
+
                     <!-- Offer Management -->
                     @if($userRole == 'Webmaster' || in_array(20, $dataSections))
                     <li class="{{ $offerCreationActive ? 'active' : '' }}" style="border-left: 3px solid transparent;">
@@ -286,28 +393,28 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <span class="nav-text">{{ __('Offer Management') }}</span>
                         </a>
                         <ul class="nav-sub" style="background: #f8f9fa;">
-                            <li class="{{ 
-                                $current === 'offercreationpackages' 
-                                || Str::startsWith($current, 'offercreationpackages') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'offercreationpackages'
+                                || Str::startsWith($current, 'offercreationpackages')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('offercreationpackages') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('Offers') }}</span>
                                 </a>
                             </li>
-                            <li class="{{ 
-                                $current === 'offercreationpackages' 
-                                || Str::startsWith($current, 'offercreationpackages') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'offercreationpackages'
+                                || Str::startsWith($current, 'offercreationpackages')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('offeraddon') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('Offer Addon') }}</span>
                                 </a>
                             </li>
-                            <li class="{{ 
-                                $current === 'offercreationpackages' 
-                                || Str::startsWith($current, 'offercreationpackages') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'offercreationpackages'
+                                || Str::startsWith($current, 'offercreationpackages')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('offercreationpackagesorders') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('Offers Orders') }}</span>
@@ -316,13 +423,13 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         </ul>
                     </li>
                     @endif
-                    
+
                     <!-- Coupon Management -->
                     @if($userRole == 'Webmaster' || in_array(21, $dataSections))
                     <li class="nav-header hidden-folded m-t-sm">
                         <small class="text-muted" style="color: #6c757d !important;">{{ __('Coupon Management') }}</small>
                     </li>
-                    
+
                     <li class="{{ $couponActive ? 'active' : '' }}" style="border-left: 3px solid transparent;">
                         <a style="color: #495057;">
                             <span class="nav-caret">
@@ -334,10 +441,10 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <span class="nav-text">{{ __('Coupons Management') }}</span>
                         </a>
                         <ul class="nav-sub" style="background: #f8f9fa;">
-                            <li class="{{ 
-                                $current === 'coupon' 
-                                || Str::startsWith($current, 'coupon') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'coupon'
+                                || Str::startsWith($current, 'coupon')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('coupon') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('All Coupons') }}</span>
@@ -346,13 +453,13 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         </ul>
                     </li>
                     @endif
-                    
+
                     <!-- Transactions -->
                     @if($userRole == 'Webmaster' || in_array(22, $dataSections))
                     <li class="nav-header hidden-folded m-t-sm">
                         <small class="text-muted" style="color: #6c757d !important;">{{ __('Transactions') }}</small>
                     </li>
-                    
+
                     <li class="{{ $transactionActive ? 'active' : '' }}" style="border-left: 3px solid transparent;">
                         <a style="color: #495057;">
                             <span class="nav-caret">
@@ -364,28 +471,28 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <span class="nav-text">{{ __('Transactions') }}</span>
                         </a>
                         <ul class="nav-sub" style="background: #f8f9fa;">
-                            <li class="{{ 
-                                $current === 'transactionorders' 
-                                || Str::startsWith($current, 'transactionorders') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'transactionorders'
+                                || Str::startsWith($current, 'transactionorders')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('transactionorders') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('All Transactions') }}</span>
                                 </a>
                             </li>
-                            <li class="{{ 
-                                $current === 'updatetransactionorders' 
-                                || Str::startsWith($current, 'updatetransactionorders') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'updatetransactionorders'
+                                || Str::startsWith($current, 'updatetransactionorders')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('updatetransactionorders') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('Update & Upgrade Transactions') }}</span>
                                 </a>
                             </li>
-                            <li class="{{ 
-                                $current === 'ordersLogs' 
-                                || Str::startsWith($current, 'ordersLogs') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'ordersLogs'
+                                || Str::startsWith($current, 'ordersLogs')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('ordersLogs') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('Order Logs') }}</span>
@@ -394,13 +501,13 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         </ul>
                     </li>
                     @endif
-                    
+
                     <!-- Logs Management -->
                     @if($userRole == 'Webmaster' || in_array(22, $dataSections))
                     <li class="nav-header hidden-folded m-t-sm">
                         <small class="text-muted" style="color: #6c757d !important;">{{ __('Logs') }}</small>
                     </li>
-                    
+
                     <li class="{{ $LogsActive ? 'active' : '' }}" style="border-left: 3px solid transparent;">
                         <a style="color: #495057;">
                             <span class="nav-caret">
@@ -412,37 +519,37 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <span class="nav-text">{{ __('All Logs') }}</span>
                         </a>
                         <ul class="nav-sub" style="background: #f8f9fa;">
-                            <li class="{{ 
-                                $current === 'ordersLogs' 
-                                || Str::startsWith($current, 'ordersLogs') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'ordersLogs'
+                                || Str::startsWith($current, 'ordersLogs')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('ordersLogs') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('Order Success Logs') }}</span>
                                 </a>
                             </li>
-                            <li class="{{ 
-                                $current === 'ordersfailedLogs' 
-                                || Str::startsWith($current, 'ordersfailedLogs') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'ordersfailedLogs'
+                                || Str::startsWith($current, 'ordersfailedLogs')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('ordersfailedLogs') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('Order Failed Logs') }}</span>
                                 </a>
                             </li>
-                            <li class="{{ 
-                                $current === 'paymentLogs' 
-                                || Str::startsWith($current, 'paymentLogs') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'paymentLogs'
+                                || Str::startsWith($current, 'paymentLogs')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('paymentLogs') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('Payment Success Logs') }}</span>
                                 </a>
                             </li>
-                            <li class="{{ 
-                                $current === 'paymentfailLogs' 
-                                || Str::startsWith($current, 'paymentfailLogs') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'paymentfailLogs'
+                                || Str::startsWith($current, 'paymentfailLogs')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('paymentfailLogs') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('Payment Failed Logs') }}</span>
@@ -451,13 +558,13 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         </ul>
                     </li>
                     @endif
-                    
+
                     <!-- Email Management -->
                     @if($userRole == 'Webmaster')
                     <li class="nav-header hidden-folded m-t-sm">
                         <small class="text-muted" style="color: #6c757d !important;">{{ __('Email Setting') }}</small>
                     </li>
-                    
+
                     <li class="{{ $emailTemplateActive ? 'active' : '' }}" style="border-left: 3px solid transparent;">
                         <a style="color: #495057;">
                             <span class="nav-caret">
@@ -469,28 +576,28 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <span class="nav-text">{{ __('Email Management') }}</span>
                         </a>
                         <ul class="nav-sub" style="background: #f8f9fa;">
-                            <li class="{{ 
-                                $current === 'emailTemplate' 
-                                || Str::startsWith($current, 'emailTemplate') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'emailTemplate'
+                                || Str::startsWith($current, 'emailTemplate')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('emailTemplate') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('Email Templates') }}</span>
                                 </a>
                             </li>
-                            <li class="{{ 
-                                $current === 'emailTemplate' 
-                                || Str::startsWith($current, 'emailTemplate') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'emailTemplate'
+                                || Str::startsWith($current, 'emailTemplate')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('smtpConfigure') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('SMTP Configuration') }}</span>
                                 </a>
                             </li>
-                            <li class="{{ 
-                                $current === 'emailTemplate' 
-                                || Str::startsWith($current, 'emailTemplate') 
-                                ? 'active' : '' 
+                            <li class="{{
+                                $current === 'emailTemplate'
+                                || Str::startsWith($current, 'emailTemplate')
+                                ? 'active' : ''
                             }}">
                                 <a href="{{ route('emailsLogs') }}" style="color: #495057;">
                                     <span class="nav-text">{{ __('Email Logs') }}</span>
@@ -499,7 +606,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         </ul>
                     </li>
                     @endif
-                    
+
                     <!-- Settings Section -->
                     @if(@Auth::user()->permissionsGroup->roles_status || (Helper::GeneralWebmasterSettings("settings_status") && @Auth::user()->permissionsGroup->settings_status) || @Auth::user()->permissionsGroup->webmaster_status)
                         <li class="nav-header hidden-folded m-t-sm">
@@ -522,7 +629,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             </a>
                         </li>
                     @endif
-                    
+
                     <!-- General Site Settings -->
                     @if(Helper::GeneralWebmasterSettings("settings_status"))
                         @if(@Auth::user()->permissionsGroup->settings_status)
@@ -584,5 +691,12 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
             </nav>
         </div>
         <br>
+           <div class="navbar navbar-md no-radius" style="background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%);">
+
+            <a class="navbar-brand" href="{{ route('adminHome') }}">
+                <img src="{{ asset('assets/dashboard/images/favicon(kiwi).png') }}" alt="Control">
+                <span class="hidden-folded text-white inline"  style="margin-left:15px">{{ __('Kiwi Ticketing') }}</span>
+            </a>
+        </div>
     </div>
 </div>
