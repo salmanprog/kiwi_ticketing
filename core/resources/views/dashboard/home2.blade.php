@@ -7,8 +7,8 @@
         /* Professional Clean Theme */
         :root {
             --primary-green: #A0C242;
-            --text-dark: #2c3e50;
-            --text-light: #6c757d;
+            --text-dark: #111;
+            --text-light: #6B7280;
             --border-light: #e9ecef;
         }
 
@@ -296,25 +296,25 @@
 
                 <!-- Second Row: Revenue -->
                 <!-- <div class="orders-row">
-                    @foreach ($orderTypes as $type => $info)
-                        @php
-                            $order = $orders->firstWhere('type', $type);
-                            if (!$order) {
-                                continue;
-                            }
-                        @endphp
+                        @foreach ($orderTypes as $type => $info)
+    @php
+        $order = $orders->firstWhere('type', $type);
+        if (!$order) {
+            continue;
+        }
+    @endphp
 
-                        <div class="order-item" onclick="location.href='{{ route($info['route']) }}'">
-                            <div class="stat-icon">
-                                <i class="fas fa-dollar-sign"></i>
+                            <div class="order-item" onclick="location.href='{{ route($info['route']) }}'">
+                                <div class="stat-icon">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-number">${{ number_format($order->total_earning, 2) }}</div>
+                                    <div class="stat-label">{{ $info['title'] }} Revenue</div>
+                                </div>
                             </div>
-                            <div class="stat-content">
-                                <div class="stat-number">${{ number_format($order->total_earning, 2) }}</div>
-                                <div class="stat-label">{{ $info['title'] }} Revenue</div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div> -->
+    @endforeach
+                    </div> -->
             </div>
         </div>
 
@@ -424,14 +424,14 @@
 
                         <!-- Total Revenue -->
                         <!-- <div class="order-item mb-3" onclick="location.href='{{ route('transactionorders') }}'">
-                            <div class="stat-icon">
-                                <i class="fas fa-chart-line"></i>
-                            </div>
-                            <div class="stat-content">
-                                <div class="stat-number">${{ number_format($total->total_earning, 2) }}</div>
-                                <div class="stat-label">Total Revenue</div>
-                            </div>
-                        </div> -->
+                                <div class="stat-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-number">${{ number_format($total->total_earning, 2) }}</div>
+                                    <div class="stat-label">Total Revenue</div>
+                                </div>
+                            </div> -->
 
                         <!-- Quick Actions -->
                         <div class="chart-container">
