@@ -1,13 +1,16 @@
 /*
 
 */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap'); */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 
 html {
     background-color: #e0e0e0;
 }
 body {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Poppins', sans-serif;
     color: rgba(0, 0, 0, 0.87);
     font-size: 0.925rem;
     background-color: #f0f0f0;
@@ -2423,7 +2426,7 @@ body {
 
     .app-aside,
     .app-aside .scroll {
-        width: 18rem;
+        width: 20rem;
     }
 
     .app-aside.lg:not(.folded),
@@ -2461,7 +2464,7 @@ body {
     }
 
     .app-aside:not(.hide)~.app-content {
-        margin-left: 18rem;
+        margin-left: 20rem;
     }
 
     .app-aside .left {
@@ -3886,7 +3889,7 @@ body {
     border-collapse: collapse;
     margin: 15px 0;
     border-radius: 12px;
-    overflow: hidden;
+    overflow: auto;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -8099,7 +8102,7 @@ fieldset[disabled] .md-switch input+i:after {
 
 
 .search-example {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Poppins', sans-serif;
     padding: 15px;
     border: 1px dashed #ddd;
     background: #f9f9f9;

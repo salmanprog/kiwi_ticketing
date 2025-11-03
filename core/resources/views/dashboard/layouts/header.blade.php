@@ -1,4 +1,4 @@
-<div class="app-header white box-shadow navbar-md" style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); border-bottom: 3px solid #A0C242;">
+<div class="app-header white box-shadow navbar-md" style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); border-bottom: 1px solid  #dee2e6;box-shadow: none">
     <div class="navbar">
         <!-- Brand Logo & Name -->
 

@@ -622,7 +622,6 @@
                 }
             }
 
-            // صفحہ لوڈ ہوتے ہی پاپ اپ کھولیں (تھوڑی دیر کے بعد animation کے لیے)
             setTimeout(() => {
                 openModal();
             }, 300);
@@ -632,26 +631,24 @@
                 openModal();
             });
 
-            // Close modal - اب یہ puranay page پر واپس جائے گا
             closeBtn.addEventListener('click', function() {
                 goBackToPreviousPage();
             });
 
-            // Close modal when clicking outside - اب یہ کام نہیں کرے گا
+            // Close modal when clicking outside -
             // modal.addEventListener('click', function(e) {
             //     if (e.target === modal) {
             //         closeModal();
             //     }
             // });
 
-            // Close modal with Escape key - اب یہ کام نہیں کرے گا
+            // Close modal with Escape key - 
             // document.addEventListener('keydown', function(e) {
             //     if (e.key === 'Escape' && modal.classList.contains('show')) {
             //         closeModal();
             //     }
             // });
 
-            // باقی آپ کا موجودہ کوڈ...
             if (typeof jQuery !== 'undefined') {
                 $('.datepicker').datepicker({
                     format: 'yyyy-mm-dd',
