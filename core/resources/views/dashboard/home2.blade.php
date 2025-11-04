@@ -13,12 +13,13 @@
         }
 
         .dashboard-welcome {
-            background: linear-gradient(135deg, var(--primary-green) 0%, #8AAE38 100%);
+            background: #fff;
             border-radius: 12px;
             padding: 25px;
             margin-bottom: 25px;
-            color: white;
+            color: #000;
             box-shadow: 0 4px 12px rgba(160, 194, 66, 0.25);
+            border: 1px solid rgb(0, 0, 0, .08);
         }
 
         .stat-card {
