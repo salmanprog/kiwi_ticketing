@@ -18,7 +18,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
     border-left-color: #ffffff !important;
     color: #ffffff !important;
     border-radius: 12px !important;
-    margin: 4px 12px !important;
+    margin: 0px !important;
     box-shadow: 0 4px 15px rgba(159, 194, 63, 0.3) !important;
     position: relative;
     overflow: hidden;
@@ -114,7 +114,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
 .nav-sub {
     background: rgba(248, 250, 252, 0.8) !important;
     border-radius: 0 0 12px 12px !important;
-    margin: 0 12px 8px 12px !important;
+    margin: 0px !important;
     backdrop-filter: blur(10px);
 }
 
@@ -136,6 +136,13 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
 .nav-active-primary ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(135deg, #8AAE38 0%, #7A9A32 100%);
 }
+td,td a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
 </style>
 <div id="aside" class="app-aside modal fade folded md nav-expand">
     <div class="left navside white" layout="column" style="background: #ffffff; border-right: 1px solid #e9ecef;">
