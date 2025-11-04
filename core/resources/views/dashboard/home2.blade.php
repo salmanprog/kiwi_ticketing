@@ -13,12 +13,13 @@
         }
 
         .dashboard-welcome {
-            background: linear-gradient(135deg, var(--primary-green) 0%, #8AAE38 100%);
+            background: #fff;
             border-radius: 12px;
             padding: 25px;
             margin-bottom: 25px;
-            color: white;
+            color: #000;
             box-shadow: 0 4px 12px rgba(160, 194, 66, 0.25);
+            border: 1px solid rgb(0, 0, 0, .08);
         }
 
         .stat-card {
@@ -106,15 +107,15 @@
             padding: 20px;
             margin-bottom: 10px;
             border-radius: 10px;
-            border: 1px solid var(--border-light);
+            border: 1px solid rgb(0, 0, 0, .08);
             transition: all 0.3s ease;
             cursor: pointer;
         }
 
         .order-item:hover {
-            transform: translateY(-2px);
+            /* transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border-color: var(--primary-green);
+            border-color: var(--primary-green); */
         }
 
         .btn-green {
@@ -231,7 +232,7 @@
                 <div class="col-md-8">
                     <h4 class="m-b-0 _300"><i class="fas fa-chart-line me-2"></i>{{ __('backend.hi') }} <span
                             class="">{{ Auth::user()->name }}</span>, {{ __('backend.welcomeBack') }}</h4>
-                    <p class="m-b-0 opacity-90">Your business dashboard overview</p>
+                    <p class="m-b-0 opacity-90">Your business dashboard Overview</p>
                 </div>
                 <div class="col-md-4 text-right">
                     <div class="metric-badge">

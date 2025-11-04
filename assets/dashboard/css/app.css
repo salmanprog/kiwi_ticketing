@@ -13,7 +13,7 @@ body {
     font-family: 'Poppins', sans-serif;
     color: rgba(0, 0, 0, 0.87);
     font-size: 0.925rem;
-    background-color: #f0f0f0;
+    background-color: #ffff;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -2426,7 +2426,7 @@ body {
 
     .app-aside,
     .app-aside .scroll {
-        width: 20rem;
+        width: 296px;
     }
 
     .app-aside.lg:not(.folded),
@@ -2464,7 +2464,7 @@ body {
     }
 
     .app-aside:not(.hide)~.app-content {
-        margin-left: 20rem;
+        margin-left: 296px;
     }
 
     .app-aside .left {
@@ -2916,6 +2916,7 @@ body {
 
 .navside .nav-text {
     opacity: 0.75;
+    font-size: 14px;
 }
 
 .navside a:hover>.nav-text,
