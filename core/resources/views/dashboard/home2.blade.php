@@ -106,15 +106,15 @@
             padding: 20px;
             margin-bottom: 10px;
             border-radius: 10px;
-            border: 1px solid var(--border-light);
+            border: 1px solid rgb(0, 0, 0, .08);
             transition: all 0.3s ease;
             cursor: pointer;
         }
 
         .order-item:hover {
-            transform: translateY(-2px);
+            /* transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border-color: var(--primary-green);
+            border-color: var(--primary-green); */
         }
 
         .btn-green {
