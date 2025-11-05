@@ -8,6 +8,7 @@ use App\Models\Section;
 use App\Models\Coupons;
 use App\Models\WebmasterSection;
 use App\Models\Media;
+use App\Models\CouponsTickets;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Auth;
 use File;
@@ -153,6 +154,17 @@ class CouponController extends Controller
         $couponsPackages->created_by = Auth::user()->id;
         $couponsPackages->status = $request->status;
         $couponsPackages->save();
+
+        if ($request->has('ticket') && is_array($request->ticket)) {
+            foreach ($request->ticket as $ticketSlug) {
+                CouponsTickets::create([
+                    'coupon_id'   => $couponsPackages->id,
+                    'package_type' => $request->package_type,
+                    'package_id' => $request->package_id,
+                    'ticket'  => $ticketSlug,
+                ]);
+            }
+        }
         
         return redirect()->action('Dashboard\CouponController@index')->with('doneMessage', __('backend.addDone'));
     }
@@ -218,5 +230,60 @@ class CouponController extends Controller
        
     }
 
+    public static function getPackagesByType(Request $request)
+    {
+        $type = $request->get('type');
+        switch ($type) {
+            case 'cabana':
+                $packages = \App\Models\CabanaPackages::select('id', 'ticketSlug as slug', 'ticketType as name')->where('status','1')->get();
+                break;
+            case 'birthday':
+                $packages = \App\Models\BirthdayPackages::select('id', 'slug', 'title as name')->where('status','1')->get();
+                break;
+            case 'general_ticket':
+                $packages = \App\Models\GeneralTicketPackages::select('id', 'slug', 'title as name')->where('status','1')->get();
+                break;
+            case 'season_pass':
+                $packages = \App\Models\SeasonPass::select('id', 'slug', 'title as name')->where('status','1')->get();
+                break;
+            case 'offer_creation':
+                $packages = \App\Models\OfferCreation::select('id', 'slug', 'title as name')->where('status','1')->get();
+                break;
+            default:
+                $packages = [];
+        }
 
+        return response()->json([
+            'packages' => $packages
+        ]);
+    }
+
+    public static function getPackagesProducts(Request $request)
+    {
+        $type = $request->get('type');
+        $slug = $request->get('slug');
+        switch ($type) {
+            case 'cabana':
+                $packages = \App\Models\CabanaAddon::select('id', 'ticketSlug', 'ticketType as name')->where('cabanaSlug',$slug)->get();
+                break;
+            case 'birthday':
+                $packages = \App\Models\BirthdayAddon::select('id', 'ticketSlug', 'ticketType as name')->where('birthday_slug',$slug)->get();
+                break;
+            case 'general_ticket':
+                $packages = \App\Models\GeneralTicketAddon::select('id', 'ticketSlug', 'ticketType as name')->where('generalTicketSlug',$slug)->where('status','1')->get();
+                break;
+            case 'season_pass':
+                $packages = \App\Models\SeasonPassAddon::select('id', 'ticketSlug', 'ticketType as name')->where('season_passes_slug',$slug)->where('status','1')->get();
+                break;
+            case 'offer_creation':
+                $packages = \App\Models\OfferAddon::select('id', 'ticketSlug', 'ticketType as name')->where('offerSlug',$slug)->where('status','1')->get();
+                break;
+            default:
+                $packages = [];
+        }
+
+        return response()->json([
+            'packages' => $packages
+        ]);
+    }
 }

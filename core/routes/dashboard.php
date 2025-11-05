@@ -398,6 +398,8 @@ Route::get('/coupon/{id}/edit', [CouponController::class, 'edit'])->name('coupon
 Route::post('/coupon/store', [CouponController::class, 'store'])->name('couponStore');
 Route::post('/coupon/{id}/update', [CouponController::class, 'update'])->name('couponUpdate');
 Route::get('/coupon/destroy/{id}', [CouponController::class, 'destroy'])->name('couponDestroy');
+Route::get('/coupon/get-packages-by-type', [CouponController::class, 'getPackagesByType'])->name('get.packages.by.type');
+Route::get('/coupon/get-packages-products', [CouponController::class, 'getPackagesProducts'])->name('get.packages.products');
 // Email Templates
 Route::get('/email-template', [EmailController::class, 'index'])->name('emailTemplate');
 Route::post('/email-template/data', [EmailController::class, 'getData'])->name('email.data');
