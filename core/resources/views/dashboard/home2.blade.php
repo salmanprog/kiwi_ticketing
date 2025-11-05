@@ -330,7 +330,7 @@
                             <div class="col-md-8">
                                 <h5 class="section-title mb-0">
                                     <i class="fas fa-chart-line me-2"></i>Monthly Orders Trend
-                                    <small class="text-muted d-block mt-1">Real-time data from your database</small>
+                                    <small class="text-muted d-block mt-1" style="margin-top: 10px">Real-time data from your database</small>
                                 </h5>
                             </div>
                             <div class="col-md-4 text-right">
