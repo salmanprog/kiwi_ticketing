@@ -12,18 +12,18 @@ $mnu_title_var = 'title_' . @Helper::currentLanguage()->code;
 $mnu_title_var2 = 'title_' . config('smartend.default_language');
 ?>
 <style>
-    /* Premium Green Theme with Modern Design */
-    .nav-active-primary .nav>li.active>a {
-        background: linear-gradient(135deg, #9FC23F 0%, #8AAE38 100%) !important;
-        border-left-color: #ffffff !important;
-        color: #ffffff !important;
-        border-radius: 12px !important;
-        margin: 0px !important;
-        /* box-shadow: 0 4px 15px rgba(159, 194, 63, 0.3) !important; */
-        position: relative;
-        overflow: hidden;
-        /* transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; */
-    }
+/* Premium Green Theme with Modern Design */
+.nav-active-primary .nav > li.active > a {
+    background: linear-gradient(135deg, #9FC23F 0%, #8AAE38 100%) !important;
+    border-left-color: #ffffff !important;
+    color: #ffffff !important;
+    border-radius: 12px !important;
+    margin: 0px !important;
+    box-shadow: 0 4px 15px rgba(159, 194, 63, 0.3) !important;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
 
     .nav-active-primary .nav>li.active>a::before {
         content: '';
@@ -42,14 +42,15 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
         transition: transform 0.3s ease;
     }
 
-    .nav-sub>li.active>a {
-        color: #A0C242 !important;
-        border-left: 3px solid #A0C242 !important;
-        border-radius: 8px !important;
-        margin: 2px 8px !important;
-        font-weight: 600 !important;
-        position: relative;
-    }
+.nav-sub > li.active > a {
+    background: linear-gradient(135deg, rgba(160, 194, 66, 0.15) 0%, rgba(138, 174, 56, 0.1) 100%) !important;
+    color: #A0C242 !important;
+    border-left: 3px solid #A0C242 !important;
+    border-radius: 8px !important;
+    margin: 2px 8px !important;
+    font-weight: 600 !important;
+    position: relative;
+}
 
     .nav-sub>li.active>a::after {
         content: '';
@@ -63,19 +64,36 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
         border-radius: 50%;
     }
 
+/* Premium Hover effects */
+.nav-active-primary .nav > li > a:hover {
+    background: rgba(160, 194, 66, 0.08) !important;
+    color: #A0C242 !important;
+    border-radius: 12px !important;
+    margin: 4px 12px !important;
+    transform: translateX(4px);
+    box-shadow: 0 2px 8px rgba(160, 194, 66, 0.2) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
 
-    /* Sabse last li item ko identify karo aur margin do */
-    .nav-active-primary .nav>li:last-of-type {
-        margin-bottom: 30px !important;
-        padding-bottom: 10px !important;
-    }
-
-    /* Premium animations */
-    .nav-active-primary .nav>li>a {
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        border-radius: 12px !important;
-        margin: 4px 0px !important;
-    }
+.nav-sub > li > a:hover {
+    background: rgba(160, 194, 66, 0.05) !important;
+    color: #A0C242 !important;
+    border-radius: 8px !important;
+    margin: 2px 8px !important;
+    transform: translateX(2px);
+    transition: all 0.2s ease !important;
+}
+/* Sabse last li item ko identify karo aur margin do */
+.nav-active-primary .nav > li:last-of-type {
+    margin-bottom: 30px !important;
+    padding-bottom: 10px !important;
+}
+/* Premium animations */
+.nav-active-primary .nav > li > a {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    border-radius: 12px !important;
+    margin: 4px 12px !important;
+}
 
     .nav-sub>li>a {
         transition: all 0.2s ease !important;
@@ -88,17 +106,17 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
         transition: transform 0.3s ease !important;
     }
 
-    .nav-active-primary .nav>li>a:hover .nav-icon {
-        color: #6B7280;
-    }
+.nav-active-primary .nav > li > a:hover .nav-icon {
+    transform: scale(1.1);
+}
 
-    /* Premium submenu styling */
-    .nav-sub {
-        background: #ffffff !important;
-        border-radius: 0 0 12px 12px !important;
-        margin: 0px !important;
-        backdrop-filter: blur(10px);
-    }
+/* Premium submenu styling */
+.nav-sub {
+    background: rgba(248, 250, 252, 0.8) !important;
+    border-radius: 0 0 12px 12px !important;
+    margin: 0px !important;
+    backdrop-filter: blur(10px);
+}
 
     /* Premium scrollbar */
     .nav-active-primary ::-webkit-scrollbar {
@@ -127,28 +145,6 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
         max-width: 200px;
     }
 
-    td:last-child {
-        white-space: normal;
-        overflow: visible;
-        text-overflow: clip;
-        max-width: none;
-    }
-
-    .app-aside.modal.fade.md.nav-expand.folded .bottom-nav {
-        display: none;
-    }
-
-    .app-aside.modal.fade.md.nav-expand.folded .no-twice {
-        display: none;
-    }
-
-    .app-aside.modal.fade.md.nav-expand .collapse-twice {
-        display: none;
-    }
-
-    .app-aside.modal.fade.md.nav-expand.folded .collapse-twice {
-        display: block;
-    }
 </style>
 
 <div id="aside" class="app-aside modal fade folded md nav-expand">
@@ -171,12 +167,9 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                 @else
                     <img alt="" src="{{ URL::to('uploads/settings/nologo.png') }}">
                 @endif
-
-                <img class="collapse-twice"
-                    src="https://wildrivers.com/wp-content/uploads/2023/12/wildrivers-apple-icon.png" alt=""
-                    width="23px">
             </div>
         </div>
+        
 
 
 

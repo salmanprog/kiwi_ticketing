@@ -149,7 +149,7 @@
 
         <!-- navbar collapse -->
         <div class="collapse navbar-toggleable-sm" id="collapse">
-            {{-- @if (Route::currentRouteName() != 'adminSearch')
+            @if(Route::currentRouteName() !="adminSearch")
                 {{Form::open(['route'=>['adminSearch'],'method'=>'GET', 'role'=>'search', 'class' => "navbar-form form-inline pull-right pull-none-sm navbar-item v-m" ])}}
 
                 <div class="form-group l-h m-a-0">
