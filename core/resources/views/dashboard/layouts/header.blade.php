@@ -68,10 +68,10 @@
                     </div>
                 </li>
             @endif
-            
+
             <li class="nav-item dropdown">
                 <a class="nav-link clear text-dark" data-toggle="dropdown">
-                  <span class="avatar w-32" style="border: 2px solid #A0C242;">
+                  <span class="avatar w-32">
                       @if(Auth::user()->photo !="")
                           <img src="{{ asset('uploads/users/'.Auth::user()->photo) }}" alt="{{ Auth::user()->name }}"
                                title="{{ Auth::user()->name }}" style="border-radius: 50%;">
@@ -87,7 +87,7 @@
                         <h6 class="mb-0 text-dark">Welcome, {{ Auth::user()->name }}</h6>
                         <small class="text-muted">KIWI Ticketing Portal</small>
                     </div>
-                    
+
                     @if(Helper::GeneralWebmasterSettings("inbox_status"))
                         @if(@Auth::user()->permissionsGroup->inbox_status)
                             <!-- <a class="dropdown-item d-flex align-items-center"
@@ -100,7 +100,7 @@
                             </a> -->
                         @endif
                     @endif
-                    
+
                     @if(Auth::user()->permissions ==0 || Auth::user()->permissions ==1)
                         <a class="dropdown-item d-flex align-items-center"
                            href="{{ route('usersEdit',Auth::user()->id) }}">
@@ -108,9 +108,9 @@
                             <span>{{ __('backend.profile') }}</span>
                         </a>
                     @endif
-                    
+
                     <div class="dropdown-divider"></div>
-                    
+
                     <a class="dropdown-item d-flex align-items-center text-danger" href="{{ route('adminLogout') }}">
                         <i class="material-icons mr-2">&#xe879;</i>
                         <span>{{ __('backend.logout') }}</span>
