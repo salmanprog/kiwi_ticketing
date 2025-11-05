@@ -663,5 +663,3 @@ $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
         </div>
     </div>
 </div>
-
-
