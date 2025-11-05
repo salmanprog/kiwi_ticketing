@@ -227,7 +227,7 @@
 @section('content')
     <div class="icons padding p-b-0">
         <!-- Welcome Section -->
-        <div class="dashboard-welcome">
+        {{-- <div class="dashboard-welcome">
             <div class="row align-items-center">
                 <div class="col-md-8">
                     <h4 class="m-b-0 _300"><i class="fas fa-chart-line me-2"></i>{{ __('backend.hi') }} <span
@@ -240,7 +240,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Order Statistics - FULL WIDTH SECTION -->
         <div class="full-width-section">

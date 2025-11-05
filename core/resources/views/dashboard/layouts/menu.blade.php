@@ -19,10 +19,10 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
         color: #ffffff !important;
         border-radius: 12px !important;
         margin: 0px !important;
-        box-shadow: 0 4px 15px rgba(159, 194, 63, 0.3) !important;
+        /* box-shadow: 0 4px 15px rgba(159, 194, 63, 0.3) !important; */
         position: relative;
         overflow: hidden;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        /* transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; */
     }
 
     .nav-active-primary .nav>li.active>a::before {
@@ -43,7 +43,6 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
     }
 
     .nav-sub>li.active>a {
-        background: linear-gradient(135deg, rgba(160, 194, 66, 0.15) 0%, rgba(138, 174, 56, 0.1) 100%) !important;
         color: #A0C242 !important;
         border-left: 3px solid #A0C242 !important;
         border-radius: 8px !important;
@@ -64,25 +63,6 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
         border-radius: 50%;
     }
 
-    /* Premium Hover effects */
-    .nav-active-primary .nav>li>a:hover {
-        background: rgba(160, 194, 66, 0.08) !important;
-        color: #A0C242 !important;
-        border-radius: 12px !important;
-        margin: 4px 12px !important;
-        transform: translateX(4px);
-        box-shadow: 0 2px 8px rgba(160, 194, 66, 0.2) !important;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    }
-
-    .nav-sub>li>a:hover {
-        background: rgba(160, 194, 66, 0.05) !important;
-        color: #A0C242 !important;
-        border-radius: 8px !important;
-        margin: 2px 8px !important;
-        transform: translateX(2px);
-        transition: all 0.2s ease !important;
-    }
 
     /* Sabse last li item ko identify karo aur margin do */
     .nav-active-primary .nav>li:last-of-type {
@@ -109,12 +89,12 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
     }
 
     .nav-active-primary .nav>li>a:hover .nav-icon {
-        transform: scale(1.1);
+        color: #6B7280;
     }
 
     /* Premium submenu styling */
     .nav-sub {
-        background: rgba(248, 250, 252, 0.8) !important;
+        background: #ffffff !important;
         border-radius: 0 0 12px 12px !important;
         margin: 0px !important;
         backdrop-filter: blur(10px);
@@ -170,6 +150,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
         display: block;
     }
 </style>
+
 <div id="aside" class="app-aside modal fade folded md nav-expand">
     <div class="left navside white" layout="column" style="background: #ffffff; border-right: 1px solid #e9ecef;">
 
