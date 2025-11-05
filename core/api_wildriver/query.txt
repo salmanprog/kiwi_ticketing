@@ -1,30 +1,21 @@
-CREATE TABLE `smartend_api_logs` (
+CREATE TABLE `smartend_coupon_apply_tickets` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `order_number` varchar(191) DEFAULT NULL,
-  `endpoint` varchar(191) DEFAULT NULL,
-  `request` longtext NOT NULL,
-  `response` longtext NOT NULL,
-  `message` varchar(255) DEFAULT NULL,
+  `coupon_id` bigint(20) UNSIGNED NOT NULL,
+  `package_type` varchar(191) DEFAULT NULL,
+  `package_id` longtext NOT NULL,
+  `ticket` longtext NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-ALTER TABLE `smartend_api_logs`
+ALTER TABLE `smartend_coupon_apply_tickets`
   ADD PRIMARY KEY (`id`)
 
-ALTER TABLE `smartend_api_logs`
+ALTER TABLE `smartend_coupon_apply_tickets`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1
  
-ALTER TABLE `smartend_email_logs` ADD `slug` VARCHAR(255) NOT NULL AFTER `id`;
-ALTER TABLE `smartend_email_logs` ADD `email` VARCHAR(255) NOT NULL AFTER `order_number`;
-ALTER TABLE `smartend_email_logs` ADD `status` ENUM('0','1') NOT NULL DEFAULT '1' AFTER `content`;
+ALTER TABLE `smartend_coupon_apply_tickets` ADD `slug` VARCHAR(255) NOT NULL AFTER `id`;
 
-
-ALTER TABLE `smartend_offer_creation_packages` ADD `from_date` VARCHAR(255) NULL DEFAULT NULL AFTER `description`;
-ALTER TABLE `smartend_offer_creation_packages` ADD `to_date` VARCHAR(255) NULL DEFAULT NULL AFTER `from_date`;
-
-ALTER TABLE `smartend_order_tickets` ADD `ticketSlug` VARCHAR(255) NULL DEFAULT NULL AFTER `ticketType`;
-ALTER TABLE `smartend_cabana` ADD `title` VARCHAR(255) NULL DEFAULT NULL AFTER `auth_code`;
 -----------------------------------------------------------------------------------------
 http://dev-dynamicpricing-env.eba-tkbnkmbm.us-east-1.elasticbeanstalk.com/Pricing/UpdateOrder
 {
