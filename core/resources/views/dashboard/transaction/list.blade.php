@@ -54,12 +54,12 @@
     </div>
     <div class="box-tool box-tool-lg">
         <ul class="nav">
-            <li class="nav-item inline">
+            {{-- <li class="nav-item inline">
                 <a class="btn primary" href="Javascript:void(0);">
                     <i class="material-icons">&#xe02e;</i>
                     <strong>Total Earnings:</strong> <span id="total-earnings">$0.00</span>
                 </a>
-            </li>
+            </li> --}}
             <li class="nav-item inline">
                 <button type="button" class="btn info" id="filter_btn" title="{{ __('Advance Search') }}"
                         data-toggle="tooltip">

@@ -18,7 +18,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
     border-left-color: #ffffff !important;
     color: #ffffff !important;
     border-radius: 12px !important;
-    margin: 4px 12px !important;
+    margin: 0px !important;
     box-shadow: 0 4px 15px rgba(159, 194, 63, 0.3) !important;
     position: relative;
     overflow: hidden;
@@ -114,7 +114,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
 .nav-sub {
     background: rgba(248, 250, 252, 0.8) !important;
     border-radius: 0 0 12px 12px !important;
-    margin: 0 12px 8px 12px !important;
+    margin: 0px !important;
     backdrop-filter: blur(10px);
 }
 
@@ -136,6 +136,13 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
 .nav-active-primary ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(135deg, #8AAE38 0%, #7A9A32 100%);
 }
+td,td a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
 </style>
 <div id="aside" class="app-aside modal fade folded md nav-expand">
     <div class="left navside white" layout="column" style="background: #ffffff; border-right: 1px solid #e9ecef;">
@@ -166,13 +173,13 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                     $dataSections = explode(',', Auth::user()->permissionsGroup->data_sections);
                 @endphp
                 <ul class="nav" ui-nav>
-                    <li class="nav-header hidden-folded">
+                    {{-- <li class="nav-header hidden-folded">
                         <small class="text-muted" style="color: #6c757d !important;">{{ __('backend.main') }}</small>
-                    </li>
+                    </li> --}}
                     <li {{ (Route::currentRouteName()=="adminHome") ? 'class=active' : '' }} style="border-left: 3px solid transparent;">
                         <a href="{{ route('adminHome') }}" style="color: #495057;">
                   <span class="nav-icon">
-                    <i class="fas fa-chart-line" style="color: #A0C242;"></i>
+                    <i class="fas fa-chart-line" style="color: #6B7280;"></i>
                   </span>
                             <span class="nav-text">{{ __('backend.dashboard') }}</span>
                         </a>
@@ -204,7 +211,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 <i class="fa fa-caret-down" style="color: #A0C242;"></i>
                             </span>
                             <span class="nav-icon">
-                                <i class="fas fa-umbrella-beach" style="color: #A0C242;"></i>
+                                <i class="fas fa-umbrella-beach" style="color: #6B7280;"></i>
                             </span>
                             <span class="nav-text">{{ __('Cabana Management') }}</span>
                         </a>
@@ -251,7 +258,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 <i class="fa fa-caret-down" style="color: #A0C242;"></i>
                             </span>
                             <span class="nav-icon">
-                                <i class="fas fa-gift" style="color: #A0C242;"></i>
+                                <i class="fas fa-gift" style="color: #6B7280;"></i>
                             </span>
                             <span class="nav-text">{{ __('Package Management') }}</span>
                         </a>
@@ -298,7 +305,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 <i class="fa fa-caret-down" style="color: #A0C242;"></i>
                             </span>
                             <span class="nav-icon">
-                                <i class="fas fa-ticket-alt" style="color: #A0C242;"></i>
+                                <i class="fas fa-ticket-alt" style="color: #6B7280;"></i>
                             </span>
                             <span class="nav-text">{{ __('Platform Management') }}</span>
                         </a>
@@ -344,7 +351,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 <i class="fa fa-caret-down" style="color: #A0C242;"></i>
                             </span>
                             <span class="nav-icon">
-                                <i class="fas fa-star" style="color: #A0C242;"></i>
+                                <i class="fas fa-star" style="color: #6B7280;"></i>
                             </span>
                             <span class="nav-text">{{ __('SeasonPass Management') }}</span>
                         </a>
@@ -388,7 +395,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 <i class="fa fa-caret-down" style="color: #A0C242;"></i>
                             </span>
                             <span class="nav-icon">
-                                <i class="fas fa-tag" style="color: #A0C242;"></i>
+                                <i class="fas fa-tag" style="color: #6B7280;"></i>
                             </span>
                             <span class="nav-text">{{ __('Offer Management') }}</span>
                         </a>
@@ -426,9 +433,9 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
 
                     <!-- Coupon Management -->
                     @if($userRole == 'Webmaster' || in_array(21, $dataSections))
-                    <li class="nav-header hidden-folded m-t-sm">
+                    {{-- <li class="nav-header hidden-folded m-t-sm">
                         <small class="text-muted" style="color: #6c757d !important;">{{ __('Coupon Management') }}</small>
-                    </li>
+                    </li> --}}
 
                     <li class="{{ $couponActive ? 'active' : '' }}" style="border-left: 3px solid transparent;">
                         <a style="color: #495057;">
@@ -436,7 +443,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 <i class="fa fa-caret-down" style="color: #A0C242;"></i>
                             </span>
                             <span class="nav-icon">
-                                <i class="fas fa-ticket-alt" style="color: #A0C242;"></i>
+                                <i class="fas fa-ticket-alt" style="color: #6B7280;"></i>
                             </span>
                             <span class="nav-text">{{ __('Coupons Management') }}</span>
                         </a>
@@ -456,9 +463,9 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
 
                     <!-- Transactions -->
                     @if($userRole == 'Webmaster' || in_array(22, $dataSections))
-                    <li class="nav-header hidden-folded m-t-sm">
+                    {{-- <li class="nav-header hidden-folded m-t-sm">
                         <small class="text-muted" style="color: #6c757d !important;">{{ __('Transactions') }}</small>
-                    </li>
+                    </li> --}}
 
                     <li class="{{ $transactionActive ? 'active' : '' }}" style="border-left: 3px solid transparent;">
                         <a style="color: #495057;">
@@ -466,7 +473,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 <i class="fa fa-caret-down" style="color: #A0C242;"></i>
                             </span>
                             <span class="nav-icon">
-                                <i class="fas fa-dollar-sign" style="color: #A0C242;"></i>
+                                <i class="fas fa-dollar-sign" style="color: #6B7280;"></i>
                             </span>
                             <span class="nav-text">{{ __('Transactions') }}</span>
                         </a>
@@ -504,9 +511,9 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
 
                     <!-- Logs Management -->
                     @if($userRole == 'Webmaster' || in_array(22, $dataSections))
-                    <li class="nav-header hidden-folded m-t-sm">
+                    {{-- <li class="nav-header hidden-folded m-t-sm">
                         <small class="text-muted" style="color: #6c757d !important;">{{ __('Logs') }}</small>
-                    </li>
+                    </li> --}}
 
                     <li class="{{ $LogsActive ? 'active' : '' }}" style="border-left: 3px solid transparent;">
                         <a style="color: #495057;">
@@ -514,7 +521,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 <i class="fa fa-caret-down" style="color: #A0C242;"></i>
                             </span>
                             <span class="nav-icon">
-                                <i class="fas fa-clipboard-list" style="color: #A0C242;"></i>
+                                <i class="fas fa-clipboard-list" style="color: #6B7280;"></i>
                             </span>
                             <span class="nav-text">{{ __('All Logs') }}</span>
                         </a>
@@ -561,9 +568,9 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
 
                     <!-- Email Management -->
                     @if($userRole == 'Webmaster')
-                    <li class="nav-header hidden-folded m-t-sm">
+                    {{-- <li class="nav-header hidden-folded m-t-sm">
                         <small class="text-muted" style="color: #6c757d !important;">{{ __('Email Setting') }}</small>
-                    </li>
+                    </li> --}}
 
                     <li class="{{ $emailTemplateActive ? 'active' : '' }}" style="border-left: 3px solid transparent;">
                         <a style="color: #495057;">
@@ -571,7 +578,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                                 <i class="fa fa-caret-down" style="color: #A0C242;"></i>
                             </span>
                             <span class="nav-icon">
-                                <i class="fas fa-envelope" style="color: #A0C242;"></i>
+                                <i class="fas fa-envelope" style="color: #6B7280;"></i>
                             </span>
                             <span class="nav-text">{{ __('Email Management') }}</span>
                         </a>
@@ -623,7 +630,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                         <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} style="border-left: 3px solid transparent;">
                             <a href="{{ route('users') }}" style="color: #495057;">
                                 <span class="nav-icon">
-                                    <i class="fas fa-users" style="color: #A0C242;"></i>
+                                    <i class="fas fa-users" style="color: #6B7280;"></i>
                                 </span>
                                 <span class="nav-text">{{ __('backend.usersPermissions') }}</span>
                             </a>
@@ -640,7 +647,7 @@ $mnu_title_var2 = "title_" . config('smartend.default_language');
                             <li {{ ($PathCurrentFolder==$currentFolder) ? 'class=active' : '' }} style="border-left: 3px solid transparent;">
                                 <a href="{{ route('settings') }}" style="color: #495057;">
                                 <span class="nav-icon">
-                                <i class="fas fa-cogs" style="color: #A0C242;"></i>
+                                <i class="fas fa-cogs" style="color: #6B7280;"></i>
                                 </span>
                                     <span class="nav-text">{{ __('backend.generalSiteSettings') }}</span>
                                 </a>
