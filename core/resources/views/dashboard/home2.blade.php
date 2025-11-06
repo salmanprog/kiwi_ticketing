@@ -227,7 +227,7 @@
 @section('content')
     <div class="icons padding p-b-0">
         <!-- Welcome Section -->
-        <div class="dashboard-welcome">
+        {{-- <div class="dashboard-welcome">
             <div class="row align-items-center">
                 <div class="col-md-8">
                     <h4 class="m-b-0 _300"><i class="fas fa-chart-line me-2"></i>{{ __('backend.hi') }} <span
@@ -240,7 +240,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Order Statistics - FULL WIDTH SECTION -->
         <div class="full-width-section">
@@ -330,7 +330,7 @@
                             <div class="col-md-8">
                                 <h5 class="section-title mb-0">
                                     <i class="fas fa-chart-line me-2"></i>Monthly Orders Trend
-                                    <small class="text-muted d-block mt-1">Real-time data from your database</small>
+                                    <small class="text-muted d-block mt-1" style="margin-top: 10px">Real-time data from your database</small>
                                 </h5>
                             </div>
                             <div class="col-md-4 text-right">
