@@ -34,7 +34,7 @@ class CouponController extends Controller
     {
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-        $coupons = Coupons::with(['createdBy','updatedBy'])->get();
+        $coupons = Coupons::with(['createdBy','updatedBy','tickets'])->get();
          // Paginate
         $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
@@ -52,7 +52,7 @@ class CouponController extends Controller
     public function getData(Request $request)
     {
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
-        $query = Coupons::with(['createdBy','updatedBy']);
+        $query = Coupons::with(['createdBy','updatedBy','tickets']);
         if ($request->has('search') && $request->search['value'] != '') {
             $search = $request->search['value'];
             $query->where(function ($q) use ($search) {
@@ -143,6 +143,7 @@ class CouponController extends Controller
         $couponsPackages = new Coupons;
         $couponsPackages->auth_code  = Helper::GeneralSiteSettings('auth_code_en');
         $couponsPackages->package_type = $request->package_type;
+        $couponsPackages->package_id = $request->package_id;
         $couponsPackages->title  = $request->title;
         $couponsPackages->coupon_code = $request->coupon_code;
         $couponsPackages->start_date = $request->start_date;
@@ -178,13 +179,13 @@ class CouponController extends Controller
     {
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-        $couponsPackages = Coupons::where('slug',$slug)->first();
+        $couponsPackages = Coupons::with(['createdBy','updatedBy','tickets'])->where('slug',$slug)->first();
         return view("dashboard.coupons.edit", compact("couponsPackages", "GeneralWebmasterSections"));   
     }
 
     public function update(Request $request, $id)
     {
-       $couponsPackages = Coupons::where('slug',$id)->first();
+       $couponsPackages = Coupons::with(['createdBy','updatedBy','tickets'])->where('slug',$id)->first();
        if (!empty($couponsPackages)) {
             $this->validate($request, [
                 'title' => 'required',
@@ -207,6 +208,18 @@ class CouponController extends Controller
             $couponsPackages->status = $request->status;
             $couponsPackages->updated_at = now();
             $couponsPackages->save();
+
+            if ($request->has('ticket') && is_array($request->ticket)) {
+                CouponsTickets::where('coupon_id',$couponsPackages->id)->delete();
+                foreach ($request->ticket as $ticketSlug) {
+                    CouponsTickets::create([
+                        'coupon_id'   => $couponsPackages->id,
+                        'package_type' => $request->package_type,
+                        'package_id' => $request->package_id,
+                        'ticket'  => $ticketSlug,
+                    ]);
+                }
+            }
             
             return redirect()->action('Dashboard\CouponController@edit', [$id])->with('doneMessage',
                 __('backend.saveDone'));

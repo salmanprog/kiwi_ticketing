@@ -16,6 +16,7 @@ class Coupons extends Model
         'slug',
         'auth_code',
         'package_type',
+        'package_id',
         'title',
         'coupon_code',
         'start_date',
@@ -54,6 +55,10 @@ class Coupons extends Model
     public function updatedBy()
     {
         return $this->belongsTo(User::class, 'updated_by','id');
+    }
+    public function tickets()
+    {
+        return $this->hasMany(CouponsTickets::class, 'coupon_id','id');
     }
 
     /**

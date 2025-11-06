@@ -114,6 +114,7 @@ class OrderController extends BaseAPIController
                         $ordertickets->ticketSlug = $ticket['ticketSlug'];
                         $ordertickets->description = $ticket['description'];
                         $ordertickets->seat = $ticket['seat'];
+                        $ordertickets->original_price = $ticket['price'];
                         $ordertickets->price = $ticket['price'];
                         $ordertickets->ticketDate = $ticket['ticketDate'];
                         $ordertickets->ticketDisplayDate = $ticket['ticketDisplayDate'];
@@ -133,6 +134,7 @@ class OrderController extends BaseAPIController
                         $ordertickets->isSeasonPassRenewal = $ticket['isSeasonPassRenewal'];
                         $ordertickets->isSeasonPass = $ticket['isSeasonPass'];
                         $ordertickets->totalOrderRefundedAmount = $ticket['totalOrderRefundedAmount'];
+                        $ordertickets->coupon_code = isset($request->promoCode) ? $request->promoCode : 'N/A';
                         $ordertickets->ticket_status = 'ticket_unpaid';
                         $ordertickets->save();
                     }

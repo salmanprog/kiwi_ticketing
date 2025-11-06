@@ -514,8 +514,8 @@
                             $addonsContainer.empty();
 
                             if (response.packages.length > 0) {
-                                let html = '<div class="form-group row">';
-                                html += '<label class="col-sm-2 form-control-label">Addons</label>';
+                                let html = '<div class="form-group-modern">';
+                                html += '<label class="form-label-modern"><i class="fas fa-percentage form-label-icon"></i>Products</label>';
                                 html += '<div class="col-sm-10"><div class="row">';
 
                                 $.each(response.packages, function(index, addon) {

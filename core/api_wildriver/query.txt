@@ -15,6 +15,11 @@ ALTER TABLE `smartend_coupon_apply_tickets`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1
  
 ALTER TABLE `smartend_coupon_apply_tickets` ADD `slug` VARCHAR(255) NOT NULL AFTER `id`;
+ALTER TABLE `smartend_coupons` ADD `package_id` INT(11) NOT NULL DEFAULT '0' AFTER `package_type`;
+
+ALTER TABLE `smartend_order_tickets` ADD `original_price` VARCHAR(255) NULL DEFAULT NULL AFTER `seat`;
+ALTER TABLE `smartend_order_tickets` ADD `discount_type` VARCHAR(255) NULL DEFAULT NULL AFTER `totalOrderRefundedAmount`;
+ALTER TABLE `smartend_order_tickets` ADD `coupon_code` VARCHAR(255) NULL DEFAULT NULL AFTER `discount_type`;
 
 -----------------------------------------------------------------------------------------
 http://dev-dynamicpricing-env.eba-tkbnkmbm.us-east-1.elasticbeanstalk.com/Pricing/UpdateOrder

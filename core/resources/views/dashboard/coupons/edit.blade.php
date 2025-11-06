@@ -306,6 +306,18 @@
                     </div>
                 </div>
 
+                <div class="form-group-modern mt-3">
+                    <label for="package_id" class="form-label-modern">
+                        <i class="fas fa-box-open form-label-icon"></i>{!! __('Packages') !!}
+                    </label>
+                    <div style="flex: 1;">
+                        <select name="package_id" id="package_id" class="form-control-modern select-modern" {{ isset($couponsPackages) ? 'disabled' : '' }} required>
+                            <option value="">- - {!! __('Select Package') !!} - -</option>
+                        </select>
+                        <input type="hidden" name="package_id" value="{{ $couponsPackages->package_id ?? '' }}">
+                    </div>
+                </div>
+                <div id="addons-container" class="mt-4"></div>
                 <!-- Title Field -->
                 <div class="form-group-modern">
                     <label for="title" class="form-label-modern">
@@ -492,6 +504,159 @@
                         this.parentElement.classList.add('active');
                     }
                 });
+            });
+            const type = "{{ $couponsPackages->package_type ?? '' }}";
+            const selectedPackageId = "{{ $couponsPackages->package_id ?? '' }}";
+            const $packageSelect = $('#package_id');
+            const $addonsContainer = $('#addons-container');
+            if (type) {
+                $packageSelect.html('<option value="">Loading packages...</option>');
+                $.ajax({
+                    url: "{{ route('get.packages.by.type') }}",
+                    type: 'GET',
+                    data: { type: type },
+                    success: function(response) {
+                        $packageSelect.empty();
+                        $packageSelect.append('<option value="">- - Select Package - -</option>');
+
+                        $.each(response.packages, function(index, item) {
+                            const selected = (item.id == selectedPackageId) ? 'selected' : '';
+                            $packageSelect.append('<option value="'+ item.id +'" data-slug="'+ item.slug +'" '+selected+'>'+ item.name +'</option>');
+                        });
+
+                        // After packages are loaded, load addons
+                        if (selectedPackageId) {
+                            loadAddons();
+                        }
+                    },
+                    error: function() {
+                        $packageSelect.html('<option value="">Error loading packages</option>');
+                    }
+                });
+            }
+
+            function loadAddons() {
+                const slug = $packageSelect.find(':selected').data('slug');
+                if (!slug || !type) return;
+
+                $addonsContainer.html('<p>Loading addons...</p>');
+                $.ajax({
+                    url: "{{ route('get.packages.products') }}",
+                    type: 'GET',
+                    data: { type: type, slug: slug },
+                    success: function(response) {
+                        $addonsContainer.empty();
+
+                        if (response.packages.length > 0) {
+                            let html = '<div class="form-group-modern">';
+                            html += '<label class="form-label-modern"><i class="fas fa-percentage form-label-icon"></i>Products</label>';
+                            html += '<div class="col-sm-10"><div class="row">';
+
+                            $.each(response.packages, function(index, addon) {
+                                const selectedAddons = @json($couponsPackages->tickets->pluck('ticket')->toArray());
+                                const checked = selectedAddons.includes(addon.ticketSlug) ? 'checked' : '';
+                                html += `
+                                    <div class="col-md-4 col-sm-6 mb-2">
+                                        <label class="ui-check ui-check-md d-block">
+                                            <input id="ticket_active_${addon.ticketSlug}" 
+                                                class="has-value" 
+                                                name="ticket[]" 
+                                                type="checkbox" 
+                                                value="${addon.ticketSlug}" ${checked}>
+                                            <i class="dark-white"></i> ${addon.name}
+                                        </label>
+                                    </div>`;
+                            });
+
+                            html += '</div></div></div>';
+                            $addonsContainer.html(html);
+                        } else {
+                            $addonsContainer.html('<p>No addons available.</p>');
+                        }
+                    },
+                    error: function() {
+                        $addonsContainer.html('<p>Error loading addons.</p>');
+                    }
+                });
+            }
+
+            // 3️⃣ When package changes manually, reload addons
+            $packageSelect.on('change', loadAddons);
+
+             $('#package_type').on('change', function() {
+                let type = $(this).val();
+                let $packageSelect = $('#package_id');
+                
+                $packageSelect.html('<option value="">Loading...</option>');
+                $('#addons-container').empty();
+                if (type) {
+                    $.ajax({
+                        url: "{{ route('get.packages.by.type') }}",
+                        type: 'GET',
+                        data: { type: type },
+                        success: function(response) {
+                            $packageSelect.empty();
+                            $packageSelect.append('<option value="">- - Select Package - -</option>');
+                            $.each(response.packages, function(index, item) {
+                                $packageSelect.append('<option value="'+ item.id +'" data-slug="'+ item.slug +'">'+ item.name +'</option>');
+                            });
+                        },
+                        error: function() {
+                            $packageSelect.html('<option value="">Error loading packages</option>');
+                        }
+                    });
+                } else {
+                    $packageSelect.html('<option value="">- - Select Package - -</option>');
+                }
+            });
+            $('#package_id').on('change', function() {
+                let $selectedOption = $(this).find(':selected');
+                let slug = $selectedOption.data('slug');
+                let type = $('#package_type').val();
+                let $addonsContainer = $('#addons-container');
+
+                $addonsContainer.html('<p>Loading addons...</p>');
+
+                if (slug && type) {
+                    $.ajax({
+                        url: "{{ route('get.packages.products') }}",
+                        type: 'GET',
+                        data: { type: type, slug: slug },
+                        success: function(response) {
+                            $addonsContainer.empty();
+
+                            if (response.packages.length > 0) {
+                                let html = '<div class="form-group row">';
+                                html += '<label class="col-sm-2 form-control-label">Addons</label>';
+                                html += '<div class="col-sm-10"><div class="row">';
+
+                                $.each(response.packages, function(index, addon) {
+                                    html += `
+                                        <div class="col-md-4 col-sm-6 mb-2">
+                                            <label class="ui-check ui-check-md d-block">
+                                                <input id="ticket_active_${addon.ticketSlug}" 
+                                                    class="has-value" 
+                                                    name="ticket[]" 
+                                                    type="checkbox" 
+                                                    value="${addon.ticketSlug}">
+                                                <i class="dark-white"></i> ${addon.name}
+                                            </label>
+                                        </div>`;
+                                });
+
+                                html += '</div></div></div>';
+                                $addonsContainer.html(html);
+                            } else {
+                                $addonsContainer.html('<p>No addons available.</p>');
+                            }
+                        },
+                        error: function() {
+                            $addonsContainer.html('<p>Error loading addons.</p>');
+                        }
+                    });
+                } else {
+                    $addonsContainer.empty();
+                }
             });
         });
     </script>

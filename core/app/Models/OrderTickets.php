@@ -21,6 +21,7 @@ class OrderTickets extends Model
         'ticketSlug',
         'description',
         'seat',
+        'original_price',
         'price',
         'ticketDate',
         'ticketDisplayDate',
@@ -40,6 +41,8 @@ class OrderTickets extends Model
         'isSeasonPassRenewal',
         'isSeasonPass',
         'totalOrderRefundedAmount',
+        'discount_type',
+        'coupon_code',
     ];
 
     /**
