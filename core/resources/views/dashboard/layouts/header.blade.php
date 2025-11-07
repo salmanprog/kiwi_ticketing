@@ -3,11 +3,11 @@
     <div class="navbar">
 
         <!-- Open side - Navigation on mobile -->
-        <a data-toggle="modal" data-target="#aside" class="navbar-item pull-left hidden-lg-up">
+        <a data-toggle="modal" data-target="#aside" class="navbar-item pull-left hidden-lg-up" style="position: relative;z-index: 999999;">
             <i class="material-icons md-30 opacity-8">&#xe5d2;</i>
         </a>
 
-        <div class="col-md-8" style="padding: 20px">
+        <div class="col-md-8 for-mbl-wlc-text" style="padding: 20px">
             @if (request()->is('admin') || request()->routeIs('admin'))
                 <h3 class="m-b-0 _700">{{ __('backend.hi') }} <span
                         style="font-weight: bold; color:#A0C242">{{ Auth::user()->name }}</span>,

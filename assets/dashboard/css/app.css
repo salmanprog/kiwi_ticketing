@@ -9,6 +9,7 @@
 html {
     background-color: #e0e0e0;
 }
+
 body {
     font-family: 'Poppins', sans-serif;
     color: rgba(0, 0, 0, 0.87);
@@ -1291,8 +1292,9 @@ a.list-group-item.hover {
 .collapse.in .dropdown-menu-scale {
     display: none;
 }
+
 /* New  */
-.dataTables_info{
+.dataTables_info {
     color: #95b83d !important;
     font-weight: 600;
     padding: 12px 0;
@@ -1300,10 +1302,12 @@ a.list-group-item.hover {
     margin-top: 8px;
     text-align: left;
 }
-.pagination{
- display: flex;
- justify-content: end;
+
+.pagination {
+    display: flex;
+    justify-content: end;
 }
+
 .pagination .page-item,
 .pagination>li>a,
 .pagination>li>span,
@@ -1426,6 +1430,7 @@ a.list-group-item.hover {
         font-size: 14px;
     }
 }
+
 /* new end */
 .pager {
     padding-left: 0;
@@ -3852,6 +3857,7 @@ body {
 .ui-select-bootstrap>.ui-select-choices {
     overflow-y: scroll;
 }
+
 /* Hello bhai */
 
 .box .dataTables_wrapper {
@@ -8171,7 +8177,7 @@ table.dataTable thead>tr>td.sorting {
 
 .dataTables_filter {
     float: right;
-      float: left;
+    float: left;
     margin-bottom: 15px;
 }
 
@@ -8232,18 +8238,19 @@ table.dataTable thead>tr>td.sorting {
 
 /* Responsive design */
 @media (max-width: 768px) {
+
     .dataTables_length,
     .dataTables_filter {
         float: none;
         text-align: center;
         margin-bottom: 10px;
     }
-    
+
     .dataTables_length label,
     .dataTables_filter label {
         justify-content: center;
     }
-    
+
     .dataTables_filter input {
         margin-left: 8px;
         width: 150px !important;
@@ -8502,4 +8509,33 @@ div.dataTables_wrapper div.dataTables_processing {
 .ui-sortable-helper {
     background: #fff;
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.20);
+}
+
+.grid-icon {
+    display: inline-block;
+    width: 19px;
+    height: 19px;
+    background: currentColor;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6zM14 6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V6zM4 16a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2zM14 16a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-2z"/></svg>') no-repeat center;
+    -webkit-mask-size: contain;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6zM14 6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V6zM4 16a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2zM14 16a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-2z"/></svg>') no-repeat center;
+    mask-size: contain;
+}
+
+@media screen and (max-width: 480px) {
+    .collapse-twice {
+        display: none !important;
+    }
+
+    .no-twice {
+        display: block !important;
+    }
+
+    .for-mbl-wlc-text {
+        display: none;
+    }
+
+    .app-header.navbar-md~.app-body {
+        padding-top: 6rem;
+    }
 }
