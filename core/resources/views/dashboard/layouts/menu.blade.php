@@ -181,7 +181,37 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
 <div id="aside" class="app-aside modal fade folded md nav-expand">
     <div class="left navside white" layout="column" style="background: #ffffff; border-right: 1px solid #e9ecef;">
 
-        <div data-toggle="modal" data-target="#aside" class="navbar navbar-md no-radius">
+        <div data-toggle="modal" data-target="#aside" class="navbar navbar-md no-radius for-mbl-noshow">
+            <a class="hidden-folded inline folded-toggle m-t p-t-xs pull-right">
+                <svg class="toggle-sidebar d-lg-block d-none" xmlns="http://www.w3.org/2000/svg" width="20"
+                    height="20" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M20 3H4C2.89543 3 2 3.89543 2 5V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V5C22 3.89543 21.1046 3 20 3Z"
+                        stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M9 3V21" stroke="#ccc" stroke-width="2"></path>
+                </svg>
+            </a>
+
+            {{-- <a data-toggle="modal" data-target="#aside" class="navbar-item pull-left hidden-lg-up"
+                style="position: relative;z-index: 999999;">
+                <i class="material-icons md-30 opacity-8">&#xe5d2;</i>
+            </a> --}}
+
+            <div class="p-a-md text-center">
+                @if (Helper::GeneralSiteSettings('style_logo_' . @Helper::currentLanguage()->code) != '')
+                    <img alt="logo" class="no-twice"
+                        src="{{ URL::to('uploads/settings/' . Helper::GeneralSiteSettings('style_logo_' . @Helper::currentLanguage()->code)) }}">
+                @else
+                    <img alt="" src="{{ URL::to('uploads/settings/nologo.png') }}">
+                @endif
+
+                <img class="collapse-twice"
+                    src="https://wildrivers.com/wp-content/uploads/2023/12/wildrivers-apple-icon.png" alt=""
+                    width="23px">
+            </div>
+        </div>
+
+        <div class="navbar navbar-md no-radius for-dest-show">
             <a class="hidden-folded inline folded-toggle m-t p-t-xs pull-right">
                 <svg class="toggle-sidebar d-lg-block d-none" xmlns="http://www.w3.org/2000/svg" width="20"
                     height="20" viewBox="0 0 24 24" fill="none">
@@ -224,7 +254,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                     {{-- <li class="nav-header hidden-folded">
                         <small class="text-muted" style="color: #6c757d !important;">{{ __('backend.main') }}</small>
                     </li> --}}
-                    <li {{ Route::currentRouteName() == 'adminHome' ? 'class=active' : '' }}
+                    <li {{ Route::currentRouteName() == 'adminHome' ? 'class=active menue-hie' : '' }}
                         style="border-left: 3px solid transparent;">
                         <a href="{{ route('adminHome') }}" style="color: #495057;">
                             <span class="nav-icon" style="padding-top: 4px;">
@@ -255,7 +285,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
 
                     <!-- Cabana Management -->
                     @if ($userRole == 'Webmaster' || in_array(16, $dataSections))
-                        <li class="{{ $cabanaActive ? 'active' : '' }}" style="border-left: 3px solid transparent;">
+                        <li class="{{ $cabanaActive ? 'active menue-hie' : '' }}" style="border-left: 3px solid transparent;">
                             <a style="color: #495057;">
                                 <span class="nav-caret">
                                     <i class="fa fa-caret-down" style="color: #A0C242;"></i>
@@ -296,7 +326,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
 
                     <!-- Package Management -->
                     @if ($userRole == 'Webmaster' || in_array(17, $dataSections))
-                        <li class="{{ $birthdayActive ? 'active' : '' }}" style="border-left: 3px solid transparent;">
+                        <li class="{{ $birthdayActive ? 'active menue-hie' : '' }}" style="border-left: 3px solid transparent;">
                             <a style="color: #495057;">
                                 <span class="nav-caret">
                                     <i class="fa fa-caret-down" style="color: #A0C242;"></i>
@@ -334,7 +364,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
 
                     <!-- Platform Management -->
                     @if ($userRole == 'Webmaster' || in_array(18, $dataSections))
-                        <li class="{{ $generalTicketActive ? 'active' : '' }}"
+                        <li class="{{ $generalTicketActive ? 'active menue-hie' : '' }}"
                             style="border-left: 3px solid transparent;">
                             <a style="color: #495057;">
                                 <span class="nav-caret">
@@ -372,7 +402,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
 
                     <!-- SeasonPass Management -->
                     @if ($userRole == 'Webmaster' || in_array(19, $dataSections))
-                        <li class="{{ $seasonpassActive ? 'active' : '' }}"
+                        <li class="{{ $seasonpassActive ? 'active menue-hie' : '' }}"
                             style="border-left: 3px solid transparent;">
                             <a style="color: #495057;">
                                 <span class="nav-caret">
@@ -408,7 +438,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
 
                     <!-- Offer Management -->
                     @if ($userRole == 'Webmaster' || in_array(20, $dataSections))
-                        <li class="{{ $offerCreationActive ? 'active' : '' }}"
+                        <li class="{{ $offerCreationActive ? 'active menue-hie' : '' }}"
                             style="border-left: 3px solid transparent;">
                             <a style="color: #495057;">
                                 <span class="nav-caret">
@@ -448,7 +478,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                         <small class="text-muted" style="color: #6c757d !important;">{{ __('Coupon Management') }}</small>
                     </li> --}}
 
-                        <li class="{{ $couponActive ? 'active' : '' }}" style="border-left: 3px solid transparent;">
+                        <li class="{{ $couponActive ? 'active menue-hie' : '' }}" style="border-left: 3px solid transparent;">
                             <a style="color: #495057;">
                                 <span class="nav-caret">
                                     <i class="fa fa-caret-down" style="color: #A0C242;"></i>
@@ -475,7 +505,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                         <small class="text-muted" style="color: #6c757d !important;">{{ __('Transactions') }}</small>
                     </li> --}}
 
-                        <li class="{{ $transactionActive ? 'active' : '' }}"
+                        <li class="{{ $transactionActive ? 'active menue-hie' : '' }}"
                             style="border-left: 3px solid transparent;">
                             <a style="color: #495057;">
                                 <span class="nav-caret">
@@ -518,7 +548,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                         <small class="text-muted" style="color: #6c757d !important;">{{ __('Logs') }}</small>
                     </li> --}}
 
-                        <li class="{{ $LogsActive ? 'active' : '' }}" style="border-left: 3px solid transparent;">
+                        <li class="{{ $LogsActive ? 'active menue-hie' : '' }}" style="border-left: 3px solid transparent;">
                             <a style="color: #495057;">
                                 <span class="nav-caret">
                                     <i class="fa fa-caret-down" style="color: #A0C242;"></i>
@@ -563,7 +593,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                         <small class="text-muted" style="color: #6c757d !important;">{{ __('Email Setting') }}</small>
                     </li> --}}
 
-                        <li class="{{ $emailTemplateActive ? 'active' : '' }}"
+                        <li class="{{ $emailTemplateActive ? 'active menue-hie' : '' }}"
                             style="border-left: 3px solid transparent;">
                             <a style="color: #495057;">
                                 <span class="nav-caret">
@@ -614,7 +644,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                         $currentFolder = 'users'; // Put folder name here
                         $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
                         ?>
-                        <li {{ $PathCurrentFolder == $currentFolder ? 'class=active' : '' }}
+                        <li {{ $PathCurrentFolder == $currentFolder ? 'class=active menue-hie' : '' }}
                             style="border-left: 3px solid transparent;">
                             <a href="{{ route('users') }}" style="color: #495057;">
                                 <span class="nav-icon">
@@ -632,7 +662,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                             $currentFolder = 'settings'; // Put folder name here
                             $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
                             ?>
-                            <li {{ $PathCurrentFolder == $currentFolder ? 'class=active' : '' }}
+                            <li {{ $PathCurrentFolder == $currentFolder ? 'class=active menue-hie' : '' }}
                                 style="border-left: 3px solid transparent;">
                                 <a href="{{ route('settings') }}" style="color: #495057;">
                                     <span class="nav-icon">
@@ -657,7 +687,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
 $currentFolder = 'modules'; // Put folder name here
 $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
 ?>
-                        <li {{ $PathCurrentFolder == $currentFolder ? 'class=active' : '' }} style="border-left: 3px solid transparent;">
+                        <li {{ $PathCurrentFolder == $currentFolder ? 'class=active menue-hie' : '' }} style="border-left: 3px solid transparent;">
                             <a href="{{ route('WebmasterSections') }}" style="color: #495057;">
                                 <span class="nav-icon">
                                     <i class="fas fa-th-large" style="color: #A0C242;"></i>
@@ -673,7 +703,7 @@ $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
 $currentFolder = 'webmaster'; // Put folder name here
 $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
 ?>
-                        <li {{ $PathCurrentFolder == $currentFolder ? 'class=active' : '' }} style="border-left: 3px solid transparent;">
+                        <li {{ $PathCurrentFolder == $currentFolder ? 'class=active menue-hie' : '' }} style="border-left: 3px solid transparent;">
                             <a href="{{ route('webmasterSettings') }}" style="color: #495057;">
                                 <span class="nav-icon">
                                     <i class="fas fa-sliders-h" style="color: #A0C242;"></i>

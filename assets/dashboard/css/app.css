@@ -8522,9 +8522,24 @@ div.dataTables_wrapper div.dataTables_processing {
     mask-size: contain;
 }
 
+.for-mbl-noshow{
+    display: none;
+}
+
+li.active.menue-hie a {
+    padding-block: 5px;
+}
+
 @media screen and (max-width: 480px) {
     .collapse-twice {
         display: none !important;
+    }
+    .for-mbl-noshow{
+        display: block;
+    }
+
+    .for-dest-show{
+        display: none;
     }
 
     .no-twice {
