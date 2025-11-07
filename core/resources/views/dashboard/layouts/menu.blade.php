@@ -44,7 +44,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
 
     .nav-sub>li.active>a {
         color: #A0C242 !important;
-        border-left: 3px solid #A0C242 !important;
+        /* border-left: 3px solid #A0C242 !important; */
         border-radius: 8px !important;
         margin: 2px 8px !important;
         font-weight: 600 !important;
@@ -162,6 +162,20 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
         border-radius: 50px;
         transition: width 0.5s ease, background-color 0.5s ease;
     }
+
+    span.nav-text.dashlogo:hover::before {
+        background-color: #9FC23F;
+        width: 16px;
+    }
+
+    span.nav-text.dashlogo:hover {
+        color: #9FC23F;
+    }
+
+    li.active.cust-act span.nav-text.dashlogo::before {
+        background-color: #9FC23F;
+        width: 16px;
+    }
 </style>
 
 <div id="aside" class="app-aside modal fade folded md nav-expand">
@@ -247,7 +261,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                             </a>
                             <ul class="nav-sub" style="background: #f8f9fa;">
                                 <li
-                                    class="{{ $current === 'cabana' || Str::startsWith($current, 'cabana') ? 'active' : '' }}">
+                                    class="{{ $current === 'cabana' || Str::startsWith($current, 'cabana') ? 'active cust-act' : '' }} ">
                                     <a href="{{ route('cabana') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('All Cabana') }}</span>
                                     </a>
@@ -257,7 +271,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                                     class="{{ $current === 'kabanaddons' ||
                                     Str::startsWith($current, 'kabanaaddonEdit') ||
                                     Str::startsWith($current, 'kabanaddons')
-                                        ? 'active'
+                                        ? 'active cust-act'
                                         : '' }}">
                                     <a href="{{ route('kabanaddons') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Cabana Addon') }}</span>
@@ -265,7 +279,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                                 </li>
 
                                 <li
-                                    class="{{ $current === 'kabanaorders' || Str::startsWith($current, 'kabanaorders') ? 'active' : '' }}">
+                                    class="{{ $current === 'kabanaorders' || Str::startsWith($current, 'kabanaorders') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('kabanaorders') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Cabana Orders') }}</span>
                                     </a>
@@ -289,21 +303,21 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
 
                             <ul class="nav-sub" style="background: #f8f9fa;">
                                 <li
-                                    class="{{ $current === 'birthdaypackages' || Str::startsWith($current, 'birthdaypackages') ? 'active' : '' }}">
+                                    class="{{ $current === 'birthdaypackages' || Str::startsWith($current, 'birthdaypackages') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('birthdaypackages') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('All Packages') }}</span>
                                     </a>
                                 </li>
 
                                 <li
-                                    class="{{ $current === 'birthdayaddon' || Str::startsWith($current, 'birthdayaddon') ? 'active' : '' }}">
+                                    class="{{ $current === 'birthdayaddon' || Str::startsWith($current, 'birthdayaddon') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('birthdayaddon') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Packages Addon') }}</span>
                                     </a>
                                 </li>
 
                                 <li
-                                    class="{{ $current === 'birthdayorders' || Str::startsWith($current, 'birthdayorders') ? 'active' : '' }}">
+                                    class="{{ $current === 'birthdayorders' || Str::startsWith($current, 'birthdayorders') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('birthdayorders') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Packages Orders') }}</span>
                                     </a>
@@ -327,21 +341,21 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                             </a>
                             <ul class="nav-sub" style="background: #f8f9fa;">
                                 <li
-                                    class="{{ $current === 'generaltickets' || Str::startsWith($current, 'generaltickets') ? 'active' : '' }}">
+                                    class="{{ $current === 'generaltickets' || Str::startsWith($current, 'generaltickets') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('generalticketpackages') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('General Packages') }}</span>
                                     </a>
                                 </li>
 
                                 <li
-                                    class="{{ $current === 'generalticketsaddon' || Str::startsWith($current, 'generalticketsaddon') ? 'active' : '' }}">
+                                    class="{{ $current === 'generalticketsaddon' || Str::startsWith($current, 'generalticketsaddon') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('generalticketsaddon') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('General Package Addon') }}</span>
                                     </a>
                                 </li>
 
                                 <li
-                                    class="{{ $current === 'generalticketsorders' || Str::startsWith($current, 'generalticketsorders') ? 'active' : '' }}">
+                                    class="{{ $current === 'generalticketsorders' || Str::startsWith($current, 'generalticketsorders') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('generalticketsorders') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('General Tickets Orders') }}</span>
                                     </a>
@@ -365,19 +379,19 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                             </a>
                             <ul class="nav-sub" style="background: #f8f9fa;">
                                 <li
-                                    class="{{ $current === 'seasonpass' || Str::startsWith($current, 'seasonpass') ? 'active' : '' }}">
+                                    class="{{ $current === 'seasonpass' || Str::startsWith($current, 'seasonpass') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('seasonpass') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('SeasonPass Sale') }}</span>
                                     </a>
                                 </li>
                                 <li
-                                    class="{{ $current === 'seasonpass' || Str::startsWith($current, 'seasonpass') ? 'active' : '' }}">
+                                    class="{{ $current === 'seasonpass' || Str::startsWith($current, 'seasonpass') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('seasonpassaddon') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('SeasonPass Products') }}</span>
                                     </a>
                                 </li>
                                 <li
-                                    class="{{ $current === 'seasonpass' || Str::startsWith($current, 'seasonpass') ? 'active' : '' }}">
+                                    class="{{ $current === 'seasonpass' || Str::startsWith($current, 'seasonpass') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('seasonpassorders') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('SeasonPass Orders') }}</span>
                                     </a>
@@ -401,19 +415,19 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                             </a>
                             <ul class="nav-sub" style="background: #f8f9fa;">
                                 <li
-                                    class="{{ $current === 'offercreationpackages' || Str::startsWith($current, 'offercreationpackages') ? 'active' : '' }}">
+                                    class="{{ $current === 'offercreationpackages' || Str::startsWith($current, 'offercreationpackages') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('offercreationpackages') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Offers') }}</span>
                                     </a>
                                 </li>
                                 <li
-                                    class="{{ $current === 'offercreationpackages' || Str::startsWith($current, 'offercreationpackages') ? 'active' : '' }}">
+                                    class="{{ $current === 'offercreationpackages' || Str::startsWith($current, 'offercreationpackages') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('offeraddon') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Offer Addon') }}</span>
                                     </a>
                                 </li>
                                 <li
-                                    class="{{ $current === 'offercreationpackages' || Str::startsWith($current, 'offercreationpackages') ? 'active' : '' }}">
+                                    class="{{ $current === 'offercreationpackages' || Str::startsWith($current, 'offercreationpackages') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('offercreationpackagesorders') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Offers Orders') }}</span>
                                     </a>
@@ -440,7 +454,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                             </a>
                             <ul class="nav-sub" style="background: #f8f9fa;">
                                 <li
-                                    class="{{ $current === 'coupon' || Str::startsWith($current, 'coupon') ? 'active' : '' }}">
+                                    class="{{ $current === 'coupon' || Str::startsWith($current, 'coupon') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('coupon') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('All Coupons') }}</span>
                                     </a>
@@ -468,21 +482,22 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                             </a>
                             <ul class="nav-sub" style="background: #f8f9fa;">
                                 <li
-                                    class="{{ $current === 'transactionorders' || Str::startsWith($current, 'transactionorders') ? 'active' : '' }}">
+                                    class="{{ $current === 'transactionorders' || Str::startsWith($current, 'transactionorders') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('transactionorders') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('All Transactions') }}</span>
                                     </a>
                                 </li>
                                 <li
                                     class="{{ $current === 'updatetransactionorders' || Str::startsWith($current, 'updatetransactionorders')
-                                        ? 'active'
+                                        ? 'active cust-act'
                                         : '' }}">
                                     <a href="{{ route('updatetransactionorders') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Update & Upgrade Transactions') }}</span>
+                                        <span
+                                            class="nav-text dashlogo">{{ __('Update & Upgrade Transactions') }}</span>
                                     </a>
                                 </li>
                                 <li
-                                    class="{{ $current === 'ordersLogs' || Str::startsWith($current, 'ordersLogs') ? 'active' : '' }}">
+                                    class="{{ $current === 'ordersLogs' || Str::startsWith($current, 'ordersLogs') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('ordersLogs') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Order Logs') }}</span>
                                     </a>
@@ -509,25 +524,25 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                             </a>
                             <ul class="nav-sub" style="background: #f8f9fa;">
                                 <li
-                                    class="{{ $current === 'ordersLogs' || Str::startsWith($current, 'ordersLogs') ? 'active' : '' }}">
+                                    class="{{ $current === 'ordersLogs' || Str::startsWith($current, 'ordersLogs') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('ordersLogs') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Order Success Logs') }}</span>
                                     </a>
                                 </li>
                                 <li
-                                    class="{{ $current === 'ordersfailedLogs' || Str::startsWith($current, 'ordersfailedLogs') ? 'active' : '' }}">
+                                    class="{{ $current === 'ordersfailedLogs' || Str::startsWith($current, 'ordersfailedLogs') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('ordersfailedLogs') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Order Failed Logs') }}</span>
                                     </a>
                                 </li>
                                 <li
-                                    class="{{ $current === 'paymentLogs' || Str::startsWith($current, 'paymentLogs') ? 'active' : '' }}">
+                                    class="{{ $current === 'paymentLogs' || Str::startsWith($current, 'paymentLogs') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('paymentLogs') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Payment Success Logs') }}</span>
                                     </a>
                                 </li>
                                 <li
-                                    class="{{ $current === 'paymentfailLogs' || Str::startsWith($current, 'paymentfailLogs') ? 'active' : '' }}">
+                                    class="{{ $current === 'paymentfailLogs' || Str::startsWith($current, 'paymentfailLogs') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('paymentfailLogs') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Payment Failed Logs') }}</span>
                                     </a>
@@ -555,19 +570,19 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                             </a>
                             <ul class="nav-sub" style="background: #f8f9fa;">
                                 <li
-                                    class="{{ $current === 'emailTemplate' || Str::startsWith($current, 'emailTemplate') ? 'active' : '' }}">
+                                    class="{{ $current === 'emailTemplate' || Str::startsWith($current, 'emailTemplate') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('emailTemplate') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Email Templates') }}</span>
                                     </a>
                                 </li>
                                 <li
-                                    class="{{ $current === 'emailTemplate' || Str::startsWith($current, 'emailTemplate') ? 'active' : '' }}">
+                                    class="{{ $current === 'emailTemplate' || Str::startsWith($current, 'emailTemplate') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('smtpConfigure') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('SMTP Configuration') }}</span>
                                     </a>
                                 </li>
                                 <li
-                                    class="{{ $current === 'emailTemplate' || Str::startsWith($current, 'emailTemplate') ? 'active' : '' }}">
+                                    class="{{ $current === 'emailTemplate' || Str::startsWith($current, 'emailTemplate') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('emailsLogs') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Email Logs') }}</span>
                                     </a>

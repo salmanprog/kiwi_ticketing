@@ -66,8 +66,8 @@
         }
 
         .stat-label {
-            font-size: 13px;
-            color: var(--text-light);
+            font-size: 14px;
+            color: #111;
             font-weight: 500;
         }
 
@@ -114,8 +114,8 @@
 
         .order-item:hover {
             /* transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border-color: var(--primary-green); */
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                border-color: var(--primary-green); */
         }
 
         .btn-green {
@@ -221,6 +221,10 @@
             text-align: center !important;
             color: #A0C242 !important;
         }
+
+        li.active a {
+            padding-block: 0.32rem !important;
+        }
     </style>
 @endpush
 
@@ -245,7 +249,7 @@
         <!-- Order Statistics - FULL WIDTH SECTION -->
         <div class="full-width-section">
             <div class="dashboard-section">
-                <h5 class="section-title"><i class="fas fa-cubes me-2"></i>Order Statistics</h5>
+                {{-- <h5 class="section-title"><i class="fas fa-cubes me-2"></i>Order Statistics</h5> --}}
 
                 <!-- First Row: Orders Count -->
                 <div class="orders-row">
@@ -284,12 +288,12 @@
                         @endphp
 
                         <div class="order-item" onclick="location.href='{{ route($info['route']) }}'">
-                            <div class="stat-icon">
+                            {{-- <div class="stat-icon">
                                 <i class="{{ $info['icon'] }}"></i>
-                            </div>
+                            </div> --}}
                             <div class="stat-content">
-                                <div class="stat-number">{{ $order->total_number_of_orders }}</div>
                                 <div class="stat-label">{{ $info['title'] }} Orders</div>
+                                <div class="stat-number">{{ $order->total_number_of_orders }}</div>
                             </div>
                         </div>
                     @endforeach
@@ -297,7 +301,7 @@
 
                 <!-- Second Row: Revenue -->
                 <!-- <div class="orders-row">
-                        @foreach ($orderTypes as $type => $info)
+                            @foreach ($orderTypes as $type => $info)
     @php
         $order = $orders->firstWhere('type', $type);
         if (!$order) {
@@ -305,17 +309,17 @@
         }
     @endphp
 
-                            <div class="order-item" onclick="location.href='{{ route($info['route']) }}'">
-                                <div class="stat-icon">
-                                    <i class="fas fa-dollar-sign"></i>
+                                <div class="order-item" onclick="location.href='{{ route($info['route']) }}'">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-dollar-sign"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-number">${{ number_format($order->total_earning, 2) }}</div>
+                                        <div class="stat-label">{{ $info['title'] }} Revenue</div>
+                                    </div>
                                 </div>
-                                <div class="stat-content">
-                                    <div class="stat-number">${{ number_format($order->total_earning, 2) }}</div>
-                                    <div class="stat-label">{{ $info['title'] }} Revenue</div>
-                                </div>
-                            </div>
     @endforeach
-                    </div> -->
+                        </div> -->
             </div>
         </div>
 
@@ -330,7 +334,8 @@
                             <div class="col-md-8">
                                 <h5 class="section-title mb-0">
                                     <i class="fas fa-chart-line me-2"></i>Monthly Orders Trend
-                                    <small class="text-muted d-block mt-1" style="margin-top: 10px">Real-time data from your database</small>
+                                    <small class="text-muted d-block mt-1" style="margin-top: 10px">Real-time data from your
+                                        database</small>
                                 </h5>
                             </div>
                             <div class="col-md-4 text-right">
@@ -425,14 +430,14 @@
 
                         <!-- Total Revenue -->
                         <!-- <div class="order-item mb-3" onclick="location.href='{{ route('transactionorders') }}'">
-                                <div class="stat-icon">
-                                    <i class="fas fa-chart-line"></i>
-                                </div>
-                                <div class="stat-content">
-                                    <div class="stat-number">${{ number_format($total->total_earning, 2) }}</div>
-                                    <div class="stat-label">Total Revenue</div>
-                                </div>
-                            </div> -->
+                                    <div class="stat-icon">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-number">${{ number_format($total->total_earning, 2) }}</div>
+                                        <div class="stat-label">Total Revenue</div>
+                                    </div>
+                                </div> -->
 
                         <!-- Quick Actions -->
                         <div class="chart-container">

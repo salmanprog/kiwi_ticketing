@@ -9,8 +9,7 @@
 
         <div class="col-md-8" style="padding: 20px">
             @if (request()->is('admin') || request()->routeIs('admin'))
-                <h3 class="m-b-0 _300"><i class="fas fa-chart-line me-2"
-                        style="margin-right: 10px"></i>{{ __('backend.hi') }} <span
+                <h3 class="m-b-0 _700">{{ __('backend.hi') }} <span
                         style="font-weight: bold; color:#A0C242">{{ Auth::user()->name }}</span>,
                     {{ __('backend.welcomeBack') }}</h3>
             @endif
