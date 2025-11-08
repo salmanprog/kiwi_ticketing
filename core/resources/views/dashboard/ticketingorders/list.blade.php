@@ -198,6 +198,7 @@
                         data.package_id = $('#find_package').val();
                         data.from_date = $('#from_date').val();
                         data.to_date = $('#to_date').val();
+                        data.order_status = $('#find_order_status').val();
                         data.type = 'general_ticket';
                         data.route = 'generalticketsordersdetail';
                     }

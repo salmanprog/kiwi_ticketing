@@ -258,8 +258,10 @@
                         ui-jp="select2"
                         ui-options="{theme: 'bootstrap'}">
                     <option value="">{{ __('Select Order Status') }}</option>
+                    <option value="unpaid_order">{{ __('UnPaid Order') }}</option>
+                    <option value="paid_order">{{ __('Paid Order') }}</option>
                     <option value="update_order">{{ __('Update Order') }}</option>
-                    <option value="upgrade_order">{{ __('Upgrade Orders') }}</option>
+                    <option value="upgrade_order">{{ __('Upgrade Order') }}</option>
                 </select>
             </div>
 

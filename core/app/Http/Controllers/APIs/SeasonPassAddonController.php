@@ -40,6 +40,7 @@ class SeasonPassAddonController extends BaseAPIController
                     ->where('auth_code', $authCode)
                     ->whereIn('ticketSlug', $ticketSlugs)
                     ->where('season_passes_slug',$slug)
+                    ->where('status','1')
                     ->get()
                     ->keyBy('ticketSlug');
                 

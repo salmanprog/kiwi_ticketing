@@ -227,6 +227,24 @@
                 </div>
             </div>
 
+            <!-- Order Status Select -->
+            <div style="display: flex; flex-direction: column;">
+                <label style="font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-cube" style="color: #A0C242; font-size: 14px;"></i>
+                    {{ __('Select Order Status') }}
+                </label>
+                <select name="order_status"
+                        id="find_order_status"
+                        style="border: 2px solid #e9ecef; border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.9rem; transition: all 0.3s ease; background: white; width: 100%; appearance: none; background-image: url(\"data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%236c757d' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>\"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 12px; padding-right: 2.5rem;"
+                        ui-jp="select2"
+                        ui-options="{theme: 'bootstrap'}"
+                        data-selected="{{ request('package_id') }}">
+                    <option value="">{{ __('Select Order Status') }}</option>    
+                    <option value="paid_order">{{ __('Paid Order') }}</option>
+                    <option value="unpaid_order">{{ __('UnPaid Order') }}</option>
+                </select>
+            </div>
+
             <!-- Action Buttons -->
             <div style="display: flex; gap: 0.75rem; align-items: end; height: 100%;">
                 <button id="search-btn" type="button" 
@@ -295,6 +313,7 @@
             $('#find_package').html('<option value="">{{ __("Select Packages") }}</option>').prop('disabled', false);
             $('#from_date').val('');
             $('#to_date').val('');
+            $('#find_order_status').val('').trigger('change');
             $('#filter_form').submit();
         });
 

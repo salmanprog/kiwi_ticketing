@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Offers'))
+@section('title', __('Sale'))
 @push("after-styles")
     <link href="{{ asset("assets/dashboard/js/iconpicker/fontawesome-iconpicker.min.css") }}" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -38,7 +38,7 @@
     <div class="padding">
         <div class="box">
             <div class="box-header dker">
-                <h3><i class="material-icons">&#xe02e;</i> {{ __('Edit Offers') }}</h3>
+                <h3><i class="material-icons">&#xe02e;</i> {{ __('Edit Sale') }}</h3>
                 <small>
                     <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
                     <a>{{$offer_creation_packages->slug}}</a> 

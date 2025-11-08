@@ -112,9 +112,6 @@ class CabanaPackagesController extends Controller
                                     <a class="dropdown-item" href="' . route('cabanaEdit', $row->slug) . '">
                                         <i class="material-icons">&#xe3c9;</i> Edit
                                     </a>
-                                    <a class="dropdown-item text-danger" onclick="DeleteTicket(\'' . $row->slug . '\')">
-                                        <i class="material-icons">&#xe872;</i> Delete
-                                    </a>
                                 </div>
                             </div>',
             ];

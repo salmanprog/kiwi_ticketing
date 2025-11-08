@@ -145,16 +145,18 @@ class KabanaSettingController extends Controller
         $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
         if ($response->successful()) {
             $apiData = $response->json();
-            $tickets = $apiData['getAllProductPrice']['data'] ?? [];
-            $fillter_arr = [];
-            if(count($tickets) > 0){
-                for($i=0;$i<count($tickets);$i++){
-                    if($tickets[$i]['venueId'] == 0){
-                        array_push($fillter_arr,$tickets[$i]);
+            $tickets_arr = $apiData['getAllProductPrice']['data'] ?? [];
+            $tickets = [];
+            if(count($tickets_arr) > 0){
+                for($i=0;$i<count($tickets_arr);$i++){
+                    if($tickets_arr[$i]['venueId'] == 0 && $tickets_arr[$i]['ticketCategory'] !== 'Season Passes' && $tickets_arr[$i]['ticketCategory'] !== 'Anyday' ){
+                        array_push($tickets,$tickets_arr[$i]);
                     }
                 }
             }
         }
+        // print_r($tickets);
+        // die();
         return view("dashboard.kabanaddon.edit", compact("cabana", "tickets","cabana_addon" ,"GeneralWebmasterSections"));
     }
 

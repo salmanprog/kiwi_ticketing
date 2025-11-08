@@ -55,9 +55,11 @@ class GeneralTicketPackagesController extends Controller
         $query = GeneralTicketPackages::with(['media_slider','general_addons','createdBy','updatedBy'])->where('auth_code',$authCode);
         if ($request->has('search') && $request->search['value'] != '') {
             $search = $request->search['value'];
-            $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%");
-            });
+            $order_status = strtolower(str_replace(' ', '_', $search));
+            $query->where(function ($q) use ($search, $order_status) {
+                        $q->where('title', 'like', "%{$search}%")
+                        ->orWhere('order_status', 'like', "%{$order_status}%");
+                    });
         }
 
         $totalData = $query->count();

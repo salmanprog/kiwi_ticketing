@@ -447,25 +447,25 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                                 <span class="nav-icon">
                                     <i class="fas fa-tag" style="color: #6B7280;"></i>
                                 </span>
-                                <span class="nav-text">{{ __('Offer Management') }}</span>
+                                <span class="nav-text">{{ __('Sale Management') }}</span>
                             </a>
                             <ul class="nav-sub" style="background: #f8f9fa;">
                                 <li
                                     class="{{ $current === 'offercreationpackages' ? 'active cust-act' : '' }}">
                                     <a href="{{ route('offercreationpackages') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Offers') }}</span>
+                                        <span class="nav-text dashlogo">{{ __('Sale') }}</span>
                                     </a>
                                 </li>
                                 <li
                                     class="{{ $current === 'offeraddon' || Str::startsWith($current, 'offeraddon') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('offeraddon') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Offer Addon') }}</span>
+                                        <span class="nav-text dashlogo">{{ __('Sale Addon') }}</span>
                                     </a>
                                 </li>
                                 <li
                                     class="{{ $current === 'offercreationpackagesorders' ? 'active cust-act' : '' }}">
                                     <a href="{{ route('offercreationpackagesorders') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Offers Orders') }}</span>
+                                        <span class="nav-text dashlogo">{{ __('Sale Orders') }}</span>
                                     </a>
                                 </li>
                             </ul>

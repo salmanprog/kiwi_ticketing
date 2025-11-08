@@ -1,5 +1,5 @@
 {{-- @extends('dashboard.layouts.master')
-@section('title', __('Offers'))
+@section('title', __('Sale'))
 @push("after-styles")
     <link href="{{ asset("assets/dashboard/js/iconpicker/fontawesome-iconpicker.min.css") }}" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -38,10 +38,10 @@
     <div class="padding">
         <div class="box">
             <div class="box-header dker">
-                <h3><i class="material-icons">&#xe02e;</i> {{ __('New Offers') }}</h3>
+                <h3><i class="material-icons">&#xe02e;</i> {{ __('New Sale') }}</h3>
                 <small>
                     <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-                    <a>{{__('new-offer')}}</a> 
+                    <a>{{__('new-sale')}}</a> 
                 </small>
             </div>
             <div class="box-tool">
@@ -206,7 +206,7 @@
 
 
 @extends('dashboard.layouts.master')
-@section('title', __('Offers'))
+@section('title', __('Sale'))
 @push('after-styles')
     <link href="{{ asset('assets/dashboard/js/iconpicker/fontawesome-iconpicker.min.css') }}" rel="stylesheet">
     <link rel="stylesheet"
@@ -414,16 +414,16 @@
     <div class="padding">
         <div class="box">
             <div class="box-header dker" style="display: none;">
-                <h3><i class="material-icons">&#xe02e;</i> {{ __('Offers Management') }}</h3>
+                <h3><i class="material-icons">&#xe02e;</i> {{ __('Sale Management') }}</h3>
                 <small>
                     <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-                    <a>{{ __('Offers') }}</a>
+                    <a>{{ __('Sale') }}</a>
                 </small>
             </div>
             <div class="box-body" style="display: none;">
                 <!-- Button to trigger modal -->
                 <button type="button" class="btn btn-primary" id="openOfferModal">
-                    <i class="material-icons">&#xe02e;</i> {{ __('Create New Offer') }}
+                    <i class="material-icons">&#xe02e;</i> {{ __('Create New Sale') }}
                 </button>
             </div>
         </div>
@@ -434,7 +434,7 @@
         <div class="custom-modal-content">
             <div class="custom-modal-header">
                 <h5 class="modal-title">
-                    <i class="material-icons">&#xe02e;</i> {{ __('Create New Offer') }}
+                    <i class="material-icons">&#xe02e;</i> {{ __('Create New Sale') }}
                 </h5>
                 <button type="button" class="close-btn" id="closeOfferModal" title="Back to previous page">&times;</button>
             </div>

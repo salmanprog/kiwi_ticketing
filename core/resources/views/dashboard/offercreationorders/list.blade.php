@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Offer Orders'))
+@section('title', __('Sale Orders'))
 @section('content')
 <style>
     div.dataTables_wrapper div.dataTables_processing {
@@ -51,10 +51,10 @@
 <div class="padding">
 <div class="box">
     <div class="box-header dker">
-        <h3>{{ __('Offer') }}</h3>
+        <h3>{{ __('Sale') }}</h3>
         <small>
             <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-            <a href="">{{ __('offer-orders') }}</a>
+            <a href="">{{ __('sale-orders') }}</a>
         </small>
     </div>
     <div class="box-tool box-tool-lg">
@@ -199,6 +199,7 @@
                         data.package_id = $('#find_package').val();
                         data.from_date = $('#from_date').val();
                         data.to_date = $('#to_date').val();
+                        data.order_status = $('#find_order_status').val();
                         data.type = 'offer_creation';
                         data.route = 'offercreationpackagesordersdetail';
                     }
