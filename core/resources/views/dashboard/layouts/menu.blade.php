@@ -14,7 +14,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
 <style>
     /* Premium Green Theme with Modern Design */
     .nav-active-primary .nav>li.active>a {
-        background: linear-gradient(135deg, #9FC23F 0%, #8AAE38 100%) !important;
+        background:#9FC23F !important;
         border-left-color: #ffffff !important;
         color: #ffffff !important;
         border-radius: 12px !important;
@@ -25,7 +25,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
         /* transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; */
     }
 
-    .nav-active-primary .nav>li.active>a::before {
+    /* .nav-active-primary .nav>li.active>a::before {
         content: '';
         position: absolute;
         top: 0;
@@ -34,7 +34,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
         height: 100%;
         background: #ffffff;
         border-radius: 3px;
-    }
+    } */
 
     .nav-active-primary .nav>li.active>a .nav-icon i {
         color: #ffffff !important;
@@ -244,7 +244,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
 
 
         <div flex class="hide-scroll">
-            <nav class="scroll nav-active-primary" style="background: #ffffff;">
+            <nav class="scroll nav-active-primary cust-pading-nav" style="background: #ffffff;">
 
                 @php
                     $userRole = Auth::user()->permissionsGroup->name ?? '';
@@ -254,7 +254,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                     {{-- <li class="nav-header hidden-folded">
                         <small class="text-muted" style="color: #6c757d !important;">{{ __('backend.main') }}</small>
                     </li> --}}
-                    <li {{ Route::currentRouteName() == 'adminHome' ? 'class=active menue-hie' : '' }}
+                    {{-- <li {{ Route::currentRouteName() == 'adminHome' ? 'class=active menue-hie' : '' }}
                         style="border-left: 3px solid transparent;">
                         <a href="{{ route('adminHome') }}" style="color: #495057;">
                             <span class="nav-icon" style="padding-top: 4px;">
@@ -262,7 +262,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                             </span>
                             <span class="nav-text">{{ __('backend.dashboard') }}</span>
                         </a>
-                    </li>
+                    </li> --}}
 
                     {{-- <li class="nav-header hidden-folded m-t-sm">
                         <small class="text-muted"
@@ -287,8 +287,8 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                     @if ($userRole == 'Webmaster' || in_array(16, $dataSections))
                         <li class="{{ $cabanaActive ? 'active menue-hie' : '' }}" style="border-left: 3px solid transparent;">
                             <a style="color: #495057;">
-                                <span class="nav-caret">
-                                    <i class="fa fa-caret-down" style="color: #A0C242;"></i>
+                                <span class="nav-caret no-mrgn">
+                                    <i class="cust-arrow-icon" ></i>
                                 </span>
                                 <span class="nav-icon">
                                     <i class="fas fa-umbrella-beach" style="color: #6B7280;"></i>
@@ -328,8 +328,8 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                     @if ($userRole == 'Webmaster' || in_array(17, $dataSections))
                         <li class="{{ $birthdayActive ? 'active menue-hie' : '' }}" style="border-left: 3px solid transparent;">
                             <a style="color: #495057;">
-                                <span class="nav-caret">
-                                    <i class="fa fa-caret-down" style="color: #A0C242;"></i>
+                                <span class="nav-caret no-mrgn">
+                                    <i class="cust-arrow-icon"></i>
                                 </span>
                                 <span class="nav-icon">
                                     <i class="fas fa-gift" style="color: #6B7280;"></i>
@@ -367,8 +367,8 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                         <li class="{{ $generalTicketActive ? 'active menue-hie' : '' }}"
                             style="border-left: 3px solid transparent;">
                             <a style="color: #495057;">
-                                <span class="nav-caret">
-                                    <i class="fa fa-caret-down" style="color: #A0C242;"></i>
+                                <span class="nav-caret no-mrgn">
+                                    <i class="cust-arrow-icon"></i>
                                 </span>
                                 <span class="nav-icon">
                                     <i class="fas fa-ticket-alt" style="color: #6B7280;"></i>
@@ -405,31 +405,31 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                         <li class="{{ $seasonpassActive ? 'active menue-hie' : '' }}"
                             style="border-left: 3px solid transparent;">
                             <a style="color: #495057;">
-                                <span class="nav-caret">
-                                    <i class="fa fa-caret-down" style="color: #A0C242;"></i>
+                                <span class="nav-caret no-mrgn">
+                                    <i class="cust-arrow-icon"></i>
                                 </span>
                                 <span class="nav-icon">
                                     <i class="fas fa-star" style="color: #6B7280;"></i>
                                 </span>
-                                <span class="nav-text">{{ __('SeasonPass Management') }}</span>
+                                <span class="nav-text">{{ __('Season Pass Management') }}</span>
                             </a>
                             <ul class="nav-sub" style="background: #f8f9fa;">
                                 <li
                                     class="{{ $current === 'seasonpass' ? 'active cust-act' : '' }}">
                                     <a href="{{ route('seasonpass') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('SeasonPass Sale') }}</span>
+                                        <span class="nav-text dashlogo">{{ __('Season Pass Sale') }}</span>
                                     </a>
                                 </li>
                                 <li
                                     class="{{ $current === 'seasonpassaddon' ? 'active cust-act' : '' }}">
                                     <a href="{{ route('seasonpassaddon') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('SeasonPass Products') }}</span>
+                                        <span class="nav-text dashlogo">{{ __('Season Pass Products') }}</span>
                                     </a>
                                 </li>
                                 <li
                                     class="{{ $current === 'seasonpassorders' ? 'active cust-act' : '' }}">
                                     <a href="{{ route('seasonpassorders') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('SeasonPass Orders') }}</span>
+                                        <span class="nav-text dashlogo">{{ __('Season Pass Orders') }}</span>
                                     </a>
                                 </li>
                             </ul>
@@ -441,31 +441,31 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                         <li class="{{ $offerCreationActive ? 'active menue-hie' : '' }}"
                             style="border-left: 3px solid transparent;">
                             <a style="color: #495057;">
-                                <span class="nav-caret">
-                                    <i class="fa fa-caret-down" style="color: #A0C242;"></i>
+                                <span class="nav-caret no-mrgn">
+                                    <i class="cust-arrow-icon"></i>
                                 </span>
                                 <span class="nav-icon">
                                     <i class="fas fa-tag" style="color: #6B7280;"></i>
                                 </span>
-                                <span class="nav-text">{{ __('Offer Management') }}</span>
+                                <span class="nav-text">{{ __('Sale Management') }}</span>
                             </a>
                             <ul class="nav-sub" style="background: #f8f9fa;">
                                 <li
                                     class="{{ $current === 'offercreationpackages' ? 'active cust-act' : '' }}">
                                     <a href="{{ route('offercreationpackages') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Offers') }}</span>
+                                        <span class="nav-text dashlogo">{{ __('Sale') }}</span>
                                     </a>
                                 </li>
                                 <li
                                     class="{{ $current === 'offeraddon' || Str::startsWith($current, 'offeraddon') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('offeraddon') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Offer Addon') }}</span>
+                                        <span class="nav-text dashlogo">{{ __('Sale Addon') }}</span>
                                     </a>
                                 </li>
                                 <li
                                     class="{{ $current === 'offercreationpackagesorders' ? 'active cust-act' : '' }}">
                                     <a href="{{ route('offercreationpackagesorders') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Offers Orders') }}</span>
+                                        <span class="nav-text dashlogo">{{ __('Sale Orders') }}</span>
                                     </a>
                                 </li>
                             </ul>
@@ -480,8 +480,8 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
 
                         <li class="{{ $couponActive ? 'active menue-hie' : '' }}" style="border-left: 3px solid transparent;">
                             <a style="color: #495057;">
-                                <span class="nav-caret">
-                                    <i class="fa fa-caret-down" style="color: #A0C242;"></i>
+                                <span class="nav-caret no-mrgn">
+                                    <i class="cust-arrow-icon"></i>
                                 </span>
                                 <span class="nav-icon">
                                     <i class="fas fa-ticket-alt" style="color: #6B7280;"></i>
@@ -508,8 +508,8 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                         <li class="{{ $transactionActive ? 'active menue-hie' : '' }}"
                             style="border-left: 3px solid transparent;">
                             <a style="color: #495057;">
-                                <span class="nav-caret">
-                                    <i class="fa fa-caret-down" style="color: #A0C242;"></i>
+                                <span class="nav-caret no-mrgn">
+                                    <i class=cust-arrow-icon"></i>
                                 </span>
                                 <span class="nav-icon">
                                     <i class="fas fa-dollar-sign" style="color: #6B7280;"></i>
@@ -550,8 +550,8 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
 
                         <li class="{{ $LogsActive ? 'active menue-hie' : '' }}" style="border-left: 3px solid transparent;">
                             <a style="color: #495057;">
-                                <span class="nav-caret">
-                                    <i class="fa fa-caret-down" style="color: #A0C242;"></i>
+                                <span class="nav-caret no-mrgn">
+                                    <i class="cust-arrow-icon"></i>
                                 </span>
                                 <span class="nav-icon">
                                     <i class="fas fa-clipboard-list" style="color: #6B7280;"></i>
@@ -596,8 +596,8 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                         <li class="{{ $emailTemplateActive ? 'active menue-hie' : '' }}"
                             style="border-left: 3px solid transparent;">
                             <a style="color: #495057;">
-                                <span class="nav-caret">
-                                    <i class="fa fa-caret-down" style="color: #A0C242;"></i>
+                                <span class="nav-caret no-mrgn">
+                                    <i class="cust-arrow-icon"></i>
                                 </span>
                                 <span class="nav-icon">
                                     <i class="fas fa-envelope" style="color: #6B7280;"></i>

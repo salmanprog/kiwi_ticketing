@@ -51,7 +51,7 @@
 <div class="padding">
 <div class="box">
     <div class="box-header dker">
-        <h3>{{ __('SeasonPass') }}</h3>
+        <h3>{{ __('Season Pass') }}</h3>
         <small>
             <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
             <a href="">{{ __('season-pass-sale') }}</a>

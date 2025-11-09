@@ -2864,12 +2864,12 @@ body {
 
 .navside .nav li a:hover,
 .navside .nav li a:focus {
-    background-color: rgba(0, 0, 0, 0.065);
+    background-color: #9FC23F;
 }
 
-.navside .nav li.active {
+/* .navside .nav li.active {
     background-color: rgba(0, 0, 0, 0.065);
-}
+} */
 
 .navside .nav li.active>a {
     background-color: transparent;
@@ -8529,6 +8529,34 @@ div.dataTables_wrapper div.dataTables_processing {
 li.active.menue-hie a {
     padding-block: 5px;
 }
+
+nav.scroll.nav-active-primary.cust-pading-nav {
+    padding-inline: 16px;
+}
+
+.cust-arrow-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: currentColor;
+  -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>') no-repeat center;
+  -webkit-mask-size: contain;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>') no-repeat center;
+  mask-size: contain;
+}
+
+.no-mrgn{
+    margin-left: 0 !important;
+}
+
+.nav-caret.no-mrgn i.cust-arrow-icon{
+    
+}
+
+/* .navside .nav li a:hover{
+    background-color: #9fc23f !important;
+    color: #fff !important;
+} */
 
 @media screen and (max-width: 480px) {
     .collapse-twice {
