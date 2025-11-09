@@ -14,7 +14,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
 <style>
     /* Premium Green Theme with Modern Design */
     .nav-active-primary .nav>li.active>a {
-        background:#9FC23F !important;
+        background: #9FC23F !important;
         border-left-color: #ffffff !important;
         color: #ffffff !important;
         border-radius: 12px !important;
@@ -283,96 +283,19 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                     $emailTemplateActive = in_array($current, ['emailTemplate', 'emailTemplateCreate', 'emailTemplateEdit', 'emailTemplateStore', 'emailTemplateUpdate', 'emailTemplateDestroy', 'smtpConfigure', 'emailLogs']);
                     ?>
 
-                    <!-- Cabana Management -->
-                    @if ($userRole == 'Webmaster' || in_array(16, $dataSections))
-                        <li class="{{ $cabanaActive ? 'active menue-hie' : '' }}" style="border-left: 3px solid transparent;">
-                            <a style="color: #495057;">
-                                <span class="nav-caret no-mrgn">
-                                    <i class="cust-arrow-icon" ></i>
-                                </span>
-                                <span class="nav-icon">
-                                    <i class="fas fa-umbrella-beach" style="color: #6B7280;"></i>
-                                </span>
-                                <span class="nav-text">{{ __('Cabana Management') }}</span>
-                            </a>
-                            <ul class="nav-sub" style="background: #f8f9fa;">
-                                @if ($userRole == 'Webmaster' || in_array(24, $dataSections))
-                                <li
-                                    class="{{ $current === 'cabana' || Str::startsWith($current, 'cabana') ? 'active cust-act' : '' }} ">
-                                    <a href="{{ route('cabana') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('All Cabana') }}</span>
-                                    </a>
-                                </li>
-                                @endif
-                                @if ($userRole == 'Webmaster' || in_array(25, $dataSections))
-                                <li
-                                    class="{{ $current === 'kabanaddons' ||
-                                    Str::startsWith($current, 'kabanaaddonEdit') ||
-                                    Str::startsWith($current, 'kabanaddons')
-                                        ? 'active cust-act'
-                                        : '' }}">
-                                    <a href="{{ route('kabanaddons') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Cabana Addon') }}</span>
-                                    </a>
-                                </li>
-                                @endif
-                                @if ($userRole == 'Webmaster' || in_array(26, $dataSections))
-                                <li
-                                    class="{{ $current === 'kabanaorders' || Str::startsWith($current, 'kabanaorders') ? 'active cust-act' : '' }}">
-                                    <a href="{{ route('kabanaorders') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Cabana Orders') }}</span>
-                                    </a>
-                                </li>
-                                @endif
-                            </ul>
+                    <!-- Ticket / Pass Management Dropdown -->
+                    @if (
+                        $userRole == 'Webmaster' ||
+                            in_array(16, $dataSections) ||
+                            in_array(17, $dataSections) ||
+                            in_array(18, $dataSections) ||
+                            in_array(19, $dataSections))
+                        <li class="nav-header hidden-folded m-t-sm">
+                            <small class="text-muted"
+                                style="color: #6c757d !important;">{{ __('Ticket / Pass Management') }}</small>
                         </li>
-                    @endif
 
-                    <!-- Package Management -->
-                    @if ($userRole == 'Webmaster' || in_array(17, $dataSections))
-                        <li class="{{ $birthdayActive ? 'active menue-hie' : '' }}" style="border-left: 3px solid transparent;">
-                            <a style="color: #495057;">
-                                <span class="nav-caret no-mrgn">
-                                    <i class="cust-arrow-icon"></i>
-                                </span>
-                                <span class="nav-icon">
-                                    <i class="fas fa-gift" style="color: #6B7280;"></i>
-                                </span>
-                                <span class="nav-text">{{ __('Package Management') }}</span>
-                            </a>
-
-                            <ul class="nav-sub" style="background: #f8f9fa;">
-                                @if ($userRole == 'Webmaster' || in_array(27, $dataSections))
-                                <li
-                                    class="{{ $current === 'birthdaypackages' || Str::startsWith($current, 'birthdaypackages') ? 'active cust-act' : '' }}">
-                                    <a href="{{ route('birthdaypackages') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('All Packages') }}</span>
-                                    </a>
-                                </li>
-                                @endif
-                                @if ($userRole == 'Webmaster' || in_array(28, $dataSections))
-                                <li
-                                    class="{{ $current === 'birthdayaddon' || Str::startsWith($current, 'birthdayaddon') ? 'active cust-act' : '' }}">
-                                    <a href="{{ route('birthdayaddon') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Packages Addon') }}</span>
-                                    </a>
-                                </li>
-                                @endif
-                                @if ($userRole == 'Webmaster' || in_array(29, $dataSections))
-                                <li
-                                    class="{{ $current === 'birthdayorders' || Str::startsWith($current, 'birthdayorders') ? 'active cust-act' : '' }}">
-                                    <a href="{{ route('birthdayorders') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Packages Orders') }}</span>
-                                    </a>
-                                </li>
-                                @endif
-                            </ul>
-                        </li>
-                    @endif
-
-                    <!-- Platform Management -->
-                    @if ($userRole == 'Webmaster' || in_array(18, $dataSections))
-                        <li class="{{ $generalTicketActive ? 'active menue-hie' : '' }}"
+                        <li class="{{ in_array($current, ['tickets', 'cabanas', 'seasonpass', 'birthdaypackages']) ? 'active menue-hie' : '' }}"
                             style="border-left: 3px solid transparent;">
                             <a style="color: #495057;">
                                 <span class="nav-caret no-mrgn">
@@ -381,80 +304,152 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                                 <span class="nav-icon">
                                     <i class="fas fa-ticket-alt" style="color: #6B7280;"></i>
                                 </span>
-                                <span class="nav-text">{{ __('Platform Management') }}</span>
+                                <span class="nav-text">{{ __('Ticket / Pass Management') }}</span>
                             </a>
                             <ul class="nav-sub" style="background: #f8f9fa;">
-                                @if ($userRole == 'Webmaster' || in_array(30, $dataSections))
+                                <!-- Tickets -->
                                 <li
-                                    class="{{ $current === 'generalticketpackages' ? 'active cust-act' : '' }}">
-                                    <a href="{{ route('generalticketpackages') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('General Packages') }}</span>
+                                    class="{{ in_array($current, ['generaltickets', 'generalticketpackages']) ? 'active cust-act' : '' }}">
+                                    <a style="color: #495057;">
+                                        <span class="nav-caret no-mrgn">
+                                            <i class="cust-arrow-icon"></i>
+                                        </span>
+                                        <span class="nav-text dashlogo">{{ __('Tickets') }}</span>
                                     </a>
+                                    <ul class="nav-sub" style="background: #f8f9fa; margin-left: 15px;">
+                                        @if ($userRole == 'Webmaster' || in_array(30, $dataSections))
+                                            <li
+                                                class="{{ $current === 'generalticketpackages' ? 'active cust-act' : '' }}">
+                                                <a href="{{ route('generalticketpackages') }}" style="color: #495057;">
+                                                    <span class="nav-text dashlogo">{{ __('Ticket Types') }}</span>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if ($userRole == 'Webmaster' || in_array(31, $dataSections))
+                                            <li
+                                                class="{{ $current === 'generalticketsaddon' ? 'active cust-act' : '' }}">
+                                                <a href="{{ route('generalticketsaddon') }}" style="color: #495057;">
+                                                    <span class="nav-text dashlogo">{{ __('Addon Control') }}</span>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if ($userRole == 'Webmaster' || in_array(32, $dataSections))
+                                            <li
+                                                class="{{ $current === 'generalticketsorders' ? 'active cust-act' : '' }}">
+                                                <a href="{{ route('generalticketsorders') }}" style="color: #495057;">
+                                                    <span class="nav-text dashlogo">{{ __('Orders') }}</span>
+                                                </a>
+                                            </li>
+                                        @endif
+                                    </ul>
                                 </li>
-                                @endif
-                                @if ($userRole == 'Webmaster' || in_array(31, $dataSections))
-                                <li
-                                    class="{{ $current === 'generalticketsaddon' ? 'active cust-act' : '' }}">
-                                    <a href="{{ route('generalticketsaddon') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('General Package Addon') }}</span>
+
+                                <!-- Cabanas -->
+                                <li class="{{ $cabanaActive ? 'active cust-act' : '' }}">
+                                    <a style="color: #495057;">
+                                        <span class="nav-caret no-mrgn">
+                                            <i class="cust-arrow-icon"></i>
+                                        </span>
+                                        <span class="nav-text dashlogo">{{ __('Cabanas') }}</span>
                                     </a>
+                                    <ul class="nav-sub" style="background: #f8f9fa; margin-left: 15px;">
+                                        @if ($userRole == 'Webmaster' || in_array(24, $dataSections))
+                                            <li class="{{ $current === 'cabana' ? 'active cust-act' : '' }}">
+                                                <a href="{{ route('cabana') }}" style="color: #495057;">
+                                                    <span class="nav-text dashlogo">{{ __('Cabana Types') }}</span>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if ($userRole == 'Webmaster' || in_array(25, $dataSections))
+                                            <li class="{{ $current === 'kabanaddons' ? 'active cust-act' : '' }}">
+                                                <a href="{{ route('kabanaddons') }}" style="color: #495057;">
+                                                    <span class="nav-text dashlogo">{{ __('Addon Control') }}</span>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if ($userRole == 'Webmaster' || in_array(26, $dataSections))
+                                            <li class="{{ $current === 'kabanaorders' ? 'active cust-act' : '' }}">
+                                                <a href="{{ route('kabanaorders') }}" style="color: #495057;">
+                                                    <span class="nav-text dashlogo">{{ __('Orders') }}</span>
+                                                </a>
+                                            </li>
+                                        @endif
+                                    </ul>
                                 </li>
-                                @endif
-                                @if ($userRole == 'Webmaster' || in_array(32, $dataSections))
-                                <li
-                                    class="{{ $current === 'generalticketsorders' ? 'active cust-act' : '' }}">
-                                    <a href="{{ route('generalticketsorders') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('General Tickets Orders') }}</span>
+
+                                <!-- Season Passes -->
+                                <li class="{{ $seasonpassActive ? 'active cust-act' : '' }}">
+                                    <a style="color: #495057;">
+                                        <span class="nav-caret no-mrgn">
+                                            <i class="cust-arrow-icon"></i>
+                                        </span>
+                                        <span class="nav-text dashlogo">{{ __('Season Passes') }}</span>
                                     </a>
+                                    <ul class="nav-sub" style="background: #f8f9fa; margin-left: 15px;">
+                                        @if ($userRole == 'Webmaster' || in_array(33, $dataSections))
+                                            <li class="{{ $current === 'seasonpass' ? 'active cust-act' : '' }}">
+                                                <a href="{{ route('seasonpass') }}" style="color: #495057;">
+                                                    <span
+                                                        class="nav-text dashlogo">{{ __('Season Pass Types') }}</span>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if ($userRole == 'Webmaster' || in_array(34, $dataSections))
+                                            <li class="{{ $current === 'seasonpassaddon' ? 'active cust-act' : '' }}">
+                                                <a href="{{ route('seasonpassaddon') }}" style="color: #495057;">
+                                                    <span class="nav-text dashlogo">{{ __('Addon Control') }}</span>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if ($userRole == 'Webmaster' || in_array(35, $dataSections))
+                                            <li
+                                                class="{{ $current === 'seasonpassorders' ? 'active cust-act' : '' }}">
+                                                <a href="{{ route('seasonpassorders') }}" style="color: #495057;">
+                                                    <span class="nav-text dashlogo">{{ __('Orders') }}</span>
+                                                </a>
+                                            </li>
+                                        @endif
+                                    </ul>
                                 </li>
-                                @endif
+
+                                <!-- Packages / Birthdays -->
+                                <li class="{{ $birthdayActive ? 'active cust-act' : '' }}">
+                                    <a style="color: #495057;">
+                                        <span class="nav-caret no-mrgn">
+                                            <i class="cust-arrow-icon"></i>
+                                        </span>
+                                        <span class="nav-text dashlogo">{{ __('Packages / Birthdays') }}</span>
+                                    </a>
+                                    <ul class="nav-sub" style="background: #f8f9fa; margin-left: 15px;">
+                                        @if ($userRole == 'Webmaster' || in_array(27, $dataSections))
+                                            <li
+                                                class="{{ $current === 'birthdaypackages' ? 'active cust-act' : '' }}">
+                                                <a href="{{ route('birthdaypackages') }}" style="color: #495057;">
+                                                    <span class="nav-text dashlogo">{{ __('Package Types') }}</span>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if ($userRole == 'Webmaster' || in_array(28, $dataSections))
+                                            <li class="{{ $current === 'birthdayaddon' ? 'active cust-act' : '' }}">
+                                                <a href="{{ route('birthdayaddon') }}" style="color: #495057;">
+                                                    <span class="nav-text dashlogo">{{ __('Addon Control') }}</span>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if ($userRole == 'Webmaster' || in_array(29, $dataSections))
+                                            <li class="{{ $current === 'birthdayorders' ? 'active cust-act' : '' }}">
+                                                <a href="{{ route('birthdayorders') }}" style="color: #495057;">
+                                                    <span class="nav-text dashlogo">{{ __('Orders') }}</span>
+                                                </a>
+                                            </li>
+                                        @endif
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
                     @endif
 
-                    <!-- SeasonPass Management -->
-                    @if ($userRole == 'Webmaster' || in_array(19, $dataSections))
-                        <li class="{{ $seasonpassActive ? 'active menue-hie' : '' }}"
-                            style="border-left: 3px solid transparent;">
-                            <a style="color: #495057;">
-                                <span class="nav-caret no-mrgn">
-                                    <i class="cust-arrow-icon"></i>
-                                </span>
-                                <span class="nav-icon">
-                                    <i class="fas fa-star" style="color: #6B7280;"></i>
-                                </span>
-                                <span class="nav-text">{{ __('Season Pass Management') }}</span>
-                            </a>
-                            <ul class="nav-sub" style="background: #f8f9fa;">
-                                @if ($userRole == 'Webmaster' || in_array(33, $dataSections))
-                                <li
-                                    class="{{ $current === 'seasonpass' ? 'active cust-act' : '' }}">
-                                    <a href="{{ route('seasonpass') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Season Pass Sale') }}</span>
-                                    </a>
-                                </li>
-                                @endif
-                                @if ($userRole == 'Webmaster' || in_array(34, $dataSections))
-                                <li
-                                    class="{{ $current === 'seasonpassaddon' ? 'active cust-act' : '' }}">
-                                    <a href="{{ route('seasonpassaddon') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Season Pass Products') }}</span>
-                                    </a>
-                                </li>
-                                @endif
-                                @if ($userRole == 'Webmaster' || in_array(35, $dataSections))
-                                <li
-                                    class="{{ $current === 'seasonpassorders' ? 'active cust-act' : '' }}">
-                                    <a href="{{ route('seasonpassorders') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Season Pass Orders') }}</span>
-                                    </a>
-                                </li>
-                                @endif
-                            </ul>
-                        </li>
-                    @endif
-
-                    <!-- Offer Management -->
+                    <!-- Sale Management Dropdown -->
                     @if ($userRole == 'Webmaster' || in_array(20, $dataSections))
                         <li class="{{ $offerCreationActive ? 'active menue-hie' : '' }}"
                             style="border-left: 3px solid transparent;">
@@ -463,249 +458,188 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                                     <i class="cust-arrow-icon"></i>
                                 </span>
                                 <span class="nav-icon">
-                                    <i class="fas fa-tag" style="color: #6B7280;"></i>
+                                    <i class="fas fa-shopping-cart" style="color: #6B7280;"></i>
                                 </span>
                                 <span class="nav-text">{{ __('Sale Management') }}</span>
                             </a>
                             <ul class="nav-sub" style="background: #f8f9fa;">
                                 @if ($userRole == 'Webmaster' || in_array(36, $dataSections))
-                                <li
-                                    class="{{ $current === 'offercreationpackages' ? 'active cust-act' : '' }}">
-                                    <a href="{{ route('offercreationpackages') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Sale') }}</span>
-                                    </a>
-                                </li>
+                                    <li class="{{ $current === 'offercreationpackages' ? 'active cust-act' : '' }}">
+                                        <a href="{{ route('offercreationpackages') }}" style="color: #495057;">
+                                            <span class="nav-text dashlogo">{{ __('Sale Type') }}</span>
+                                        </a>
+                                    </li>
                                 @endif
                                 @if ($userRole == 'Webmaster' || in_array(37, $dataSections))
-                                <li
-                                    class="{{ $current === 'offeraddon' || Str::startsWith($current, 'offeraddon') ? 'active cust-act' : '' }}">
-                                    <a href="{{ route('offeraddon') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Sale Addon') }}</span>
-                                    </a>
-                                </li>
+                                    <li class="{{ $current === 'offeraddon' ? 'active cust-act' : '' }}">
+                                        <a href="{{ route('offeraddon') }}" style="color: #495057;">
+                                            <span class="nav-text dashlogo">{{ __('Addon Control') }}</span>
+                                        </a>
+                                    </li>
                                 @endif
                                 @if ($userRole == 'Webmaster' || in_array(38, $dataSections))
-                                <li
-                                    class="{{ $current === 'offercreationpackagesorders' ? 'active cust-act' : '' }}">
-                                    <a href="{{ route('offercreationpackagesorders') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Sale Orders') }}</span>
-                                    </a>
-                                </li>
+                                    <li
+                                        class="{{ $current === 'offercreationpackagesorders' ? 'active cust-act' : '' }}">
+                                        <a href="{{ route('offercreationpackagesorders') }}" style="color: #495057;">
+                                            <span class="nav-text dashlogo">{{ __('Orders') }}</span>
+                                        </a>
+                                    </li>
                                 @endif
                             </ul>
                         </li>
                     @endif
 
-                    <!-- Coupon Management -->
+                    <!-- Coupon Management Dropdown -->
                     @if ($userRole == 'Webmaster' || in_array(21, $dataSections))
-                        {{-- <li class="nav-header hidden-folded m-t-sm">
-                        <small class="text-muted" style="color: #6c757d !important;">{{ __('Coupon Management') }}</small>
-                    </li> --}}
-
-                        <li class="{{ $couponActive ? 'active menue-hie' : '' }}" style="border-left: 3px solid transparent;">
+                        <li class="{{ $couponActive ? 'active menue-hie' : '' }}"
+                            style="border-left: 3px solid transparent;">
                             <a style="color: #495057;">
                                 <span class="nav-caret no-mrgn">
                                     <i class="cust-arrow-icon"></i>
                                 </span>
                                 <span class="nav-icon">
-                                    <i class="fas fa-ticket-alt" style="color: #6B7280;"></i>
+                                    <i class="fas fa-tags" style="color: #6B7280;"></i>
                                 </span>
-                                <span class="nav-text">{{ __('Coupons Management') }}</span>
+                                <span class="nav-text">{{ __('Coupon Management') }}</span>
                             </a>
                             <ul class="nav-sub" style="background: #f8f9fa;">
                                 @if ($userRole == 'Webmaster' || in_array(39, $dataSections))
-                                <li
-                                    class="{{ $current === 'coupon' || Str::startsWith($current, 'coupon') ? 'active cust-act' : '' }}">
-                                    <a href="{{ route('coupon') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('All Coupons') }}</span>
-                                    </a>
-                                </li>
+                                    <li class="{{ $current === 'coupon' ? 'active cust-act' : '' }}">
+                                        <a href="{{ route('coupon') }}" style="color: #495057;">
+                                            <span class="nav-text dashlogo">{{ __('Coupon Types') }}</span>
+                                        </a>
+                                    </li>
                                 @endif
                             </ul>
                         </li>
                     @endif
 
-                    <!-- Transactions -->
+                    <!-- Order Details/Transaction -->
                     @if ($userRole == 'Webmaster' || in_array(22, $dataSections))
-                        {{-- <li class="nav-header hidden-folded m-t-sm">
-                        <small class="text-muted" style="color: #6c757d !important;">{{ __('Transactions') }}</small>
-                    </li> --}}
-
                         <li class="{{ $transactionActive ? 'active menue-hie' : '' }}"
                             style="border-left: 3px solid transparent;">
-                            <a style="color: #495057;">
-                                <span class="nav-caret no-mrgn">
-                                    <i class=cust-arrow-icon"></i>
-                                </span>
+                            <a href="{{ route('transactionorders') }}" style="color: #495057;">
                                 <span class="nav-icon">
-                                    <i class="fas fa-dollar-sign" style="color: #6B7280;"></i>
+                                    <i class="fas fa-file-invoice-dollar" style="color: #6B7280;"></i>
                                 </span>
-                                <span class="nav-text">{{ __('Transactions') }}</span>
+                                <span class="nav-text">{{ __('Order Details/Transaction') }}</span>
                             </a>
-                            <ul class="nav-sub" style="background: #f8f9fa;">
-                                <li
-                                    class="{{ $current === 'transactionorders' || Str::startsWith($current, 'transactionorders') ? 'active cust-act' : '' }}">
-                                    <a href="{{ route('transactionorders') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('All Transactions') }}</span>
-                                    </a>
-                                </li>
-                                <li
-                                    class="{{ $current === 'updatetransactionorders' || Str::startsWith($current, 'updatetransactionorders')
-                                        ? 'active cust-act'
-                                        : '' }}">
-                                    <a href="{{ route('updatetransactionorders') }}" style="color: #495057;">
-                                        <span
-                                            class="nav-text dashlogo">{{ __('Update & Upgrade Transactions') }}</span>
-                                    </a>
-                                </li>
-                                <li
-                                    class="{{ $current === 'ordersLogs' || Str::startsWith($current, 'ordersLogs') ? 'active cust-act' : '' }}">
-                                    <a href="{{ route('ordersLogs') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Order Logs') }}</span>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
                     @endif
 
-                    <!-- Logs Management -->
-                    @if ($userRole == 'Webmaster' || in_array(22, $dataSections))
-                        {{-- <li class="nav-header hidden-folded m-t-sm">
-                        <small class="text-muted" style="color: #6c757d !important;">{{ __('Logs') }}</small>
-                    </li> --}}
-
-                        <li class="{{ $LogsActive ? 'active menue-hie' : '' }}" style="border-left: 3px solid transparent;">
-                            <a style="color: #495057;">
-                                <span class="nav-caret no-mrgn">
-                                    <i class="cust-arrow-icon"></i>
-                                </span>
-                                <span class="nav-icon">
-                                    <i class="fas fa-clipboard-list" style="color: #6B7280;"></i>
-                                </span>
-                                <span class="nav-text">{{ __('All Logs') }}</span>
-                            </a>
-                            <ul class="nav-sub" style="background: #f8f9fa;">
-                                @if ($userRole == 'Webmaster' || in_array(40, $dataSections))
-                                <li
-                                    class="{{ $current === 'ordersLogs' || Str::startsWith($current, 'ordersLogs') ? 'active cust-act' : '' }}">
-                                    <a href="{{ route('ordersLogs') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Order Success Logs') }}</span>
-                                    </a>
-                                </li>
-                                @endif
-                                @if ($userRole == 'Webmaster' || in_array(41, $dataSections))
-                                <li
-                                    class="{{ $current === 'ordersfailedLogs' || Str::startsWith($current, 'ordersfailedLogs') ? 'active cust-act' : '' }}">
-                                    <a href="{{ route('ordersfailedLogs') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Order Failed Logs') }}</span>
-                                    </a>
-                                </li>
-                                @endif
-                                @if ($userRole == 'Webmaster' || in_array(42, $dataSections))
-                                <li
-                                    class="{{ $current === 'paymentLogs' || Str::startsWith($current, 'paymentLogs') ? 'active cust-act' : '' }}">
-                                    <a href="{{ route('paymentLogs') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Payment Success Logs') }}</span>
-                                    </a>
-                                </li>
-                                @endif
-                                @if ($userRole == 'Webmaster' || in_array(43, $dataSections))
-                                <li
-                                    class="{{ $current === 'paymentfailLogs' || Str::startsWith($current, 'paymentfailLogs') ? 'active cust-act' : '' }}">
-                                    <a href="{{ route('paymentfailLogs') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Payment Failed Logs') }}</span>
-                                    </a>
-                                </li>
-                                @endif
-                            </ul>
-                        </li>
-                    @endif
-
-                    <!-- Email Management -->
-                    @if ($userRole == 'Webmaster')
-                        {{-- <li class="nav-header hidden-folded m-t-sm">
-                        <small class="text-muted" style="color: #6c757d !important;">{{ __('Email Setting') }}</small>
-                    </li> --}}
-
-                        <li class="{{ $emailTemplateActive ? 'active menue-hie' : '' }}"
-                            style="border-left: 3px solid transparent;">
-                            <a style="color: #495057;">
-                                <span class="nav-caret no-mrgn">
-                                    <i class="cust-arrow-icon"></i>
-                                </span>
-                                <span class="nav-icon">
-                                    <i class="fas fa-envelope" style="color: #6B7280;"></i>
-                                </span>
-                                <span class="nav-text">{{ __('Email Management') }}</span>
-                            </a>
-                            <ul class="nav-sub" style="background: #f8f9fa;">
-                                <li
-                                    class="{{ $current === 'emailTemplate' || Str::startsWith($current, 'emailTemplate') ? 'active cust-act' : '' }}">
-                                    <a href="{{ route('emailTemplate') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Email Templates') }}</span>
-                                    </a>
-                                </li>
-                                <li
-                                    class="{{ $current === 'emailTemplate' || Str::startsWith($current, 'emailTemplate') ? 'active cust-act' : '' }}">
-                                    <a href="{{ route('smtpConfigure') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('SMTP Configuration') }}</span>
-                                    </a>
-                                </li>
-                                <li
-                                    class="{{ $current === 'emailTemplate' || Str::startsWith($current, 'emailTemplate') ? 'active cust-act' : '' }}">
-                                    <a href="{{ route('emailsLogs') }}" style="color: #495057;">
-                                        <span class="nav-text dashlogo">{{ __('Email Logs') }}</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
-
-                    <!-- Settings Section -->
+                    <!-- Settings Dropdown -->
                     @if (
-                        @Auth::user()->permissionsGroup->roles_status ||
-                            (Helper::GeneralWebmasterSettings('settings_status') && @Auth::user()->permissionsGroup->settings_status) ||
-                            @Auth::user()->permissionsGroup->webmaster_status)
+                        $userRole == 'Webmaster' ||
+                            in_array(22, $dataSections) ||
+                            @Auth::user()->permissionsGroup->roles_status ||
+                            (Helper::GeneralWebmasterSettings('settings_status') && @Auth::user()->permissionsGroup->settings_status))
                         <li class="nav-header hidden-folded m-t-sm">
-                            <small class="text-muted"
-                                style="color: #6c757d !important;">{{ __('backend.settings') }}</small>
+                            <small class="text-muted" style="color: #6c757d !important;">{{ __('Settings') }}</small>
                         </li>
-                    @endif
 
-                    <!-- Users & Permissions -->
-                    @if (@Auth::user()->permissionsGroup->roles_status)
-                        <?php
-                        $currentFolder = 'users'; // Put folder name here
-                        $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
-                        ?>
-                        <li {{ $PathCurrentFolder == $currentFolder ? 'class=active menue-hie' : '' }}
+                        <li class="{{ in_array($current, ['ordersLogs', 'users', 'settings', 'emailTemplate']) ? 'active menue-hie' : '' }}"
                             style="border-left: 3px solid transparent;">
-                            <a href="{{ route('users') }}" style="color: #495057;">
-                                <span class="nav-icon">
-                                    <i class="fas fa-users" style="color: #6B7280;"></i>
+                            <a style="color: #495057;">
+                                <span class="nav-caret no-mrgn">
+                                    <i class="cust-arrow-icon"></i>
                                 </span>
-                                <span class="nav-text">{{ __('backend.usersPermissions') }}</span>
+                                <span class="nav-icon">
+                                    <i class="fas fa-cogs" style="color: #6B7280;"></i>
+                                </span>
+                                <span class="nav-text">{{ __('Settings') }}</span>
                             </a>
-                        </li>
-                    @endif
+                            <ul class="nav-sub" style="background: #f8f9fa;">
+                                <!-- Order Logs -->
+                                @if ($userRole == 'Webmaster' || in_array(40, $dataSections))
+                                    <li class="{{ $LogsActive ? 'active cust-act' : '' }}">
+                                        <a href="{{ route('ordersLogs') }}" style="color: #495057;">
+                                            <span class="nav-text dashlogo">{{ __('Order Logs') }}</span>
+                                        </a>
+                                    </li>
+                                @endif
 
-                    <!-- General Site Settings -->
-                    @if (Helper::GeneralWebmasterSettings('settings_status'))
-                        @if (@Auth::user()->permissionsGroup->settings_status)
-                            <?php
-                            $currentFolder = 'settings'; // Put folder name here
-                            $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
-                            ?>
-                            <li {{ $PathCurrentFolder == $currentFolder ? 'class=active menue-hie' : '' }}
-                                style="border-left: 3px solid transparent;">
-                                <a href="{{ route('settings') }}" style="color: #495057;">
-                                    <span class="nav-icon">
-                                        <i class="fas fa-cogs" style="color: #6B7280;"></i>
-                                    </span>
-                                    <span class="nav-text">{{ __('backend.generalSiteSettings') }}</span>
-                                </a>
-                            </li>
-                        @endif
+                                <!-- User Permission -->
+                                @if (@Auth::user()->permissionsGroup->roles_status)
+                                    <li class="{{ $PathCurrentFolder == 'users' ? 'active cust-act' : '' }}">
+                                        <a href="{{ route('users') }}" style="color: #495057;">
+                                            <span class="nav-text dashlogo">{{ __('User Permission') }}</span>
+                                        </a>
+                                    </li>
+                                @endif
+
+                                <!-- Email Management -->
+                                @if ($userRole == 'Webmaster')
+                                    <li class="{{ $emailTemplateActive ? 'active cust-act' : '' }}">
+                                        <a href="{{ route('emailTemplate') }}" style="color: #495057;">
+                                            <span class="nav-text dashlogo">{{ __('Email Management') }}</span>
+                                        </a>
+                                    </li>
+                                @endif
+
+                                <!-- All Logs -->
+                                @if (
+                                    $userRole == 'Webmaster' ||
+                                        in_array(40, $dataSections) ||
+                                        in_array(41, $dataSections) ||
+                                        in_array(42, $dataSections) ||
+                                        in_array(43, $dataSections))
+                                    <li class="{{ $LogsActive ? 'active cust-act' : '' }}">
+                                        <a style="color: #495057;">
+                                            <span class="nav-caret no-mrgn">
+                                                <i class="cust-arrow-icon"></i>
+                                            </span>
+                                            <span class="nav-text dashlogo">{{ __('All Logs') }}</span>
+                                        </a>
+                                        <ul class="nav-sub" style="background: #f8f9fa; margin-left: 15px;">
+                                            @if ($userRole == 'Webmaster' || in_array(40, $dataSections))
+                                                <li class="{{ $current === 'ordersLogs' ? 'active cust-act' : '' }}">
+                                                    <a href="{{ route('ordersLogs') }}" style="color: #495057;">
+                                                        <span
+                                                            class="nav-text dashlogo">{{ __('Order Success Logs') }}</span>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                            @if ($userRole == 'Webmaster' || in_array(41, $dataSections))
+                                                <li
+                                                    class="{{ $current === 'ordersfailedLogs' ? 'active cust-act' : '' }}">
+                                                    <a href="{{ route('ordersfailedLogs') }}"
+                                                        style="color: #495057;">
+                                                        <span
+                                                            class="nav-text dashlogo">{{ __('Order Failed Logs') }}</span>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                            @if ($userRole == 'Webmaster' || in_array(42, $dataSections))
+                                                <li class="{{ $current === 'paymentLogs' ? 'active cust-act' : '' }}">
+                                                    <a href="{{ route('paymentLogs') }}" style="color: #495057;">
+                                                        <span
+                                                            class="nav-text dashlogo">{{ __('Payment Success Logs') }}</span>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                            @if ($userRole == 'Webmaster' || in_array(43, $dataSections))
+                                                <li
+                                                    class="{{ $current === 'paymentfailLogs' ? 'active cust-act' : '' }}">
+                                                    <a href="{{ route('paymentfailLogs') }}" style="color: #495057;">
+                                                        <span
+                                                            class="nav-text dashlogo">{{ __('Payment Failed Logs') }}</span>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                        </ul>
+                                    </li>
+                                @endif
+
+                                <!-- Website Setting -->
+                                @if (Helper::GeneralWebmasterSettings('settings_status') && @Auth::user()->permissionsGroup->settings_status)
+                                    <li class="{{ $PathCurrentFolder == 'settings' ? 'active cust-act' : '' }}">
+                                        <a href="{{ route('settings') }}" style="color: #495057;">
+                                            <span class="nav-text dashlogo">{{ __('Website Setting') }}</span>
+                                        </a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </li>
                     @endif
 
                     <!-- Webmaster Tools
