@@ -88,32 +88,50 @@ class KabanaSettingController extends Controller
 
     public function cabanAddon()
     {
+        // $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        // $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        // $date = Carbon::today()->toDateString();
+        // // General for all pages
+        // $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
+        // try {
+            
+        //     $getFeaturedCabana = CabanaPackages::where('is_featured', '=', '1')->where('status', '=', '1')->where('auth_code', $authCode)->orderby('id', 'asc')->get();
+        //     // Paginate
+        //     $perPage = 10;
+        //     $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        //     $collection = collect($getFeaturedCabana);
+        //     $paginated = new LengthAwarePaginator(
+        //         $collection->forPage($currentPage, $perPage),
+        //         $collection->count(),
+        //         $perPage,
+        //         $currentPage,
+        //         ['path' => url()->current(), 'query' => request()->query()]
+        //     );
+        // } catch (\Exception $e) {
+        //     // Handle connection or request exceptions
+        //     dd('Exception: ' . $e->getMessage());
+        // }
         $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-        try {
-            
-            $getFeaturedCabana = CabanaPackages::where('is_featured', '=', '1')->where('status', '=', '1')->where('auth_code', $authCode)->orderby('id', 'asc')->get();
-            // Paginate
-            $perPage = 10;
-            $currentPage = LengthAwarePaginator::resolveCurrentPage();
-            $collection = collect($getFeaturedCabana);
-            $paginated = new LengthAwarePaginator(
-                $collection->forPage($currentPage, $perPage),
-                $collection->count(),
-                $perPage,
-                $currentPage,
-                ['path' => url()->current(), 'query' => request()->query()]
-            );
-
-            return view("dashboard.kabanaddon.list", compact("paginated", "GeneralWebmasterSections"));
-
-        } catch (\Exception $e) {
-            // Handle connection or request exceptions
-            dd('Exception: ' . $e->getMessage());
+        $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+        if ($response->successful()) {
+            $apiData = $response->json();
+            $tickets_arr = $apiData['getAllProductPrice']['data'] ?? [];
+            $tickets = [];
+            if(count($tickets_arr) > 0){
+                for($i=0;$i<count($tickets_arr);$i++){
+                    if($tickets_arr[$i]['venueId'] == 0 && $tickets_arr[$i]['ticketCategory'] !== 'Season Passes' && $tickets_arr[$i]['ticketCategory'] !== 'Anyday' ){
+                        array_push($tickets,$tickets_arr[$i]);
+                    }
+                }
+            }
         }
+        return view("dashboard.kabanaddon.list", compact("tickets", "GeneralWebmasterSections"));
+
+        
         
         
     }
@@ -140,8 +158,21 @@ class KabanaSettingController extends Controller
         $date = Carbon::today()->toDateString();
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-        $cabana = CabanaPackages::where('ticketSlug', $id)->where('is_featured', '=', '1')->where('status', '=', '1')->where('auth_code', $authCode)->first();
-        $cabana_addon = CabanaAddon::select('ticketSlug')->where('cabanaSlug', $id)->get()->toArray();
+        //$cabana = CabanaPackages::where('ticketSlug', $id)->where('is_featured', '=', '1')->where('status', '=', '1')->where('auth_code', $authCode)->first();
+        //$cabana_addon = CabanaAddon::select('ticketSlug')->where('cabanaSlug', $id)->get()->toArray();
+        // $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+        // if ($response->successful()) {
+        //     $apiData = $response->json();
+        //     $tickets_arr = $apiData['getAllProductPrice']['data'] ?? [];
+        //     $tickets = [];
+        //     if(count($tickets_arr) > 0){
+        //         for($i=0;$i<count($tickets_arr);$i++){
+        //             if($tickets_arr[$i]['venueId'] == 0 && $tickets_arr[$i]['ticketCategory'] !== 'Season Passes' && $tickets_arr[$i]['ticketCategory'] !== 'Anyday' ){
+        //                 array_push($tickets,$tickets_arr[$i]);
+        //             }
+        //         }
+        //     }
+        // }
         $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
         if ($response->successful()) {
             $apiData = $response->json();
@@ -149,15 +180,15 @@ class KabanaSettingController extends Controller
             $tickets = [];
             if(count($tickets_arr) > 0){
                 for($i=0;$i<count($tickets_arr);$i++){
-                    if($tickets_arr[$i]['venueId'] == 0 && $tickets_arr[$i]['ticketCategory'] !== 'Season Passes' && $tickets_arr[$i]['ticketCategory'] !== 'Anyday' ){
+                    if($tickets_arr[$i]['ticketSlug'] == $id ){
                         array_push($tickets,$tickets_arr[$i]);
                     }
                 }
             }
         }
-        // print_r($tickets);
-        // die();
-        return view("dashboard.kabanaddon.edit", compact("cabana", "tickets","cabana_addon" ,"GeneralWebmasterSections"));
+        $cabanas = CabanaPackages::where('is_featured', '=', '1')->where('status', '=', '1')->where('auth_code', $authCode)->get();
+        $cabana_addon = CabanaAddon::select('cabanaSlug')->where('ticketSlug', $tickets[0]['ticketSlug'])->get()->toArray();
+        return view("dashboard.kabanaddon.edit", compact("cabanas","tickets","cabana_addon","GeneralWebmasterSections"));
     }
 
     public function update(Request $request, $webmasterId, $id)

@@ -33,4 +33,12 @@ class WebmasterSection extends Model
     {
         return $this->hasMany('App\Models\WebmasterSectionField', 'webmaster_id')->orderby('row_no', 'asc');
     }
+
+    public function childSections()
+    {
+        return $this->hasMany(WebmasterSection::class, 'parent_id', 'id')
+                    ->where('status', 1)
+                    ->orderBy('row_no', 'asc')
+                    ->with('childSections');
+    }
 }

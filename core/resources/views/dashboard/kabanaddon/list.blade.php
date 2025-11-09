@@ -72,14 +72,11 @@
                                     <input id="checkAll" type="checkbox"><i></i>
                                 </label>
                             </th>
-                            <th>{{ __('ID') }}</th>
                             <th>{{ __('venueId') }}</th>
                             <th>{{ __('Name') }}</th>
                             <th>{{ __('Slug') }}</th>
                             <th>{{ __('Category') }}</th>
                             <th>{{ __('Price') }}</th>
-                            <th>{{ __('Featured') }}</th>
-                            <th>{{ __('Status') }}</th>
                             <th>{{ __('createdBy') }}</th>
                             <th>{{ __('updatedBy') }}</th>
                             <th>{{ __('updatedAt') }}</th>
@@ -114,36 +111,6 @@
                                     </div><!-- /.modal-content -->
                                 </div>
                             </div>
-                            <!-- / .modal -->
-                            <!-- @if(@Auth::user()->permissionsGroup->settings_status) -->
-                                <!-- <select name="action" id="action" class="form-control c-select w-sm inline v-middle"
-                                        required>
-                                    <option value="">{{ __('backend.bulkAction') }}</option>
-                                    <option value="activate">{{ __('backend.activeSelected') }}</option>
-                                    <option value="block">{{ __('backend.blockSelected') }}</option>
-                                    <option value="delete">{{ __('backend.deleteSelected') }}</option>
-                                </select>
-                                <button type="submit" id="submit_all"
-                                        class="btn white">{{ __('backend.apply') }}</button>
-                                <button id="submit_show_msg" class="btn white" data-toggle="modal"
-                                        style="display: none"
-                                        data-target="#m-all" ui-toggle-class="bounce"
-                                        ui-target="#animate">{{ __('backend.apply') }}
-                                </button> -->
-                            <!-- @endif -->
-                        <!-- </div> -->
-                            <!-- <div class="col-sm-3 text-center">
-                                <small class="text-muted inline m-t-sm m-b-sm">
-                                    {{ __('backend.showing') }} {{ $paginated->firstItem() }} - {{ $paginated->lastItem() }}
-                                    {{ __('backend.of') }} <strong>{{ $paginated->total() }}</strong> {{ __('backend.records') }}
-                                </small>
-                            </div> -->
-                            <!-- <div class="col-sm-6 text-right text-center-xs"> -->
-                                <!-- {!! $paginated->links() !!} -->
-                            <!-- </div> -->
-                       
-                    <!-- </div> -->
-                <!-- </footer> -->
 
 </div>
 </div>
@@ -180,14 +147,11 @@
                dom: '<"row"<"col-sm-6"f><"col-sm-6"l>>rtip',
                 columns: [
                     { data: 'check', orderable: false, searchable: false },
-                    { data: 'id' },
                     { data: 'venueId' },
                     { data: 'ticketType' },
                     { data: 'ticketSlug' },
                     { data: 'ticketCategory' },
                     { data: 'price' },
-                    { data: 'featured', orderable: false, searchable: false },
-                    { data: 'status', orderable: false, searchable: false },
                     { data: 'created_by', orderable: false, searchable: false },
                     { data: 'updated_by', orderable: false, searchable: false },
                     { data: 'updated_at', orderable: false, searchable: false },

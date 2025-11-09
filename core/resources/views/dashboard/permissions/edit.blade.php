@@ -502,6 +502,23 @@
                                             <span class="checkbox-label">{!! $WSectionTitle !!}</span>
                                         </label>
                                         <?php $i++; ?>
+                                        {{-- Child Sections (if any) --}}
+                                        @if($WebSection->childSections && $WebSection->childSections->count() > 0)
+                                            <div style="margin-left: 25px;">
+                                                @foreach($WebSection->childSections as $ChildSection)
+                                                    @php
+                                                        $ChildSectionTitle = $ChildSection->$title_var ?: $ChildSection->$title_var2;
+                                                        $childChecked = in_array($ChildSection->id, $data_sections_arr);
+                                                    @endphp
+                                                    <label class="checkbox-item-modern {{ $childChecked ? 'checked' : '' }}" style="display:block;">
+                                                        {!! Form::checkbox('data_sections[]', $ChildSection->id, $childChecked, ['id' => 'data_sections'.$i]) !!}
+                                                        <span class="checkmark"></span>
+                                                        <span class="checkbox-label">{!! $ChildSectionTitle !!}</span>
+                                                    </label>
+                                                    @php $i++; @endphp
+                                                @endforeach
+                                            </div>
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>

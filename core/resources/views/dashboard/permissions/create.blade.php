@@ -420,6 +420,40 @@
                                         <span class="checkbox-label">{!! $WSectionTitle !!}</span>
                                     </label>
                                     <?php $i++; ?>
+                                    {{-- Show child sections (if any) --}}
+                                    @if($WebSection->childSections && $WebSection->childSections->count() > 0)
+                                        @foreach($WebSection->childSections as $ChildSection)
+                                            @php
+                                                $ChildSectionTitle = $ChildSection->$title_var ?: $ChildSection->$title_var2;
+                                            @endphp
+
+                                            <div style="margin-left: 25px;">
+                                                <label class="checkbox-item-modern">
+                                                    {!! Form::checkbox('data_sections[]', $ChildSection->id, false, ['id' => 'data_sections'.$i]) !!}
+                                                    <span class="checkmark"></span>
+                                                    <span class="checkbox-label">{!! $ChildSectionTitle !!}</span>
+                                                </label>
+                                            </div>
+                                            @php $i++; @endphp
+
+                                            {{-- Optional: show grandchild sections too --}}
+                                            @if($ChildSection->childSections && $ChildSection->childSections->count() > 0)
+                                                @foreach($ChildSection->childSections as $SubChild)
+                                                    @php
+                                                        $SubChildTitle = $SubChild->$title_var ?: $SubChild->$title_var2;
+                                                    @endphp
+                                                    <div style="margin-left: 45px;">
+                                                        <label class="checkbox-item-modern">
+                                                            {!! Form::checkbox('data_sections[]', $SubChild->id, false, ['id' => 'data_sections'.$i]) !!}
+                                                            <span class="checkmark"></span>
+                                                            <span class="checkbox-label">{!! $SubChildTitle !!}</span>
+                                                        </label>
+                                                    </div>
+                                                    @php $i++; @endphp
+                                                @endforeach
+                                            @endif
+                                        @endforeach
+                                    @endif
                                 @endforeach
                             </div>
                         </div>
