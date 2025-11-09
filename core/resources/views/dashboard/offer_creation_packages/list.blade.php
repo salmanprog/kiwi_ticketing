@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Offers'))
+@section('title', __('Sale'))
 @section('content')
 <style>
     div.dataTables_wrapper div.dataTables_processing {
@@ -51,17 +51,17 @@
 <div class="padding">
 <div class="box">
     <div class="box-header dker">
-        <h3>{{ __('Offers') }}</h3>
+        <h3>{{ __('Sale') }}</h3>
         <small>
             <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-            <a href="">{{ __('offers') }}</a>
+            <a href="">{{ __('sale') }}</a>
         </small>
     </div>
      <div class="row p-a pull-right" style="margin-top: -70px;">
         <div class="col-sm-12">
             <a class="btn btn-fw primary" href="{{route('offercreationpackagesCreate')}}">
                 <i class="material-icons">&#xe7fe;</i>
-                &nbsp; {{ __('Add New Offer') }}
+                &nbsp; {{ __('Add New Sale') }}
             </a>
         </div>
     </div>

@@ -37,66 +37,170 @@ class KabanaAddonsController extends Controller
         
     }
 
+    // public function getData(Request $request)
+    // {
+    //     $authCode = Helper::GeneralSiteSettings('auth_code_en');
+    //     $date = Carbon::today()->toDateString();
+    //     $query = CabanaPackages::with(['media_slider','createdBy','updatedBy'])->where('auth_code', $authCode);
+    //     if ($request->has('search') && $request->search['value'] != '') {
+    //         $search = $request->search['value'];
+    //         $query->where(function ($q) use ($search) {
+    //             $q->where('ticketType', 'like', "%{$search}%")
+    //             ->orWhere('ticketSlug', 'like', "%{$search}%")
+    //             ->orWhere('ticketCategory', 'like', "%{$search}%")
+    //             ->orWhere('venueId', 'like', "%{$search}%");
+    //         });
+    //     }
+
+    //     $totalData = $query->count();
+    //     $totalFiltered = $totalData;
+    //     $start = $request->input('start', 0);
+    //     $limit = $request->input('length', 10);
+    //     $draw = $request->input('draw', 1);
+    //     $orderColumn = $request->input('order.0.column');
+    //     $orderDir = $request->input('order.0.dir', 'desc');
+    //     $columns = $request->input('columns');
+    //     if ($columns && isset($columns[$orderColumn])) {
+    //         $orderField = $columns[$orderColumn]['data'];
+    //         $query->orderBy($orderField, $orderDir);
+    //     } else {
+    //         $query->orderBy('id', 'desc');
+    //     }
+
+    //     $data = $query->offset($start)->limit($limit)->get();
+    //     $externalProducts = ApiHelper::getProductByCategory($data,'Cabanas',$date);
+    //     $externalMap = collect($externalProducts)->keyBy('ticketSlug');
+    //     $result = [];
+    //     foreach ($data as $row) {
+    //         $external = $externalMap[$row->ticketSlug] ?? null;
+    //         $get_cabanaaddon = CabanaAddon::with(['createdBy','updatedBy'])->where('cabanaSlug', $row->ticketSlug)->first();
+    //         $result[] = [
+    //             'id' => $row->id,
+    //             'venueId' => $row->venueId,
+    //             'check' => '<label class="ui-check m-a-0">
+    //                             <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
+    //                             <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
+    //                         </label>',
+    //             'ticketType' => '<a class="dropdown-item" href="' . route('kabanaaddonEdit', $row->ticketSlug) . '">'.$row->ticketType.'</a>',
+    //             'ticketSlug' => $row->ticketSlug,
+    //             'ticketCategory' => $row->ticketCategory,
+    //             'price' => '$' . number_format($external['price'], 2),
+                
+    //             'featured' => '<div class="text-center"><i class="fa ' . ($row->is_featured ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
+    //             'status' => '<div class="text-center"><i class="fa ' . ($row->status ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
+    //             'created_by' => $row->createdBy->name,
+    //             'updated_by' => $get_cabanaaddon?->updatedBy?->name ?? 'N/A',
+    //             'updated_at' => $row->updated_at->format('Y-m-d'),
+    //             'options' => '<div class="dropdown">
+    //                             <button type="button" class="btn btn-sm light dk dropdown-toggle" data-toggle="dropdown">
+    //                                 <i class="material-icons">&#xe5d4;</i> Options
+    //                             </button>
+    //                             <div class="dropdown-menu pull-right">
+    //                                 <a class="dropdown-item" href="' . route('kabanaaddonEdit', $row->ticketSlug) . '">
+    //                                     <i class="material-icons">&#xe3c9;</i> Edit
+    //                                 </a>
+    //                             </div>
+    //                         </div>',
+    //         ];
+    //     }
+
+    //     return response()->json([
+    //         'draw' => intval($draw),
+    //         'recordsTotal' => $totalData,
+    //         'recordsFiltered' => $totalFiltered,
+    //         'data' => $result,
+    //     ]);
+    // }
+
     public function getData(Request $request)
     {
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
-        $query = CabanaPackages::with(['media_slider','createdBy','updatedBy'])->where('auth_code', $authCode);
+
+        // Fetch API data
+        $response = Http::get($baseUrl . '/Pricing/GetAllProductPrice', [
+            'authcode' => $authCode,
+            'date' => $date
+        ]);
+
+        $tickets = [];
+
+        if ($response->successful()) {
+            $apiData = $response->json();
+            $tickets_arr = $apiData['getAllProductPrice']['data'] ?? [];
+
+            // Filter tickets
+            foreach ($tickets_arr as $ticket) {
+                if (
+                    $ticket['venueId'] == 0 &&
+                    $ticket['ticketCategory'] !== 'Season Passes' &&
+                    $ticket['ticketCategory'] !== 'Anyday'
+                ) {
+                    $tickets[] = $ticket;
+                }
+            }
+        }
+
+        // Convert array to collection for easier handling
+        $ticketsCollection = collect($tickets);
+
+        // Search filter
         if ($request->has('search') && $request->search['value'] != '') {
-            $search = $request->search['value'];
-            $query->where(function ($q) use ($search) {
-                $q->where('ticketType', 'like', "%{$search}%")
-                ->orWhere('ticketSlug', 'like', "%{$search}%")
-                ->orWhere('ticketCategory', 'like', "%{$search}%")
-                ->orWhere('venueId', 'like', "%{$search}%");
+            $search = strtolower($request->search['value']);
+            $ticketsCollection = $ticketsCollection->filter(function ($item) use ($search) {
+                return str_contains(strtolower($item['ticketType']), $search) ||
+                    str_contains(strtolower($item['ticketSlug']), $search) ||
+                    str_contains(strtolower($item['ticketCategory']), $search) ||
+                    str_contains(strtolower($item['venueId']), $search);
             });
         }
 
-        $totalData = $query->count();
+        // Sorting
+        $columns = $request->input('columns');
+        $orderColumn = $request->input('order.0.column');
+        $orderDir = $request->input('order.0.dir', 'desc');
+
+        if ($columns && isset($columns[$orderColumn])) {
+            $orderField = $columns[$orderColumn]['data'];
+            $ticketsCollection = $ticketsCollection->sortBy($orderField, SORT_REGULAR, $orderDir === 'desc');
+        }
+
+        // Pagination
+        $totalData = $ticketsCollection->count();
         $totalFiltered = $totalData;
         $start = $request->input('start', 0);
         $limit = $request->input('length', 10);
         $draw = $request->input('draw', 1);
-        $orderColumn = $request->input('order.0.column');
-        $orderDir = $request->input('order.0.dir', 'desc');
-        $columns = $request->input('columns');
-        if ($columns && isset($columns[$orderColumn])) {
-            $orderField = $columns[$orderColumn]['data'];
-            $query->orderBy($orderField, $orderDir);
-        } else {
-            $query->orderBy('id', 'desc');
-        }
 
-        $data = $query->offset($start)->limit($limit)->get();
-        $externalProducts = ApiHelper::getProductByCategory($data,'Cabanas',$date);
-        $externalMap = collect($externalProducts)->keyBy('ticketSlug');
+        $paginated = $ticketsCollection->slice($start, $limit)->values();
+
+        // Build final response data
         $result = [];
-        foreach ($data as $row) {
-            $external = $externalMap[$row->ticketSlug] ?? null;
-            $get_cabanaaddon = CabanaAddon::with(['createdBy','updatedBy'])->where('cabanaSlug', $row->ticketSlug)->first();
+        foreach ($paginated as $row) {
+            $get_cabanaaddon = CabanaAddon::with(['createdBy','updatedBy'])
+                ->where('ticketSlug', $row['ticketSlug'])
+                ->first();
+
             $result[] = [
-                'id' => $row->id,
-                'venueId' => $row->venueId,
+                'venueId' => $row['venueId'],
                 'check' => '<label class="ui-check m-a-0">
-                                <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
-                                <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
+                                <input type="checkbox" name="ids[]" value="' . $row['ticketSlug'] . '"><i></i>
+                                <input type="hidden" name="row_ids[]" value="' . $row['ticketSlug'] . '" class="form-control row_no">
                             </label>',
-                'ticketType' => '<a class="dropdown-item" href="' . route('kabanaaddonEdit', $row->ticketSlug) . '">'.$row->ticketType.'</a>',
-                'ticketSlug' => $row->ticketSlug,
-                'ticketCategory' => $row->ticketCategory,
-                'price' => '$' . number_format($external['price'], 2),
-                
-                'featured' => '<div class="text-center"><i class="fa ' . ($row->is_featured ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
-                'status' => '<div class="text-center"><i class="fa ' . ($row->status ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
-                'created_by' => $row->createdBy->name,
+                'ticketType' => '<a class="dropdown-item" href="' . route('kabanaaddonEdit', $row['ticketSlug']) . '">' . e($row['ticketType']) . '</a>',
+                'ticketSlug' => $row['ticketSlug'],
+                'ticketCategory' => $row['ticketCategory'],
+                'price' => '$' . number_format($row['price'], 2),
+                'created_by' => $get_cabanaaddon?->createdBy?->name ?? 'N/A',
                 'updated_by' => $get_cabanaaddon?->updatedBy?->name ?? 'N/A',
-                'updated_at' => $row->updated_at->format('Y-m-d'),
+                'updated_at' => $get_cabanaaddon?->updated_at?->format('Y-m-d') ?? 'N/A',
                 'options' => '<div class="dropdown">
                                 <button type="button" class="btn btn-sm light dk dropdown-toggle" data-toggle="dropdown">
                                     <i class="material-icons">&#xe5d4;</i> Options
                                 </button>
                                 <div class="dropdown-menu pull-right">
-                                    <a class="dropdown-item" href="' . route('kabanaaddonEdit', $row->ticketSlug) . '">
+                                    <a class="dropdown-item" href="' . route('kabanaaddonEdit', $row['ticketSlug']) . '">
                                         <i class="material-icons">&#xe3c9;</i> Edit
                                     </a>
                                 </div>
@@ -131,33 +235,60 @@ class KabanaAddonsController extends Controller
         $date = Carbon::today()->toDateString();
         $cabanaResponse = Http::get($baseUrl . '/Pricing/GetAllProductPrice?authcode=' . $authCode . '&date=' . $date);
         if (isset($params['ticket']) && count($params['ticket']) > 0) {
-            $cabana = CabanaAddon::where('cabanaSlug', $cabanaSlug)->delete();
             if ($cabanaResponse->successful()) {
                 $apiData = $cabanaResponse->json();
                 $tickets = $apiData['getAllProductPrice']['data'] ?? [];
                 $ticketMap = [];
-                foreach ($tickets as $ticket) {
-                    $ticketMap[$ticket['ticketSlug']] = $ticket;
+                for($i=0;$i<count($tickets);$i++){
+                    if($tickets[$i]['ticketSlug'] == $cabanaSlug ){
+                        array_push($ticketMap,$tickets[$i]);
+                    }
                 }
-
+               $cabana = CabanaAddon::where('ticketSlug', $cabanaSlug)->delete();
                 foreach ($params['ticket'] as $ticketSlug) {
-                    if (isset($ticketMap[$ticketSlug])) {
-                        $matchedTicket = $ticketMap[$ticketSlug];
-                        $cabana = Cabana::where('ticketSlug', $ticketSlug)->first();
+                        
                         $cabanaAddon = new CabanaAddon;
-                        $cabanaAddon->cabanaSlug = $cabanaSlug;
-                        $cabanaAddon->venueId = $matchedTicket['venueId'];
-                        $cabanaAddon->ticketType = $matchedTicket['ticketType'];
-                        $cabanaAddon->ticketSlug = $matchedTicket['ticketSlug'];
-                        $cabanaAddon->ticketCategory = $matchedTicket['ticketCategory'];
-                        $cabanaAddon->price = $matchedTicket['price'];
+                        $cabanaAddon->cabanaSlug = $ticketSlug;
+                        $cabanaAddon->venueId = $ticketMap[0]['venueId'];
+                        $cabanaAddon->ticketType = $ticketMap[0]['ticketType'];
+                        $cabanaAddon->ticketSlug = $ticketMap[0]['ticketSlug'];
+                        $cabanaAddon->ticketCategory = $ticketMap[0]['ticketCategory'];
+                        $cabanaAddon->price = $ticketMap[0]['price'];
                         $cabanaAddon->updated_by = Auth::user()->id;
                         $cabanaAddon->updated_at = now();
                         $cabanaAddon->save();
-                    }
                 }
             }
         }
+        //$cabanaResponse = Http::get($baseUrl . '/Pricing/GetAllProductPrice?authcode=' . $authCode . '&date=' . $date);
+        // if (isset($params['ticket']) && count($params['ticket']) > 0) {
+        //     $cabana = CabanaAddon::where('cabanaSlug', $cabanaSlug)->delete();
+        //     if ($cabanaResponse->successful()) {
+        //         $apiData = $cabanaResponse->json();
+        //         $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+        //         $ticketMap = [];
+        //         foreach ($tickets as $ticket) {
+        //             $ticketMap[$ticket['ticketSlug']] = $ticket;
+        //         }
+
+        //         foreach ($params['ticket'] as $ticketSlug) {
+        //             if (isset($ticketMap[$ticketSlug])) {
+        //                 $matchedTicket = $ticketMap[$ticketSlug];
+        //                 $cabana = Cabana::where('ticketSlug', $ticketSlug)->first();
+        //                 $cabanaAddon = new CabanaAddon;
+        //                 $cabanaAddon->cabanaSlug = $cabanaSlug;
+        //                 $cabanaAddon->venueId = $matchedTicket['venueId'];
+        //                 $cabanaAddon->ticketType = $matchedTicket['ticketType'];
+        //                 $cabanaAddon->ticketSlug = $matchedTicket['ticketSlug'];
+        //                 $cabanaAddon->ticketCategory = $matchedTicket['ticketCategory'];
+        //                 $cabanaAddon->price = $matchedTicket['price'];
+        //                 $cabanaAddon->updated_by = Auth::user()->id;
+        //                 $cabanaAddon->updated_at = now();
+        //                 $cabanaAddon->save();
+        //             }
+        //         }
+        //     }
+        // }
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
         try {

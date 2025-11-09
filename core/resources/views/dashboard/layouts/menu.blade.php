@@ -296,13 +296,15 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                                 <span class="nav-text">{{ __('Cabana Management') }}</span>
                             </a>
                             <ul class="nav-sub" style="background: #f8f9fa;">
+                                @if ($userRole == 'Webmaster' || in_array(24, $dataSections))
                                 <li
                                     class="{{ $current === 'cabana' || Str::startsWith($current, 'cabana') ? 'active cust-act' : '' }} ">
                                     <a href="{{ route('cabana') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('All Cabana') }}</span>
                                     </a>
                                 </li>
-
+                                @endif
+                                @if ($userRole == 'Webmaster' || in_array(25, $dataSections))
                                 <li
                                     class="{{ $current === 'kabanaddons' ||
                                     Str::startsWith($current, 'kabanaaddonEdit') ||
@@ -313,13 +315,15 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                                         <span class="nav-text dashlogo">{{ __('Cabana Addon') }}</span>
                                     </a>
                                 </li>
-
+                                @endif
+                                @if ($userRole == 'Webmaster' || in_array(26, $dataSections))
                                 <li
                                     class="{{ $current === 'kabanaorders' || Str::startsWith($current, 'kabanaorders') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('kabanaorders') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Cabana Orders') }}</span>
                                     </a>
                                 </li>
+                                @endif
                             </ul>
                         </li>
                     @endif
@@ -338,26 +342,30 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                             </a>
 
                             <ul class="nav-sub" style="background: #f8f9fa;">
+                                @if ($userRole == 'Webmaster' || in_array(27, $dataSections))
                                 <li
                                     class="{{ $current === 'birthdaypackages' || Str::startsWith($current, 'birthdaypackages') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('birthdaypackages') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('All Packages') }}</span>
                                     </a>
                                 </li>
-
+                                @endif
+                                @if ($userRole == 'Webmaster' || in_array(28, $dataSections))
                                 <li
                                     class="{{ $current === 'birthdayaddon' || Str::startsWith($current, 'birthdayaddon') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('birthdayaddon') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Packages Addon') }}</span>
                                     </a>
                                 </li>
-
+                                @endif
+                                @if ($userRole == 'Webmaster' || in_array(29, $dataSections))
                                 <li
                                     class="{{ $current === 'birthdayorders' || Str::startsWith($current, 'birthdayorders') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('birthdayorders') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Packages Orders') }}</span>
                                     </a>
                                 </li>
+                                @endif
                             </ul>
                         </li>
                     @endif
@@ -376,26 +384,30 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                                 <span class="nav-text">{{ __('Platform Management') }}</span>
                             </a>
                             <ul class="nav-sub" style="background: #f8f9fa;">
+                                @if ($userRole == 'Webmaster' || in_array(30, $dataSections))
                                 <li
                                     class="{{ $current === 'generalticketpackages' ? 'active cust-act' : '' }}">
                                     <a href="{{ route('generalticketpackages') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('General Packages') }}</span>
                                     </a>
                                 </li>
-
+                                @endif
+                                @if ($userRole == 'Webmaster' || in_array(31, $dataSections))
                                 <li
                                     class="{{ $current === 'generalticketsaddon' ? 'active cust-act' : '' }}">
                                     <a href="{{ route('generalticketsaddon') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('General Package Addon') }}</span>
                                     </a>
                                 </li>
-
+                                @endif
+                                @if ($userRole == 'Webmaster' || in_array(32, $dataSections))
                                 <li
                                     class="{{ $current === 'generalticketsorders' ? 'active cust-act' : '' }}">
                                     <a href="{{ route('generalticketsorders') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('General Tickets Orders') }}</span>
                                     </a>
                                 </li>
+                                @endif
                             </ul>
                         </li>
                     @endif
@@ -414,24 +426,30 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                                 <span class="nav-text">{{ __('Season Pass Management') }}</span>
                             </a>
                             <ul class="nav-sub" style="background: #f8f9fa;">
+                                @if ($userRole == 'Webmaster' || in_array(33, $dataSections))
                                 <li
                                     class="{{ $current === 'seasonpass' ? 'active cust-act' : '' }}">
                                     <a href="{{ route('seasonpass') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Season Pass Sale') }}</span>
                                     </a>
                                 </li>
+                                @endif
+                                @if ($userRole == 'Webmaster' || in_array(34, $dataSections))
                                 <li
                                     class="{{ $current === 'seasonpassaddon' ? 'active cust-act' : '' }}">
                                     <a href="{{ route('seasonpassaddon') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Season Pass Products') }}</span>
                                     </a>
                                 </li>
+                                @endif
+                                @if ($userRole == 'Webmaster' || in_array(35, $dataSections))
                                 <li
                                     class="{{ $current === 'seasonpassorders' ? 'active cust-act' : '' }}">
                                     <a href="{{ route('seasonpassorders') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Season Pass Orders') }}</span>
                                     </a>
                                 </li>
+                                @endif
                             </ul>
                         </li>
                     @endif
@@ -450,24 +468,30 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                                 <span class="nav-text">{{ __('Sale Management') }}</span>
                             </a>
                             <ul class="nav-sub" style="background: #f8f9fa;">
+                                @if ($userRole == 'Webmaster' || in_array(36, $dataSections))
                                 <li
                                     class="{{ $current === 'offercreationpackages' ? 'active cust-act' : '' }}">
                                     <a href="{{ route('offercreationpackages') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Sale') }}</span>
                                     </a>
                                 </li>
+                                @endif
+                                @if ($userRole == 'Webmaster' || in_array(37, $dataSections))
                                 <li
                                     class="{{ $current === 'offeraddon' || Str::startsWith($current, 'offeraddon') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('offeraddon') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Sale Addon') }}</span>
                                     </a>
                                 </li>
+                                @endif
+                                @if ($userRole == 'Webmaster' || in_array(38, $dataSections))
                                 <li
                                     class="{{ $current === 'offercreationpackagesorders' ? 'active cust-act' : '' }}">
                                     <a href="{{ route('offercreationpackagesorders') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Sale Orders') }}</span>
                                     </a>
                                 </li>
+                                @endif
                             </ul>
                         </li>
                     @endif
@@ -489,12 +513,14 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                                 <span class="nav-text">{{ __('Coupons Management') }}</span>
                             </a>
                             <ul class="nav-sub" style="background: #f8f9fa;">
+                                @if ($userRole == 'Webmaster' || in_array(39, $dataSections))
                                 <li
                                     class="{{ $current === 'coupon' || Str::startsWith($current, 'coupon') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('coupon') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('All Coupons') }}</span>
                                     </a>
                                 </li>
+                                @endif
                             </ul>
                         </li>
                     @endif
@@ -559,30 +585,38 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                                 <span class="nav-text">{{ __('All Logs') }}</span>
                             </a>
                             <ul class="nav-sub" style="background: #f8f9fa;">
+                                @if ($userRole == 'Webmaster' || in_array(40, $dataSections))
                                 <li
                                     class="{{ $current === 'ordersLogs' || Str::startsWith($current, 'ordersLogs') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('ordersLogs') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Order Success Logs') }}</span>
                                     </a>
                                 </li>
+                                @endif
+                                @if ($userRole == 'Webmaster' || in_array(41, $dataSections))
                                 <li
                                     class="{{ $current === 'ordersfailedLogs' || Str::startsWith($current, 'ordersfailedLogs') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('ordersfailedLogs') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Order Failed Logs') }}</span>
                                     </a>
                                 </li>
+                                @endif
+                                @if ($userRole == 'Webmaster' || in_array(42, $dataSections))
                                 <li
                                     class="{{ $current === 'paymentLogs' || Str::startsWith($current, 'paymentLogs') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('paymentLogs') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Payment Success Logs') }}</span>
                                     </a>
                                 </li>
+                                @endif
+                                @if ($userRole == 'Webmaster' || in_array(43, $dataSections))
                                 <li
                                     class="{{ $current === 'paymentfailLogs' || Str::startsWith($current, 'paymentfailLogs') ? 'active cust-act' : '' }}">
                                     <a href="{{ route('paymentfailLogs') }}" style="color: #495057;">
                                         <span class="nav-text dashlogo">{{ __('Payment Failed Logs') }}</span>
                                     </a>
                                 </li>
+                                @endif
                             </ul>
                         </li>
                     @endif

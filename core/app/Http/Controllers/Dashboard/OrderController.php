@@ -76,11 +76,13 @@ class OrderController extends Controller
 
         if ($request->filled('find_q')) {
             $q = $request->find_q;
-            $query->where(function ($q2) use ($q) {
+            $order_status = strtolower(str_replace(' ', '_', $q));
+            $query->where(function ($q2) use ($q,$order_status) {
                 $q2->where('firstName', 'like', "%{$q}%")
                 ->orWhere('lastName', 'like', "%{$q}%")
                 ->orWhere('email', 'like', "%{$q}%")
-                ->orWhere('slug', 'like', "%{$q}%");
+                ->orWhere('slug', 'like', "%{$q}%")
+                ->orWhere('order_status', 'like', "%{$order_status}%");
             });
         }
 
@@ -96,6 +98,10 @@ class OrderController extends Controller
             $from = $request->from_date . ' 00:00:00';
             $to = $request->to_date . ' 23:59:59';
             $query->whereBetween('created_at', [$from, $to]);
+        }
+
+        if ($request->filled('order_status')) {
+            $query->where('order_status', $request->order_status);
         }
         
         $totalData = $query->count();
@@ -227,7 +233,9 @@ class OrderController extends Controller
                                 <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
                                 <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
                             </label>',
-                'package' => '<a class="dropdown-item" href="' . route($request->route, $row->slug) . '">'.$row->$order_type->title.'</a>',
+                'package' => $row->$order_type
+                                ? '<a class="dropdown-item" href="' . route($request->route, $row->slug) . '">' . $row->$order_type->title . '</a>'
+                                : '<span class="dropdown-item text-muted">N/A</span>',
                 'type' => ucwords(str_replace('_', ' ',$row->type)),
                 'customerName' => $row->firstName.' '.$row->lastName,
                 'customerEmail' => $row->email,

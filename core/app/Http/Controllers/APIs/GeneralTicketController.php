@@ -124,6 +124,7 @@ class GeneralTicketController extends BaseAPIController
                     ->where('auth_code', $authCode)
                     ->where('generalTicketSlug', $slug)
                     ->whereIn('ticketSlug', $ticketSlugs)
+                    ->where('status', '1')
                     ->get()
                     ->keyBy('ticketSlug');
                 

@@ -25,7 +25,10 @@
                 )) !!}
             </div>
         @endforeach
-
+        <div class="form-group">
+            <label>{!!  __('backend.websiteUrl') !!}</label>
+            {!! Form::text('site_url',$Setting->site_url, array('placeholder' => 'http//:www.sitename.com/','class' => 'form-control', 'dir'=>'ltr')) !!}
+        </div>
         <!-- Description for Each Language -->
         @foreach(Helper::languagesList() as $ActiveLanguage)
             <div class="form-group" style="margin-bottom: 1.5rem;">

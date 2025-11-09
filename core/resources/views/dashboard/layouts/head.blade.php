@@ -6,12 +6,12 @@
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-barstyle" content="black-translucent">
-<link rel="apple-touch-icon" href="{{ asset('assets/dashboard/images/logo.png') }}">
+<link rel="apple-touch-icon" href="{{ URL::asset('uploads/settings/'.Helper::GeneralSiteSettings("style_fav")) }}">
 <meta name="apple-mobile-web-app-title" content="Smartend">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <meta name="mobile-web-app-capable" content="yes">
-<link rel="shortcut icon" sizes="196x196" href="{{ asset('assets/dashboard/images/logo.png') }}">
+<link rel="shortcut icon" sizes="196x196" href="{{ URL::asset('uploads/settings/'.Helper::GeneralSiteSettings("style_fav")) }}">
 @stack('before-styles')
 <link rel="stylesheet" href="{{ asset('assets/dashboard/css/animate.css/animate.min.css') }}?v={{ Helper::system_version() }}" type="text/css"/>
 <link rel="stylesheet" href="{{ asset('assets/dashboard/css/animate.css/animate.min.css') }}?v={{ Helper::system_version() }}" type="text/css"/>

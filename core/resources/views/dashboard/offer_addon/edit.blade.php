@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Offer Addon'))
+@section('title', __('Sale Addon'))
 @push("after-styles")
     <link href="{{ asset("assets/dashboard/js/iconpicker/fontawesome-iconpicker.min.css") }}" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -38,7 +38,7 @@
     <div class="padding">
         <div class="box">
             <div class="box-header dker">
-                <h3><i class="material-icons">&#xe02e;</i> {{ __('Edit Offer Addon') }}</h3>
+                <h3><i class="material-icons">&#xe02e;</i> {{ __('Edit Sale Addon') }}</h3>
                 <small>
                     <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
                     <a>{{ $offer_addon->ticketSlug }}</a> 
@@ -66,7 +66,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="title"
-                                class="col-sm-2 form-control-label">{!!  __('Offer') !!}
+                                class="col-sm-2 form-control-label">{!!  __('Sale') !!}
                         </label>
                         <div class="col-sm-10">
                             {!! Form::text('offerSlug',old('offerSlug', $offer_addon->offerType ?? ''), array('placeholder' => '','class' => 'form-control','id'=>'offerSlug','required'=>'','readonly' => 'readonly')) !!}
@@ -74,7 +74,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="title"
-                                class="col-sm-2 form-control-label">{!!  __('Offer Addon') !!}
+                                class="col-sm-2 form-control-label">{!!  __('Sale Addon') !!}
                         </label>
                         <div class="col-sm-10">
                             {!! Form::text('ticketSlug',old('ticketSlug', $offer_addon->ticketType ?? ''), array('placeholder' => '','class' => 'form-control','id'=>'ticketSlug','required'=>'','readonly' => 'readonly')) !!}

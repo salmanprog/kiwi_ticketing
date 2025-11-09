@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Offer Addon'))
+@section('title', __('Sale Addon'))
 @section('content')
 <style>
     div.dataTables_wrapper div.dataTables_processing {
@@ -51,17 +51,17 @@
 <div class="padding">
 <div class="box">
     <div class="box-header dker">
-        <h3>{{ __('Offer Addon') }}</h3>
+        <h3>{{ __('Sale Addon') }}</h3>
         <small>
             <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-            <a href="">{{ __('offer-addon') }}</a>
+            <a href="">{{ __('sale-addon') }}</a>
         </small>
     </div>
      <div class="row p-a pull-right" style="margin-top: -70px;">
         <div class="col-sm-12">
             <a class="btn btn-fw primary" href="{{route('offeraddonCreate')}}">
                 <i class="material-icons">&#xe7fe;</i>
-                &nbsp; {{ __('Add Offer Addon') }}
+                &nbsp; {{ __('Add Sale Addon') }}
             </a>
         </div>
     </div>

@@ -100,6 +100,11 @@ class OfferCreationPackagesController extends Controller
                                     <a class="dropdown-item" href="' . route('offercreationpackagesEdit', $row->slug) . '">
                                         <i class="material-icons">&#xe3c9;</i> Edit
                                     </a>
+                                    <a class="dropdown-item"
+                                        href="' . Helper::GeneralSiteSettings('site_url') . '/' . $row->slug . '"
+                                        target="_blank"><i
+                                            class="material-icons">&#xe8f4;</i> Preview
+                                    </a>
                                 </div>
                             </div>',
             ];

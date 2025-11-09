@@ -1,25 +1,4 @@
-CREATE TABLE `smartend_coupon_apply_tickets` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `coupon_id` bigint(20) UNSIGNED NOT NULL,
-  `package_type` varchar(191) DEFAULT NULL,
-  `package_id` longtext NOT NULL,
-  `ticket` longtext NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-ALTER TABLE `smartend_coupon_apply_tickets`
-  ADD PRIMARY KEY (`id`)
-
-ALTER TABLE `smartend_coupon_apply_tickets`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1
- 
-ALTER TABLE `smartend_coupon_apply_tickets` ADD `slug` VARCHAR(255) NOT NULL AFTER `id`;
-ALTER TABLE `smartend_coupons` ADD `package_id` INT(11) NOT NULL DEFAULT '0' AFTER `package_type`;
-
-ALTER TABLE `smartend_order_tickets` ADD `original_price` VARCHAR(255) NULL DEFAULT NULL AFTER `seat`;
-ALTER TABLE `smartend_order_tickets` ADD `discount_type` VARCHAR(255) NULL DEFAULT NULL AFTER `totalOrderRefundedAmount`;
-ALTER TABLE `smartend_order_tickets` ADD `coupon_code` VARCHAR(255) NULL DEFAULT NULL AFTER `discount_type`;
+ALTER TABLE `smartend_webmaster_sections` ADD `parent_id` INT(11) NOT NULL DEFAULT '0' AFTER `id`;
 
 -----------------------------------------------------------------------------------------
 http://dev-dynamicpricing-env.eba-tkbnkmbm.us-east-1.elasticbeanstalk.com/Pricing/UpdateOrder

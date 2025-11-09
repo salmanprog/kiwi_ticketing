@@ -102,8 +102,10 @@ class SeasonPassController extends Controller
                                     <a class="dropdown-item" href="' . route('seasonpassEdit', $row->slug) . '">
                                         <i class="material-icons">&#xe3c9;</i> Edit
                                     </a>
-                                    <a class="dropdown-item text-danger" onclick="DeleteTicket(\'' . $row->slug . '\')">
-                                        <i class="material-icons">&#xe872;</i> Delete
+                                    <a class="dropdown-item"
+                                        href="' . Helper::GeneralSiteSettings('site_url') . '/' . $row->slug . '"
+                                        target="_blank"><i
+                                            class="material-icons">&#xe8f4;</i> Preview
                                     </a>
                                 </div>
                             </div>',

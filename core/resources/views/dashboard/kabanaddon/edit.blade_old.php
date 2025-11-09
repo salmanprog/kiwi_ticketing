@@ -71,34 +71,58 @@
                 <div class="box-body p-a-2">
                     {{Form::open(['route'=>['cabanaAddonStore'],'method'=>'POST'])}}
                     
-                   <input name="cabanaSlug" type="hidden" value="{{$tickets[0]['ticketSlug']}}">
+                    <input name="cabanaSlug" type="hidden" value="{{$cabana->ticketSlug}}">
                     <div class="form-group row">
                         <label
                             class="col-sm-2 form-control-label">{{__('Cabana Ticket')}}
                         </label>
                         <div class="col-sm-10">
-                            <input placeholder="" class="form-control has-value" required="" maxlength="191" dir="ltr" name="ticketType" type="text" value="{{$tickets[0]['ticketType']}}" readonly>
+                            <input placeholder="" class="form-control has-value" required="" maxlength="191" dir="ltr" name="ticketType" type="text" value="{{$cabana->ticketType}}" readonly>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="link_status" class="col-sm-2 form-control-label">Cabana Package</label>
+                    <!-- <div class="form-group row">
+                        <label for="link_status" class="col-sm-2 form-control-label">Addons</label>
                         <div class="col-sm-10">
-                            @if(count($cabanas) > 0)
+                            
+                                @if(count($tickets) > 0)
+                                    @foreach($tickets as $ticket)
+                                        @if($ticket['ticketSlug'] != $cabana->ticketSlug)
+                                            <div class="radio">
+                                                <label class="ui-check ui-check-md">
+                                                    <input id="ticket_active_{{ $ticket['ticketSlug'] }}" class="has-value" name="ticket[]" type="checkbox" value="{{ $ticket['ticketSlug'] }}" {{ in_array($ticket['ticketSlug'], array_column($cabana_addon, 'ticketSlug')) ? 'checked' : '' }}>
+                                                    <i class="dark-white"></i>
+                                                    {{ $ticket['ticketType'] }}
+                                                </label>
+                                            </div>
+                                        @endif
+                                @endforeach
+                                @else
+                                    <p>No tickets available.</p>
+                                @endif
+                            
+                        </div>
+                    </div> -->
+                    <div class="form-group row">
+                        <label for="link_status" class="col-sm-2 form-control-label">Addons</label>
+                        <div class="col-sm-10">
+                            @if(count($tickets) > 0)
                                 <div class="row">
-                                    @foreach($cabanas as $cabana)
-                                        <div class="col-md-4 col-sm-6 mb-2">
+                                    @foreach($tickets as $ticket)
+                                        @if($ticket['ticketSlug'] != $cabana->ticketSlug)
+                                            <div class="col-md-4 col-sm-6 mb-2">
                                                 <label class="ui-check ui-check-md d-block">
                                                     <input 
-                                                        id="ticket_active_{{ $cabana['ticketSlug'] }}" 
+                                                        id="ticket_active_{{ $ticket['ticketSlug'] }}" 
                                                         class="has-value" 
                                                         name="ticket[]" 
                                                         type="checkbox" 
-                                                        value="{{ $cabana['ticketSlug'] }}"
-                                                        {{ in_array($cabana['ticketSlug'], array_column($cabana_addon, 'cabanaSlug')) ? 'checked' : '' }}>
+                                                        value="{{ $ticket['ticketSlug'] }}"
+                                                        {{ in_array($ticket['ticketSlug'], array_column($cabana_addon, 'ticketSlug')) ? 'checked' : '' }}>
                                                     <i class="dark-white"></i>
-                                                    {{ $cabana['ticketType'] }}
+                                                    {{ $ticket['ticketType'] }}
                                                 </label>
                                             </div>
+                                        @endif
                                     @endforeach
                                 </div>
                             @else

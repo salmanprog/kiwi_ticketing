@@ -110,9 +110,6 @@ class GeneralTicketAddonController extends Controller
                                     <a class="dropdown-item" href="' . route('generalticketsaddonEdit', $row->slug) . '">
                                         <i class="material-icons">&#xe3c9;</i> Edit
                                     </a>
-                                     <a class="dropdown-item text-danger" onclick="DeleteTicketAddon(\'' . $row->id . '\')">
-                                        <i class="material-icons">&#xe872;</i> Delete
-                                    </a>
                                 </div>
                             </div>',
             ];

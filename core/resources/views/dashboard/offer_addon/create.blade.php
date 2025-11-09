@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Offer Addon'))
+@section('title', __('Sale Addon'))
 @push("after-styles")
     <link href="{{ asset("assets/dashboard/js/iconpicker/fontawesome-iconpicker.min.css") }}" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -38,10 +38,10 @@
     <div class="padding">
         <div class="box">
             <div class="box-header dker">
-                <h3><i class="material-icons">&#xe02e;</i> {{ __('New Offer Addon') }}</h3>
+                <h3><i class="material-icons">&#xe02e;</i> {{ __('New Sale Addon') }}</h3>
                 <small>
                     <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-                    <a>{{__('offer-addon')}}</a> 
+                    <a>{{__('sale-addon')}}</a> 
                 </small>
             </div>
             <div class="box-tool">
@@ -58,11 +58,11 @@
                     
                     <div class="form-group row">
                         <label for="section_id" class="col-sm-2 form-control-label">
-                            {!! __('Offer') !!}
+                            {!! __('Sale') !!}
                         </label>
                         <div class="col-sm-10">
                            <select name="offerSlug" id="is_offer" class="form-control">
-                                <option value="">- - {!!  __('Select Offer') !!} - -</option>
+                                <option value="">- - {!!  __('Select Sale') !!} - -</option>
                                 @foreach($offerCreation as $ticket)
                                     <option value="{{ $ticket['slug'] }}" data-offer-type="{{ $ticket['offerType'] }}">{{ $ticket['title'] }}</option>
                                 @endforeach
@@ -71,11 +71,11 @@
                     </div>
                     <div class="form-group row">
                         <label for="section_id" class="col-sm-2 form-control-label">
-                            {!! __('Offer Addon') !!}
+                            {!! __('Sale Addon') !!}
                         </label>
                         <div class="col-sm-10">
                            <select name="ticketSlug" id="ticket_items" class="form-control">
-                                <option value="">- - {!!  __('Select Offer Addon') !!} - -</option>
+                                <option value="">- - {!!  __('Select Sale Addon') !!} - -</option>
                             </select>
                         </div>
                     </div>

@@ -280,7 +280,7 @@ class UsersController extends Controller
             return redirect()->route('NoPermission');
         }
         // General for all pages
-        $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
+        $GeneralWebmasterSections = WebmasterSection::where('parent_id',0)->where('status', '=', '1')->orderby('row_no', 'asc')->with('childSections')->get();
         // General END
 
         return view("dashboard.permissions.create", compact("GeneralWebmasterSections"));
@@ -341,7 +341,7 @@ class UsersController extends Controller
             return redirect()->route('NoPermission');
         }
         // General for all pages
-        $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
+        $GeneralWebmasterSections = WebmasterSection::where('parent_id', 0)->where('status', '=', '1')->orderby('row_no', 'asc')->with('childSections')->get();
         // General END
 
         if (@Auth::user()->permissionsGroup->view_status) {
