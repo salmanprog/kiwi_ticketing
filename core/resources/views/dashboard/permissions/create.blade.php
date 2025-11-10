@@ -499,7 +499,7 @@
                                             style="border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: #f9f9f9;">
                                             <!-- Parent Checkbox -->
                                             <label class="checkbox-item-modern"
-                                                style="display: block; margin-bottom: 10px; font-weight: bold;">
+                                                style="margin-bottom: 10px; font-weight: bold;">
                                                 {!! Form::checkbox('data_sections[]', $WebSection->id, false, ['id' => 'data_sections' . $i]) !!}
                                                 <span class="checkmark"></span>
                                                 <span class="checkbox-label">{!! $WSectionTitle !!}</span>
@@ -516,7 +516,7 @@
                                                         @endphp
 
                                                         <label class="checkbox-item-modern"
-                                                            style="display: block; margin-bottom: 8px;">
+                                                            style="margin-bottom: 8px;">
                                                             {!! Form::checkbox('data_sections[]', $ChildSection->id, false, ['id' => 'data_sections' . $i]) !!}
                                                             <span class="checkmark"></span>
                                                             <span class="checkbox-label">{!! $ChildSectionTitle !!}</span>
