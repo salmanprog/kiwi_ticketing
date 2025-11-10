@@ -229,7 +229,7 @@
             </div>
             
             <h1 class="welcome-title animate__animated animate__fadeInUp">
-                Welcome to Your <span style="color: var(--primary-green);">Dashboard</span>
+                Welcome to <span style="color: var(--primary-green);">kiwi Ticketing</span>
             </h1>
             
             <div class="date-badge animate__animated animate__fadeInUp animate__delay-1s">
@@ -243,10 +243,10 @@
                 Everything you need is just a click away.
             </p>
             
-            <button class="get-started-btn animate__animated animate__fadeInUp animate__delay-3s" onclick="location.href='{{ route('transactionorders') }}'">
+            {{-- <button class="get-started-btn animate__animated animate__fadeInUp animate__delay-3s" onclick="location.href='{{ route('transactionorders') }}'">
                 <i class="fas fa-play-circle me-2"></i>
                 Get Started
-            </button>
+            </button> --}}
             
             <div class="welcome-features animate__animated animate__fadeInUp animate__delay-4s">
                 <div class="feature-item">

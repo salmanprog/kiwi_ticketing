@@ -8,11 +8,11 @@
         </a>
 
         <div class="col-md-8 for-mbl-wlc-text" style="padding: 20px">
-            @if (request()->is('admin') || request()->routeIs('admin'))
+            {{-- @if (request()->is('admin') || request()->routeIs('admin'))
                 <h3 class="m-b-0 _700">{{ __('backend.hi') }} <span
                         style="font-weight: bold; color:#A0C242">{{ Auth::user()->name }}</span>,
                     {{ __('backend.welcomeBack') }}</h3>
-            @endif
+            @endif --}}
         </div>
 
         <div class="col-md-4 text-right" style="padding: 20px ;" >
