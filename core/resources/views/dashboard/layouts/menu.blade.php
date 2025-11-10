@@ -284,12 +284,6 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                     ?>
 
                     <!-- Ticket / Pass Management Dropdown -->
-                    @if (
-                        $userRole == 'Webmaster' ||
-                            in_array(16, $dataSections) ||
-                            in_array(17, $dataSections) ||
-                            in_array(18, $dataSections) ||
-                            in_array(19, $dataSections))
                         <li class="nav-header hidden-folded m-t-sm">
                             <small class="text-muted"
                                 style="color: #6c757d !important;">{{ __('Ticket / Pass Management') }}</small>
@@ -308,6 +302,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                             </a>
                             <ul class="nav-sub" style="background: #f8f9fa;">
                                 <!-- Tickets -->
+                                 @if ($userRole == 'Webmaster' || in_array(18, $dataSections))
                                 <li
                                     class="{{ in_array($current, ['generaltickets', 'generalticketpackages']) ? 'active cust-act' : '' }}">
                                     <a style="color: #495057;">
@@ -343,8 +338,9 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                                         @endif
                                     </ul>
                                 </li>
-
+                                @endif
                                 <!-- Cabanas -->
+                                 @if ($userRole == 'Webmaster' || in_array(16, $dataSections))
                                 <li class="{{ $cabanaActive ? 'active cust-act' : '' }}">
                                     <a style="color: #495057;">
                                         <span class="nav-caret no-mrgn">
@@ -376,8 +372,9 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                                         @endif
                                     </ul>
                                 </li>
-
+                                @endif
                                 <!-- Season Passes -->
+                                 @if ($userRole == 'Webmaster' || in_array(19, $dataSections))
                                 <li class="{{ $seasonpassActive ? 'active cust-act' : '' }}">
                                     <a style="color: #495057;">
                                         <span class="nav-caret no-mrgn">
@@ -411,8 +408,9 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                                         @endif
                                     </ul>
                                 </li>
-
+                                @endif
                                 <!-- Packages / Birthdays -->
+                                 @if ($userRole == 'Webmaster' || in_array(17, $dataSections))
                                 <li class="{{ $birthdayActive ? 'active cust-act' : '' }}">
                                     <a style="color: #495057;">
                                         <span class="nav-caret no-mrgn">
@@ -447,8 +445,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                                 </li>
                             </ul>
                         </li>
-                    @endif
-
+                        @endif
                     <!-- Sale Management Dropdown -->
                     @if ($userRole == 'Webmaster' || in_array(20, $dataSections))
                         <li class="{{ $offerCreationActive ? 'active menue-hie' : '' }}"
@@ -549,15 +546,6 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                                 <span class="nav-text">{{ __('Settings') }}</span>
                             </a>
                             <ul class="nav-sub" style="background: #f8f9fa;">
-                                <!-- Order Logs -->
-                                @if ($userRole == 'Webmaster' || in_array(40, $dataSections))
-                                    <li class="{{ $LogsActive ? 'active cust-act' : '' }}">
-                                        <a href="{{ route('ordersLogs') }}" style="color: #495057;">
-                                            <span class="nav-text dashlogo">{{ __('Order Logs') }}</span>
-                                        </a>
-                                    </li>
-                                @endif
-
                                 <!-- User Permission -->
                                 @if (@Auth::user()->permissionsGroup->roles_status)
                                     <li class="{{ $PathCurrentFolder == 'users' ? 'active cust-act' : '' }}">
