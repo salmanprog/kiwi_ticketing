@@ -8558,6 +8558,10 @@ nav.scroll.nav-active-primary.cust-pading-nav {
     color: #fff !important;
 } */
 
+a.kiwi-pd {
+    padding-block: 5px !important;
+}
+
 @media screen and (max-width: 480px) {
     .collapse-twice {
         display: none !important;

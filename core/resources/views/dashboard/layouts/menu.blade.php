@@ -288,10 +288,10 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                     ?>
 
                     <!-- Ticket / Pass Management Dropdown -->
-                    <li class="nav-header hidden-folded m-t-sm">
+                    {{-- <li class="nav-header hidden-folded m-t-sm">
                         <small class="text-muted"
                             style="color: #6c757d !important;">{{ __('Ticket / Pass Management') }}</small>
-                    </li>
+                    </li> --}}
 
                     <li class="{{ in_array($current, ['tickets', 'cabanas', 'seasonpass', 'birthdaypackages']) ? 'active menue-hie' : '' }}"
                         style="border-left: 3px solid transparent;">
@@ -458,7 +458,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                     @if ($userRole == 'Webmaster' || in_array(20, $dataSections))
                         <li class="{{ $offerCreationActive ? 'active menue-hie' : '' }}"
                             style="border-left: 3px solid transparent;">
-                            <a style="color: #495057;">
+                            <a class="kiwi-pd" style="color: #495057;">
                                 <span class="nav-caret no-mrgn">
                                     <i class="cust-arrow-icon"></i>
                                 </span>
@@ -498,7 +498,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                     @if ($userRole == 'Webmaster' || in_array(21, $dataSections))
                         <li class="{{ $couponActive ? 'active menue-hie' : '' }}"
                             style="border-left: 3px solid transparent;">
-                            <a style="color: #495057;">
+                            <a class="kiwi-pd" style="color: #495057;">
                                 <span class="nav-caret no-mrgn">
                                     <i class="cust-arrow-icon"></i>
                                 </span>
@@ -523,7 +523,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                     @if ($userRole == 'Webmaster' || in_array(22, $dataSections))
                         <li class="{{ $transactionActive ? 'active menue-hie' : '' }}"
                             style="border-left: 3px solid transparent;">
-                            <a href="{{ route('transactionorders') }}" style="color: #495057;">
+                            <a class="kiwi-pd" href="{{ route('transactionorders') }}" style="color: #495057;">
                                 <span class="nav-icon">
                                     <i class="fas fa-file-invoice-dollar" style="color: #6B7280;"></i>
                                 </span>
@@ -544,7 +544,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
 
                         <li class="{{ in_array($current, ['ordersLogs', 'users', 'settings', 'emailTemplate']) ? 'active menue-hie' : '' }}"
                             style="border-left: 3px solid transparent;">
-                            <a style="color: #495057;">
+                            <a class="kiwi-pd" style="color: #495057;">
                                 <span class="nav-caret no-mrgn">
                                     <i class="cust-arrow-icon"></i>
                                 </span>
