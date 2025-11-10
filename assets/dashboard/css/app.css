@@ -2862,10 +2862,10 @@ body {
     clear: both;
 }
 
-.navside .nav li a:hover,
+/* .navside .nav li a:hover,
 .navside .nav li a:focus {
     background-color: #9FC23F;
-}
+} */
 
 /* .navside .nav li.active {
     background-color: rgba(0, 0, 0, 0.065);
