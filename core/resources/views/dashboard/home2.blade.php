@@ -1,554 +1,301 @@
 @extends('dashboard.layouts.master')
 @section('title', Helper::GeneralSiteSettings('site_title_' . @Helper::currentLanguage()->code))
 @push('after-styles')
-    <link rel="stylesheet" href="{{ asset('assets/dashboard/css/flags.css') }}" type="text/css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <style>
-        /* Professional Clean Theme */
         :root {
             --primary-green: #A0C242;
             --text-dark: #111;
             --text-light: #6B7280;
-            --border-light: #e9ecef;
         }
 
-        .dashboard-welcome {
-            background: #fff;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 25px;
-            color: #000;
-            box-shadow: 0 4px 12px rgba(160, 194, 66, 0.25);
-            border: 1px solid rgb(0, 0, 0, .08);
-        }
-
-        .stat-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            border: 1px solid var(--border-light);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(160, 194, 66, 0.15);
-            border-color: var(--primary-green);
-        }
-
-        .stat-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 10px;
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4efe9 100%);
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
-            margin-right: 15px;
+        }
+
+        .welcome-container {
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        .welcome-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 50px 40px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(160, 194, 66, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(160, 194, 66, 0.05), transparent);
+            transform: rotate(45deg);
+            animation: shine 6s infinite linear;
+        }
+
+        @keyframes shine {
+            0% { transform: rotate(45deg) translateX(-100%); }
+            100% { transform: rotate(45deg) translateX(100%); }
+        }
+
+        .welcome-icon {
+            font-size: 80px;
+            color: var(--primary-green);
+            margin-bottom: 30px;
+            display: inline-block;
+        }
+
+        .welcome-title {
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .welcome-subtitle {
+            font-size: 18px;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            line-height: 1.6;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .user-name {
+            color: var(--primary-green);
+            background: rgba(160, 194, 66, 0.1);
+            padding: 4px 12px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .date-badge {
+            display: inline-flex;
+            align-items: center;
             background: rgba(160, 194, 66, 0.1);
             color: var(--primary-green);
-            flex-shrink: 0;
-        }
-
-        .stat-content {
-            flex: 1;
-        }
-
-        .stat-number {
-            font-size: 24px;
-            font-weight: 700;
-            line-height: 1.2;
-            color: var(--text-dark);
-            margin-bottom: 2px;
-        }
-
-        .stat-label {
-            font-size: 14px;
-            color: #111;
-            font-weight: 500;
-        }
-
-        .chart-container {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            margin-bottom: 20px;
-            border: 1px solid var(--border-light);
-        }
-
-        .dashboard-section {
-            margin-bottom: 25px;
-        }
-
-        .section-title {
-            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 25px;
             font-weight: 600;
-            margin-bottom: 15px;
+            font-size: 14px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(160, 194, 66, 0.2);
+        }
+
+        .welcome-features {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            background: rgba(160, 194, 66, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(160, 194, 66, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-3px);
+            background: rgba(160, 194, 66, 0.1);
+            box-shadow: 0 5px 15px rgba(160, 194, 66, 0.2);
+        }
+
+        .feature-icon {
+            color: var(--primary-green);
+            font-size: 16px;
+        }
+
+        .feature-text {
+            font-size: 14px;
+            font-weight: 500;
             color: var(--text-dark);
         }
 
-        .orders-row {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-
-        .order-item {
-            flex: 1;
-            min-width: 200px;
-            display: flex;
-            align-items: center;
-            background: white;
-            padding: 20px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            border: 1px solid rgb(0, 0, 0, .08);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .order-item:hover {
-            /* transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                border-color: var(--primary-green); */
-        }
-
-        .btn-green {
-            background: var(--primary-green);
-            border-color: var(--primary-green);
-            color: white;
-            font-size: 12px;
-            padding: 6px 12px;
-        }
-
-        .btn-green:hover {
-            background: #8AAE38;
-            border-color: #8AAE38;
-            color: white;
-        }
-
-        .text-green {
-            color: var(--primary-green) !important;
-        }
-
-        .icons i {
-            margin-right: 5px;
-        }
-
-        /* Pie Chart Styles */
-        .pie-chart-container {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            flex-wrap: wrap;
-            padding: 20px 0;
-        }
-
-        .pie-chart-item {
-            text-align: center;
-            padding: 15px;
-        }
-
-        .easyPieChart {
-            position: relative;
-            margin: 0 auto 15px;
-        }
-
-        .easyPieChart canvas {
+        .floating-elements {
             position: absolute;
+            width: 100%;
+            height: 100%;
             top: 0;
             left: 0;
+            pointer-events: none;
         }
 
-        .pie-percent {
-            font-size: 18px;
+        .floating-element {
+            position: absolute;
+            opacity: 0.1;
+            color: var(--primary-green);
+            font-size: 24px;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        .floating-element:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+        .floating-element:nth-child(2) { top: 60%; left: 85%; animation-delay: 1s; }
+        .floating-element:nth-child(3) { top: 80%; left: 15%; animation-delay: 2s; }
+        .floating-element:nth-child(4) { top: 30%; left: 80%; animation-delay: 3s; }
+        .floating-element:nth-child(5) { top: 70%; left: 70%; animation-delay: 4s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        .get-started-btn {
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 12px;
+            font-size: 16px;
             font-weight: 600;
-            color: var(--text-dark);
+            margin-top: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(160, 194, 66, 0.3);
         }
 
-        .pie-label {
-            font-size: 14px;
-            color: var(--text-light);
-            margin-bottom: 5px;
+        .get-started-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(160, 194, 66, 0.4);
+            background: #8AAE38;
+            color: white;
         }
 
-        .pie-amount {
-            font-size: 12px;
-            color: var(--text-light);
-            margin-bottom: 10px;
-        }
-
-        /* Full width sections */
-        .full-width-section {
-            width: 100%;
-            margin-bottom: 25px;
-        }
-
-
-        .btn-quick-access {
-            background: white !important;
-            border: 2px solid #e9ecef !important;
-            color: #2c3e50 !important;
-            font-size: 14px !important;
-            font-weight: 600 !important;
-            padding: 15px 12px !important;
-            border-radius: 10px !important;
-            text-decoration: none !important;
-            transition: all 0.3s ease !important;
-            height: 60px !important;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
-            display: flex !important;
-            align-items: center !important;
-            margin-bottom: 10px !important;
-        }
-
-        .btn-quick-access:hover {
-            background: white !important;
-            border-color: #A0C242 !important;
-            color: #2c3e50 !important;
-            transform: translateY(-2px) !important;
-            box-shadow: 0 6px 15px rgba(160, 194, 66, 0.2) !important;
-        }
-
-        .btn-quick-access i {
-            font-size: 18px !important;
-            width: 25px !important;
-            text-align: center !important;
-            color: #A0C242 !important;
-        }
-
-        li.active a {
-            padding-block: 0.32rem !important;
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .welcome-container {
+                padding: 20px;
+            }
+            
+            .welcome-card {
+                padding: 40px 25px;
+            }
+            
+            .welcome-title {
+                font-size: 32px;
+            }
+            
+            .welcome-subtitle {
+                font-size: 16px;
+            }
+            
+            .welcome-features {
+                gap: 15px;
+            }
+            
+            .feature-item {
+                padding: 10px 15px;
+            }
         }
     </style>
 @endpush
 
 @section('content')
-    <div class="icons padding p-b-0">
-        <!-- Welcome Section -->
-        {{-- <div class="dashboard-welcome">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <h4 class="m-b-0 _300"><i class="fas fa-chart-line me-2"></i>{{ __('backend.hi') }} <span
-                            class="">{{ Auth::user()->name }}</span>, {{ __('backend.welcomeBack') }}</h4>
-                    <p class="m-b-0 opacity-90">Your business dashboard Overview</p>
-                </div>
-                <div class="col-md-4 text-right">
-                    <div class="metric-badge">
-                        <i class="far fa-calendar me-1"></i>{{ now()->format('M j, Y') }}
-                    </div>
-                </div>
+    <div class="welcome-container">
+        <div class="welcome-card animate__animated animate__fadeIn">
+            <!-- Floating Background Elements -->
+            <div class="floating-elements">
+                <div class="floating-element"><i class="fas fa-chart-line"></i></div>
+                <div class="floating-element"><i class="fas fa-shopping-cart"></i></div>
+                <div class="floating-element"><i class="fas fa-users"></i></div>
+                <div class="floating-element"><i class="fas fa-trophy"></i></div>
+                <div class="floating-element"><i class="fas fa-rocket"></i></div>
             </div>
-        </div> --}}
-
-        <!-- Order Statistics - FULL WIDTH SECTION -->
-        <div class="full-width-section">
-            <div class="dashboard-section">
-                {{-- <h5 class="section-title"><i class="fas fa-cubes me-2"></i>Order Statistics</h5> --}}
-
-                <!-- First Row: Orders Count -->
-                <div class="orders-row">
-                    @php
-                        $orderTypes = [
-                            'birthday' => ['title' => 'Package', 'route' => 'birthdayorders', 'icon' => 'fas fa-gift'],
-                            'general_ticket' => [
-                                'title' => 'Platform',
-                                'route' => 'generalticketsorders',
-                                'icon' => 'fas fa-ticket-alt',
-                            ],
-                            'season_pass' => [
-                                'title' => 'SeasonPass',
-                                'route' => 'seasonpassorders',
-                                'icon' => 'fas fa-star',
-                            ],
-                            'cabana' => [
-                                'title' => 'Cabana',
-                                'route' => 'kabanaorders',
-                                'icon' => 'fas fa-umbrella-beach',
-                            ],
-                            'offer_creation' => [
-                                'title' => 'Offer',
-                                'route' => 'offercreationpackagesorders',
-                                'icon' => 'fas fa-tag',
-                            ],
-                        ];
-                    @endphp
-
-                    @foreach ($orderTypes as $type => $info)
-                        @php
-                            $order = $orders->firstWhere('type', $type);
-                            if (!$order) {
-                                continue;
-                            }
-                        @endphp
-
-                        <div class="order-item" onclick="location.href='{{ route($info['route']) }}'">
-                            {{-- <div class="stat-icon">
-                                <i class="{{ $info['icon'] }}"></i>
-                            </div> --}}
-                            <div class="stat-content">
-                                <div class="stat-label">{{ $info['title'] }} Orders</div>
-                                <div class="stat-number">{{ $order->total_number_of_orders }}</div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-
-                <!-- Second Row: Revenue -->
-                <!-- <div class="orders-row">
-                            @foreach ($orderTypes as $type => $info)
-    @php
-        $order = $orders->firstWhere('type', $type);
-        if (!$order) {
-            continue;
-        }
-    @endphp
-
-                                <div class="order-item" onclick="location.href='{{ route($info['route']) }}'">
-                                    <div class="stat-icon">
-                                        <i class="fas fa-dollar-sign"></i>
-                                    </div>
-                                    <div class="stat-content">
-                                        <div class="stat-number">${{ number_format($order->total_earning, 2) }}</div>
-                                        <div class="stat-label">{{ $info['title'] }} Revenue</div>
-                                    </div>
-                                </div>
-    @endforeach
-                        </div> -->
+            
+            <!-- Main Content -->
+            <div class="welcome-icon animate__animated animate__bounceIn">
+                <i class="fas fa-chart-line"></i>
             </div>
-        </div>
-
-        <!-- Main Content Grid -->
-        <div class="row">
-            <!-- Left Column - Charts -->
-            <div class="col-lg-8">
-                <!-- Monthly Trends Chart -->
-                <div class="dashboard-section">
-                    <div class="chart-container">
-                        <div class="row align-items-center mb-3">
-                            <div class="col-md-8">
-                                <h5 class="section-title mb-0">
-                                    <i class="fas fa-chart-line me-2"></i>Monthly Orders Trend
-                                    <small class="text-muted d-block mt-1" style="margin-top: 10px">Real-time data from your
-                                        database</small>
-                                </h5>
-                            </div>
-                            <div class="col-md-4 text-right">
-                                <a href="{{ route('transactionorders') }}" class="btn btn-green btn-sm">
-                                    <i class="fas fa-external-link-alt me-1"></i>Full Report
-                                </a>
-                            </div>
-                        </div>
-                        <canvas id="ordersChart" height="120"></canvas>
-                    </div>
-                </div>
-
-                <!-- Today's Orders Pie Charts -->
-                <div class="dashboard-section">
-                    <div class="chart-container">
-                        <div class="row align-items-center mb-3">
-                            <div class="col-md-8">
-                                <h5 class="section-title mb-0">
-                                    <i class="fas fa-chart-pie me-2"></i>{{ __('Today Orders') }}
-                                    <!-- <small class="text-muted d-block mt-1">{{ __('Paid, Upgrade, and Update Total Orders') }} - {{ $totalCount }} {{ __(' and Earning $') }}{{ number_format($totalEarning, 2) }}</small> -->
-                                </h5>
-                            </div>
-                        </div>
-
-                        <div class="pie-chart-container">
-                            <!-- Paid Orders -->
-                            <div class="pie-chart-item">
-                                <div class="easyPieChart" data-percent="{{ $paidPercent }}"
-                                    style="width: 100px; height: 100px;">
-                                    <div class="pie-percent">{{ $paidPercent }}%</div>
-                                </div>
-                                <div class="pie-label">Paid Orders</div>
-                                <div class="pie-amount">{{ $paidCount }}</div>
-                                <!-- <div class="pie-amount"> (${{ number_format($paidTotal, 2) }})</div> -->
-                                <a href="{{ route('transactionorders') }}" class="btn btn-green btn-sm">
-                                    <i class="fas fa-eye me-1"></i>{{ __('View') }}
-                                </a>
-                            </div>
-
-                            <!-- Upgrade Orders -->
-                            <div class="pie-chart-item">
-                                <div class="easyPieChart" data-percent="{{ $upgradePercent }}"
-                                    style="width: 100px; height: 100px;">
-                                    <div class="pie-percent">{{ $upgradePercent }}%</div>
-                                </div>
-                                <div class="pie-label">Upgrade Orders</div>
-                                <div class="pie-amount">{{ $upgradeCount }} </div>
-                                <!-- <div class="pie-amount">(${{ number_format($upgradeTotal, 2) }})</div> -->
-                                <a href="{{ route('transactionorders') }}" class="btn btn-green btn-sm">
-                                    <i class="fas fa-eye me-1"></i>{{ __('View') }}
-                                </a>
-                            </div>
-
-                            <!-- Update Orders -->
-                            <div class="pie-chart-item">
-                                <div class="easyPieChart" data-percent="{{ $updatePercent }}"
-                                    style="width: 100px; height: 100px;">
-                                    <div class="pie-percent">{{ $updatePercent }}%</div>
-                                </div>
-                                <div class="pie-label">Update Orders</div>
-                                <div class="pie-amount">{{ $updateCount }}</div>
-                                <!-- <div class="pie-amount"> (${{ number_format($updateTotal, 2) }})</div> -->
-                                <a href="{{ route('transactionorders') }}" class="btn btn-green btn-sm">
-                                    <i class="fas fa-eye me-1"></i>{{ __('View') }}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            
+            <h1 class="welcome-title animate__animated animate__fadeInUp">
+                Welcome to Your <span style="color: var(--primary-green);">Dashboard</span>
+            </h1>
+            
+            <div class="date-badge animate__animated animate__fadeInUp animate__delay-1s">
+                <i class="far fa-calendar me-2"></i>
+                {{ now()->format('l, F j, Y') }}
             </div>
-
-            <!-- Right Column -->
-            <div class="col-lg-4">
-                @php
-                    $total = $orders->firstWhere('type', 'TOTAL');
-                @endphp
-
-                @if ($total)
-                    <div class="dashboard-section">
-                        <h5 class="section-title"><i class="fas fa-tachometer-alt me-2"></i>Business Overview</h5>
-
-                        <!-- Total Orders -->
-                        <div class="order-item mb-3" onclick="location.href='{{ route('transactionorders') }}'">
-                            <div class="stat-icon">
-                                <i class="fas fa-shopping-cart"></i>
-                            </div>
-                            <div class="stat-content">
-                                <div class="stat-number">{{ $total->total_number_of_orders }}</div>
-                                <div class="stat-label">Total Orders</div>
-                            </div>
-                        </div>
-
-                        <!-- Total Revenue -->
-                        <!-- <div class="order-item mb-3" onclick="location.href='{{ route('transactionorders') }}'">
-                                    <div class="stat-icon">
-                                        <i class="fas fa-chart-line"></i>
-                                    </div>
-                                    <div class="stat-content">
-                                        <div class="stat-number">${{ number_format($total->total_earning, 2) }}</div>
-                                        <div class="stat-label">Total Revenue</div>
-                                    </div>
-                                </div> -->
-
-                        <!-- Quick Actions -->
-                        <div class="chart-container">
-                            <h6 class="section-title mb-3"><i class="fas fa-rocket me-2"></i>Quick Actions</h6>
-                            <div class="d-grid gap-2">
-                                <a href="{{ route('transactionorders') }}" class="btn btn-green btn-sm">
-                                    <i class="fas fa-list me-2"></i>View All Orders
-                                </a>
-                                <a href="{{ route('transactionorders') }}" class="btn btn-outline-secondary btn-sm">
-                                    <i class="fas fa-download me-2"></i>Export Reports
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="chart-container mt-3">
-                            <h6 class="section-title mb-3"><i class="fas fa-bolt me-2"></i>Quick Access</h6>
-                            <div class="row">
-                                <!-- Row 1 -->
-                                <div class="col-md-6 mb-2">
-                                    <a href="https://wildrivers-portal-henna.vercel.app/" target="_blank"
-                                        class="btn btn-quick-access w-100 d-flex align-items-center justify-content-start">
-                                        <i class="fas fa-ticket-alt me-2"></i>Book Tickets
-                                    </a>
-                                </div>
-                                <div class="col-md-6 mb-2">
-                                    <a href="https://wildrivers-portal-henna.vercel.app/cabana" target="_blank"
-                                        class="btn btn-quick-access w-100 d-flex align-items-center justify-content-start">
-                                        <i class="fas fa-umbrella-beach me-2"></i>Cabana
-                                    </a>
-                                </div>
-
-                                <!-- Row 2 -->
-                                <div class="col-md-6 mb-2">
-                                    <a href="https://wildrivers-portal-henna.vercel.app/sp" target="_blank"
-                                        class="btn btn-quick-access w-100 d-flex align-items-center justify-content-start">
-                                        <i class="fas fa-star me-2"></i>Season Pass
-                                    </a>
-                                </div>
-                                <div class="col-md-6 mb-2">
-                                    <a href="https://wildrivers-portal-henna.vercel.app/package" target="_blank"
-                                        class="btn btn-quick-access w-100 d-flex align-items-center justify-content-start">
-                                        <i class="fas fa-gift me-2"></i>Packages
-                                    </a>
-                                </div>
-
-                                <!-- Row 3 (5th button) -->
-                                <div class="col-md-6 mb-2">
-                                    <a href="https://wildrivers-portal-henna.vercel.app/sale" target="_blank"
-                                        class="btn btn-quick-access w-100 d-flex align-items-center justify-content-start">
-                                        <i class="fas fa-tag me-2"></i>Offers
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endif
+            
+            <p class="welcome-subtitle animate__animated animate__fadeInUp animate__delay-2s">
+                Hello <span class="user-name">{{ Auth::user()->name }}</span>! We're excited to have you back. 
+                Your dashboard is ready to help you manage your business efficiently. 
+                Everything you need is just a click away.
+            </p>
+            
+            <button class="get-started-btn animate__animated animate__fadeInUp animate__delay-3s" onclick="location.href='{{ route('transactionorders') }}'">
+                <i class="fas fa-play-circle me-2"></i>
+                Get Started
+            </button>
+            
+            <div class="welcome-features animate__animated animate__fadeInUp animate__delay-4s">
+                <div class="feature-item">
+                    <i class="fas fa-bolt feature-icon"></i>
+                    <span class="feature-text">Fast & Reliable</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-shield-alt feature-icon"></i>
+                    <span class="feature-text">Secure</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-chart-bar feature-icon"></i>
+                    <span class="feature-text">Analytics</span>
+                </div>
             </div>
         </div>
     </div>
 @endsection
 
 @push('after-scripts')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/easy-pie-chart/2.1.6/jquery.easypiechart.min.js"></script>
     <script>
-        // Monthly Orders Chart
-        const labels = @json($monthlyOrders->pluck('month_name'));
-        const data = @json($monthlyOrders->pluck('total_orders'));
-
-        const ctx = document.getElementById('ordersChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Total Orders',
-                    data: data,
-                    borderColor: '#A0C242',
-                    backgroundColor: 'rgba(160, 194, 66, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            precision: 0
-                        }
-                    }
-                }
-            }
-        });
-
-        // Easy Pie Charts
-        $(document).ready(function() {
-            $('.easyPieChart').easyPieChart({
-                lineWidth: 8,
-                trackColor: 'rgba(0,0,0,0.05)',
-                barColor: '#A0C242',
-                scaleColor: 'transparent',
-                lineCap: 'round',
-                size: 100,
-                animate: 1000,
-                onStep: function(from, to, percent) {
-                    $(this.el).find('.pie-percent').text(Math.round(percent) + '%');
-                }
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add some interactive animations
+            const welcomeCard = document.querySelector('.welcome-card');
+            const getStartedBtn = document.querySelector('.get-started-btn');
+            
+            // Add hover effect to card
+            welcomeCard.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+                this.style.transition = 'transform 0.3s ease';
+            });
+            
+            welcomeCard.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+            
+            // Add pulse animation to button on hover
+            getStartedBtn.addEventListener('mouseenter', function() {
+                this.classList.add('animate__pulse');
+            });
+            
+            getStartedBtn.addEventListener('mouseleave', function() {
+                this.classList.remove('animate__pulse');
+            });
+            
+            // Animate feature items on scroll into view
+            const featureItems = document.querySelectorAll('.feature-item');
+            featureItems.forEach((item, index) => {
+                item.style.animationDelay = `${index * 0.2}s`;
             });
         });
     </script>

@@ -533,7 +533,7 @@
                                                             @endphp
                                                             <label
                                                                 class="checkbox-item-modern {{ $childChecked ? 'checked' : '' }}"
-                                                                style="display:block;">
+                                                                style="">
                                                                 {!! Form::checkbox('data_sections[]', $ChildSection->id, $childChecked, ['id' => 'data_sections' . $i]) !!}
                                                                 <span class="checkmark"></span>
                                                                 <span class="checkbox-label">{!! $ChildSectionTitle !!}</span>
