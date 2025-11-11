@@ -102,7 +102,7 @@ class BirthdayPackagesController extends Controller
                                         <i class="material-icons">&#xe3c9;</i> Edit
                                     </a>
                                     <a class="dropdown-item"
-                                        href="' . Helper::GeneralSiteSettings('site_url') . '/' . $row->slug . '"
+                                        href="' . Helper::GeneralSiteSettings('site_url') . '/package/' . $row->slug . '"
                                         target="_blank"><i
                                             class="material-icons">&#xe8f4;</i> Preview
                                     </a>
@@ -219,7 +219,7 @@ class BirthdayPackagesController extends Controller
             Helper::imageResize($path . $fileFinalName2);
             Helper::imageOptimize($path . $fileFinalName2);
         }
-        
+
         $birthdayPackages = new BirthdayPackages;
         $birthdayPackages->title  = $request->title;
         $birthdayPackages->description = $request->description;
@@ -268,12 +268,12 @@ class BirthdayPackagesController extends Controller
 
     public function clone($webmasterId, $id)
     {
-        
+
     }
 
     public function edit($slug)
     {
-        
+
         $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
@@ -440,17 +440,17 @@ class BirthdayPackagesController extends Controller
 
     public function seo(Request $request, $webmasterId, $id)
     {
-        
+
     }
 
     public function destroy($webmasterId, $id = 0)
     {
-        
+
     }
 
     public function updateAll(Request $request, $webmasterId)
     {
-       
+
     }
 
 

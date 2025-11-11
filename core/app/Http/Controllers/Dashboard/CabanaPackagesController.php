@@ -113,7 +113,7 @@ class CabanaPackagesController extends Controller
                                         <i class="material-icons">&#xe3c9;</i> Edit
                                     </a>
                                     <a class="dropdown-item"
-                                        href="' . Helper::GeneralSiteSettings('site_url') . '/' . $row->slug . '"
+                                        href="' . Helper::GeneralSiteSettings('site_url') . '/cabana' . '"
                                         target="_blank"><i
                                             class="material-icons">&#xe8f4;</i> Preview
                                     </a>
@@ -187,7 +187,7 @@ class CabanaPackagesController extends Controller
         $this->validate($request, [
             'cabanas' => 'required',
         ]);
-        
+
         $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
@@ -274,14 +274,14 @@ class CabanaPackagesController extends Controller
 
     public function clone($webmasterId, $id)
     {
-        
+
     }
 
     public function edit($slug)
     {
-        
+
         $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
-        $authCode = Helper::GeneralSiteSettings('auth_code_en'); 
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
@@ -292,7 +292,7 @@ class CabanaPackagesController extends Controller
 
     public function update(Request $request, $id)
     {
-        $authCode = Helper::GeneralSiteSettings('auth_code_en'); 
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
        $cabanaPackagesUpdate = CabanaPackages::where('slug',$id)->where('auth_code', $authCode)->first();
        if (!empty($cabanaPackagesUpdate)) {
             $this->validate($request, [
@@ -335,7 +335,7 @@ class CabanaPackagesController extends Controller
         $cabanaPackagesUpdate->status = $request->status;
         $cabanaPackagesUpdate->updated_at = now();
         $cabanaPackagesUpdate->save();
-        
+
 
         if(count($uploadedFileNames) > 0){
             for($i=0;$i<count($uploadedFileNames);$i++){
@@ -360,7 +360,7 @@ class CabanaPackagesController extends Controller
 
     public function seo(Request $request, $webmasterId, $id)
     {
-        
+
     }
 
     public function destroy($ticketSlug = 0)
@@ -378,7 +378,7 @@ class CabanaPackagesController extends Controller
 
     public function updateAll(Request $request, $webmasterId)
     {
-       
+
     }
 
 

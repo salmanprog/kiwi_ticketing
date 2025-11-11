@@ -101,7 +101,7 @@ class OfferCreationPackagesController extends Controller
                                         <i class="material-icons">&#xe3c9;</i> Edit
                                     </a>
                                     <a class="dropdown-item"
-                                        href="' . Helper::GeneralSiteSettings('site_url') . '/' . $row->slug . '"
+                                        href="' . Helper::GeneralSiteSettings('site_url') . '/sale/' . $row->slug . '/"
                                         target="_blank"><i
                                             class="material-icons">&#xe8f4;</i> Preview
                                     </a>
@@ -168,7 +168,7 @@ class OfferCreationPackagesController extends Controller
         $offerCreationPackage->created_by = Auth::user()->id;
         $offerCreationPackage->status = $request->status;
         $offerCreationPackage->save();
-        
+
         if(count($uploadedFileNames) > 0){
             for($i=0;$i<count($uploadedFileNames);$i++){
                 $media = new Media;
@@ -188,12 +188,12 @@ class OfferCreationPackagesController extends Controller
 
     public function clone($webmasterId, $id)
     {
-        
+
     }
 
     public function edit($slug)
     {
-        
+
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
         $offer_creation_packages = OfferCreation::with(['media_slider'])->where('slug',$slug)->where('auth_code',$authCode)->first();
@@ -208,7 +208,7 @@ class OfferCreationPackagesController extends Controller
             $this->validate($request, [
                 'title' => 'required',
             ]);
-            
+
             if ($request->has('media_delete')) {
                 foreach ($request->input('media_delete') as $mediaId => $shouldDelete) {
                     if ($shouldDelete == '1') {
@@ -279,17 +279,17 @@ class OfferCreationPackagesController extends Controller
 
     public function seo(Request $request, $webmasterId, $id)
     {
-        
+
     }
 
     public function destroy($webmasterId, $id = 0)
     {
-        
+
     }
 
     public function updateAll(Request $request, $webmasterId)
     {
-       
+
     }
 
 

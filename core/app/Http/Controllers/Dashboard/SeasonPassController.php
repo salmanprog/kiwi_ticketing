@@ -103,7 +103,7 @@ class SeasonPassController extends Controller
                                         <i class="material-icons">&#xe3c9;</i> Edit
                                     </a>
                                     <a class="dropdown-item"
-                                        href="' . Helper::GeneralSiteSettings('site_url') . '/' . $row->slug . '"
+                                        href="' . Helper::GeneralSiteSettings('site_url') . '/sp/' . $row->slug . '"
                                         target="_blank"><i
                                             class="material-icons">&#xe8f4;</i> Preview
                                     </a>
@@ -125,7 +125,7 @@ class SeasonPassController extends Controller
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
         return view("dashboard.seasonpass.create", compact("GeneralWebmasterSections"));
-        
+
     }
 
     public function store(Request $request)
@@ -162,7 +162,7 @@ class SeasonPassController extends Controller
         $seasonpassTickets->created_by = Auth::user()->id;
         $seasonpassTickets->status = $request->status;
         $seasonpassTickets->save();
-        
+
 
         if(count($uploadedFileNames) > 0){
             for($i=0;$i<count($uploadedFileNames);$i++){
@@ -184,12 +184,12 @@ class SeasonPassController extends Controller
 
     public function clone($webmasterId, $id)
     {
-        
+
     }
 
     public function edit($slug)
     {
-        
+
         $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
@@ -243,7 +243,7 @@ class SeasonPassController extends Controller
         $seasonPassUpdate->status = $request->status;
         $seasonPassUpdate->updated_at = now();
         $seasonPassUpdate->save();
-        
+
         SeasonPassAddon::where('season_passes_slug', $id)->update([
             'status' => $request->status
         ]);
@@ -263,17 +263,17 @@ class SeasonPassController extends Controller
         }
 
         return redirect()->action('Dashboard\SeasonPassController@index')->with('doneMessage', __('backend.saveDone'));
-            
+
 
        }else{
             return redirect()->action('Dashboard\SeasonPassController@index');
        }
-       
+
     }
 
     public function seo(Request $request, $webmasterId, $id)
     {
-        
+
     }
 
     public function destroy($ticketSlug = 0)
@@ -292,7 +292,7 @@ class SeasonPassController extends Controller
 
     public function updateAll(Request $request, $webmasterId)
     {
-       
+
     }
 
 

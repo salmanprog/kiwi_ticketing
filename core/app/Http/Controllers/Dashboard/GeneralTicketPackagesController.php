@@ -103,7 +103,7 @@ class GeneralTicketPackagesController extends Controller
                                         <i class="material-icons">&#xe3c9;</i> Edit
                                     </a>
                                     <a class="dropdown-item"
-                                        href="' . Helper::GeneralSiteSettings('site_url') . '/' . $row->slug . '"
+                                        href="' . Helper::GeneralSiteSettings('site_url') . '/' . '"
                                         target="_blank"><i
                                             class="material-icons">&#xe8f4;</i> Preview
                                     </a>
@@ -166,7 +166,7 @@ class GeneralTicketPackagesController extends Controller
         $generalTicketPackage->created_by = Auth::user()->id;
         $generalTicketPackage->status = $request->status;
         $generalTicketPackage->save();
-        
+
         if(count($uploadedFileNames) > 0){
             for($i=0;$i<count($uploadedFileNames);$i++){
                 $media = new Media;
@@ -186,12 +186,12 @@ class GeneralTicketPackagesController extends Controller
 
     public function clone($webmasterId, $id)
     {
-        
+
     }
 
     public function edit($slug)
     {
-        
+
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
         $general_ticket_packages = GeneralTicketPackages::with(['media_slider'])->where('slug',$slug)->where('auth_code',$authCode)->first();
@@ -206,7 +206,7 @@ class GeneralTicketPackagesController extends Controller
             $this->validate($request, [
                 'title' => 'required',
             ]);
-            
+
             if ($request->has('media_delete')) {
                 foreach ($request->input('media_delete') as $mediaId => $shouldDelete) {
                     if ($shouldDelete == '1') {
@@ -275,17 +275,17 @@ class GeneralTicketPackagesController extends Controller
 
     public function seo(Request $request, $webmasterId, $id)
     {
-        
+
     }
 
     public function destroy($webmasterId, $id = 0)
     {
-        
+
     }
 
     public function updateAll(Request $request, $webmasterId)
     {
-       
+
     }
 
 
