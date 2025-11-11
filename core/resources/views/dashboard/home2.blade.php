@@ -232,10 +232,10 @@
                 Welcome to <span style="color: var(--primary-green);">kiwi Ticketing</span>
             </h1>
             
-            <div class="date-badge animate__animated animate__fadeInUp animate__delay-1s">
+            {{-- <div class="date-badge animate__animated animate__fadeInUp animate__delay-1s">
                 <i class="far fa-calendar me-2"></i>
                 {{ now()->format('l, F j, Y') }}
-            </div>
+            </div> --}}
             
             <p class="welcome-subtitle animate__animated animate__fadeInUp animate__delay-2s">
                 Hello <span class="user-name">{{ Auth::user()->name }}</span>! We're excited to have you back. 
