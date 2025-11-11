@@ -13,7 +13,9 @@ class BirthdayAddonResource extends JsonResource
             'ticketType' => $this->ticketType,
             'ticketSlug' => $this->ticketSlug,
             'ticketCategory' => $this->ticketCategory,
-            'price' => $this->external_price,
+            //'price' => $this->external_price,
+            'price' => $this->price,
+            'quantity' => $this->quantity,
         ];
     }
 }

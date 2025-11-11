@@ -138,33 +138,107 @@ class BirthdayAddonsController extends Controller
 
     public function store(Request $request)
     {
+        // $params = $request->all();
+        // $cabanaSlug = $params['cabanaSlug'];
+        // $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        // $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        // $date = Carbon::today()->toDateString();
+        // $cabanaResponse = Http::get($baseUrl . '/Pricing/GetAllProductPrice?authcode=' . $authCode . '&date=' . $date);
+        // if (isset($params['ticket']) && count($params['ticket']) > 0) {
+        //     $cabana = BirthdayAddon::where('birthday_slug', $cabanaSlug)->delete();
+        //     if ($cabanaResponse->successful()) {
+        //         $apiData = $cabanaResponse->json();
+        //         $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+        //         $ticketMap = [];
+        //         foreach ($tickets as $ticket) {
+        //             $ticketMap[$ticket['ticketSlug']] = $ticket;
+        //         }
+
+        //         foreach ($params['ticket'] as $ticketSlug) {
+        //             if (isset($ticketMap[$ticketSlug])) {
+        //                 $matchedTicket = $ticketMap[$ticketSlug];
+        //                 //$cabana = BirthdayPackages::where('slug', $ticketSlug)->first();
+        //                 $cabanaAddon = new BirthdayAddon;
+        //                 $cabanaAddon->birthday_slug = $cabanaSlug;
+        //                 $cabanaAddon->venueId = $matchedTicket['venueId'];
+        //                 $cabanaAddon->ticketType = $matchedTicket['ticketType'];
+        //                 $cabanaAddon->ticketSlug = $matchedTicket['ticketSlug'];
+        //                 $cabanaAddon->ticketCategory = $matchedTicket['ticketCategory'];
+        //                 $cabanaAddon->price = $matchedTicket['price'];
+        //                 $cabanaAddon->updated_by = Auth::user()->id;
+        //                 $cabanaAddon->updated_at = now();
+        //                 $cabanaAddon->save();
+        //             }
+        //         }
+        //     }
+        // }
+        // // General for all pages
+        // $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
+        // try {
+            
+        //     $getFeaturedCabana = BirthdayPackages::where('status', '=', '1')->orderby('id', 'asc')->get();
+        //     // Paginate
+        //     $perPage = 10;
+        //     $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        //     $collection = collect($getFeaturedCabana);
+        //     $paginated = new LengthAwarePaginator(
+        //         $collection->forPage($currentPage, $perPage),
+        //         $collection->count(),
+        //         $perPage,
+        //         $currentPage,
+        //         ['path' => url()->current(), 'query' => request()->query()]
+        //     );
+
+        //     return redirect()->back();
+
+        // } catch (\Exception $e) {
+        //     dd('Exception: ' . $e->getMessage());
+        // }
+
         $params = $request->all();
         $cabanaSlug = $params['cabanaSlug'];
-        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
-        $authCode = Helper::GeneralSiteSettings('auth_code_en');
-        $date = Carbon::today()->toDateString();
-        $cabanaResponse = Http::get($baseUrl . '/Pricing/GetAllProductPrice?authcode=' . $authCode . '&date=' . $date);
+
+        // Remove existing addons for this package
+        BirthdayAddon::where('birthday_slug', $cabanaSlug)->delete();
+
         if (isset($params['ticket']) && count($params['ticket']) > 0) {
-            $cabana = BirthdayAddon::where('birthday_slug', $cabanaSlug)->delete();
+
+            // Map user-entered quantities and prices
+            $quantities = $params['quantity'] ?? [];
+            $prices = $params['price'] ?? [];
+
+            // Get API data
+            $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+            $authCode = Helper::GeneralSiteSettings('auth_code_en');
+            $date = Carbon::today()->toDateString();
+            $cabanaResponse = Http::get($baseUrl . '/Pricing/GetAllProductPrice?authcode=' . $authCode . '&date=' . $date);
+
             if ($cabanaResponse->successful()) {
                 $apiData = $cabanaResponse->json();
                 $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+
+                // Map tickets by slug for quick lookup
                 $ticketMap = [];
                 foreach ($tickets as $ticket) {
                     $ticketMap[$ticket['ticketSlug']] = $ticket;
                 }
 
+                // Save each selected addon with user-entered quantity and price
                 foreach ($params['ticket'] as $ticketSlug) {
                     if (isset($ticketMap[$ticketSlug])) {
                         $matchedTicket = $ticketMap[$ticketSlug];
-                        //$cabana = BirthdayPackages::where('slug', $ticketSlug)->first();
+
                         $cabanaAddon = new BirthdayAddon;
                         $cabanaAddon->birthday_slug = $cabanaSlug;
                         $cabanaAddon->venueId = $matchedTicket['venueId'];
                         $cabanaAddon->ticketType = $matchedTicket['ticketType'];
                         $cabanaAddon->ticketSlug = $matchedTicket['ticketSlug'];
                         $cabanaAddon->ticketCategory = $matchedTicket['ticketCategory'];
-                        $cabanaAddon->price = $matchedTicket['price'];
+
+                        // ✅ Use user-entered price and quantity
+                        $cabanaAddon->price = $prices[$ticketSlug] ?? $matchedTicket['price'];
+                        $cabanaAddon->quantity = $quantities[$ticketSlug] ?? 1;
+
                         $cabanaAddon->updated_by = Auth::user()->id;
                         $cabanaAddon->updated_at = now();
                         $cabanaAddon->save();
@@ -172,28 +246,8 @@ class BirthdayAddonsController extends Controller
                 }
             }
         }
-        // General for all pages
-        $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-        try {
-            
-            $getFeaturedCabana = BirthdayPackages::where('status', '=', '1')->orderby('id', 'asc')->get();
-            // Paginate
-            $perPage = 10;
-            $currentPage = LengthAwarePaginator::resolveCurrentPage();
-            $collection = collect($getFeaturedCabana);
-            $paginated = new LengthAwarePaginator(
-                $collection->forPage($currentPage, $perPage),
-                $collection->count(),
-                $perPage,
-                $currentPage,
-                ['path' => url()->current(), 'query' => request()->query()]
-            );
 
-            return redirect()->back();
-
-        } catch (\Exception $e) {
-            dd('Exception: ' . $e->getMessage());
-        }
+        return redirect()->back();
     }
 
     public function clone($webmasterId, $id)
@@ -209,7 +263,7 @@ class BirthdayAddonsController extends Controller
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
         $cabana = BirthdayPackages::where('slug', $id)->first();
-        $cabana_addon = BirthdayAddon::select('ticketSlug')->where('birthday_slug', $id)->get()->toArray();
+        $cabana_addon = BirthdayAddon::select('ticketSlug', 'price', 'quantity')->where('birthday_slug', $id)->get()->toArray();
         $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
         if ($response->successful()) {
             $apiData = $response->json();

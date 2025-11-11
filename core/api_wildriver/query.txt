@@ -1,4 +1,4 @@
-ALTER TABLE `smartend_webmaster_sections` ADD `parent_id` INT(11) NOT NULL DEFAULT '0' AFTER `id`;
+ALTER TABLE `smartend_birthday_addon` ADD `quantity` INT(11) NOT NULL DEFAULT '1' AFTER `price`;
 
 -----------------------------------------------------------------------------------------
 http://dev-dynamicpricing-env.eba-tkbnkmbm.us-east-1.elasticbeanstalk.com/Pricing/UpdateOrder

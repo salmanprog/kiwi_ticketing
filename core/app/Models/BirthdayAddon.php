@@ -18,6 +18,7 @@ class BirthdayAddon extends Model
         'ticketSlug',
         'ticketCategory',
         'price',
+        'quantity',
         'created_by',
         'updated_by',
     ];

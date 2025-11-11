@@ -80,29 +80,38 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="link_status" class="col-sm-2 form-control-label">Addons</label>
-                        <div class="col-sm-10">
-                            
-                                @if(count($tickets) > 0)
-                                <div class="row">
-                                    @foreach($tickets as $ticket)
-                                            @if($ticket['ticketSlug'] != $cabana->ticketSlug)
-                                                <div class="col-md-4 col-sm-6 mb-2">
-                                                    <label class="ui-check ui-check-md d-block">
-                                                        <input id="ticket_active_{{ $ticket['ticketSlug'] }}" class="has-value" name="ticket[]" type="checkbox" value="{{ $ticket['ticketSlug'] }}" {{ in_array($ticket['ticketSlug'], array_column($cabana_addon, 'ticketSlug')) ? 'checked' : '' }}>
-                                                        <i class="dark-white"></i>
-                                                        {{ $ticket['ticketType'] }}
-                                                    </label>
-                                                </div>
-                                            @endif
-                                    @endforeach
-                                </div>
-                                @else
-                                    <p>No tickets available.</p>
-                                @endif
-                            
-                        </div>
+                        <div id="selected-addons" class="col-sm-10"></div>
                     </div>
+                    <div class="form-group row">
+                    <label for="link_status" class="col-sm-2 form-control-label">Addons</label>
+                    <div class="col-sm-10">
+                        @if(count($tickets) > 0)
+                        <div class="row">
+                            @foreach($tickets as $ticket)
+                                @if($ticket['ticketSlug'] != $cabana->ticketSlug)
+                                    <div class="col-md-4 col-sm-6 mb-2">
+                                        <label class="ui-check ui-check-md d-block">
+                                            <input id="ticket_active_{{ $ticket['ticketSlug'] }}" 
+                                                class="has-value addon-checkbox" 
+                                                name="ticket[]" 
+                                                type="checkbox" 
+                                                value="{{ $ticket['ticketSlug'] }}" 
+                                                data-label="{{ $ticket['ticketType'] }}" 
+                                                data-price="{{ $ticket['price'] ?? 0 }}" 
+                                                {{ in_array($ticket['ticketSlug'], array_column($cabana_addon, 'ticketSlug')) ? 'checked' : '' }}>
+                                            <i class="dark-white"></i>
+                                            {{ $ticket['ticketType'] }}
+                                        </label>
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                        @else
+                            <p>No tickets available.</p>
+                        @endif
+                    </div>
+                </div>
+
                     <div class="form-group row m-t-md">
                         <div class="offset-sm-2 col-sm-10">
                             <button type="submit" class="btn btn-lg btn-primary m-t"><i class="material-icons">
@@ -118,5 +127,126 @@
     
 @endsection
 @push("after-scripts")
-    
+<script>
+    const savedAddons = @json($cabana_addon);
+    document.addEventListener('DOMContentLoaded', function() {
+        const addonContainer = document.getElementById('selected-addons');
+        const basePackagePrice = parseFloat({{ $cabana->price }}) || 0;
+        let currentTotal = basePackagePrice;
+        const totalDisplay = document.createElement('div');
+        totalDisplay.classList.add('alert', 'alert-info', 'mt-3');
+        totalDisplay.innerHTML = `<strong>Package Total:</strong> $<span id="package-total">${currentTotal.toFixed(2)}</span>`;
+        addonContainer.parentElement.appendChild(totalDisplay);
+        function showError(message) {
+            let errorBox = document.getElementById('price-error');
+            if (!errorBox) {
+                errorBox = document.createElement('div');
+                errorBox.id = 'price-error';
+                errorBox.classList.add('alert', 'alert-danger', 'mt-2');
+                addonContainer.parentElement.appendChild(errorBox);
+            }
+            errorBox.textContent = message;
+        }
+
+        function clearError() {
+            const errorBox = document.getElementById('price-error');
+            if (errorBox) errorBox.remove();
+        }
+
+        function updatePackageTotal() {
+            let addonTotal = 0;
+            document.querySelectorAll('.addon-total').forEach(input => {
+                addonTotal += parseFloat(input.value) || 0;
+            });
+            currentTotal = basePackagePrice - addonTotal;
+            const totalElement = document.getElementById('package-total');
+            totalElement.textContent = currentTotal.toFixed(2);
+            const difference = Math.abs(currentTotal);
+            const submitButton = document.querySelector('button[type="submit"]');
+
+            if (difference > 0.009) {
+                showError("Package total must be exactly zero after addons!");
+                if (submitButton) submitButton.disabled = true;
+            } else {
+                clearError();
+                if (submitButton) submitButton.disabled = false;
+            }
+        }
+
+        function createAddonItem(checkbox) {
+        const slug = checkbox.value;
+        const label = checkbox.dataset.label;
+        const basePrice = parseFloat(checkbox.dataset.price) || 0;
+        const saved = savedAddons.find(a => a.ticketSlug === slug) || {};
+        const quantityValue = saved.quantity ? parseFloat(saved.quantity) : 1;
+        const priceValue = saved.price ? parseFloat(saved.price) : basePrice;
+        if (addonContainer.querySelector(`[data-slug="${slug}"]`)) return;
+
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('addon-item', 'p-3', 'border', 'rounded', 'mb-2', 'bg-light');
+        wrapper.setAttribute('data-slug', slug);
+        wrapper.innerHTML = `
+            <div class="row align-items-end">
+                <div class="col-md-3">
+                    <label class="form-label"><strong>${label}</strong></label>
+                </div>
+                <div class="col-md-3">
+                    <label>Quantity</label>
+                    <input type="number" name="quantity[${slug}]" 
+                        class="form-control addon-qty" 
+                        value="${isNaN(quantityValue) ? 1 : quantityValue}" min="1">
+                </div>
+                <div class="col-md-3">
+                    <label>Price (each)</label>
+                    <input type="number" step="0.01" 
+                        name="price[${slug}]" 
+                        class="form-control addon-price" 
+                        value="${isNaN(priceValue) ? basePrice.toFixed(2) : priceValue.toFixed(2)}">
+                </div>
+                <div class="col-md-3">
+                    <label>Total</label>
+                    <input type="text" 
+                        class="form-control addon-total" 
+                        value="${((isNaN(quantityValue) ? 1 : quantityValue) * (isNaN(priceValue) ? basePrice : priceValue)).toFixed(2)}" readonly>
+                </div>
+            </div>
+        `;
+
+        addonContainer.appendChild(wrapper);
+
+        const qtyInput = wrapper.querySelector('.addon-qty');
+        const priceInput = wrapper.querySelector('.addon-price');
+        const totalInput = wrapper.querySelector('.addon-total');
+
+        const updateTotal = () => {
+            const qty = parseFloat(qtyInput.value) || 0;
+            const price = parseFloat(priceInput.value) || 0;
+            totalInput.value = (qty * price).toFixed(2);
+            updatePackageTotal();
+        };
+
+        qtyInput.addEventListener('input', updateTotal);
+        priceInput.addEventListener('input', updateTotal);
+
+        updatePackageTotal();
+    }
+
+    document.querySelectorAll('.addon-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const slug = this.value;
+            if (this.checked) {
+                createAddonItem(this);
+            } else {
+                const existing = addonContainer.querySelector(`[data-slug="${slug}"]`);
+                if (existing) existing.remove();
+                updatePackageTotal();
+            }
+        });
+        if (checkbox.checked) {
+            createAddonItem(checkbox);
+        }
+    });
+
+});
+</script>
 @endpush
