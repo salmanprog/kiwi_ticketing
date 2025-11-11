@@ -8522,7 +8522,7 @@ div.dataTables_wrapper div.dataTables_processing {
     mask-size: contain;
 }
 
-.for-mbl-noshow{
+.for-mbl-noshow {
     display: none;
 }
 
@@ -8535,23 +8535,21 @@ nav.scroll.nav-active-primary.cust-pading-nav {
 }
 
 .cust-arrow-icon {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  background: currentColor;
-  -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>') no-repeat center;
-  -webkit-mask-size: contain;
-  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>') no-repeat center;
-  mask-size: contain;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: currentColor;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>') no-repeat center;
+    -webkit-mask-size: contain;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>') no-repeat center;
+    mask-size: contain;
 }
 
-.no-mrgn{
+.no-mrgn {
     margin-left: 0 !important;
 }
 
-.nav-caret.no-mrgn i.cust-arrow-icon{
-    
-}
+.nav-caret.no-mrgn i.cust-arrow-icon {}
 
 /* .navside .nav li a:hover{
     background-color: #9fc23f !important;
@@ -8562,15 +8560,18 @@ a.kiwi-pd {
     padding-block: 5px !important;
 }
 
+
+
 @media screen and (max-width: 480px) {
     .collapse-twice {
         display: none !important;
     }
-    .for-mbl-noshow{
+
+    .for-mbl-noshow {
         display: block;
     }
 
-    .for-dest-show{
+    .for-dest-show {
         display: none;
     }
 

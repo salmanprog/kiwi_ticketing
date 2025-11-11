@@ -149,7 +149,7 @@
             <!-- Data Sections -->
             <div style="padding: 8px; background: #f8f9fa; border-radius: 8px;">
                 <div style="font-size: 12px; color: #6c757d; margin-bottom: 6px; font-weight: 600;">DATA SECTIONS:</div>
-                <div>
+                <div class="up-tage" style="overflow: auto;-ms-overflow-style: none;scrollbar-width: none;">
                     <?php $i = 0; ?>
                     @foreach($GeneralWebmasterSections as $WebmasterSection)
                         <?php
