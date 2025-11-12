@@ -55,7 +55,7 @@
             </div>
             <div class="box-body p-a-2">
                 {{Form::open(['route'=>['birthdaypackagesUpdate',"id"=>$birthday_packages->slug],'method'=>'POST', 'files' => true])}}
-                    <div class="form-group row">
+                    <!-- <div class="form-group row">
                             <label for="section_id" class="col-sm-2 form-control-label">
                                 {!! __('Cabanas') !!}
                             </label>
@@ -71,7 +71,7 @@
                                         @endforeach
                                 </select>
                             </div>
-                    </div>
+                    </div> -->
                     <div class="form-group row">
                         <label for="title"
                                 class="col-sm-2 form-control-label">{!!  __('Title') !!}

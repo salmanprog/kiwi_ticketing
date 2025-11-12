@@ -55,7 +55,7 @@
             </div>
             <div class="box-body p-a-2">
                 {{Form::open(['route'=>['birthdaypackagesStore'],'method'=>'POST', 'files' => true])}}
-                    <div class="form-group row">
+                    <!-- <div class="form-group row">
                         <label for="section_id" class="col-sm-2 form-control-label">
                             {!! __('Cabanas') !!}
                         </label>
@@ -71,7 +71,7 @@
                                     @endforeach
                             </select>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group row">
                         <label for="title"
                                 class="col-sm-2 form-control-label">{!!  __('Title') !!}
@@ -499,7 +499,7 @@
 
                 <!-- Step 1: Basic Information -->
                 <div class="step active" id="step1">
-                    <div class="form-group row mb-3">
+                    <!-- <div class="form-group row mb-3">
                         <label for="cabanas" class="col-sm-3 form-control-label">
                             {!! __('Cabanas') !!} <span class="text-danger">*</span>
                         </label>
@@ -514,7 +514,7 @@
                             </select>
                             <div class="invalid-feedback">Please select at least one cabana</div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group row">
                         <label for="title" class="col-sm-3 form-control-label">
                             {!! __('Title') !!} <span class="text-danger">*</span>
