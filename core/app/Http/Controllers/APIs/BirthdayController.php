@@ -18,7 +18,7 @@ class BirthdayController extends BaseAPIController
         $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
-        $birthday = BirthdayPackages::with(['cabanas','media_slider','media_cover'])->where('status','1')->get();
+        $birthday = BirthdayPackages::with(['cabanas','media_slider','media_cover', 'addons'])->where('status','1')->get();
         
         if ($birthday->isEmpty()) {
             return $this->sendResponse(200, 'Retrieved Birthday Listing', []);
@@ -46,7 +46,7 @@ class BirthdayController extends BaseAPIController
             $filteredTickets = [];
         }
 
-        $resource = BirthdayPackagesResource::collection($birthday->load(['cabanas', 'media_slider', 'media_cover']))
+        $resource = BirthdayPackagesResource::collection($birthday->load(['cabanas', 'media_slider', 'media_cover', 'addons']))
     ->additional(['tickets' => $filteredTickets]);
         return $this->sendResponse(200, 'Retrieved Birthday Listing', $resource);
         
