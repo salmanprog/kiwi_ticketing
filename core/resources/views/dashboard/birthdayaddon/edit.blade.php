@@ -3,8 +3,8 @@
 @push('after-styles')
     <link href="{{ asset('assets/dashboard/js/iconpicker/fontawesome-iconpicker.min.css') }}" rel="stylesheet">
     <!--[if lt IE 9]>
-            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-            <![endif]-->
+                <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+                <![endif]-->
     <style>
         .box-header.dker {
             background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%) !important;
@@ -36,21 +36,24 @@
             padding: 16px;
         }
 
-        .pack-field-ui strong{
+        .pack-field-ui strong {
             color: #2c3e50;
         }
-        .pack-field-ui .alert.alert-info.mt-3{
+
+        .pack-field-ui .alert.alert-info.mt-3 {
             background: #EBF1DF;
+            margin-top: 20px;
         }
 
-        .pack-field-ui label{
+        .pack-field-ui label {
             color: #5A6E1E;
         }
-        .pack-field-ui .row.align-items-end{
+
+        .pack-field-ui .row.align-items-end {
             padding-top: 10px;
         }
 
-        .pack-field-ui .form-control{
+        .pack-field-ui .form-control {
             border-radius: 0;
         }
     </style>
@@ -147,23 +150,151 @@
 @push('after-scripts')
     <script>
         const savedAddons = @json($cabana_addon);
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     const addonContainer = document.getElementById('selected-addons');
+        //     const basePackagePrice = parseFloat({{ $cabana->price }}) || 0;
+        //     let currentTotal = basePackagePrice;
+        //     const totalDisplay = document.createElement('div');
+        //     totalDisplay.classList.add('alert', 'alert-info', 'mt-3');
+        //     totalDisplay.innerHTML =
+        //         `<strong>Package Total:</strong> $<span id="package-total">${currentTotal.toFixed(2)}</span>`;
+        //     addonContainer.parentElement.appendChild(totalDisplay);
+
+        //     function showError(message) {
+        //         let errorBox = document.getElementById('price-error');
+        //         if (!errorBox) {
+        //             errorBox = document.createElement('div');
+        //             errorBox.id = 'price-error';
+        //             errorBox.classList.add('alert', 'alert-danger', 'mt-2');
+        //             addonContainer.parentElement.appendChild(errorBox);
+        //         }
+        //         errorBox.textContent = message;
+        //     }
+
+        //     function clearError() {
+        //         const errorBox = document.getElementById('price-error');
+        //         if (errorBox) errorBox.remove();
+        //     }
+
+        //     function updatePackageTotal() {
+        //         let addonTotal = 0;
+        //         document.querySelectorAll('.addon-total').forEach(input => {
+        //             addonTotal += parseFloat(input.value) || 0;
+        //         });
+        //         currentTotal = basePackagePrice - addonTotal;
+        //         const totalElement = document.getElementById('package-total');
+        //         totalElement.textContent = currentTotal.toFixed(2);
+        //         const difference = Math.abs(currentTotal);
+        //         const submitButton = document.querySelector('button[type="submit"]');
+
+        //         if (difference > 0.009) {
+        //             showError("Package total must be exactly zero after addons!");
+        //             if (submitButton) submitButton.disabled = true;
+        //         } else {
+        //             clearError();
+        //             if (submitButton) submitButton.disabled = false;
+        //         }
+        //     }
+
+        //     function createAddonItem(checkbox) {
+        //         const slug = checkbox.value;
+        //         const label = checkbox.dataset.label;
+        //         const basePrice = parseFloat(checkbox.dataset.price) || 0;
+        //         const saved = savedAddons.find(a => a.ticketSlug === slug) || {};
+        //         const quantityValue = saved.quantity ? parseFloat(saved.quantity) : 1;
+        //         const priceValue = saved.price ? parseFloat(saved.price) : basePrice;
+        //         if (addonContainer.querySelector(`[data-slug="${slug}"]`)) return;
+
+        //         const wrapper = document.createElement('div');
+        //         wrapper.classList.add('addon-item', 'p-3', 'border', 'rounded', 'mb-2', 'bg-light');
+        //         wrapper.setAttribute('data-slug', slug);
+        //         wrapper.innerHTML = `
+    //     <div class="row align-items-end">
+    //         <div class="col-md-2">
+    //             <label class="form-label"><strong>${label}</strong></label>
+    //         </div>
+    //         <div class="col-md-3">
+    //             <label>Quantity</label>
+    //             <input type="number" name="quantity[${slug}]" 
+    //                 class="form-control addon-qty" 
+    //                 value="${isNaN(quantityValue) ? 1 : quantityValue}" min="1">
+    //         </div>
+    //         <div class="col-md-3">
+    //             <label>Price (each)</label>
+    //             <input type="number" step="0.01" 
+    //                 name="price[${slug}]" 
+    //                 class="form-control addon-price" 
+    //                 value="${isNaN(priceValue) ? basePrice.toFixed(2) : priceValue.toFixed(2)}">
+    //         </div>
+    //         <div class="col-md-3">
+    //             <label>Total</label>
+    //             <input type="text" 
+    //                 class="form-control addon-total" 
+    //                 value="${((isNaN(quantityValue) ? 1 : quantityValue) * (isNaN(priceValue) ? basePrice : priceValue)).toFixed(2)}" readonly>
+    //         </div>
+    //     </div>
+    // `;
+
+        //         addonContainer.appendChild(wrapper);
+
+        //         const qtyInput = wrapper.querySelector('.addon-qty');
+        //         const priceInput = wrapper.querySelector('.addon-price');
+        //         const totalInput = wrapper.querySelector('.addon-total');
+
+        //         const updateTotal = () => {
+        //             const qty = parseFloat(qtyInput.value) || 0;
+        //             const price = parseFloat(priceInput.value) || 0;
+        //             totalInput.value = (qty * price).toFixed(2);
+        //             updatePackageTotal();
+        //         };
+
+        //         qtyInput.addEventListener('input', updateTotal);
+        //         priceInput.addEventListener('input', updateTotal);
+
+        //         updatePackageTotal();
+        //     }
+
+        //     document.querySelectorAll('.addon-checkbox').forEach(checkbox => {
+        //         checkbox.addEventListener('change', function() {
+        //             const slug = this.value;
+        //             if (this.checked) {
+        //                 createAddonItem(this);
+        //             } else {
+        //                 const existing = addonContainer.querySelector(`[data-slug="${slug}"]`);
+        //                 if (existing) existing.remove();
+        //                 updatePackageTotal();
+        //             }
+        //         });
+        //         if (checkbox.checked) {
+        //             createAddonItem(checkbox);
+        //         }
+        //     });
+
+        // });
+
+
         document.addEventListener('DOMContentLoaded', function() {
             const addonContainer = document.getElementById('selected-addons');
             const basePackagePrice = parseFloat({{ $cabana->price }}) || 0;
             let currentTotal = basePackagePrice;
+
+            // ---------------- TOTAL DISPLAY ----------------
             const totalDisplay = document.createElement('div');
             totalDisplay.classList.add('alert', 'alert-info', 'mt-3');
             totalDisplay.innerHTML =
                 `<strong>Package Total:</strong> $<span id="package-total">${currentTotal.toFixed(2)}</span>`;
-            addonContainer.parentElement.appendChild(totalDisplay);
 
+            // append totalDisplay at the END of container
+            addonContainer.appendChild(totalDisplay);
+
+            // ---------------- ERROR HANDLING ----------------
             function showError(message) {
                 let errorBox = document.getElementById('price-error');
                 if (!errorBox) {
                     errorBox = document.createElement('div');
                     errorBox.id = 'price-error';
                     errorBox.classList.add('alert', 'alert-danger', 'mt-2');
-                    addonContainer.parentElement.appendChild(errorBox);
+                    addonContainer.appendChild(errorBox); // always last
                 }
                 errorBox.textContent = message;
             }
@@ -173,6 +304,7 @@
                 if (errorBox) errorBox.remove();
             }
 
+            // ---------------- UPDATE PACKAGE TOTAL ----------------
             function updatePackageTotal() {
                 let addonTotal = 0;
                 document.querySelectorAll('.addon-total').forEach(input => {
@@ -193,6 +325,7 @@
                 }
             }
 
+            // ---------------- CREATE ADDON ITEM ----------------
             function createAddonItem(checkbox) {
                 const slug = checkbox.value;
                 const label = checkbox.dataset.label;
@@ -200,6 +333,7 @@
                 const saved = savedAddons.find(a => a.ticketSlug === slug) || {};
                 const quantityValue = saved.quantity ? parseFloat(saved.quantity) : 1;
                 const priceValue = saved.price ? parseFloat(saved.price) : basePrice;
+
                 if (addonContainer.querySelector(`[data-slug="${slug}"]`)) return;
 
                 const wrapper = document.createElement('div');
@@ -232,7 +366,8 @@
             </div>
         `;
 
-                addonContainer.appendChild(wrapper);
+                // INSERT BEFORE totalDisplay to ensure total stays last
+                addonContainer.insertBefore(wrapper, totalDisplay);
 
                 const qtyInput = wrapper.querySelector('.addon-qty');
                 const priceInput = wrapper.querySelector('.addon-price');
@@ -251,6 +386,7 @@
                 updatePackageTotal();
             }
 
+            // ---------------- CHECKBOX EVENTS ----------------
             document.querySelectorAll('.addon-checkbox').forEach(checkbox => {
                 checkbox.addEventListener('change', function() {
                     const slug = this.value;
