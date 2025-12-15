@@ -35,7 +35,7 @@ Route::post('/subscribe', 'APIsController@subscribeSubmit');
 Route::post('/comment', 'APIsController@commentSubmit');
 Route::post('/order', 'APIsController@orderSubmit');
 Route::post('/contact', 'APIsController@ContactPageSubmit');
-Route::middleware('apiAuth')->group(function () {
+//Route::middleware('apiAuth')->group(function () {
 //General Settings
 Route::get('/general/settings', 'GeneralController@website_setting');
 //Cabana Settings
@@ -57,6 +57,9 @@ Route::get('/general-ticket-package/{slug}', 'GeneralTicketController@generalTic
 //Offer Creation
 Route::get('/offers-package', 'OfferCreationController@index');
 Route::get('/offers-package/{slug}', 'OfferCreationController@offerAddon');
+//Product Sale
+Route::get('/product-sale-package', 'ProductSaleController@index');
+Route::get('/product-sale-package/{slug}', 'ProductSaleController@offerAddon');
 //Season Pass
 Route::get('/season-pass', 'SeasonPassController@index');
 Route::get('/season-pass-product/{slug}', 'SeasonPassAddonController@getBySlug');
@@ -80,4 +83,4 @@ Route::post('/send-email', 'EmailController@sendEmail');
     Route::get('/secure-data', function () {
         return response()->json(['data' => 'Authorized Access!']);
     });
-});
+//});

@@ -33,6 +33,8 @@ use App\Http\Controllers\Dashboard\GeneralTicketPackagesController;
 use App\Http\Controllers\Dashboard\CouponController;
 use App\Http\Controllers\Dashboard\OfferCreationPackagesController;
 use App\Http\Controllers\Dashboard\OfferAddonController;
+use App\Http\Controllers\Dashboard\ProductSalePackagesController;
+use App\Http\Controllers\Dashboard\ProductSaleAddonController;
 use App\Http\Controllers\Dashboard\EmailController;
 use App\Http\Controllers\Dashboard\EmailLogsController;
 use App\Http\Controllers\Dashboard\LogController;
@@ -377,6 +379,25 @@ Route::post('/offer-addon/store', [OfferAddonController::class, 'store'])->name(
 Route::get('/offer-addon/{id}/edit', [OfferAddonController::class, 'edit'])->name('offeraddonEdit');
 Route::post('/offer-addon/{id}/update', [OfferAddonController::class, 'update'])->name('offeraddonUpdate');
 Route::get('/offer-addon/destroy/{id}', [OfferAddonController::class, 'destroy'])->name('offeraddonDestroy');
+//Product Sale Packages
+Route::get('/product-sale-packages', [ProductSalePackagesController::class, 'index'])->name('productsalecreationpackages');
+Route::post('/product-sale-ticket', [ProductSalePackagesController::class, 'getData'])->name('productsalecreationpackages.data');
+Route::get('/product-sale-packages/{id}/edit', [ProductSalePackagesController::class, 'edit'])->name('productsalecreationpackagesEdit');
+Route::get('/product-sale-packages/create/', [ProductSalePackagesController::class, 'create'])->name('productsalecreationpackagesCreate');
+Route::post('/product-sale-packages/store', [ProductSalePackagesController::class, 'store'])->name('productsalecreationpackagesStore');
+Route::post('/product-sale-packages/{id}/update', [ProductSalePackagesController::class, 'update'])->name('productsalecreationpackagesUpdate');
+Route::get('/product-sale-packages/destroy/{id}', [ProductSalePackagesController::class, 'destroy'])->name('productsalecreationpackagesDestroy');
+Route::get('/product-sale-orders', [OrderController::class, 'getproductSaleCreationOrders'])->name('productsalepackagesorders');
+Route::post('/product-sale-order', [OrderController::class, 'getOrders'])->name('offercreationpackagesorders.data');
+Route::get('/product-sale-orders-detail/{slug}', [OrderController::class, 'getByOrderSlug'])->name('offercreationpackagesordersdetail');
+// Product Sale Addons
+Route::get('/product-sale-addon', [ProductSaleAddonController::class, 'index'])->name('productsaleaddon');
+Route::post('/product-sale-addon', [ProductSaleAddonController::class, 'getData'])->name('productsaleaddon.data');
+Route::get('/product-sale-addon/create/', [ProductSaleAddonController::class, 'create'])->name('productsaleaddonCreate');
+Route::post('/product-sale-addon/store', [ProductSaleAddonController::class, 'store'])->name('productsaleaddonStore');
+Route::get('/product-sale-addon/{id}/edit', [ProductSaleAddonController::class, 'edit'])->name('productsaleaddonEdit');
+Route::post('/product-sale-addon/{id}/update', [ProductSaleAddonController::class, 'update'])->name('productsaleaddonUpdate');
+Route::get('/product-sale-addon/destroy/{id}', [ProductSaleAddonController::class, 'destroy'])->name('productsaleaddonDestroy');
 // Transactions
 Route::get('/transaction', [OrderController::class, 'getTransactions'])->name('transactionorders');
 Route::post('/transactions', [OrderController::class, 'getTransaction'])->name('transaction.data');

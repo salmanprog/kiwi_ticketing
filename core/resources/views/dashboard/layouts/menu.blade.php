@@ -282,6 +282,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                     $seasonpassActive = in_array($current, ['seasonpass', 'seasonpassEdit', 'seasonpassCreate', 'seasonpassStore', 'seasonpassDestroy', 'seasonpassaddon', 'seasonpassaddonEdit', 'seasonpassaddonStore', 'seasonpassaddonCreate', 'seasonpassaddonUpdate', 'seasonpassorders', 'seasonpassordersdetail']);
                     $couponActive = in_array($current, ['coupon', 'couponCreate', 'couponEdit', 'couponStore', 'couponUpdate', 'couponDestroy']);
                     $offerCreationActive = in_array($current, ['offercreationpackages', 'offercreationpackagesEdit', 'offercreationpackagesCreate', 'offercreationpackagesStore', 'offercreationpackagesUpdate', 'offercreationpackagesDestroy', 'offeraddon', 'offeraddonCreate', 'offeraddonStore', 'offeraddonEdit', 'offeraddonUpdate', 'offeraddonDestroy', 'offercreationpackagesorders', 'offercreationpackagesordersdetail']);
+                    $productSaleActive = in_array($current, ['productsalecreationpackages', 'productsalecreationpackagesEdit', 'productsalecreationpackagesCreate', 'productsalecreationpackagesStore', 'productsalecreationpackagesUpdate', 'productsalecreationpackagesDestroy', 'productsaleaddon', 'productsaleaddonCreate', 'productsaleaddonStore', 'productsaleaddonEdit', 'productsaleaddonUpdate', 'productsaleaddonDestroy']);
                     $transactionActive = in_array($current, ['transactionorders', 'updatetransactionorders']);
                     $LogsActive = in_array($current, ['ordersLogs', 'ordersfailedLogs', 'paymentLogs', 'paymentfailLogs', 'ordersLogsShow']);
                     $emailTemplateActive = in_array($current, ['emailTemplate', 'emailTemplateCreate', 'emailTemplateEdit', 'emailTemplateStore', 'emailTemplateUpdate', 'emailTemplateDestroy', 'smtpConfigure', 'emailLogs']);
@@ -486,6 +487,46 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                                     <li
                                         class="{{ $current === 'offercreationpackagesorders' ? 'active cust-act' : '' }}">
                                         <a href="{{ route('offercreationpackagesorders') }}" style="color: #495057;">
+                                            <span class="nav-text dashlogo">{{ __('Orders') }}</span>
+                                        </a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </li>
+                    @endif
+
+                    <!-- ProductsSale Management Dropdown -->
+                    @if ($userRole == 'Webmaster' || in_array(44, $dataSections))
+                        <li class="{{ $productSaleActive ? 'active menue-hie' : '' }}"
+                            style="border-left: 3px solid transparent;">
+                            <a class="kiwi-pd" style="color: #495057;">
+                                <span class="nav-caret no-mrgn">
+                                    <i class="cust-arrow-icon"></i>
+                                </span>
+                                <span class="nav-icon">
+                                    <i class="fas fa-shopping-cart" style="color: #6B7280;"></i>
+                                </span>
+                                <span class="nav-text">{{ __('Product Sale Management') }}</span>
+                            </a>
+                            <ul class="nav-sub" style="background: #f8f9fa;">
+                                @if ($userRole == 'Webmaster' || in_array(45, $dataSections))
+                                    <li class="{{ $current === 'productsalecreationpackages' ? 'active cust-act' : '' }}">
+                                        <a href="{{ route('productsalecreationpackages') }}" style="color: #495057;">
+                                            <span class="nav-text dashlogo">{{ __('Product Type') }}</span>
+                                        </a>
+                                    </li>
+                                @endif
+                                @if ($userRole == 'Webmaster' || in_array(46, $dataSections))
+                                    <li class="{{ $current === 'offeraddon' ? 'active cust-act' : '' }}">
+                                        <a href="{{ route('productsaleaddon') }}" style="color: #495057;">
+                                            <span class="nav-text dashlogo">{{ __('Addon Control') }}</span>
+                                        </a>
+                                    </li>
+                                @endif
+                                 @if ($userRole == 'Webmaster' || in_array(47, $dataSections))
+                                    <li
+                                        class="{{ $current === 'productsalepackagesorders' ? 'active cust-act' : '' }}">
+                                        <a href="{{ route('productsalepackagesorders') }}" style="color: #495057;">
                                             <span class="nav-text dashlogo">{{ __('Orders') }}</span>
                                         </a>
                                     </li>

@@ -1,4 +1,50 @@
-ALTER TABLE `smartend_birthday_addon` ADD `quantity` INT(11) NOT NULL DEFAULT '1' AFTER `price`;
+CREATE TABLE `smartend_product_sale_packages` (
+  `id` int(11) NOT NULL,
+  `slug` varchar(255) DEFAULT NULL,
+  `auth_code` varchar(255) NOT NULL,
+  `offerType` enum('any_day','specifc_date') NOT NULL DEFAULT 'any_day',
+  `title` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `from_date` varchar(255) DEFAULT NULL,
+  `to_date` varchar(255) DEFAULT NULL,
+  `created_by` int(11) NOT NULL DEFAULT 1,
+  `updated_by` int(11) NOT NULL DEFAULT 0,
+  `status` enum('0','1') NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+ALTER TABLE `smartend_product_sale_packages`
+  ADD PRIMARY KEY (`id`);
+
+  ALTER TABLE `smartend_product_sale_packages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+  CREATE TABLE `smartend_product_sale_addons` (
+  `id` int(11) NOT NULL,
+  `slug` varchar(255) DEFAULT NULL,
+  `auth_code` varchar(255) NOT NULL,
+  `offerType` varchar(255) NOT NULL,
+  `offerSlug` varchar(255) NOT NULL,
+  `is_featured` enum('0','1') NOT NULL DEFAULT '1',
+  `venueId` varchar(255) NOT NULL,
+  `ticketType` varchar(255) NOT NULL,
+  `ticketSlug` varchar(255) NOT NULL,
+  `ticketCategory` varchar(255) NOT NULL,
+  `price` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `created_by` int(11) NOT NULL DEFAULT 1,
+  `updated_by` int(11) NOT NULL DEFAULT 0,
+  `status` enum('0','1') NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+ALTER TABLE `smartend_product_sale_addons`
+  ADD PRIMARY KEY (`id`);
+
+  ALTER TABLE `smartend_product_sale_addons`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 -----------------------------------------------------------------------------------------
 http://dev-dynamicpricing-env.eba-tkbnkmbm.us-east-1.elasticbeanstalk.com/Pricing/UpdateOrder

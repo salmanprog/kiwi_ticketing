@@ -52,6 +52,7 @@ class OrderController extends BaseAPIController
         $baseUrl = Helper::GeneralSiteSettings('external_api_link_en',true);
         $authCode = Helper::GeneralSiteSettings('auth_code_en',true);
         $date = Carbon::today()->toDateString();
+        
         try {
             $store_order =  OrdersHelper::generateOrder($request->all());
             $data = $store_order->json();

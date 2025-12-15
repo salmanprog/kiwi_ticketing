@@ -23,6 +23,7 @@ class OrdersHelper
             $requestPayload = json_decode($requestPayload, true);
         }
         //$get_customer_obj = User::where('id',$requestPayload['user_id'])->first();
+        
         $get_customer_obj = User::firstOrCreate(
                 ['email' => $requestPayload['email']],
                 [
@@ -41,7 +42,8 @@ class OrdersHelper
             'cabana' => 'ca-'.$get_package->id.date("y").'_',
             'general_ticket' => 'ge-'.$get_package->id.date("y").'_',
             'season_pass' => 'sp-'.$get_package->id.date("y").'_',
-            'offer_creation' => 'of-'.$get_package->id.date("y").'_'
+            'offer_creation' => 'of-'.$get_package->id.date("y").'_',
+            'product_sale' => 'pro-'.$get_package->id.date("y").'_'
         ];
 
         $prefix = $prefixMap[$requestPayload['type']] ?? 'any_';
@@ -147,7 +149,8 @@ class OrdersHelper
             'cabana' => 'ca-'.$get_package->id.date("y").'_',
             'general_ticket' => 'ge-'.$get_package->id.date("y").'_',
             'season_pass' => 'sp='.$get_package->id.date("y").'_',
-            'offer_creation' => 'of='.$get_package->id.date("y").'_'
+            'offer_creation' => 'of='.$get_package->id.date("y").'_',
+            'product_sale' => 'pro='.$get_package->id.date("y").'_'
         ];
 
         $prefix = $prefixMap[$requestPayload['type']] ?? 'any_';
@@ -211,7 +214,7 @@ class OrdersHelper
 
     public static function order_types($type)
     {
-        $orderTypes = ['birthday', 'cabana', 'general_ticket', 'season_pass', 'offer_creation'];
+        $orderTypes = ['birthday', 'cabana', 'general_ticket', 'season_pass', 'offer_creation', 'product_sale'];
 
         return in_array($type, $orderTypes) ? $type : null;
     }
@@ -233,6 +236,9 @@ class OrdersHelper
                 break;
             case 'offer_creation':
                 $packages = \App\Models\OfferCreation::select('id', 'title as name')->where('id',$package_id)->first();
+                break;
+             case 'product_sale':
+                $packages = \App\Models\ProductSale::select('id', 'title as name')->where('id',$package_id)->first();
                 break;
             default:
                 $packages = [];
