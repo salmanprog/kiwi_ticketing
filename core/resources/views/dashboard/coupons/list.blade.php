@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Coupons'))
+@section('title', __('Discount'))
 @section('content')
 
     <style>
@@ -54,10 +54,10 @@
     <div class="padding">
         <div class="box">
             <div class="box-header dker">
-                <h3>{{ __('Coupons') }}</h3>
+                <h3>{{ __('Discount') }}</h3>
                 <small>
                     <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-                    <a href="">{{ __('coupons') }}</a>
+                    <a href="">{{ __('discount') }}</a>
                 </small>
             </div>
 
@@ -66,7 +66,7 @@
                 <div class="col-sm-12">
                     <a class="btn btn-fw primary" href="{{ route('couponCreate') }}">
                         <i class="material-icons">&#xe7fe;</i>
-                        &nbsp; {{ __('Add New Coupon') }}
+                        &nbsp; {{ __('Add New Discount') }}
                     </a>
                 </div>
             </div>

@@ -505,13 +505,13 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                                 <span class="nav-icon">
                                     <i class="fas fa-tags" style="color: #6B7280;"></i>
                                 </span>
-                                <span class="nav-text">{{ __('Coupon Management') }}</span>
+                                <span class="nav-text">{{ __('Discount Management') }}</span>
                             </a>
                             <ul class="nav-sub" style="background: #f8f9fa;">
                                 @if ($userRole == 'Webmaster' || in_array(39, $dataSections))
                                     <li class="{{ $current === 'coupon' ? 'active cust-act' : '' }}">
                                         <a href="{{ route('coupon') }}" style="color: #495057;">
-                                            <span class="nav-text dashlogo">{{ __('Coupon Types') }}</span>
+                                            <span class="nav-text dashlogo">{{ __('Discount Types') }}</span>
                                         </a>
                                     </li>
                                 @endif

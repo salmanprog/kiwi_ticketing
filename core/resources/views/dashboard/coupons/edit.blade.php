@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Edit Coupon'))
+@section('title', __('Edit Discount'))
 @push("after-styles")
     <link href="{{ asset("assets/dashboard/js/iconpicker/fontawesome-iconpicker.min.css") }}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
@@ -285,10 +285,10 @@
         <div class="coupon-form-container">
             <!-- Header Section -->
             <div class="modern-header">
-                <h3><i class="fas fa-edit"></i> {{ __('Edit Coupon') }}</h3>
+                <h3><i class="fas fa-edit"></i> {{ __('Edit Discount') }}</h3>
                 <nav class="breadcrumb-modern">
                     <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-                    <a>{{__('edit-coupon')}}</a> 
+                    <a>{{__('edit-discount')}}</a> 
                 </nav>
             </div>
 
@@ -331,10 +331,10 @@
                 <!-- Coupon Code Field -->
                 <div class="form-group-modern">
                     <label for="coupon_code" class="form-label-modern">
-                        <i class="fas fa-code form-label-icon"></i>{!!  __('Coupon Code') !!}
+                        <i class="fas fa-code form-label-icon"></i>{!!  __('Discount Code') !!}
                     </label>
                     <div style="flex: 1;">
-                        {!! Form::text('coupon_code',old('coupon_code', $couponsPackages->coupon_code ?? ''), array('placeholder' => 'Enter coupon code','class' => 'form-control-modern','id'=>'coupon_code','required'=>'')) !!}
+                        {!! Form::text('coupon_code',old('coupon_code', $couponsPackages->coupon_code ?? ''), array('placeholder' => 'Enter discount code','class' => 'form-control-modern','id'=>'coupon_code','required'=>'')) !!}
                     </div>
                 </div>
 
@@ -381,10 +381,10 @@
                 <!-- Coupon Limit Field -->
                 <div class="form-group-modern">
                     <label for="coupon_total_limit" class="form-label-modern">
-                        <i class="fas fa-sort-amount-up form-label-icon"></i>{!!  __('Coupon Limit') !!}
+                        <i class="fas fa-sort-amount-up form-label-icon"></i>{!!  __('Discount Limit') !!}
                     </label>
                     <div style="flex: 1;">
-                        {!! Form::text('coupon_total_limit',old('coupon_total_limit', $couponsPackages->coupon_total_limit ?? ''), array('placeholder' => 'Enter coupon usage limit','class' => 'form-control-modern','id'=>'coupon_total_limit','required'=>'')) !!}
+                        {!! Form::text('coupon_total_limit',old('coupon_total_limit', $couponsPackages->coupon_total_limit ?? ''), array('placeholder' => 'Enter discount usage limit','class' => 'form-control-modern','id'=>'coupon_total_limit','required'=>'')) !!}
                     </div>
                 </div>
 
