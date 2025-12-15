@@ -291,7 +291,7 @@ class ProductSaleAddonController extends Controller
         try {
             $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
             $offer_addon = ProductSaleAddon::with(['media_slider'])->where('slug',$slug)->where('auth_code',$authCode)->first();
-            return view("dashboard.product_Sale_addon.edit", compact("offer_addon", "GeneralWebmasterSections"));
+            return view("dashboard.product_sale_addon.edit", compact("offer_addon", "GeneralWebmasterSections"));
 
         } catch (\Exception $e) {
             dd('Exception: ' . $e->getMessage());
