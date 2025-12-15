@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', __('Sale Orders'))
+@section('title', __('Product Sale Orders'))
 @section('content')
 <style>
     div.dataTables_wrapper div.dataTables_processing {
@@ -51,10 +51,10 @@
 <div class="padding">
 <div class="box">
     <div class="box-header dker">
-        <h3>{{ __('Sale') }}</h3>
+        <h3>{{ __('Product Sale') }}</h3>
         <small>
             <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
-            <a href="">{{ __('sale-orders') }}</a>
+            <a href="">{{ __('product-sale-orders') }}</a>
         </small>
     </div>
     <div class="box-tool box-tool-lg">
@@ -86,7 +86,7 @@
     <div>
         <div class="table-responsive">
             @include("dashboard.productsaleorders.search")
-                <table class="table table-bordered m-a-0" id="offer_orders">
+                <table class="table table-bordered m-a-0" id="product_sale_orders">
                     <thead class="dker">
                     <tr>
                         <th class="width20 dker">
@@ -185,12 +185,12 @@
         });
 
         $(document).ready(function () {
-            var dataTable = $("#offer_orders").DataTable({
+            var dataTable = $("#product_sale_orders").DataTable({
                 processing: true,
                 serverSide: true,
                 searching: true,
                 ajax: {
-                    url: "{{ route('offercreationpackagesorders.data') }}",
+                    url: "{{ route('productsalepackagesorders.data') }}",
                     type: "POST",
                     data: function (data) {
                         data._token = "{{ csrf_token() }}";
@@ -200,8 +200,8 @@
                         data.from_date = $('#from_date').val();
                         data.to_date = $('#to_date').val();
                         data.order_status = $('#find_order_status').val();
-                        data.type = 'offer_creation';
-                        data.route = 'offercreationpackagesordersdetail';
+                        data.type = 'product_sale';
+                        data.route = 'productsalepackagesordersdetail';
                     }
                 },
                dom: '<"row"<"col-sm-6"f><"col-sm-6"l>>rtip',
@@ -259,10 +259,10 @@
 
         function print_as(stat) {
             $("#search_submit_stat").val(stat);
-            $("#filter_form").attr('action', '{{ route("offerCreationPrint") }}');
+            $("#filter_form").attr('action', '{{ route("productSalePrint") }}');
             $("#filter_form").attr('target', '_blank');
             $("#filter_form").submit();
-            $("#filter_form").attr('action', '{{ route("offerCreationPrint") }}');
+            $("#filter_form").attr('action', '{{ route("productSalePrint") }}');
             $("#search_submit_stat").val("");
             $("#filter_form").attr('target', '');
         }

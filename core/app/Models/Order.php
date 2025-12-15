@@ -99,6 +99,11 @@ class Order extends Model
         return $this->hasOne(OfferCreation::class, 'id','package_id');
     }
 
+    public function product_sale()
+    {
+        return $this->hasOne(ProductSale::class, 'id','package_id');
+    }
+
     public function apply_coupon()
     {
         return $this->hasOne(OrderCoupon::class, 'order_id','id');

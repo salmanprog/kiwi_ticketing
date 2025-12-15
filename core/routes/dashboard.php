@@ -388,8 +388,8 @@ Route::post('/product-sale-packages/store', [ProductSalePackagesController::clas
 Route::post('/product-sale-packages/{id}/update', [ProductSalePackagesController::class, 'update'])->name('productsalecreationpackagesUpdate');
 Route::get('/product-sale-packages/destroy/{id}', [ProductSalePackagesController::class, 'destroy'])->name('productsalecreationpackagesDestroy');
 Route::get('/product-sale-orders', [OrderController::class, 'getproductSaleCreationOrders'])->name('productsalepackagesorders');
-Route::post('/product-sale-order', [OrderController::class, 'getOrders'])->name('offercreationpackagesorders.data');
-Route::get('/product-sale-orders-detail/{slug}', [OrderController::class, 'getByOrderSlug'])->name('offercreationpackagesordersdetail');
+Route::post('/product-sale-order', [OrderController::class, 'getOrders'])->name('productsalepackagesorders.data');
+Route::get('/product-sale-orders-detail/{slug}', [OrderController::class, 'getByOrderSlug'])->name('productsalepackagesordersdetail');
 // Product Sale Addons
 Route::get('/product-sale-addon', [ProductSaleAddonController::class, 'index'])->name('productsaleaddon');
 Route::post('/product-sale-addon', [ProductSaleAddonController::class, 'getData'])->name('productsaleaddon.data');
@@ -410,6 +410,7 @@ Route::get('/transactions/orders/birthdayprint', [OrderController::class, 'print
 Route::get('/transactions/orders/generalprint', [OrderController::class, 'printGeneralTicket'])->name('generalTicketPrint');
 Route::get('/transactions/orders/seasonpassprint', [OrderController::class, 'printSeasonPass'])->name('seasonPassPrint');
 Route::get('/transactions/orders/offercreationprint', [OrderController::class, 'printOfferCreation'])->name('offerCreationPrint');
+Route::get('/transactions/orders/productsaleprint', [OrderController::class, 'printProductSale'])->name('productSalePrint');
 Route::get('/packages/by-type', [OrderController::class, 'getPackagesByType'])->name('getPackagesByType');
 // Coupons Code
 Route::get('/coupon', [CouponController::class, 'index'])->name('coupon');

@@ -655,6 +655,52 @@ class OrderController extends Controller
         return view('dashboard.transaction.print', compact('orders', 'totalEarnings', 'stat'));
     }
 
+    public function printProductSale(Request $request)
+    {
+        $q = $request->input('find_q');
+        $from_date = $request->input('from_date');
+        $to_date = $request->input('to_date');
+        $type = $request->input('type');
+        $package_id = $request->input('package_id');
+        $stat = $request->input('stat'); // 'excel' or something else
+
+        $query = Order::with([
+            'customer',
+            'purchases',
+            'apply_coupon',
+            'coupon',
+            'transaction',
+            'product_sale',
+        ]);
+
+        // Filter by search query
+        if ($q) {
+            $query->where(function ($qBuilder) use ($q) {
+                $qBuilder->where('firstName', 'like', "%$q%")
+                    ->orWhere('lastName', 'like', "%$q%")
+                    ->orWhere('email', 'like', "%$q%")
+                    ->orWhere('phone', 'like', "%$q%")
+                    ->orWhere('slug', 'like', "%$q%");
+            });
+        }
+
+        if ($from_date && $to_date) {
+            $from = $from_date . ' 00:00:00';
+            $to = $to_date . ' 23:59:59';
+            $query->whereBetween('created_at', [$from, $to]);
+        }
+
+        if ($package_id) {
+            $query->where('package_id', $package_id);
+        }
+        $orders = $query->where('type', 'product_sale')->orderBy('id', 'desc')->get();
+        $totalEarnings = $orders->sum('orderTotal');
+        if ($stat === 'excel') {
+        }
+
+        return view('dashboard.transaction.print', compact('orders', 'totalEarnings', 'stat'));
+    }
+
     public function getBirthdayOrders()
     {
         // General for all pages
