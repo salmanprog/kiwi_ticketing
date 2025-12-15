@@ -191,6 +191,7 @@
                     <option value="general_ticket">{{ __('Platform Orders') }}</option>
                     <option value="season_pass">{{ __('LandingPage Orders') }}</option>
                     <option value="offer_creation">{{ __('OfferCreation Orders') }}</option>
+                    <option value="product_sale">{{ __('Product Sale Orders') }}</option>
                 </select>
             </div>
 
