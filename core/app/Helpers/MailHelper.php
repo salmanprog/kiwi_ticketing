@@ -11,7 +11,7 @@ class MailHelper
     public static function orderConfirmationEmail($data,$identifier)
     {
 
-        $allowedTypes = ['cabana', 'birthday', 'general_ticket', 'season_pass','offer_creation'];
+        $allowedTypes = ['cabana', 'birthday', 'general_ticket', 'season_pass','offer_creation', 'product_sale'];
         $get_mail_content = Email::where('identifier', $identifier)
             ->where('status', '1')
             ->first();
