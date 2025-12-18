@@ -27,44 +27,37 @@ class WaiverController extends BaseAPIController
 
     public function store(Request $request)
     {
+        // 1️⃣ Validate request
         $validator = Validator::make($request->all(), [
             'order_id' => 'required',
             'qr_code' => 'required',
             'waiver_type' => 'required',
-            'email' => 'required',
+            'email' => 'required|email',
             'name' => 'required',
-            'dob' => 'required',
+            'dob' => 'required|date',
             'phone' => 'required',
             'street_address' => 'required',
             'city' => 'required',
             'state' => 'required',
             'zip_code' => 'required',
-            'photo' => 'required'
+            'photo' => 'required|image'
         ]);
 
         if ($validator->fails()) {
             return $this->sendResponse(400, 'Validation Error', $validator->errors());
         }
 
-        $baseUrl   = Helper::GeneralSiteSettings('external_api_link_en');
-        $authCode  = Helper::GeneralSiteSettings('auth_code_en');
-        $current_date = now()->format('Y-m-d');
-        // $waiver = Waiver::where('auth_code', $authCode)
-        //     ->where('order_id', $request->order_id)
-        //     ->where('qr_code', $request->qr_code)
-        //     ->where('status', '1')
-        //     ->first();
+        // 2️⃣ Config values
+        $baseUrl  = 'https://dynamicpricing-api.dynamicpricingbuilder.com';
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
+        $currentDate = now()->format('Y-m-d');
 
-        // if ($waiver) {
-        //     return $this->sendResponse(400, 'Waiver Error', [
-        //         'coupon_code' => 'Waiver already exist in our record'
-        //     ]);
-        // }
-
-       $photoBase64 = base64_encode(
+        // 3️⃣ Convert image to Base64
+        $photoBase64 = base64_encode(
             file_get_contents($request->file('photo')->getRealPath())
         );
 
+        // 4️⃣ Prepare payload (DO NOT json_encode)
         $requestPayload = [
             'organization' => [
                 'formName' => $request->name,
@@ -81,6 +74,7 @@ class WaiverController extends BaseAPIController
                 'parentPhone' => $request->parent_phone,
                 'emergencyNumber' => $request->phone,
 
+                // .NET expects int, not bool
                 'permission' => 0,
                 'assumptionandacknowledgmentofallrisks' => 0,
                 'releaseandwaiverofallclaims' => 0,
@@ -89,21 +83,29 @@ class WaiverController extends BaseAPIController
                 'postedsignsandsafetyrules' => 0,
                 'waiverandrelease' => 0,
 
-                'date' => $current_date
+                'date' => $currentDate
             ],
             'signatureImage' => $photoBase64
         ];
 
-        $body = json_encode($requestPayload);
-        $response = Http::post('https://dynamicpricing-api.dynamicpricingbuilder.com/SeasonPassDashboardAPIs/AddWavierForm?authCode='.$authCode,$body);
+        // 5️⃣ Send request (IMPORTANT PART)
+        $response = Http::withHeaders([
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ])->post(
+            $baseUrl . '/SeasonPassDashboardAPIs/AddWavierForm?authCode=' . $authCode,
+            $requestPayload
+        );
+
         $data = $response->json();
-        
+
+        // 6️⃣ Handle API validation errors (.NET style)
         if ($response->failed()) {
 
             $messages = [];
 
-            if (isset($data['errors']) && is_array($data['errors'])) {
-                foreach ($data['errors'] as $field => $errors) {
+            if (!empty($data['errors']) && is_array($data['errors'])) {
+                foreach ($data['errors'] as $errors) {
                     foreach ($errors as $error) {
                         $messages[] = $error;
                     }
@@ -111,14 +113,14 @@ class WaiverController extends BaseAPIController
             }
 
             return response()->json([
-                'status' => 400,
+                'status' => $response->status(),
                 'success' => false,
                 'message' => 'Validation error',
                 'errors' => $messages
-            ], 400);
+            ], $response->status());
         }
 
-        // SUCCESS RESPONSE
+        // 7️⃣ Success response
         return response()->json([
             'status' => $response->status(),
             'success' => true,
