@@ -81,13 +81,13 @@ class WaiverController extends BaseAPIController
                 'parentPhone' => $request->parent_phone,
                 'emergencyNumber' => $request->phone,
 
-                'permission' => false,
-                'assumptionandacknowledgmentofallrisks' => false,
-                'releaseandwaiverofallclaims' => false,
-                'indemnity' => false,
-                'recreationalservices' => false,
-                'postedsignsandsafetyrules' => false,
-                'waiverandrelease' => false,
+                'permission' => 0,
+                'assumptionandacknowledgmentofallrisks' => 0,
+                'releaseandwaiverofallclaims' => 0,
+                'indemnity' => 0,
+                'recreationalservices' => 0,
+                'postedsignsandsafetyrules' => 0,
+                'waiverandrelease' => 0,
 
                 'date' => $current_date
             ],
@@ -95,14 +95,16 @@ class WaiverController extends BaseAPIController
         ];
 
         $body = json_encode($requestPayload);
-        print_r($body);
-        die();
         $response = Http::post('https://dynamicpricing-api.dynamicpricingbuilder.com/SeasonPassDashboardAPIs/AddWavierForm?authCode='.$authCode,$body);
-        // Debug properly
-        return response()->json([
-            'status' => $response->status(),
-            'success' => $response->successful(),
-            'data' => $response,
-        ]);
+        $data = $response->json();
+        if (isset($data['status']['errorCode']) && $data['status']['errorCode'] == 1) {
+            return $this->sendResponse(400, 'Order Error', ['error' => $data['status']['errorMessage']]);
+        }else{
+            return response()->json([
+                'status' => $response->status(),
+                'success' => $response->successful(),
+                'data' => $response,
+            ]);
+        }
     }
 }
