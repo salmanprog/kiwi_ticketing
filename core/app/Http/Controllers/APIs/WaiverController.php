@@ -71,7 +71,7 @@ class WaiverController extends BaseAPIController
                 'city' => $request->city,
                 'state' => $request->state,
                 'zipCode' => $request->zip_code,
-                'parentPhone' => $request->parent_phone,
+                'parentPhone' => isset($request->parent_phone) ? $request->parent_phone : "",
                 'emergencyNumber' => $request->phone,
 
                 // .NET expects int, not bool
