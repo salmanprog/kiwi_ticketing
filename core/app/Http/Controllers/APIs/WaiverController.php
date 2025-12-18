@@ -49,17 +49,17 @@ class WaiverController extends BaseAPIController
         $baseUrl   = Helper::GeneralSiteSettings('external_api_link_en');
         $authCode  = Helper::GeneralSiteSettings('auth_code_en');
         $current_date = now()->format('Y-m-d');
-        $waiver = Waiver::where('auth_code', $authCode)
-            ->where('order_id', $request->order_id)
-            ->where('qr_code', $request->qr_code)
-            ->where('status', '1')
-            ->first();
+        // $waiver = Waiver::where('auth_code', $authCode)
+        //     ->where('order_id', $request->order_id)
+        //     ->where('qr_code', $request->qr_code)
+        //     ->where('status', '1')
+        //     ->first();
 
-        if ($waiver) {
-            return $this->sendResponse(400, 'Waiver Error', [
-                'coupon_code' => 'Waiver already exist in our record'
-            ]);
-        }
+        // if ($waiver) {
+        //     return $this->sendResponse(400, 'Waiver Error', [
+        //         'coupon_code' => 'Waiver already exist in our record'
+        //     ]);
+        // }
 
        $photoBase64 = base64_encode(
             file_get_contents($request->file('photo')->getRealPath())
