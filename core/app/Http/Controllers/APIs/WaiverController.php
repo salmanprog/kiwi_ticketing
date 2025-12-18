@@ -94,8 +94,8 @@ class WaiverController extends BaseAPIController
             'signatureImage' => $photoBase64
         ];
 
-       
-        $response = Http::post('https://dynamicpricing-api.dynamicpricingbuilder.com/SeasonPassDashboardAPIs/AddWavierForm?authCode='.$authCode,$requestPayload);
+        $body = json_encode($requestPayload);
+        $response = Http::post('https://dynamicpricing-api.dynamicpricingbuilder.com/SeasonPassDashboardAPIs/AddWavierForm?authCode='.$authCode,$body);
         // Debug properly
         return response()->json([
             'status' => $response->status(),
