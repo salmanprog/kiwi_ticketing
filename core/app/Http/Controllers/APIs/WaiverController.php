@@ -97,16 +97,32 @@ class WaiverController extends BaseAPIController
         $body = json_encode($requestPayload);
         $response = Http::post('https://dynamicpricing-api.dynamicpricingbuilder.com/SeasonPassDashboardAPIs/AddWavierForm?authCode='.$authCode,$body);
         $data = $response->json();
-        print_r($data);
-die();
-        if (isset($data['status']['errorCode']) && $data['status']['errorCode'] == 1) {
-            return $this->sendResponse(400, 'Order Error', ['error' => $data['status']['errorMessage']]);
-        }else{
+        
+        if ($response->failed()) {
+
+            $messages = [];
+
+            if (isset($data['errors']) && is_array($data['errors'])) {
+                foreach ($data['errors'] as $field => $errors) {
+                    foreach ($errors as $error) {
+                        $messages[] = $error;
+                    }
+                }
+            }
+
             return response()->json([
-                'status' => $response->status(),
-                'success' => $response->successful(),
-                'data' => $response,
-            ]);
+                'status' => 400,
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $messages
+            ], 400);
         }
+
+        // SUCCESS RESPONSE
+        return response()->json([
+            'status' => $response->status(),
+            'success' => true,
+            'data' => $data
+        ]);
     }
 }
