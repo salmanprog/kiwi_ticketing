@@ -94,15 +94,8 @@ class WaiverController extends BaseAPIController
             'signatureImage' => $photoBase64
         ];
 
-        $response = Http::withHeaders([
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
-            ])
-            ->post(
-                $baseUrl . '/SeasonPassDashboardAPIs/AddWaiverForm',
-                $requestPayload
-            );
-
+       
+        $response = Http::post($baseUrl.'/SeasonPassDashboardAPIs/AddWaiverForm?authCode='.$authCode,$requestPayload);
         // Debug properly
         return response()->json([
             'status' => $response->status(),
