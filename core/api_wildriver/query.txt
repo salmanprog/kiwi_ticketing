@@ -1,12 +1,19 @@
-CREATE TABLE `smartend_product_sale_packages` (
+CREATE TABLE `smartend_waiver_entries` (
   `id` int(11) NOT NULL,
   `slug` varchar(255) DEFAULT NULL,
   `auth_code` varchar(255) NOT NULL,
-  `offerType` enum('any_day','specifc_date') NOT NULL DEFAULT 'any_day',
-  `title` varchar(255) NOT NULL,
-  `description` text DEFAULT NULL,
-  `from_date` varchar(255) DEFAULT NULL,
-  `to_date` varchar(255) DEFAULT NULL,
+  `order_id` varchar(255) NOT NULL,
+  `qr_code` text DEFAULT NULL,
+  `waiver_type` enum('adult','minor') NOT NULL DEFAULT 'adult',
+  `email` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `dob` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `street_address` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `state` varchar(255) DEFAULT NULL,
+  `zip_code` varchar(255) DEFAULT NULL,
+  `photo` varchar(255) DEFAULT NULL,
   `created_by` int(11) NOT NULL DEFAULT 1,
   `updated_by` int(11) NOT NULL DEFAULT 0,
   `status` enum('0','1') NOT NULL DEFAULT '1',
@@ -14,11 +21,15 @@ CREATE TABLE `smartend_product_sale_packages` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-ALTER TABLE `smartend_product_sale_packages`
+ALTER TABLE `smartend_waiver_entries`
   ADD PRIMARY KEY (`id`);
 
-  ALTER TABLE `smartend_product_sale_packages`
+  ALTER TABLE `smartend_waiver_entries`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+ALTER TABLE `smartend_waiver_entries` ADD `parent_name` VARCHAR(255) NULL DEFAULT NULL AFTER `photo`;
+ALTER TABLE `smartend_waiver_entries` ADD `parent_address` INT(255) NULL DEFAULT NULL AFTER `parent_name`;
+ALTER TABLE `smartend_waiver_entries` ADD `parent_phone` VARCHAR(255) NULL DEFAULT NULL AFTER `parent_address`;
 
   CREATE TABLE `smartend_product_sale_addons` (
   `id` int(11) NOT NULL,
