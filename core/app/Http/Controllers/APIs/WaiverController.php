@@ -95,7 +95,7 @@ class WaiverController extends BaseAPIController
         ];
 
        
-        $response = Http::post($baseUrl.'/SeasonPassDashboardAPIs/AddWaiverForm?authCode='.$authCode,$requestPayload);
+        $response = Http::post('https://dynamicpricing-api.dynamicpricingbuilder.com/SeasonPassDashboardAPIs/AddWavierForm?authCode='.$authCode,$requestPayload);
         // Debug properly
         return response()->json([
             'status' => $response->status(),
