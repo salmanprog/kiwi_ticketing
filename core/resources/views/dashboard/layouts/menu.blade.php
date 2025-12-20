@@ -286,6 +286,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                     $transactionActive = in_array($current, ['transactionorders', 'updatetransactionorders']);
                     $LogsActive = in_array($current, ['ordersLogs', 'ordersfailedLogs', 'paymentLogs', 'paymentfailLogs', 'ordersLogsShow']);
                     $emailTemplateActive = in_array($current, ['emailTemplate', 'emailTemplateCreate', 'emailTemplateEdit', 'emailTemplateStore', 'emailTemplateUpdate', 'emailTemplateDestroy', 'smtpConfigure', 'emailLogs']);
+                    $waiverTemplateActive = in_array($current, ['waiver']);
                     ?>
 
                     <!-- Ticket / Pass Management Dropdown -->
@@ -572,6 +573,32 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                             </a>
                         </li>
                     @endif
+
+                     <!-- Waiver Management Dropdown -->
+                    @if ($userRole == 'Webmaster' || in_array(48, $dataSections))
+                        <li class="{{ $waiverTemplateActive ? 'active menue-hie' : '' }}"
+                            style="border-left: 3px solid transparent;">
+                            <a class="kiwi-pd" style="color: #495057;">
+                                <span class="nav-caret no-mrgn">
+                                    <i class="cust-arrow-icon"></i>
+                                </span>
+                                <span class="nav-icon">
+                                    <i class="fas fa-tags" style="color: #6B7280;"></i>
+                                </span>
+                                <span class="nav-text">{{ __('Waiver Management') }}</span>
+                            </a>
+                            <ul class="nav-sub" style="background: #f8f9fa;">
+                                @if ($userRole == 'Webmaster' || in_array(49, $dataSections))
+                                    <li class="{{ $current === 'waiver' ? 'active cust-act' : '' }}">
+                                        <a href="{{ route('waiver') }}" style="color: #495057;">
+                                            <span class="nav-text dashlogo">{{ __('Waiver Entries') }}</span>
+                                        </a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </li>
+                    @endif
+
 
                     <!-- Settings Dropdown -->
                     @if (

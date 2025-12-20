@@ -14,7 +14,7 @@ class WaiverController extends BaseAPIController
     public function index()
     {
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
-        $waiver = Waiver::where('auth_code',$authCode)->where('status','1')->get();
+        $waiver = Waiver::with(['media_slider'])->where('auth_code',$authCode)->where('status','1')->get();
         
         if ($waiver->isEmpty()) {
             return $this->sendResponse(200, 'Retrieved waiver Listing', []);
@@ -39,8 +39,7 @@ class WaiverController extends BaseAPIController
             'street_address' => 'required',
             'city' => 'required',
             'state' => 'required',
-            'zip_code' => 'required',
-            'photo' => 'required|image'
+            'zip_code' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -56,7 +55,6 @@ class WaiverController extends BaseAPIController
         $photoBase64 = base64_encode(
             file_get_contents($request->file('photo')->getRealPath())
         );
-
         // 4️⃣ Prepare payload (DO NOT json_encode)
         $requestPayload = [
             'organization' => [
@@ -88,7 +86,6 @@ class WaiverController extends BaseAPIController
             'signatureImage' => $photoBase64
         ];
 
-        // 5️⃣ Send request (IMPORTANT PART)
         $response = Http::withHeaders([
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
@@ -99,32 +96,74 @@ class WaiverController extends BaseAPIController
 
         $data = $response->json();
 
-        // 6️⃣ Handle API validation errors (.NET style)
-        if ($response->failed()) {
+        $uploadPath = 'uploads/waivers/';
 
-            $messages = [];
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
 
-            if (!empty($data['errors']) && is_array($data['errors'])) {
-                foreach ($data['errors'] as $errors) {
-                    foreach ($errors as $error) {
-                        $messages[] = $error;
-                    }
+            if ($file->isValid()) {
+                if (!file_exists($uploadPath)) {
+                    mkdir($uploadPath, 0755, true);
                 }
+
+                $fileFinalName = time() . rand(1111, 9999) . '.' . $file->getClientOriginalExtension();
+                $file->move($uploadPath, $fileFinalName);
+
+                Helper::imageResize($uploadPath . $fileFinalName);
+                Helper::imageOptimize($uploadPath . $fileFinalName);
+
+                //$entriesWaiver->photo = $fileFinalName;
             }
-
-            return response()->json([
-                'status' => $response->status(),
-                'success' => false,
-                'message' => 'Validation error',
-                'errors' => $messages
-            ], $response->status());
         }
+        $entriesWaiver = new Waiver;
+        $entriesWaiver->auth_code  = Helper::GeneralSiteSettings('auth_code_en');
+        $entriesWaiver->order_id  = $request->order_id;
+        $entriesWaiver->qr_code = $request->qr_code;
+        $entriesWaiver->waiver_type  = $request->waiver_type;
+        $entriesWaiver->email = $request->email;
+        $entriesWaiver->name = $request->name;
+        $entriesWaiver->dob = $request->dob;
+        $entriesWaiver->phone = $request->phone;
+        $entriesWaiver->street_address = $request->street_address;
+        $entriesWaiver->city = $request->city;
+        $entriesWaiver->state = $request->state;
+        $entriesWaiver->zip_code = $request->zip_code;
+        $entriesWaiver->photo = $fileFinalName;
+        $entriesWaiver->parent_name = $request->parent_name;
+        $entriesWaiver->parent_address = $request->parent_address;
+        $entriesWaiver->parent_phone = $request->parent_phone;
+        $entriesWaiver->status = '1';
+        $entriesWaiver->save();
+        
+        $waiver = Waiver::with(['media_slider'])->where('id',$entriesWaiver->id)->where('status','1')->first();
+        $resource = WaiverResource::make($waiver);
+        return $this->sendResponse(200, 'Waiver Form Submited successfully', $resource);
+        // 6️⃣ Handle API validation errors (.NET style)
+        // if ($response->failed()) {
 
-        // 7️⃣ Success response
-        return response()->json([
-            'status' => $response->status(),
-            'success' => true,
-            'data' => $data
-        ]);
+        //     $messages = [];
+
+        //     if (!empty($data['errors']) && is_array($data['errors'])) {
+        //         foreach ($data['errors'] as $errors) {
+        //             foreach ($errors as $error) {
+        //                 $messages[] = $error;
+        //             }
+        //         }
+        //     }
+
+        //     return response()->json([
+        //         'status' => $response->status(),
+        //         'success' => false,
+        //         'message' => 'Validation error',
+        //         'errors' => $messages
+        //     ], $response->status());
+        // }
+
+        // // 7️⃣ Success response
+        // return response()->json([
+        //     'status' => $response->status(),
+        //     'success' => true,
+        //     'data' => $data
+        // ]);
     }
 }

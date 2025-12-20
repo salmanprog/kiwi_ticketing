@@ -37,6 +37,7 @@ use App\Http\Controllers\Dashboard\ProductSalePackagesController;
 use App\Http\Controllers\Dashboard\ProductSaleAddonController;
 use App\Http\Controllers\Dashboard\EmailController;
 use App\Http\Controllers\Dashboard\EmailLogsController;
+use App\Http\Controllers\Dashboard\WaiverController;
 use App\Http\Controllers\Dashboard\LogController;
 use Illuminate\Support\Facades\Route;
 
@@ -422,6 +423,11 @@ Route::post('/coupon/{id}/update', [CouponController::class, 'update'])->name('c
 Route::get('/coupon/destroy/{id}', [CouponController::class, 'destroy'])->name('couponDestroy');
 Route::get('/coupon/get-packages-by-type', [CouponController::class, 'getPackagesByType'])->name('get.packages.by.type');
 Route::get('/coupon/get-packages-products', [CouponController::class, 'getPackagesProducts'])->name('get.packages.products');
+// Waiver Form
+Route::get('/waiver', [WaiverController::class, 'index'])->name('waiver');
+Route::post('/waiver/data', [WaiverController::class, 'getData'])->name('waiver.data');
+Route::get('/waiver/preview/{slug}', [WaiverController::class, 'preview'])
+    ->name('waiver.preview');
 // Email Templates
 Route::get('/email-template', [EmailController::class, 'index'])->name('emailTemplate');
 Route::post('/email-template/data', [EmailController::class, 'getData'])->name('email.data');

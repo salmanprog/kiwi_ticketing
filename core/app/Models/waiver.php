@@ -51,6 +51,10 @@ class Waiver extends Model
         });
     }
 
+    public function media_slider()
+    {
+        return $this->hasMany(Media::class, 'module_id')->where('module','waiver_entries');
+    }
     /**
      * Generate a unique slug for the Coupons.
      */
