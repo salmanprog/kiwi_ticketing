@@ -51,7 +51,7 @@ class WaiverController extends BaseAPIController
                             ->first();
 
         if ($existingWaiver) {
-            return $this->sendResponse(400, 'Error: Waiver for this Order ID or QR Code is already submitted', []);
+            return $this->sendResponse(400, 'Waiver Error', ['error' => 'Waiver for this Order ID or QR Code is already submitted']);
         }
         // 2️⃣ Config values
         $baseUrl  = 'https://dynamicpricing-api.dynamicpricingbuilder.com';
