@@ -112,7 +112,6 @@ class WaiverController extends BaseAPIController
                 Helper::imageResize($uploadPath . $fileFinalName);
                 Helper::imageOptimize($uploadPath . $fileFinalName);
 
-                //$entriesWaiver->photo = $fileFinalName;
             }
         }
         $entriesWaiver = new Waiver;
