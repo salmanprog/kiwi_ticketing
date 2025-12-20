@@ -37,7 +37,7 @@ class EmailController extends BaseAPIController
 
             $email_subject = $get_mail_content->subject;
             $from_email = config('mail.from.address');
-            $from_name = 'WildRivers';
+            $from_name = 'BolderAdventurePark';
             $get_emails = array_map('trim', explode(',', $get_mail_content->to_reciever));
             foreach ($get_emails as $email) {
                 Mail::send('emails.template', [

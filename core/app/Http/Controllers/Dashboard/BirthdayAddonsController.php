@@ -271,12 +271,11 @@ class BirthdayAddonsController extends Controller
             $tickets = [];
             if(count($tickets_arr) > 0){
                 for($i=0;$i<count($tickets_arr);$i++){
-                    //if($tickets_arr[$i]['venueId'] == 0 && $tickets_arr[$i]['ticketCategory'] !== 'Season Passes' && $tickets_arr[$i]['ticketCategory'] !== 'Anyday' ){
-                    if($tickets_arr[$i]['venueId'] == 0 && $tickets_arr[$i]['ticketCategory'] !== 'Season Passes' && $tickets_arr[$i]['ticketCategory'] !== 'Anyday'){
+                    // if($tickets_arr[$i]['venueId'] == 0 && $tickets_arr[$i]['ticketCategory'] !== 'Season Passes' && $tickets_arr[$i]['ticketCategory'] !== 'Anyday'){
+                    //     array_push($tickets,$tickets_arr[$i]);
+                    // }elseif($tickets_arr[$i]['ticketCategory'] == 'Cabanas'){
                         array_push($tickets,$tickets_arr[$i]);
-                    }elseif($tickets_arr[$i]['ticketCategory'] == 'Cabanas'){
-                        array_push($tickets,$tickets_arr[$i]);
-                    }
+                    //}
                 }
             }
         }

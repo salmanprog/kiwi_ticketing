@@ -40,7 +40,7 @@ class MailHelper
                         <td style="padding:5px">$' . number_format($purchase->price, 2) . '</td>
                         <td style="padding:5px">' . ($purchase->valid_until ?? '-') . '</td>
                         <td style="padding:5px"> <img src="https://quickchart.io/qr?text='.$purchase->visualId.'&margin=2&size=150"
-                                                        title="WildRiver Ticket QR Code" class="cabana_qr_code" /></td>
+                                                        title="Bolder Ticket QR Code" class="cabana_qr_code" /></td>
                     </tr>';
                 }
             $ticketsHtml .= '</table>';
@@ -101,7 +101,7 @@ class MailHelper
             $email_subject = $get_mail_content->subject;
             $to_email = $data->customer->email;
             $from_email = config('mail.from.address');
-            $from_name = 'WildRivers';
+            $from_name = 'BolderAdventurePark';
             $get_emails = array_map('trim', explode(',', $get_mail_content->to_reciever));
             if (!in_array($to_email, $get_emails)) {
                 $get_emails[] = $to_email;
