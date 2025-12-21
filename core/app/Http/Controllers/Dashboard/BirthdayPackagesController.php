@@ -130,8 +130,19 @@ class BirthdayPackagesController extends Controller
         $date = Carbon::today()->toDateString();
 
         try {
-            $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
-
+            //$response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+            $filterParams = [];
+            if (filter_var(env('API_FILTER'), FILTER_VALIDATE_BOOLEAN)) {
+                parse_str(env('API_FILTER_PARAMS'), $filterParams);
+            }
+            $response = Http::get(
+                $baseUrl . '/Pricing/GetAllProductPrice',
+                [
+                    'authcode' => $authCode,
+                    'date' => $date,
+                    ...$filterParams,
+                ]
+            );
             if ($response->successful()) {
             $apiData = $response->json();
             $tickets = $apiData['getAllProductPrice']['data'] ?? [];
@@ -282,8 +293,19 @@ class BirthdayPackagesController extends Controller
             $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
             $birthday_packages = BirthdayPackages::with(['cabanas','media_slider','media_cover'])->where('slug',$slug)->first();
             $selectedcabanas = $birthday_packages->cabanas->pluck('ticketSlug')->toArray();
-            $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
-
+            //$response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+            $filterParams = [];
+            if (filter_var(env('API_FILTER'), FILTER_VALIDATE_BOOLEAN)) {
+                parse_str(env('API_FILTER_PARAMS'), $filterParams);
+            }
+            $response = Http::get(
+                $baseUrl . '/Pricing/GetAllProductPrice',
+                [
+                    'authcode' => $authCode,
+                    'date' => $date,
+                    ...$filterParams,
+                ]
+            );
             if ($response->successful()) {
             $apiData = $response->json();
             $tickets = $apiData['getAllProductPrice']['data'] ?? [];

@@ -119,10 +119,22 @@ class KabanaAddonsController extends Controller
         $date = Carbon::today()->toDateString();
 
         // Fetch API data
-        $response = Http::get($baseUrl . '/Pricing/GetAllProductPrice', [
-            'authcode' => $authCode,
-            'date' => $date
-        ]);
+        // $response = Http::get($baseUrl . '/Pricing/GetAllProductPrice', [
+        //     'authcode' => $authCode,
+        //     'date' => $date
+        // ]);
+        $filterParams = [];
+        if (filter_var(env('API_FILTER'), FILTER_VALIDATE_BOOLEAN)) {
+            parse_str(env('API_FILTER_PARAMS'), $filterParams);
+        }
+        $response = Http::get(
+            $baseUrl . '/Pricing/GetAllProductPrice',
+            [
+                'authcode' => $authCode,
+                'date' => $date,
+                ...$filterParams,
+            ]
+        );
 
         $tickets = [];
 
@@ -233,7 +245,19 @@ class KabanaAddonsController extends Controller
         $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $date = Carbon::today()->toDateString();
-        $cabanaResponse = Http::get($baseUrl . '/Pricing/GetAllProductPrice?authcode=' . $authCode . '&date=' . $date);
+        //$cabanaResponse = Http::get($baseUrl . '/Pricing/GetAllProductPrice?authcode=' . $authCode . '&date=' . $date);
+        $filterParams = [];
+        if (filter_var(env('API_FILTER'), FILTER_VALIDATE_BOOLEAN)) {
+            parse_str(env('API_FILTER_PARAMS'), $filterParams);
+        }
+        $cabanaResponse = Http::get(
+            $baseUrl . '/Pricing/GetAllProductPrice',
+            [
+                'authcode' => $authCode,
+                'date' => $date,
+                ...$filterParams,
+            ]
+        );
         if (isset($params['ticket']) && count($params['ticket']) > 0) {
             if ($cabanaResponse->successful()) {
                 $apiData = $cabanaResponse->json();

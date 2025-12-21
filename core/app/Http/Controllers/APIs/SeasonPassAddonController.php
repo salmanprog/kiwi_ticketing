@@ -24,10 +24,22 @@ class SeasonPassAddonController extends BaseAPIController
         }
 
         try {
-            $response = Http::get("{$baseUrl}/Pricing/GetAllProductPrice", [
-                'authcode' => $authCode,
-                'date' => $date,
-            ]);
+            // $response = Http::get("{$baseUrl}/Pricing/GetAllProductPrice", [
+            //     'authcode' => $authCode,
+            //     'date' => $date,
+            // ]);
+            $filterParams = [];
+            if (filter_var(env('API_FILTER'), FILTER_VALIDATE_BOOLEAN)) {
+                parse_str(env('API_FILTER_PARAMS'), $filterParams);
+            }
+            $response = Http::get(
+                $baseUrl . '/Pricing/GetAllProductPrice',
+                [
+                    'authcode' => $authCode,
+                    'date' => $date,
+                    ...$filterParams,
+                ]
+            );
             $data = $response->json();
             if (isset($data['status']['errorCode']) && $data['status']['errorCode'] === 1) {
                 return $this->sendResponse(400, 'Season Pass Error', ['error' => $data['status']['errorMessage']]);

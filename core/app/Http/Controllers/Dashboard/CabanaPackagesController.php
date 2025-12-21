@@ -141,8 +141,19 @@ class CabanaPackagesController extends Controller
         $date = Carbon::today()->toDateString();
 
         try {
-            $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
-
+            //$response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+            $filterParams = [];
+            if (filter_var(env('API_FILTER'), FILTER_VALIDATE_BOOLEAN)) {
+                parse_str(env('API_FILTER_PARAMS'), $filterParams);
+            }
+            $response = Http::get(
+                $baseUrl . '/Pricing/GetAllProductPrice',
+                [
+                    'authcode' => $authCode,
+                    'date' => $date,
+                    ...$filterParams,
+                ]
+            );
             if ($response->successful()) {
             $apiData = $response->json();
             $tickets = $apiData['getAllProductPrice']['data'] ?? [];
@@ -198,8 +209,19 @@ class CabanaPackagesController extends Controller
                 return redirect()->action('Dashboard\CabanaPackagesController@create')->with('errorMessage', 'Cabana already exists.');
             }
 
-            $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
-
+            //$response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+            $filterParams = [];
+            if (filter_var(env('API_FILTER'), FILTER_VALIDATE_BOOLEAN)) {
+                parse_str(env('API_FILTER_PARAMS'), $filterParams);
+            }
+            $response = Http::get(
+                $baseUrl . '/Pricing/GetAllProductPrice',
+                [
+                    'authcode' => $authCode,
+                    'date' => $date,
+                    ...$filterParams,
+                ]
+            );
             if ($response->successful()) {
                 $apiData = $response->json();
                 $tickets = $apiData['getAllProductPrice']['data'] ?? [];

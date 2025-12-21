@@ -132,7 +132,21 @@ class GeneralTicketAddonController extends Controller
         $date = Carbon::today()->toDateString();
 
         try {
-            $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+            //$response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+           $filterParams = [];
+            if (filter_var(env('API_FILTER'), FILTER_VALIDATE_BOOLEAN)) {
+                parse_str(env('API_FILTER_PARAMS'), $filterParams);
+            }
+            $response = Http::get(
+                $baseUrl . '/Pricing/GetAllProductPrice',
+                [
+                    'authcode' => $authCode,
+                    'date' => $date,
+                    ...$filterParams,
+                ]
+            );
+
+            //dd($response->effectiveUri()->__toString());
             $getTicketGeneral = GeneralTicketPackages::where('auth_code', $authCode)->where('status', '=', '1')->get();
             if ($response->successful()) {
             $apiData = $response->json();
@@ -193,8 +207,19 @@ class GeneralTicketAddonController extends Controller
                 return redirect()->action('Dashboard\GeneralTicketAddonController@create')->with('errorMessage', 'You can add only 4 primary products.');
             }
 
-            $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
-
+            //$response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+            $filterParams = [];
+            if (filter_var(env('API_FILTER'), FILTER_VALIDATE_BOOLEAN)) {
+                parse_str(env('API_FILTER_PARAMS'), $filterParams);
+            }
+            $response = Http::get(
+                $baseUrl . '/Pricing/GetAllProductPrice',
+                [
+                    'authcode' => $authCode,
+                    'date' => $date,
+                    ...$filterParams,
+                ]
+            );
             if ($response->successful()) {
                 $apiData = $response->json();
                 $tickets = $apiData['getAllProductPrice']['data'] ?? [];

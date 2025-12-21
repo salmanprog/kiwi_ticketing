@@ -147,8 +147,19 @@ class SeasonPassAddonsController extends Controller
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
         $getSeasonPass = SeasonPass::with(['media_slider'])->where('auth_code', $authCode)->where('status','1')->orderby('id', 'asc')->get();
         try {
-            $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
-
+            //$response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+            $filterParams = [];
+            if (filter_var(env('API_FILTER'), FILTER_VALIDATE_BOOLEAN)) {
+                parse_str(env('API_FILTER_PARAMS'), $filterParams);
+            }
+            $response = Http::get(
+                $baseUrl . '/Pricing/GetAllProductPrice',
+                [
+                    'authcode' => $authCode,
+                    'date' => $date,
+                    ...$filterParams,
+                ]
+            );
             if ($response->successful()) {
             $apiData = $response->json();
             $tickets = $apiData['getAllProductPrice']['data'] ?? [];
@@ -195,8 +206,19 @@ class SeasonPassAddonsController extends Controller
                 return redirect()->action('Dashboard\SeasonPassAddonsController@create')->with('errorMessage', 'Season pass addon already exists.');
             }
 
-            $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
-
+            //$response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+            $filterParams = [];
+            if (filter_var(env('API_FILTER'), FILTER_VALIDATE_BOOLEAN)) {
+                parse_str(env('API_FILTER_PARAMS'), $filterParams);
+            }
+            $response = Http::get(
+                $baseUrl . '/Pricing/GetAllProductPrice',
+                [
+                    'authcode' => $authCode,
+                    'date' => $date,
+                    ...$filterParams,
+                ]
+            );
             if ($response->successful()) {
                 $apiData = $response->json();
                 $tickets = $apiData['getAllProductPrice']['data'] ?? [];
@@ -285,7 +307,19 @@ class SeasonPassAddonsController extends Controller
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
         $seasonpassAddon = SeasonPassAddon::with(['media_slider'])->where('slug', $id)->first();
         $getSeasonPass = SeasonPass::with(['media_slider'])->where('slug', $seasonpassAddon->season_passes_slug)->where('auth_code', $authCode)->first();
-        $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+        //$response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+        $filterParams = [];
+            if (filter_var(env('API_FILTER'), FILTER_VALIDATE_BOOLEAN)) {
+                parse_str(env('API_FILTER_PARAMS'), $filterParams);
+            }
+            $response = Http::get(
+                $baseUrl . '/Pricing/GetAllProductPrice',
+                [
+                    'authcode' => $authCode,
+                    'date' => $date,
+                    ...$filterParams,
+                ]
+            );
         if ($response->successful()) {
             $apiData = $response->json();
             $tickets = $apiData['getAllProductPrice']['data'] ?? [];

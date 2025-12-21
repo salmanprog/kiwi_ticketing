@@ -38,8 +38,19 @@ class KabanaSettingController extends Controller
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
         try {
-            $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
-
+            //$response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+            $filterParams = [];
+            if (filter_var(env('API_FILTER'), FILTER_VALIDATE_BOOLEAN)) {
+                parse_str(env('API_FILTER_PARAMS'), $filterParams);
+            }
+            $response = Http::get(
+                $baseUrl . '/Pricing/GetAllProductPrice',
+                [
+                    'authcode' => $authCode,
+                    'date' => $date,
+                    ...$filterParams,
+                ]
+            );
             if ($response->successful()) {
             $apiData = $response->json();
             $tickets = $apiData['getAllProductPrice']['data'] ?? [];
@@ -116,7 +127,19 @@ class KabanaSettingController extends Controller
         $date = Carbon::today()->toDateString();
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
-        $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+        //$response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+        $filterParams = [];
+        if (filter_var(env('API_FILTER'), FILTER_VALIDATE_BOOLEAN)) {
+            parse_str(env('API_FILTER_PARAMS'), $filterParams);
+        }
+        $response = Http::get(
+            $baseUrl . '/Pricing/GetAllProductPrice',
+            [
+                'authcode' => $authCode,
+                'date' => $date,
+                ...$filterParams,
+            ]
+        );
         if ($response->successful()) {
             $apiData = $response->json();
             $tickets_arr = $apiData['getAllProductPrice']['data'] ?? [];
@@ -173,7 +196,19 @@ class KabanaSettingController extends Controller
         //         }
         //     }
         // }
-        $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+        //$response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+        $filterParams = [];
+        if (filter_var(env('API_FILTER'), FILTER_VALIDATE_BOOLEAN)) {
+            parse_str(env('API_FILTER_PARAMS'), $filterParams);
+        }
+        $response = Http::get(
+            $baseUrl . '/Pricing/GetAllProductPrice',
+            [
+                'authcode' => $authCode,
+                'date' => $date,
+                ...$filterParams,
+            ]
+        );
         if ($response->successful()) {
             $apiData = $response->json();
             $tickets_arr = $apiData['getAllProductPrice']['data'] ?? [];

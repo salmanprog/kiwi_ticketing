@@ -211,8 +211,19 @@ class BirthdayAddonsController extends Controller
             $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
             $authCode = Helper::GeneralSiteSettings('auth_code_en');
             $date = Carbon::today()->toDateString();
-            $cabanaResponse = Http::get($baseUrl . '/Pricing/GetAllProductPrice?authcode=' . $authCode . '&date=' . $date);
-
+            //$cabanaResponse = Http::get($baseUrl . '/Pricing/GetAllProductPrice?authcode=' . $authCode . '&date=' . $date);
+            $filterParams = [];
+            if (filter_var(env('API_FILTER'), FILTER_VALIDATE_BOOLEAN)) {
+                parse_str(env('API_FILTER_PARAMS'), $filterParams);
+            }
+            $cabanaResponse = Http::get(
+                $baseUrl . '/Pricing/GetAllProductPrice',
+                [
+                    'authcode' => $authCode,
+                    'date' => $date,
+                    ...$filterParams,
+                ]
+            );
             if ($cabanaResponse->successful()) {
                 $apiData = $cabanaResponse->json();
                 $tickets = $apiData['getAllProductPrice']['data'] ?? [];
@@ -264,7 +275,19 @@ class BirthdayAddonsController extends Controller
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
         $cabana = BirthdayPackages::where('slug', $id)->first();
         $cabana_addon = BirthdayAddon::select('ticketSlug', 'price', 'quantity')->where('birthday_slug', $id)->get()->toArray();
-        $response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+        //$response = Http::get($baseUrl.'/Pricing/GetAllProductPrice?authcode='.$authCode.'&date='.$date);
+        $filterParams = [];
+            if (filter_var(env('API_FILTER'), FILTER_VALIDATE_BOOLEAN)) {
+                parse_str(env('API_FILTER_PARAMS'), $filterParams);
+            }
+            $response = Http::get(
+                $baseUrl . '/Pricing/GetAllProductPrice',
+                [
+                    'authcode' => $authCode,
+                    'date' => $date,
+                    ...$filterParams,
+                ]
+            );
         if ($response->successful()) {
             $apiData = $response->json();
             $tickets_arr = $apiData['getAllProductPrice']['data'] ?? [];
