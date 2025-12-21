@@ -1,19 +1,9 @@
-CREATE TABLE `smartend_waiver_entries` (
+CREATE TABLE `smartend_front_gate_packages` (
   `id` int(11) NOT NULL,
   `slug` varchar(255) DEFAULT NULL,
   `auth_code` varchar(255) NOT NULL,
-  `order_id` varchar(255) NOT NULL,
-  `qr_code` text DEFAULT NULL,
-  `waiver_type` enum('adult','minor') NOT NULL DEFAULT 'adult',
-  `email` varchar(255) DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `dob` varchar(255) DEFAULT NULL,
-  `phone` varchar(255) DEFAULT NULL,
-  `street_address` varchar(255) DEFAULT NULL,
-  `city` varchar(255) DEFAULT NULL,
-  `state` varchar(255) DEFAULT NULL,
-  `zip_code` varchar(255) DEFAULT NULL,
-  `photo` varchar(255) DEFAULT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
   `created_by` int(11) NOT NULL DEFAULT 1,
   `updated_by` int(11) NOT NULL DEFAULT 0,
   `status` enum('0','1') NOT NULL DEFAULT '1',
@@ -21,15 +11,14 @@ CREATE TABLE `smartend_waiver_entries` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-ALTER TABLE `smartend_waiver_entries`
+ALTER TABLE `smartend_front_gate_packages`
   ADD PRIMARY KEY (`id`);
 
-  ALTER TABLE `smartend_waiver_entries`
+  ALTER TABLE `smartend_front_gate_packages`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
-ALTER TABLE `smartend_waiver_entries` ADD `parent_name` VARCHAR(255) NULL DEFAULT NULL AFTER `photo`;
-ALTER TABLE `smartend_waiver_entries` ADD `parent_address` INT(255) NULL DEFAULT NULL AFTER `parent_name`;
-ALTER TABLE `smartend_waiver_entries` ADD `parent_phone` VARCHAR(255) NULL DEFAULT NULL AFTER `parent_address`;
+  
+INSERT INTO `smartend_front_gate_packages` (`id`, `slug`, `auth_code`, `title`, `description`, `created_by`, `updated_by`, `status`, `created_at`, `updated_at`) VALUES ('1', 'front-gate', '0a27e421-e1e7-4530-80f8-fca5789b79be', 'Front Gate', 'This is testing', '1', '0', '1', NULL, NULL);
 
   CREATE TABLE `smartend_product_sale_addons` (
   `id` int(11) NOT NULL,

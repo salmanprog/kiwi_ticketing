@@ -206,7 +206,6 @@ class OrderController extends BaseAPIController
         }
     }
 
-
     public function OrderUpdate(Request $request)
     {
         $validator = Validator::make($request->all(), [

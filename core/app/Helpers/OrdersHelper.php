@@ -43,7 +43,8 @@ class OrdersHelper
             'general_ticket' => 'ge-'.$get_package->id.date("y").'_',
             'season_pass' => 'sp-'.$get_package->id.date("y").'_',
             'offer_creation' => 'of-'.$get_package->id.date("y").'_',
-            'product_sale' => 'pro-'.$get_package->id.date("y").'_'
+            'product_sale' => 'pro-'.$get_package->id.date("y").'_',
+            'front_gate' => 'fg-'.$get_package->id.date("y").'_'
         ];
 
         $prefix = $prefixMap[$requestPayload['type']] ?? 'any_';
@@ -150,7 +151,8 @@ class OrdersHelper
             'general_ticket' => 'ge-'.$get_package->id.date("y").'_',
             'season_pass' => 'sp='.$get_package->id.date("y").'_',
             'offer_creation' => 'of='.$get_package->id.date("y").'_',
-            'product_sale' => 'pro='.$get_package->id.date("y").'_'
+            'product_sale' => 'pro='.$get_package->id.date("y").'_',
+            'front_gate' => 'fg-'.$get_package->id.date("y").'_'
         ];
 
         $prefix = $prefixMap[$requestPayload['type']] ?? 'any_';
@@ -214,7 +216,7 @@ class OrdersHelper
 
     public static function order_types($type)
     {
-        $orderTypes = ['birthday', 'cabana', 'general_ticket', 'season_pass', 'offer_creation', 'product_sale'];
+        $orderTypes = ['birthday', 'cabana', 'general_ticket', 'season_pass', 'offer_creation', 'product_sale', 'front_gate'];
 
         return in_array($type, $orderTypes) ? $type : null;
     }
@@ -239,6 +241,9 @@ class OrdersHelper
                 break;
              case 'product_sale':
                 $packages = \App\Models\ProductSale::select('id', 'title as name')->where('id',$package_id)->first();
+                break;
+            case 'front_gate':
+                $packages = \App\Models\FrontGate::select('id', 'title as name')->where('id',$package_id)->first();
                 break;
             default:
                 $packages = [];
