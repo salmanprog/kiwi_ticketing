@@ -104,6 +104,11 @@ class Order extends Model
         return $this->hasOne(ProductSale::class, 'id','package_id');
     }
 
+    public function front_gate()
+    {
+        return $this->hasOne(FrontGate::class, 'id','package_id');
+    }
+
     public function apply_coupon()
     {
         return $this->hasOne(OrderCoupon::class, 'order_id','id');

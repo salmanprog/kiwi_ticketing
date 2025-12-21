@@ -283,6 +283,7 @@
                             <option value="general_ticket">{!! __('Platform Ticket') !!}</option>
                             <option value="season_pass">{!! __('Season Pass') !!}</option>
                             <option value="offer_creation">{!! __('Offers') !!}</option>
+                            <option value="product_sale">{!! __('Product Sale') !!}</option>
                         </select>
                     </div>
                 </div>

@@ -869,6 +869,7 @@ class OrderController extends Controller
             'season_pass'   => 'dashboard.seasonpassorders.show',
             'offer_creation'   => 'dashboard.offercreationorders.show',
             'product_sale'   => 'dashboard.productsaleorders.show',
+            'front_gate'   => 'dashboard.frontgateorders.show',
         ];
 
         $view = $views[$get_cabana_orders->type] ?? 'dashboard.birthdayorders.show';
@@ -896,7 +897,10 @@ class OrderController extends Controller
                 break;
             case 'product_sale':
                 $packages = \App\Models\ProductSale::select('id', 'title as name')->get();
-                break;  
+                break;
+            case 'front_gate':
+                $packages = \App\Models\FrontGate::select('id', 'title as name')->get();
+                break;
             default:
                 $packages = [];
         }

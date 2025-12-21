@@ -262,6 +262,9 @@ class CouponController extends Controller
             case 'offer_creation':
                 $packages = \App\Models\OfferCreation::select('id', 'slug', 'title as name')->where('status','1')->get();
                 break;
+            case 'product_sale':
+                $packages = \App\Models\ProductSale::select('id', 'slug', 'title as name')->where('status','1')->get();
+                break;
             default:
                 $packages = [];
         }
@@ -290,6 +293,9 @@ class CouponController extends Controller
                 break;
             case 'offer_creation':
                 $packages = \App\Models\OfferAddon::select('id', 'ticketSlug', 'ticketType as name')->where('offerSlug',$slug)->where('status','1')->get();
+                break;
+            case 'product_sale':
+                $packages = \App\Models\ProductSaleAddon::select('id', 'ticketSlug', 'ticketType as name')->where('offerSlug',$slug)->where('status','1')->get();
                 break;
             default:
                 $packages = [];

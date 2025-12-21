@@ -555,6 +555,8 @@
                             $.each(response.packages, function(index, addon) {
                                 const selectedAddons = @json($couponsPackages->tickets->pluck('ticket')->toArray());
                                 const checked = selectedAddons.includes(addon.ticketSlug) ? 'checked' : '';
+                                console.log('selectedAddons============>>',selectedAddons)
+                                console.log('addon============>>',addon)
                                 html += `
                                     <div class="col-md-4 col-sm-6 mb-2">
                                         <label class="ui-check ui-check-md d-block">
