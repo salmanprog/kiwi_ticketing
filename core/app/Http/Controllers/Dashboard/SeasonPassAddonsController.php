@@ -163,6 +163,7 @@ class SeasonPassAddonsController extends Controller
             if ($response->successful()) {
             $apiData = $response->json();
             $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+            $tickets = array_map('mapTicketName', $tickets);
             $addon_arr = [];
             if(count($tickets) > 0){
                 for($i=0;$i<count($tickets);$i++){
@@ -222,6 +223,7 @@ class SeasonPassAddonsController extends Controller
             if ($response->successful()) {
                 $apiData = $response->json();
                 $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+                $tickets = array_map('mapTicketName', $tickets);
                 $tickets_arr = [];
 
                 if (!empty($tickets)) {
@@ -323,6 +325,7 @@ class SeasonPassAddonsController extends Controller
         if ($response->successful()) {
             $apiData = $response->json();
             $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+            $tickets = array_map('mapTicketName', $tickets);
             $fillter_arr = [];
             if (!empty($tickets)) {
                 foreach ($tickets as $ticket) {

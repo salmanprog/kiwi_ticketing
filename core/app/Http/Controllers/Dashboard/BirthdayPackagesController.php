@@ -146,6 +146,7 @@ class BirthdayPackagesController extends Controller
             if ($response->successful()) {
             $apiData = $response->json();
             $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+            $tickets = array_map('mapTicketName', $tickets);
             $fillter_arr = [];
             if(count($tickets) > 0){
                 for($i=0;$i<count($tickets);$i++){
@@ -309,6 +310,7 @@ class BirthdayPackagesController extends Controller
             if ($response->successful()) {
             $apiData = $response->json();
             $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+            $tickets = array_map('mapTicketName', $tickets);
             $fillter_arr = [];
             if(count($tickets) > 0){
                 for($i=0;$i<count($tickets);$i++){

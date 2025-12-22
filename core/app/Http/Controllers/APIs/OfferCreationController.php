@@ -78,6 +78,7 @@ class OfferCreationController extends BaseAPIController
                 return $this->sendResponse(400, 'Offers Error', ['error' => $data['status']['errorMessage']]);
             }
             $tickets = $data['getAllProductPrice']['data'] ?? [];
+            $tickets = array_map('mapTicketName', $tickets);
             $filteredTickets = [];
             if (count($tickets) > 0) {
                 $ticketSlugs = array_column($tickets, 'ticketSlug');

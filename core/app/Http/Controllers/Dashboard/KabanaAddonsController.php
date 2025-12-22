@@ -141,7 +141,7 @@ class KabanaAddonsController extends Controller
         if ($response->successful()) {
             $apiData = $response->json();
             $tickets_arr = $apiData['getAllProductPrice']['data'] ?? [];
-
+            $tickets_arr = array_map('mapTicketName', $tickets_arr);
             // Filter tickets
             foreach ($tickets_arr as $ticket) {
                 if (
@@ -262,6 +262,7 @@ class KabanaAddonsController extends Controller
             if ($cabanaResponse->successful()) {
                 $apiData = $cabanaResponse->json();
                 $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+                $tickets = array_map('mapTicketName', $tickets);
                 $ticketMap = [];
                 for($i=0;$i<count($tickets);$i++){
                     if($tickets[$i]['ticketSlug'] == $cabanaSlug ){

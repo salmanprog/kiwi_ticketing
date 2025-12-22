@@ -60,6 +60,7 @@ class ExternalOrderController extends BaseAPIController
                 $apiData = $response->json();
                 $sessionId = $apiData['sessionId'] ?? 0;
                 $tickets = $apiData['data'] ?? [];
+                $tickets = array_map('mapTicketName', $tickets);
                 $tickets = collect($tickets)->map(function ($ticket) use ($sessionId) {
                     $ticket['sessionId'] = $sessionId;
                     return $ticket;

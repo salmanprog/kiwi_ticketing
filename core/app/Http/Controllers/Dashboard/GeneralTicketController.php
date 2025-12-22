@@ -56,6 +56,7 @@ class GeneralTicketController extends Controller
             if ($response->successful()) {
                 $apiData = $response->json();
                 $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+                $tickets = array_map('mapTicketName', $tickets);
                 $dbSlugs = $getTicketGeneral->pluck('ticketSlug')->toArray();
                 $matchedTickets = collect($tickets)->filter(function ($ticket) use ($dbSlugs) {
                     return in_array($ticket['ticketSlug'], $dbSlugs);
@@ -114,6 +115,7 @@ class GeneralTicketController extends Controller
             if ($response->successful()) {
             $apiData = $response->json();
             $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+            $tickets = array_map('mapTicketName', $tickets);
             $fillter_arr = [];
             if(count($tickets) > 0){
                 for($i=0;$i<count($tickets);$i++){
@@ -183,6 +185,7 @@ class GeneralTicketController extends Controller
             if ($response->successful()) {
                 $apiData = $response->json();
                 $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+                $tickets = array_map('mapTicketName', $tickets);
                 $tickets_arr = [];
 
                 if (!empty($tickets)) {
@@ -281,6 +284,7 @@ class GeneralTicketController extends Controller
             if ($response->successful()) {
             $apiData = $response->json();
             $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+            $tickets = array_map('mapTicketName', $tickets);
             $fillter_arr = [];
             if(count($tickets) > 0){
                 for($i=0;$i<count($tickets);$i++){

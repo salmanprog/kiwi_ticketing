@@ -151,6 +151,7 @@ class GeneralTicketAddonController extends Controller
             if ($response->successful()) {
             $apiData = $response->json();
             $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+            $tickets = array_map('mapTicketName', $tickets);
             $tickets_arr = ['ticket' => [], 'ticket_addon' => []];
             $dbSlugs = $getTicketGeneral->pluck('ticketSlug')->toArray();
             if (!empty($tickets)) {
@@ -223,8 +224,9 @@ class GeneralTicketAddonController extends Controller
             if ($response->successful()) {
                 $apiData = $response->json();
                 $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+                $tickets = array_map('mapTicketName', $tickets);
                 $tickets_arr = ['ticket' => [], 'ticket_addon' => []];
-
+                
                 if (!empty($tickets)) {
                     foreach ($tickets as $ticket) {
                         // if ($ticket['ticketSlug'] == $request->generalTicketSlug ) {

@@ -42,7 +42,7 @@ class BirthdayController extends BaseAPIController
         if ($response->successful()) {
             $apiData = $response->json();
             $tickets = $apiData['getAllProductPrice']['data'] ?? [];
-
+            $tickets = array_map('mapTicketName', $tickets);
             foreach ($birthday as $package) {
                 $ticketSlugs = BirthdayCabanas::where('birthday_package_id', $package->id)
                     ->pluck('ticketSlug')

@@ -146,6 +146,7 @@ class OfferAddonController extends Controller
             if ($response->successful()) {
             $apiData = $response->json();
             $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+            $tickets = array_map('mapTicketName', $tickets);
             $tickets_arr = ['ticket' => [], 'ticket_addon' => []];
             $dbSlugs = $offerCreation->pluck('ticketSlug')->toArray();
             if (!empty($tickets)) {
@@ -217,6 +218,7 @@ class OfferAddonController extends Controller
             if ($response->successful()) {
                 $apiData = $response->json();
                 $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+                $tickets = array_map('mapTicketName', $tickets);
                 $tickets_arr = ['ticket' => [], 'ticket_addon' => []];
 
                 if (!empty($tickets)) {

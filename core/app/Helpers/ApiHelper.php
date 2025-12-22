@@ -16,13 +16,26 @@ class ApiHelper
             $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
             $authCode = Helper::GeneralSiteSettings('auth_code_en');
 
-            $response = Http::get($baseUrl . '/Pricing/GetAllProductPrice', [
-                'authcode' => $authCode,
-                'date'     => $date,
-            ]);
+            // $response = Http::get($baseUrl . '/Pricing/GetAllProductPrice', [
+            //     'authcode' => $authCode,
+            //     'date'     => $date,
+            // ]);
+            $filterParams = [];
+            if (filter_var(env('API_FILTER'), FILTER_VALIDATE_BOOLEAN)) {
+                parse_str(env('API_FILTER_PARAMS'), $filterParams);
+            }
+            $response = Http::get(
+                $baseUrl . '/Pricing/GetAllProductPrice',
+                [
+                    'authcode' => $authCode,
+                    'date' => $date,
+                    ...$filterParams,
+                ]
+            );
             if ($response->successful()) {
                 $apiData = $response->json();
                 $products = $apiData['getAllProductPrice']['data'] ?? [];
+                $products = array_map('mapTicketName', $products);
                 $dbSlugs = $query->pluck('ticketSlug')->toArray();
                 
                 $filtered = ['ticket_addon' => []];
@@ -51,14 +64,27 @@ class ApiHelper
             $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
             $authCode = Helper::GeneralSiteSettings('auth_code_en');
 
-            $response = Http::get($baseUrl . '/Pricing/GetAllProductPrice', [
-                'authcode' => $authCode,
-                'date'     => $date,
-            ]);
+            // $response = Http::get($baseUrl . '/Pricing/GetAllProductPrice', [
+            //     'authcode' => $authCode,
+            //     'date'     => $date,
+            // ]);
+            $filterParams = [];
+            if (filter_var(env('API_FILTER'), FILTER_VALIDATE_BOOLEAN)) {
+                parse_str(env('API_FILTER_PARAMS'), $filterParams);
+            }
+            $response = Http::get(
+                $baseUrl . '/Pricing/GetAllProductPrice',
+                [
+                    'authcode' => $authCode,
+                    'date' => $date,
+                    ...$filterParams,
+                ]
+            );
 
             if ($response->successful()) {
                 $apiData = $response->json();
                 $products = $apiData['getAllProductPrice']['data'] ?? [];
+                $products = array_map('mapTicketName', $products);
                 $dbSlugs = $query->pluck('ticketSlug')->toArray();
 
                 $filtered = [];

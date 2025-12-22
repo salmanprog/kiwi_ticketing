@@ -227,7 +227,7 @@ class BirthdayAddonsController extends Controller
             if ($cabanaResponse->successful()) {
                 $apiData = $cabanaResponse->json();
                 $tickets = $apiData['getAllProductPrice']['data'] ?? [];
-
+                $tickets = array_map('mapTicketName', $tickets);
                 // Map tickets by slug for quick lookup
                 $ticketMap = [];
                 foreach ($tickets as $ticket) {
@@ -291,6 +291,7 @@ class BirthdayAddonsController extends Controller
         if ($response->successful()) {
             $apiData = $response->json();
             $tickets_arr = $apiData['getAllProductPrice']['data'] ?? [];
+            $tickets_arr = array_map('mapTicketName', $tickets_arr);
             $tickets = [];
             if(count($tickets_arr) > 0){
                 for($i=0;$i<count($tickets_arr);$i++){

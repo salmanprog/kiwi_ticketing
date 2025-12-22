@@ -54,6 +54,7 @@ class KabanaSettingController extends Controller
             if ($response->successful()) {
             $apiData = $response->json();
             $tickets = $apiData['getAllProductPrice']['data'] ?? [];
+            $tickets = array_map('mapTicketName', $tickets);
             $tickets = collect($tickets)->map(function ($item) {
                 $get_featured = Cabana::where('ticketSlug', $item['ticketSlug'])->exists();
                 $item['is_featured'] = $get_featured ? 1 : 0;
@@ -143,6 +144,7 @@ class KabanaSettingController extends Controller
         if ($response->successful()) {
             $apiData = $response->json();
             $tickets_arr = $apiData['getAllProductPrice']['data'] ?? [];
+            $tickets_arr = array_map('mapTicketName', $tickets_arr);
             $tickets = [];
             if(count($tickets_arr) > 0){
                 for($i=0;$i<count($tickets_arr);$i++){
@@ -212,6 +214,7 @@ class KabanaSettingController extends Controller
         if ($response->successful()) {
             $apiData = $response->json();
             $tickets_arr = $apiData['getAllProductPrice']['data'] ?? [];
+            $tickets_arr = array_map('mapTicketName', $tickets_arr);
             $tickets = [];
             if(count($tickets_arr) > 0){
                 for($i=0;$i<count($tickets_arr);$i++){
