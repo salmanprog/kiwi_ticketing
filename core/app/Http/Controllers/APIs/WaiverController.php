@@ -8,6 +8,7 @@ use App\Http\Resources\WaiverResource;
 use Carbon\Carbon;
 use Helper;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use App\Helpers\MailHelper;
 use App\Models\Email;
 
