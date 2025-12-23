@@ -36,7 +36,7 @@ class MailHelper
                     $ticketsHtml .= '
                     <tr>
                         <td style="padding:5px">' . ($purchase->ticketType ?? $purchase->description) . '</td>
-                        <td style="padding:5px">$' . $purchase->quantity . '</td>
+                        <td style="padding:5px">' . $purchase->quantity . '</td>
                         <td style="padding:5px">$' . number_format($purchase->price, 2) . '</td>
                     </tr>';
                 }
@@ -46,7 +46,7 @@ class MailHelper
                                 <strong>Tax 8.25%</strong>
                             </td>
                             <td style="padding:5px">
-                                $'.$data->tax.'
+                                $'.number_format($data->tax, 2).'
                             </td>
                         </tr>
                         <tr>
@@ -54,7 +54,7 @@ class MailHelper
                                 <strong>Service Fee 2.75%</strong>
                             </td>
                             <td style="padding:5px">
-                                $'.$data->serviceCharges.'
+                                $'.number_format($data->serviceCharges, 2).'
                             </td>
                         </tr>
                         <tr>
@@ -62,15 +62,11 @@ class MailHelper
                                 <strong>Total:</strong>
                             </td>
                             <td style="padding:5px">
-                                '.$data->orderTotal.'
+                                $'.$data->orderTotal.'
                             </td>
                         </tr>
                         <tr>
                             <td style="padding:5px" colspan="3">
-                                <h4>See / Modify Tickets</h4>
-                                <p style="padding:0; margin:0">To modify the date of your visit, please use the link
-                                    provided on your emailed receipt. Must change more than 24 hours in advance. tickets
-                                    purchased within 24 hours will not be able to be rescheduled.</p>
                                 <ul class="_ticket_code" style="text-align:center;padding: 0;list-style: none;">';
                                  foreach ($data->purchases as $purchase) {
                                     $ticketsHtml .= '
