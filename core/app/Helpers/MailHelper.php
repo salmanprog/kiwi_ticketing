@@ -5,6 +5,7 @@ namespace App\Helpers;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Email;
 use App\Models\EmailLogs;
+use Carbon\Carbon;
 
 class MailHelper
 {
@@ -142,6 +143,7 @@ class MailHelper
             $placeholders = [
                 '{USER_NAME}'    => $data->customer->name ?? 'Customer',
                 '{ORDER_NUMBER}' => $data->slug ?? '',
+                '{ORDER_DATE}'   => Carbon::parse($orderDate)->format('Y-m-d'),
                 '{SITE_NAME}'    => config('app.name'),
                 '{PACKAGE}' => '<table border="1" width="100%" cellspacing="0" cellpadding="0" bordercolor="#cbcbcb"
                                         class="_table_with_border">
