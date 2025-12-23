@@ -142,7 +142,7 @@ class WaiverController extends BaseAPIController
 
             }
         }
-        $get_order = OrderTickets::where('slug', $request->order_id)->first();
+        $get_order = Order::where('slug', $request->order_id)->first();
         if (!$get_order) {
             return response()->json([
                 'code'    => 400,
