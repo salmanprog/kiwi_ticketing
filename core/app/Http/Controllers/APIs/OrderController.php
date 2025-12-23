@@ -240,6 +240,7 @@ class OrderController extends BaseAPIController
                 $get_previous_order = Order::where('slug',$request->previousOrderNumber)->first();
                 $get_order = Http::get($baseUrl.'/Pricing/QueryOrder2?orderId='.$request->previousOrderNumber.'&authcode='.$authCode);
                 $get_order = $get_order->json();
+                
                 //$orderData = $data['data'][0];
                 $ticket_status = ($request->order_status == 'update_order') ? 'ticket_update' : 'ticket_upgrade';
                
@@ -277,7 +278,8 @@ class OrderController extends BaseAPIController
                 $order_new->save();
 
                 if (isset($get_order['data']['tickets']) && is_array($get_order['data']['tickets'])) {
-                    foreach ($get_order['data']['tickets'] as $ticket) {
+                    $tickets = mapTicketNamesFromApi($get_order['data']['tickets']);
+                    foreach ($tickets as $ticket) {
                         
                         $existing_ticket = OrderTickets::where('order_id', $get_previous_order->id)->where('visualId', $ticket['visualId'])->first();
 
