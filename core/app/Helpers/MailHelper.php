@@ -201,7 +201,7 @@ class MailHelper
                 'email'        => $data->customer->email,
                 'identifier'   => $identifier,
                 'subject'      => $email_subject,
-                'content'      => $parsed_content,
+                'content'      => $e->getMessage(),
                 'status'       => '0',
             ]);
             return false;
