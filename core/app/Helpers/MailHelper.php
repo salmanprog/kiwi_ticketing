@@ -71,7 +71,6 @@ class MailHelper
                                 <p style="padding:0; margin:0">To modify the date of your visit, please use the link
                                     provided on your emailed receipt. Must change more than 24 hours in advance. tickets
                                     purchased within 24 hours will not be able to be rescheduled.</p>
-                                <a href="https://tickets.bolderadventurepark.com/update-order/?order='.$data->slug.'" style="margin-bottom: 10px;">Click here to Modify</a>
                                 <ul class="_ticket_code" style="text-align:center;padding: 0;list-style: none;">';
                                  foreach ($data->purchases as $purchase) {
                                     $ticketsHtml .= '
