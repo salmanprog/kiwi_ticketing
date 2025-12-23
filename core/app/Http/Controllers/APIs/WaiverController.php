@@ -4,6 +4,7 @@ namespace App\Http\Controllers\APIs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Waiver;
+use App\Models\OrderTickets;
 use App\Http\Resources\WaiverResource;
 use Carbon\Carbon;
 use Helper;
@@ -140,6 +141,25 @@ class WaiverController extends BaseAPIController
 
             }
         }
+        $existing_ticket = OrderTickets::where('order_id', $request->order_id)
+                            ->where('visualId', $request->qr_code)
+                            ->first();
+
+        if (!$existing_ticket) {
+            return response()->json([
+                'code'    => 400,
+                'message' => 'Validation Error',
+                'data'    => [
+                    'qr_code' => [
+                        'Record not found against this QrCode'
+                    ]
+                ],
+            ], 400);
+        }
+        $existing_ticket->isWavierFormSubmitted = 1;
+        $existing_ticket->wavierSubmittedDateTime = now(); // better than 1
+        $existing_ticket->save();
+        
         $entriesWaiver = new Waiver;
         $entriesWaiver->auth_code  = Helper::GeneralSiteSettings('auth_code_en');
         $entriesWaiver->order_id  = $request->order_id;
@@ -160,6 +180,8 @@ class WaiverController extends BaseAPIController
         $entriesWaiver->status = '1';
         $entriesWaiver->save();
         
+        
+
         $waiver = Waiver::with(['media_slider'])->where('id',$entriesWaiver->id)->where('status','1')->first();
 
         //Send Email
