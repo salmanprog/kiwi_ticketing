@@ -88,6 +88,9 @@ class ProductSaleController extends BaseAPIController
                         if ($generalTicket->media_slider && $generalTicket->media_slider->isNotEmpty()) {
                             $ticket['image_url'] = url($generalTicket->media_slider->first()->file_url);
                         }
+                        if($ticket['ticketType'] == 'Socks'){
+                            $ticket['price'] = ($ticket['price'] == 0) ? 3 : $ticket['price'];
+                        }
 
                         $filteredTickets[] = $ticket;
                     }
