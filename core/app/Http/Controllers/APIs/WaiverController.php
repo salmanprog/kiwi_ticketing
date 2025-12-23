@@ -144,7 +144,8 @@ class WaiverController extends BaseAPIController
         $existing_ticket = OrderTickets::where('order_id', $request->order_id)
                             ->where('visualId', $request->qr_code)
                             ->first();
-
+        print_r($existing_ticket);
+        die();
         if (!$existing_ticket) {
             return response()->json([
                 'code'    => 400,
@@ -155,7 +156,7 @@ class WaiverController extends BaseAPIController
                     ]
                 ],
             ], 400);
-        }
+        }   
         $existing_ticket->isWavierFormSubmitted = 1;
         $existing_ticket->wavierSubmittedDateTime = now(); // better than 1
         $existing_ticket->save();
