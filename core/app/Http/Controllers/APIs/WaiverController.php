@@ -8,6 +8,8 @@ use App\Http\Resources\WaiverResource;
 use Carbon\Carbon;
 use Helper;
 use Illuminate\Support\Facades\Http;
+use App\Helpers\MailHelper;
+use App\Models\Email;
 
 class WaiverController extends BaseAPIController
 {
@@ -103,6 +105,26 @@ class WaiverController extends BaseAPIController
 
         $data = $response->json();
 
+        if ($response->failed()) {
+
+            $messages = [];
+
+            if (!empty($data['errors']) && is_array($data['errors'])) {
+                foreach ($data['errors'] as $errors) {
+                    foreach ($errors as $error) {
+                        $messages[] = $error;
+                    }
+                }
+            }
+
+            return response()->json([
+                'status' => $response->status(),
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $messages
+            ], $response->status());
+        }
+
         $uploadPath = 'uploads/waivers/';
 
         if ($request->hasFile('photo')) {
@@ -142,28 +164,45 @@ class WaiverController extends BaseAPIController
         $entriesWaiver->save();
         
         $waiver = Waiver::with(['media_slider'])->where('id',$entriesWaiver->id)->where('status','1')->first();
+
+        //Send Email
+        try {
+            $get_mail_content = Email::where('identifier', 'waiver_email_confirmation')
+            ->where('status', '1')
+            ->first();
+            $raw_content = $get_mail_content->content;
+            $placeholders = [
+                '{ERROR_INFORMATION}'    => $request->body_content ?? 'No Issue Found'
+            ];
+            $raw_content = preg_replace('/\{(?:<[^>]+>)*(\w+)(?:<\/[^>]+>)*\}/', '{$1}', $raw_content);
+            $parsed_content = str_replace(array_keys($placeholders), array_values($placeholders), $raw_content);
+
+            $email_subject = $get_mail_content->subject;
+            $from_email = config('mail.from.address');
+            $from_name = 'BolderAdventurePark';
+            $get_emails = array_map('trim', explode(',', $get_mail_content->to_reciever));
+            foreach ($get_emails as $email) {
+                Mail::send('emails.template', [
+                    'title' => $email_subject,
+                    'details' => $parsed_content
+                ], function ($message) use ($email_subject, $email, $from_email, $from_name) {
+                    $message->from($from_email, $from_name);
+                    $message->to($email);
+                    $message->replyTo($from_email, $from_name);
+                    $message->subject($email_subject);
+                });
+            }
+
+            return $this->sendResponse(200, 'Email sent successfully.');
+
+        } catch (\Exception $e) {
+            return $this->sendResponse(500, 'Server Error', $e->getMessage());
+        }
+
         $resource = WaiverResource::make($waiver);
         return $this->sendResponse(200, 'Waiver Form Submited successfully', $resource);
         // 6️⃣ Handle API validation errors (.NET style)
-        // if ($response->failed()) {
-
-        //     $messages = [];
-
-        //     if (!empty($data['errors']) && is_array($data['errors'])) {
-        //         foreach ($data['errors'] as $errors) {
-        //             foreach ($errors as $error) {
-        //                 $messages[] = $error;
-        //             }
-        //         }
-        //     }
-
-        //     return response()->json([
-        //         'status' => $response->status(),
-        //         'success' => false,
-        //         'message' => 'Validation error',
-        //         'errors' => $messages
-        //     ], $response->status());
-        // }
+        
 
         // // 7️⃣ Success response
         // return response()->json([
