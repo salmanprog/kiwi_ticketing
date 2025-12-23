@@ -194,6 +194,7 @@ class MailHelper
             ]);
             return true;
         } catch (\Exception $e) {
+            $email_subject = $get_mail_content->subject;
             \Log::error('Mail send failed: ' . $e->getMessage());
             EmailLogs::create([
                 'order_number' => strtoupper($data->slug),
