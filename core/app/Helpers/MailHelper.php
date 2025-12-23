@@ -143,7 +143,7 @@ class MailHelper
             $placeholders = [
                 '{USER_NAME}'    => $data->customer->name ?? 'Customer',
                 '{ORDER_NUMBER}' => $data->slug ?? '',
-                '{ORDER_DATE}'   => Carbon::parse($data->orderDate)->format('Y-m-d'),
+                '{ORDER_DATE}'   => Carbon::parse($data->purchases[0]->ticketDisplayDate)->format('Y-m-d'),
                 '{SITE_NAME}'    => config('app.name'),
                 '{PACKAGE}' => '<table border="1" width="100%" cellspacing="0" cellpadding="0" bordercolor="#cbcbcb"
                                         class="_table_with_border">
