@@ -106,6 +106,9 @@ class WaiverController extends BaseAPIController
 
         $data = $response->json();
 
+        print_r($data);
+        die();
+
         if ($response->failed()) {
 
             $messages = [];
