@@ -54,7 +54,7 @@ class StripeController extends BaseAPIController
                 'amount' => (int) ($request->amount * 100),
                 'currency' => 'usd',
                 'payment_method_types' => ['card'],
-                'description' => 'Order #' . ($request->order_number ?? 'N/A') . 'from '. $request->first_name . ' ' . $request->last_name,
+                'description' => 'Order #' . ($request->order_number ?? 'N/A') . ' from '. $request->first_name . ' ' . $request->last_name,
 
                 'metadata' => [
                     'order_number'  => $request->order_number ?? '',
