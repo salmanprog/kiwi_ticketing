@@ -101,7 +101,7 @@
                     <div class="row mb-4" style="margin-bottom: 40px;">
                         <div class="col-md-3 p-3 text-center">
                             <strong>Order Number</strong><br>
-                            {{ $get_cabana_orders->slug }}
+                            {{ strtoupper($get_cabana_orders->slug) }}
                         </div>
                         <div class="col-md-3 p-3 text-center">
                             <strong>Package Name</strong><br>

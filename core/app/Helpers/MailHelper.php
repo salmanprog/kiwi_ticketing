@@ -82,7 +82,7 @@ class MailHelper
                                                         title="Bolder Ticket QR Code" class="cabana_qr_code" />
                                         <p style="margin: 0;">'.$purchase->visualId.' </p>
                                         
-                                            '.$purchase->ticketType.' - '.$purchase->slotTime.'
+                                            '.$purchase->ticketType.' - '.$purchase->ticketDisplayDate.'
 
                                         <br />
                                         <br />
