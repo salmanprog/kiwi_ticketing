@@ -144,7 +144,7 @@ class WaiverController extends BaseAPIController
         $existing_ticket = OrderTickets::where('order_id', $request->order_id)
                             ->where('visualId', $request->qr_code)
                             ->first();
-        print_r($existing_ticket);
+        print_r($request->order_id.' '.$request->qr_code);
         die();
         if (!$existing_ticket) {
             return response()->json([
