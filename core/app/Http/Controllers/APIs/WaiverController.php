@@ -4,6 +4,7 @@ namespace App\Http\Controllers\APIs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Waiver;
+use App\Models\Order;
 use App\Models\OrderTickets;
 use App\Http\Resources\WaiverResource;
 use Carbon\Carbon;
@@ -141,11 +142,21 @@ class WaiverController extends BaseAPIController
 
             }
         }
-        $existing_ticket = OrderTickets::where('order_id', $request->order_id)
+        $get_order = OrderTickets::where('slug', $request->order_id)->first();
+        if (!$get_order) {
+            return response()->json([
+                'code'    => 400,
+                'message' => 'Validation Error',
+                'data'    => [
+                    'order_number' => [
+                        'Record not found against this OrderNumber'
+                    ]
+                ],
+            ], 400);
+        }   
+        $existing_ticket = OrderTickets::where('order_id', $get_order->id)
                             ->where('visualId', $request->qr_code)
                             ->first();
-        print_r($request->order_id.' '.$request->qr_code);
-        die();
         if (!$existing_ticket) {
             return response()->json([
                 'code'    => 400,
