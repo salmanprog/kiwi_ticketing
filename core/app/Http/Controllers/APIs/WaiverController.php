@@ -106,27 +106,23 @@ class WaiverController extends BaseAPIController
 
         $data = $response->json();
 
-        print_r($data);
-        die();
-
-        if ($response->failed()) {
-
-            $messages = [];
-
-            if (!empty($data['errors']) && is_array($data['errors'])) {
-                foreach ($data['errors'] as $errors) {
-                    foreach ($errors as $error) {
-                        $messages[] = $error;
-                    }
-                }
-            }
-
+       if ($response->failed()) {
             return response()->json([
-                'status' => $response->status(),
                 'success' => false,
-                'message' => 'Validation error',
-                'errors' => $messages
+                'status'  => $response->status(),
+                'message' => 'API request failed',
             ], $response->status());
+        }
+
+        if (
+            isset($data['status']['errorCode']) &&
+            $data['status']['errorCode'] != 0
+        ) {
+            return response()->json([
+                'success' => false,
+                'message' => $data['status']['errorMessage'] ?? 'Unknown API error',
+                'error_code' => $data['status']['errorCode'],
+            ], 422); // 422 Unprocessable Entity
         }
 
         $uploadPath = 'uploads/waivers/';
