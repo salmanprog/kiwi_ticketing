@@ -29,7 +29,6 @@ class MailHelper
                     <tr>
                         <td style="padding:5px">Ticket</td>
                         <td style="padding:5px">Price</td>
-                        <td style="padding:5px">Valid</td>
                         <td style="padding:5px">Scan</td>
                     </tr>';
 
@@ -38,7 +37,6 @@ class MailHelper
                     <tr>
                         <td style="padding:5px">' . ($purchase->ticketType ?? $purchase->description) . '</td>
                         <td style="padding:5px">$' . number_format($purchase->price, 2) . '</td>
-                        <td style="padding:5px">' . ($purchase->valid_until ?? '-') . '</td>
                         <td style="padding:5px"> <img src="https://quickchart.io/qr?text='.$purchase->visualId.'&margin=2&size=150"
                                                         title="Bolder Ticket QR Code" class="cabana_qr_code" /></td>
                     </tr>';

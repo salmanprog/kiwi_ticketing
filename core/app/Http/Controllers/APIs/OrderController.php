@@ -104,8 +104,9 @@ class OrderController extends BaseAPIController
                // return $this->sendResponse(200, 'Generate Order', $get_order);
 
                 if (isset($get_order['data']['tickets']) && is_array($get_order['data']['tickets'])) {
-                    foreach ($get_order['data']['tickets'] as $ticket) {
-                        
+                    //foreach ($get_order['data']['tickets'] as $ticket) {
+                       $tickets = mapTicketNamesFromApi($get_order['data']['tickets']);
+                        foreach ($tickets as $ticket) {  
                         $ordertickets = new OrderTickets;
                         $ordertickets->order_id = $order->id;
                         $ordertickets->visualId = $ticket['visualId'];
