@@ -38,7 +38,7 @@ class OrdersHelper
         $get_package = OrdersHelper::getPackagesByType($requestPayload['type'],$requestPayload['package_id']);
         $package_initials = substr($get_package->name, 0, 2);
         $prefixMap = [
-            'birthday' => 'bd-'.$get_package->id.date("y").'_',
+            'birthday' => 'pkg-'.$get_package->id.date("y").'_',
             'cabana' => 'ca-'.$get_package->id.date("y").'_',
             'general_ticket' => 'ge-'.$get_package->id.date("y").'_',
             'season_pass' => 'sp-'.$get_package->id.date("y").'_',
@@ -146,7 +146,7 @@ class OrdersHelper
         $get_package = OrdersHelper::getPackagesByType($get_order->type,$get_order->package_id);
         $package_initials = substr($get_package->name, 0, 2);
         $prefixMap = [
-            'birthday' => 'bd-'.$get_package->id.date("y").'_',
+            'birthday' => 'pkg-'.$get_package->id.date("y").'_',
             'cabana' => 'ca-'.$get_package->id.date("y").'_',
             'general_ticket' => 'ge-'.$get_package->id.date("y").'_',
             'season_pass' => 'sp='.$get_package->id.date("y").'_',

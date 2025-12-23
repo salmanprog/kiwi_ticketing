@@ -85,8 +85,8 @@ class OrderController extends BaseAPIController
                 $order->email = $get_user->email;
                 $order->phone = $get_user->phone;
                 $order->orderTotal = $orderData['orderTotal'];
-                $order->tax = isset($orderData['tax']) ? $orderData['tax'] : '0';
-                $order->serviceCharges = isset($orderData['serviceCharges']) ? $orderData['serviceCharges'] : '0';
+                $order->tax = isset($orderData['tax']) ? $orderData['tax'] : $request->tax_amount;
+                $order->serviceCharges = isset($orderData['serviceCharges']) ? $orderData['serviceCharges'] : $request->service_fee;;
                 $order->orderTip  = isset($orderData['orderTip']) ? $orderData['orderTip'] : '0';
                 $order->orderDate  = isset($orderData['orderDate']) ? $orderData['orderDate'] : '0';
                 $order->slotTime = isset($orderData['slotTime']) ? $orderData['slotTime'] : '0';
