@@ -44,10 +44,24 @@ class StripeController extends BaseAPIController
                 ]
             );
 
+            // $paymentIntent = PaymentIntent::create([
+            //     'amount' => $request->amount * 100,
+            //     'currency' => 'usd',
+            //     'payment_method_types' => ['card'],
+            // ]);
+
             $paymentIntent = PaymentIntent::create([
-                'amount' => $request->amount * 100,
+                'amount' => (int) ($request->amount * 100),
                 'currency' => 'usd',
                 'payment_method_types' => ['card'],
+                'description' => 'Order #' . ($request->order_number ?? 'N/A') . 'from '. $request->first_name . ' ' . $request->last_name,
+
+                'metadata' => [
+                    'order_number'  => $request->order_number ?? '',
+                    'customer_name' => $request->first_name . ' ' . $request->last_name,
+                    'customer_email'=> $request->email,
+                    'phone'         => $request->phone,
+                ],
             ]);
 
             return response()->json([

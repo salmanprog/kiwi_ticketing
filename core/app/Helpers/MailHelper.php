@@ -37,7 +37,7 @@ class MailHelper
                     <tr>
                         <td style="padding:5px">' . ($purchase->ticketType ?? $purchase->description) . '</td>
                         <td style="padding:5px">$' . number_format($purchase->price, 2) . '</td>
-                        <td style="padding:5px"> <img src="https://quickchart.io/qr?text='.$purchase->visualId.'&margin=2&size=150"
+                        <td style="padding:5px"> <img src="https://quickchart.io/qr?text='.$purchase->visualId.'&margin=2&size=100"
                                                         title="Bolder Ticket QR Code" class="cabana_qr_code" /></td>
                     </tr>';
                 }
