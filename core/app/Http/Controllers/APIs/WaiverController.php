@@ -30,7 +30,6 @@ class WaiverController extends BaseAPIController
 
     public function store(Request $request)
     {
-        // 1️⃣ Validate request
         $validator = Validator::make($request->all(), [
             'order_id' => 'required',
             'qr_code' => 'required',
@@ -56,16 +55,12 @@ class WaiverController extends BaseAPIController
         // if ($existingWaiver) {
         //     return $this->sendResponse(400, 'Waiver Error', ['error' => 'Waiver for this Order ID or QR Code is already submitted']);
         // }
-        // 2️⃣ Config values
-        $baseUrl  = 'https://dynamicpricing-api.dynamicpricingbuilder.com';
+        $baseUrl  = 'http://dev-dynamicpricing-env.eba-tkbnkmbm.us-east-1.elasticbeanstalk.com';
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $currentDate = now()->format('Y-m-d');
-
-        // 3️⃣ Convert image to Base64
         $photoBase64 = base64_encode(
             file_get_contents($request->file('photo')->getRealPath())
         );
-        // 4️⃣ Prepare payload (DO NOT json_encode)
         $requestPayload = [
             'organization' => [
                 'formName' => $request->name,
@@ -177,11 +172,14 @@ class WaiverController extends BaseAPIController
         ];
         $raw_content = preg_replace('/\{(?:<[^>]+>)*(\w+)(?:<\/[^>]+>)*\}/', '{$1}', $raw_content);
         $parsed_content = str_replace(array_keys($placeholders), array_values($placeholders), $raw_content);
-
         $email_subject = $get_mail_content->subject;
         $from_email = config('mail.from.address');
         $from_name = 'BolderAdventurePark';
+        $to_email = $request->email;
         $get_emails = array_map('trim', explode(',', $get_mail_content->to_reciever));
+        if (!in_array($to_email, $get_emails)) {
+                $get_emails[] = $to_email;
+            }
         foreach ($get_emails as $email) {
             Mail::send('emails.template', [
                 'title' => $email_subject,
@@ -193,17 +191,7 @@ class WaiverController extends BaseAPIController
                 $message->subject($email_subject);
             });
         }
-
         $resource = WaiverResource::make($waiver);
         return $this->sendResponse(200, 'Waiver Form Submited successfully', $resource);
-        // 6️⃣ Handle API validation errors (.NET style)
-        
-
-        // // 7️⃣ Success response
-        // return response()->json([
-        //     'status' => $response->status(),
-        //     'success' => true,
-        //     'data' => $data
-        // ]);
     }
 }
