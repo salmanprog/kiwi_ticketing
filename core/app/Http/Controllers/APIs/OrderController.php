@@ -451,6 +451,37 @@ class OrderController extends BaseAPIController
             $order_type =  OrdersHelper::order_types($update_order->type);
             $get_order = Order::with(['customer','purchases','apply_coupon','transaction',$order_type])->where('id',$update_order->id)->first();
             $emailSent = MailHelper::orderConfirmationEmail($get_order,'new_order');
+            if($update_order->type = 'season_pass'){
+                //Send Email
+                $get_mail_content = Email::where('identifier', 'Season_Pass')
+                ->where('status', '1')
+                ->first();
+                $raw_content = $get_mail_content->content;
+                $placeholders = [
+                    '{ERROR_INFORMATION}'    => $request->body_content ?? 'No Issue Found'
+                ];
+                $raw_content = preg_replace('/\{(?:<[^>]+>)*(\w+)(?:<\/[^>]+>)*\}/', '{$1}', $raw_content);
+                $parsed_content = str_replace(array_keys($placeholders), array_values($placeholders), $raw_content);
+                $email_subject = $get_mail_content->subject;
+                $from_email = config('mail.from.address');
+                $from_name = 'BolderAdventurePark';
+                $to_email = $update_order->email;
+                $get_emails = array_map('trim', explode(',', $get_mail_content->to_reciever));
+                if (!in_array($to_email, $get_emails)) {
+                        $get_emails[] = $to_email;
+                    }
+                foreach ($get_emails as $email) {
+                    Mail::send('emails.template', [
+                        'title' => $email_subject,
+                        'details' => $parsed_content
+                    ], function ($message) use ($email_subject, $email, $from_email, $from_name) {
+                        $message->from($from_email, $from_name);
+                        $message->to($email);
+                        $message->replyTo($from_email, $from_name);
+                        $message->subject($email_subject);
+                    });
+                }
+            }
             $resource = OrderResource::make($get_order);
             ApiLog::create([
                 'type' => 'order',
