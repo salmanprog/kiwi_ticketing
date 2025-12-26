@@ -15,6 +15,8 @@ use App\Http\Resources\OrderResource;
 use Carbon\Carbon;
 use App\Helpers\OrdersHelper;
 use App\Helpers\MailHelper;
+use Illuminate\Support\Facades\Mail;
+use App\Models\Email;
 use Helper;
 
 class OrderController extends BaseAPIController
