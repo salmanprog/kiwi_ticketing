@@ -50,6 +50,7 @@ Route::get('/birthday/addon/{slug}', 'BirthdayAddonController@show');
 //Tickets
 Route::post('/ticket-hold', 'TicketController@ticketHold');
 Route::get('/calendar', 'TicketController@GetCalendar');
+Route::get('/facility-schedule', 'TicketController@GetFacilitySchedule');
 //General Ticket
 Route::get('/general-package', 'GeneralTicketController@index');
 Route::post('/cabana-occupancy', 'TicketController@GetCabanaOccupancy');
