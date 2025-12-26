@@ -453,7 +453,7 @@ class OrderController extends BaseAPIController
             $order_type =  OrdersHelper::order_types($update_order->type);
             $get_order = Order::with(['customer','purchases','apply_coupon','transaction',$order_type])->where('id',$update_order->id)->first();
             $emailSent = MailHelper::orderConfirmationEmail($get_order,'new_order');
-            if($update_order->type = 'season_pass'){
+            if($update_order->type == 'season_pass'){
                 //Send Email
                 $get_mail_content = Email::where('identifier', 'Season_Pass')
                 ->where('status', '1')
