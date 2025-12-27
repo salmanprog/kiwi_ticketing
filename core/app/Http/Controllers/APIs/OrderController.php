@@ -59,7 +59,20 @@ class OrderController extends BaseAPIController
             if (isset($data['status']['errorCode']) && $data['status']['errorCode'] == 1) {
                 return $this->sendResponse(400, 'Order Error', ['error' => $data['status']['errorMessage']]);
             }else{
-                $get_order = Http::get($baseUrl.'/Pricing/QueryOrder2?orderId='.$data['data'][0]['orderNumber'].'&authcode='.$authCode);
+                //$get_order = Http::get($baseUrl.'/Pricing/QueryOrder2?orderId='.$data['data'][0]['orderNumber'].'&authcode='.$authCode);
+                $get_order = Http::withOptions([
+                    'curl' => [
+                        CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
+                    ],
+                    'verify' => true, // keep true unless SSL fails
+                ])
+                ->connectTimeout(15)
+                ->timeout(60)
+                ->retry(3, 2000)
+                ->get($baseUrl.'/Pricing/QueryOrder2', [
+                    'orderId' => $data['data'][0]['orderNumber'],
+                    'authcode' => $authCode,
+                ]);
                 $get_order = $get_order->json();
                 $orderData = $data['data'][0];
                 //$get_user = User::where('id',$request->user_id)->first();
@@ -239,7 +252,20 @@ class OrderController extends BaseAPIController
             //     print_r($data);
             // die();
                 $get_previous_order = Order::where('slug',$request->previousOrderNumber)->first();
-                $get_order = Http::get($baseUrl.'/Pricing/QueryOrder2?orderId='.$request->previousOrderNumber.'&authcode='.$authCode);
+                //$get_order = Http::get($baseUrl.'/Pricing/QueryOrder2?orderId='.$request->previousOrderNumber.'&authcode='.$authCode);
+                $get_order = Http::withOptions([
+                    'curl' => [
+                        CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
+                    ],
+                    'verify' => true, // keep true unless SSL fails
+                ])
+                ->connectTimeout(15)
+                ->timeout(60)
+                ->retry(3, 2000)
+                ->get($baseUrl.'/Pricing/QueryOrder2', [
+                    'orderId' => $request->previousOrderNumber,
+                    'authcode' => $authCode,
+                ]);
                 $get_order = $get_order->json();
                 
                 //$orderData = $data['data'][0];
