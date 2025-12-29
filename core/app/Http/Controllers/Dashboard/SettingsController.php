@@ -69,6 +69,10 @@ class SettingsController extends Controller
                 'style_apple' => 'image',
                 'style_bg_image' => 'image',
                 'style_footer_bg' => 'image',
+                'contact_t6' => 'required|email|max:191',
+            ], [
+                'contact_t6.required' => 'Email is required',
+                'contact_t6.email' => 'Please enter a valid email address',
             ]);
             foreach (Helper::languagesList() as $ActiveLanguage) {
 

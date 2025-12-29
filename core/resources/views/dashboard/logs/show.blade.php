@@ -48,7 +48,7 @@
                 <a>Details</a>
             </small>
         </div>
-        <div class="box-tool">
+        <!-- <div class="box-tool">
             <ul class="nav">
                 <li class="nav-item inline dropdown">
                     <a class="btn white b-a nav-link dropdown-toggle" data-toggle="dropdown">
@@ -60,7 +60,7 @@
                     </div>
                 </li>
             </ul>
-        </div>
+        </div> -->
     </div>
     <?php
         $tab_1 = "active";

@@ -413,11 +413,11 @@
         <!-- Header Section -->
         <div class="modern-header">
             <h3><i class="fas fa-user-edit"></i> {{ __('backend.editUser') }}</h3>
-            <nav class="breadcrumb-modern">
+            <!-- <nav class="breadcrumb-modern">
                 <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
                 <a href="">{{ __('backend.settings') }}</a> /
                 <a href="">{{ __('backend.usersPermissions') }}</a>
-            </nav>
+            </nav> -->
         </div>
 
         <!-- Toolbar -->
@@ -440,10 +440,11 @@
                 </label>
                 <div style="flex: 1;">
                     {!! Form::text('name', $Users->name, [
-                        'placeholder' => __('backend.enterFullName'), 
+                        'placeholder' => __('Enter FullName'), 
                         'class' => 'form-control-modern', 
                         'id' => 'name', 
-                        'required' => ''
+                        'required' => '',
+                        'maxlength' => 50
                     ]) !!}
                 </div>
             </div>
@@ -455,16 +456,17 @@
                 </label>
                 <div style="flex: 1;">
                     {!! Form::email('email', $Users->email, [
-                        'placeholder' => __('backend.enterEmail'), 
+                        'placeholder' => __('Enter Email'), 
                         'class' => 'form-control-modern', 
                         'id' => 'email', 
-                        'required' => ''
+                        'required' => '',
+                        'maxlength' => 40
                     ]) !!}
                 </div>
             </div>
 
             <!-- Password Field -->
-            <div class="form-group-modern">
+            <!-- <div class="form-group-modern">
                 <label for="password" class="form-label-modern">
                     <i class="fas fa-lock form-label-icon"></i>{!! __('backend.loginPassword') !!}
                 </label>
@@ -478,7 +480,7 @@
                         {{ __('backend.passwordLeaveBlank') }}
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Photo Upload Field -->
             <div class="form-group-modern">
@@ -490,7 +492,7 @@
                     @if($Users->photo != "")
                         <div class="photo-preview">
                             <div class="current-photo" id="user_photo">
-                                <img src="{{ asset('uploads/users/'.$Users->photo) }}" 
+                                <img id="photoPreview" src="{{ asset('uploads/users/'.$Users->photo) }}" 
                                      alt="{{ $Users->name }}" 
                                      class="img-responsive">
                                 <div class="photo-info">
@@ -528,17 +530,17 @@
 
                     <!-- New Photo Upload -->
                     <div class="file-input-modern">
-                        {!! Form::file('photo', [
-                            'class' => 'form-control', 
-                            'id' => 'photo', 
-                            'accept' => 'image/*'
-                        ]) !!}
-                        <label for="photo" class="file-label-modern">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <span id="file-name">
-                                {{ $Users->photo ? 'Change Photo' : 'Upload Photo' }}
-                            </span>
-                        </label>
+                    {!! Form::file('photo', [
+                        'class' => 'form-control', 
+                        'id' => 'photo', 
+                        'accept' => 'image/*'
+                    ]) !!}
+                    <label for="photo" class="file-label-modern">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span id="file-name">
+                            {{ $Users->photo ? 'Change Photo' : 'Upload Photo' }}
+                        </span>
+                    </label>
                     </div>
                     <div class="help-text">
                         <i class="fas fa-image"></i>
@@ -554,7 +556,7 @@
                         <i class="fas fa-shield-alt form-label-icon"></i>{!! __('backend.Permission') !!}
                     </label>
                     <div style="flex: 1;">
-                        <select name="permissions_id" id="permissions_id" required 
+                        <select name="permissions_id" id="permissions_id" 
                                 class="form-control-modern select-modern">
                             <option value="">- - {!! __('backend.selectPermissionsType') !!} - -</option>
                             @foreach ($Permissions as $Permission)
@@ -568,7 +570,8 @@
                 </div>
 
                 <!-- Status Field -->
-                <div class="form-group-modern">
+                 
+                <div class="form-group-modern" style="display:none;">
                     <label class="form-label-modern">
                         <i class="fas fa-toggle-on form-label-icon"></i>{!! __('backend.status') !!}
                     </label>
@@ -599,15 +602,15 @@
             @endif
 
             <!-- Form Actions -->
-            <div class="form-actions">
-                <button type="submit" class="btn-modern-primary">
-                    <i class="fas fa-save"></i> {!! __('backend.update') !!}
-                </button>
-                <a href="{{ route('users') }}" class="btn-modern-default">
-                    <i class="fas fa-times"></i> {!! __('backend.cancel') !!}
-                </a>
-            </div>
-
+            
+                <div class="form-actions">
+                    <button type="submit" class="btn-modern-primary">
+                        <i class="fas fa-save"></i> {!! __('backend.update') !!}
+                    </button>
+                    <!-- <a href="{{ route('users') }}" class="btn-modern-default">
+                        <i class="fas fa-times"></i> {!! __('backend.cancel') !!}
+                    </a> -->
+                </div>
             {{ Form::close() }}
         </div>
     </div>
@@ -678,5 +681,45 @@
             radio.parentElement.classList.add('active');
         }
     });
+
+    document.addEventListener('DOMContentLoaded', function () {
+    var photoInput = document.getElementById('photo');
+    if (!photoInput) return;
+
+    photoInput.addEventListener('change', function () {
+        var file = photoInput.files[0];
+        if (!file) return;
+
+        if (!file.type.startsWith('image/')) {
+            alert('Please select a valid image file.');
+            return;
+        }
+
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            var img = document.getElementById('photoPreview');
+
+            if (!img) {
+                img = document.createElement('img');
+                img.id = 'photoPreview';
+                img.className = 'img-responsive';
+
+                var container = document.getElementById('user_photo');
+                if (!container) {
+                    container = document.createElement('div');
+                    container.id = 'user_photo';
+                    container.className = 'current-photo';
+                    photoInput.closest('.form-group-modern').prepend(container);
+                }
+
+                container.appendChild(img);
+            }
+
+            img.src = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+    });
+});
 </script>
 @endpush

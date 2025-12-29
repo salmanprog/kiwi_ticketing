@@ -13,6 +13,7 @@ use Illuminate\Config;
 use Illuminate\Http\Request;
 use Redirect;
 use Helper;
+use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
@@ -139,6 +140,48 @@ class UsersController extends Controller
         }
     }
 
+    public function passwordEdit($id)
+    {
+        // Check Permissions
+        if (!@Auth::user()->permissionsGroup->roles_status && @Auth::user()->id != $id) {
+            return redirect()->route('NoPermission');
+        }
+        // General for all pages
+        $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
+        // General END
+        $Permissions = Permissions::whereNotIn('id',[1,3])->orderby('id', 'asc')->get();
+
+        if (@Auth::user()->permissionsGroup->view_status) {
+            $Users = User::where('created_by', '=', Auth::user()->id)->orwhere('id', '=', Auth::user()->id)->find($id);
+        } else {
+            $Users = User::find($id);
+        }
+        if (!empty($Users)) {
+            return view("dashboard.users.changepassword", compact("Users", "Permissions", "GeneralWebmasterSections"));
+        } else {
+            return redirect()->action('Dashboard\UsersController@index');
+        }
+    }
+
+    public function usersUpdatePassword(Request $request, $id)
+    {
+        $request->validate([
+        'current_password' => 'required',
+        'new_password' => 'required|min:6|confirmed',
+        ]);
+
+        $user = User::findOrFail($id);
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors([
+                'current_password' => 'Current password is incorrect.',
+            ]);
+        }
+        $user->password = bcrypt($request->new_password);
+        $user->save();
+
+        return back()->with('success', 'Password updated successfully.');
+    }
+
     public function update(Request $request, $id)
     {
         // Check Permissions
@@ -152,7 +195,7 @@ class UsersController extends Controller
                 $this->validate($request, [
                     'photo' => 'image',
                     'name' => 'required',
-                    'permissions_id' => 'required'
+                    //'permissions_id' => 'required'
                 ]);
 
                 if ($request->email != $User->email) {
@@ -181,7 +224,7 @@ class UsersController extends Controller
                 if ($request->password != "") {
                     $User->password = bcrypt($request->password);
                 }
-                $User->permissions_id = $request->permissions_id;
+                //$User->permissions_id = $request->permissions_id;
                 //}
                 if ($request->photo_delete == 1) {
                     // Delete a User file

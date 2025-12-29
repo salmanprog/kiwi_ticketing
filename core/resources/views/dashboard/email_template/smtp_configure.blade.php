@@ -165,23 +165,8 @@
                         </label>
                         <div class="col-sm-10">
                             <select name="mail_driver" id="mail_driver" class="form-control c-select">
-                                <option value="" {{ (config('smartend.mail_driver')== "") ? "selected='selected'":""  }}>
-                                    None
-                                </option>
-                                <option value="sendmail" {{ (config('smartend.mail_driver')== "sendmail") ? "selected='selected'":""  }}>
-                                    sendmail - PHP mail()
-                                </option>
                                 <option value="smtp" {{ (config('smartend.mail_driver')== "smtp") ? "selected='selected'":""  }}>
                                     SMTP (Recommended)
-                                </option>
-                                <option value="mailgun" {{ (config('smartend.mail_driver')== "mailgun") ? "selected='selected'":""  }}>
-                                    Mailgun
-                                </option>
-                                <option value="ses" {{ (config('smartend.mail_driver')== "ses") ? "selected='selected'":""  }}>
-                                    Amazon SES
-                                </option>
-                                <option value="postmark" {{ (config('smartend.mail_driver')== "postmark") ? "selected='selected'":""  }}>
-                                    Postmark
                                 </option>
                             </select>
                             <div class="setting-description">

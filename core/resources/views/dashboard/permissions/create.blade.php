@@ -471,10 +471,6 @@
                                     @endforeach
                                 </div>
                             </div>
-                            <div class="help-text">
-                                <i class="fas fa-lightbulb"></i>
-                                Select Sections Help
-                            </div>
                         </div>
                         <div style="flex: 1;">
                             <div class="checkbox-modern-group">
@@ -550,10 +546,7 @@
                                     @endforeach
                                 </div>
                             </div>
-                            <div class="help-text">
-                                <i class="fas fa-lightbulb"></i>
-                                Select Sections Help
-                            </div>
+                           
                         </div>
                     </div>
                 </div>

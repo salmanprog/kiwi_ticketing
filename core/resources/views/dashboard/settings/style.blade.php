@@ -1,9 +1,9 @@
 <div class="tab-pane {{ (Session::get('active_tab') == 'styleTab' || Session::get('active_tab') == '') ? 'active' : '' }}" id="tab-5">
     <div class="p-a-md">
-        <h5 style="display: flex; align-items: center; gap: 10px; color: #2c3e50; font-weight: 600; margin-bottom: 1.5rem;">
+        <!-- <h5 style="display: flex; align-items: center; gap: 10px; color: #2c3e50; font-weight: 600; margin-bottom: 1.5rem;">
             <i class="fas fa-palette" style="color: #A0C242;"></i>
             {!! __('backend.styleSettings') !!}
-        </h5>
+        </h5> -->
     </div>
     
     <div class="p-a-md col-md-12">
@@ -13,9 +13,9 @@
                 <div class="col-sm-6 m-b-2" style="margin-bottom: 2rem;">
                     <label style="font-weight: 600; color: #2c3e50; margin-bottom: 0.75rem; display: block;">
                         {!! __('backend.siteLogo') !!} 
-                        <span style="background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%); color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 8px;">
+                        <!-- <span style="background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%); color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 8px;">
                             {!! @Helper::languageName($ActiveLanguage) !!}
-                        </span>
+                        </span> -->
                     </label>
                     
                     @if($Setting->{'style_logo_'.@$ActiveLanguage->code}!="")
@@ -62,7 +62,7 @@
                     
                     <small style="display: flex; align-items: center; gap: 6px; color: #6c757d; font-size: 0.85rem;">
                         <i class="fas fa-info-circle" style="color: #A0C242;"></i>
-                        ( 260x60 px ) - {!! __('backend.imagesTypes') !!}
+                        {!! __('backend.imagesTypes') !!}
                     </small>
                 </div>
             @endforeach
@@ -124,7 +124,7 @@
                 
                 <small style="display: flex; align-items: center; gap: 6px; color: #6c757d; font-size: 0.85rem;">
                     <i class="fas fa-info-circle" style="color: #FFD700;"></i>
-                    ( 32x32 px ) - {!! __('backend.imagesTypes') !!}
+                    {!! __('backend.imagesTypes') !!}
                 </small>
             </div>
         </div>

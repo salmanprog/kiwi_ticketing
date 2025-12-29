@@ -58,11 +58,11 @@
                 <table class="table table-bordered m-a-0" id="logs">
                     <thead class="dker">
                     <tr>
-                        <th class="width20 dker">
+                        <!-- <th class="width20 dker">
                             <label class="ui-check m-a-0">
                                 <input id="checkAll" type="checkbox"><i></i>
                             </label>
-                        </th>
+                        </th> -->
                         <th>{{ __('ID') }}</th>
                         <th>{{ __('Type') }}</th>
                         <th>{{ __('Order Number') }}</th>
@@ -167,7 +167,7 @@
                 },
                dom: '<"row"<"col-sm-6"f><"col-sm-6"l>>rtip',
                 columns: [
-                    { data: 'check', orderable: false, searchable: false },
+                    //{ data: 'check', orderable: false, searchable: false },
                     { data: 'id' },
                     { data: 'type' },
                     { data: 'order_number' },

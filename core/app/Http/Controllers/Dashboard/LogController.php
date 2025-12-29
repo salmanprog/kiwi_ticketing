@@ -171,12 +171,12 @@ class LogController extends Controller
         foreach ($data as $row) {
             $result[] = [
                 'id' => $row->id,
-                'check' => '<label class="ui-check m-a-0">
-                                <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
-                                <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
-                            </label>',
+                // 'check' => '<label class="ui-check m-a-0">
+                //                 <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
+                //                 <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
+                //             </label>',
                 'type' => $row->type,
-                'order_number' => '<a class="dropdown-item" href="' . route('ordersLogsShow', $row->slug) . '">'.$row->order_number.'</a>',
+                'order_number' => '<a class="dropdown-item" href="' . route('ordersLogsShow', $row->slug) . '">'.strtoupper($row->order_number).'</a>',
                 'endpoint' => $row->endpoint,
                 'message' => $row->message,
                 'status' => '<div class="text-center"><i class="fa ' . ($row->status == 'success' ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',

@@ -254,6 +254,9 @@ Route::get('/users/create/', [UsersController::class, 'create'])->name('usersCre
 Route::post('/users/store', [UsersController::class, 'store'])->name('usersStore');
 Route::get('/users/{id}/edit', [UsersController::class, 'edit'])->name('usersEdit');
 Route::post('/users/{id}/update', [UsersController::class, 'update'])->name('usersUpdate');
+Route::get('/users/{id}/password-edit', [UsersController::class, 'passwordEdit'])
+    ->name('users.password.edit');
+Route::post('/users/{id}/change-password', [UsersController::class, 'usersUpdatePassword'])->name('usersUpdatePassword');
 Route::get('/users/destroy/{id}', [UsersController::class, 'destroy'])->name('usersDestroy');
 Route::post('/users/updateAll', [UsersController::class, 'updateAll'])->name('usersUpdateAll');
 

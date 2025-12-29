@@ -456,7 +456,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group-modern">
+                        <!-- <div class="form-group-modern">
                             <label class="form-label-modern">
                                 <i class="fas fa-toggle-on"></i>
                                 {!! __('backend.status') !!}
@@ -475,7 +475,7 @@
                                     </label>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
 
                     <!-- Site Sections Permissions -->
@@ -598,10 +598,10 @@
                             <i class="fas fa-save"></i>
                             {!! __('backend.update') !!}
                         </button>
-                        <a href="{{ route('users') }}" class="btn-modern-default">
+                        <!-- <a href="{{ route('users') }}" class="btn-modern-default">
                             <i class="fas fa-times"></i>
                             {!! __('backend.cancel') !!}
-                        </a>
+                        </a> -->
                     </div>
 
                     {{ Form::close() }}

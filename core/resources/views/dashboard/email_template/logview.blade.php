@@ -287,11 +287,11 @@
             <!-- Header Section -->
             <div class="modern-header">
                 <h3><i class="fas fa-envelope-open"></i> {{ __('Email View') }}</h3>
-                <nav class="breadcrumb-modern">
+                <!-- <nav class="breadcrumb-modern">
                     <a href="{{ route('adminHome') }}">{{ __('backend.home') }}</a> /
                     <a href="{{ route('emailsLogs') }}">{{ __('Email Logs') }}</a> /
                     <a>{{__('view-email')}}</a> 
-                </nav>
+                </nav> -->
             </div>
 
             <!-- Email Content Section -->
@@ -344,12 +344,12 @@
                 <a href="javascript:history.back()" class="btn-modern-default">
                     <i class="fas fa-arrow-left"></i> {{ __('Back to List') }}
                 </a>
-                <button onclick="window.print()" class="btn-modern-default">
+                <!-- <button onclick="window.print()" class="btn-modern-default">
                     <i class="fas fa-print"></i> {{ __('Print') }}
-                </button>
-                <a href="{{ route('emailsLogs') }}" class="btn-modern-primary">
+                </button> -->
+                <!-- <a href="{{ route('emailsLogs') }}" class="btn-modern-primary">
                     <i class="fas fa-list"></i> {{ __('View All Emails') }}
-                </a>
+                </a> -->
             </div>
         </div>
     </div>

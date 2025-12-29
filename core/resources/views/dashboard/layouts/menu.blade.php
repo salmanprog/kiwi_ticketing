@@ -565,13 +565,13 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
 
                                 <!-- Email Management -->
                                 @if ($userRole == 'Webmaster')
-                                    <li class="{{ $emailTemplateActive ? 'active cust-act' : '' }}">
+                                    <li class="{{ $current === 'emailTemplate' || Str::startsWith($current, 'smtp-email') ? 'active cust-act' : '' }}">
                                         <a href="{{ route('emailTemplate') }}" style="color: #495057;">
                                             <span class="nav-text dashlogo">{{ __('Email Templates') }}</span>
                                         </a>
                                     </li>
                                     <li
-                                        class="{{ $current === 'smtpConfigure' || Str::startsWith($current, 'smtp-email') ? 'active cust-act' : '' }}">
+                                        class="{{ $current === 'smtpConfigure' || Str::startsWith($current, 'smtp-configure') ? 'active cust-act' : '' }}">
                                         <a href="{{ route('smtpConfigure') }}" style="color: #495057;">
                                             <span class="nav-text dashlogo">{{ __('SMTP Configuration') }}</span>
                                         </a>

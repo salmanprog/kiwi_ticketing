@@ -375,16 +375,16 @@
                         </button>
                     @endif -->
                 </div>
-                <div class="col-sm-3 text-center">
+                <!-- <div class="col-sm-3 text-center">
                     <small class="text-muted inline m-t-sm m-b-sm" id="table-info">
                         {{ __('backend.showing') }} 0 - 0 {{ __('backend.of') }} <strong>0</strong> {{ __('backend.records') }}
                     </small>
                 </div>
                 <div class="col-sm-6 text-right text-center-xs">
                     <div id="pagination-container">
-                        <!-- Pagination will be added by DataTables -->
+                        
                     </div>
-                </div>
+                </div> -->
             </div>
         </footer>
     </div>
