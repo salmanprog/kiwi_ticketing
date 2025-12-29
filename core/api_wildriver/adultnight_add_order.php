@@ -239,8 +239,8 @@ function change_form_14($form)
             'paymentCode' => '32',
             'amount' => $total_price_without_dollar,
             'staffTip'=> 0,
-            'tax' => $tax_without_dollar,
-            'serviceCharges' => $service_without_dollar
+            'tax' => isset($request->tax_amount) ? $request->tax_amount : '0',
+            'serviceCharges' => isset($request->tax_amount) ? $request->tax_amount : '0',
         )
 
     );
