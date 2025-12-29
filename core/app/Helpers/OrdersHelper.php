@@ -84,7 +84,7 @@ class OrdersHelper
                 'paymentCode'     => "32",
                 'amount'     => $total_amount,
                 'tax' => isset($requestPayload['tax_amount']) ? $requestPayload['tax_amount'] : '0',
-                'serviceCharges' => isset($requestPayload['tax_amount']) ? $requestPayload['tax_amount'] : '0'
+                'serviceCharges' => isset($requestPayload['service_fee']) ? $requestPayload['service_fee'] : '0'
             ];
         $payment = json_decode(json_encode($payment));
         $requestPayload['payment'] = $payment;
@@ -173,7 +173,7 @@ class OrdersHelper
                 'paymentCode'     => "32",
                 'amount'     => $total_amount,
                 'tax' => isset($requestPayload['tax_amount']) ? $requestPayload['tax_amount'] : '0',
-                'serviceCharges' => isset($requestPayload['tax_amount']) ? $requestPayload['tax_amount'] : '0'
+                'serviceCharges' => isset($requestPayload['service_fee']) ? $requestPayload['service_fee'] : '0'
             ];
         $payment = json_decode(json_encode($payment));
         $requestPayload['payment'] = $payment;
