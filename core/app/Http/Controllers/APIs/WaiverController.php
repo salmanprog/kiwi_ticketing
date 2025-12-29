@@ -57,7 +57,8 @@ class WaiverController extends BaseAPIController
         // if ($existingWaiver) {
         //     return $this->sendResponse(400, 'Waiver Error', ['error' => 'Waiver for this Order ID or QR Code is already submitted']);
         // }
-        $baseUrl  = 'http://dev-dynamicpricing-env.eba-tkbnkmbm.us-east-1.elasticbeanstalk.com';
+        //$baseUrl  = 'http://dev-dynamicpricing-env.eba-tkbnkmbm.us-east-1.elasticbeanstalk.com';
+        $baseUrl = 'https://dynamicpricing-api.dynamicpricingbuilder.com';
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $currentDate = now()->format('Y-m-d');
         $photoBase64 = base64_encode(
