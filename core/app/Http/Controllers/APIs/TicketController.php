@@ -124,12 +124,38 @@ class TicketController extends BaseAPIController
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
 
         try {
-            $response = Http::get('https://dynamicpricing-api.dynamicpricingbuilder.com/Pricing/GetFacilitySchedule?Authcode='.$authCode.'&date='.$request->date);
+            $response = Http::get($baseUrl.'/Pricing/GetFacilitySchedule?Authcode='.$authCode.'&date='.$request->date);
             $data = $response->json();
             if (isset($data['status']['errorCode']) && $data['status']['errorCode'] == 1) {
                 return $this->sendResponse(400, 'FacilitySchedule Error', ['error' => $data['status']['errorMessage']]);
             }
             return $this->sendResponse(200, 'FacilitySchedule fetched successfully', $data['data']);
+
+        } catch (\Exception $e) {
+             return $this->sendResponse(401, 'Server Error', $e->getMessage());
+        }
+    }
+
+    public function LookUpOrder(Request $request)
+    {
+         $validator = Validator::make($request->all(), [
+            'search' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendResponse(400, 'Validation Error', $validator->errors());
+        }
+
+        $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
+
+        try {
+            $response = Http::get($baseUrl.'/Pricing/LookUpOrder?Authcode='.$authCode.'&Search='.$request->search);
+            $data = $response->json();
+            if (isset($data['status']['errorCode']) && $data['status']['errorCode'] == 1) {
+                return $this->sendResponse(400, 'LookUpOrder Error', ['error' => $data['status']['errorMessage']]);
+            }
+            return $this->sendResponse(200, 'LookUpOrder fetched successfully', $data['data']);
 
         } catch (\Exception $e) {
              return $this->sendResponse(401, 'Server Error', $e->getMessage());
