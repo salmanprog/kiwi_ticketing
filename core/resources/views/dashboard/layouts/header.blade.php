@@ -91,7 +91,7 @@
                             @if (Auth::user()->photo != '')
                                 <img src="{{ asset('uploads/users/' . Auth::user()->photo) }}"
                                     alt="{{ Auth::user()->name }}" title="{{ Auth::user()->name }}"
-                                    style="border-radius: 50%;">
+                                    style="border-radius: 50%;width: 32px;height: 32px;">
                             @else
                                 <img src="{{ asset('uploads/contacts/profile.jpg') }}" alt="{{ Auth::user()->name }}"
                                     title="{{ Auth::user()->name }}" style="border-radius: 50%;">
