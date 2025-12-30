@@ -77,7 +77,7 @@ Route::post('/order-create', 'OrderController@OrderCreate');
 Route::post('/order-update', 'OrderController@OrderUpdate');
 Route::post('/order-paid', 'OrderController@OrderPaid');
 Route::get('/order/{slug}', 'OrderController@getBySlug');
-
+Route::get('/regenerate-order/{order_number}', 'OrderController@OrderReCreate');
 //Logs
 Route::post('/generate-log', 'LogController@store');
 
