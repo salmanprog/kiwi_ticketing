@@ -155,7 +155,7 @@ class TicketController extends BaseAPIController
             if (isset($data['status']['errorCode']) && $data['status']['errorCode'] == 1) {
                 return $this->sendResponse(400, 'LookUpOrder Error', ['error' => $data['status']['errorMessage']]);
             }
-            return $this->sendResponse(200, 'LookUpOrder fetched successfully', $data['data']);
+            return $this->sendResponse(200, 'LookUpOrder fetched successfully', $data['data']['data']);
 
         } catch (\Exception $e) {
              return $this->sendResponse(401, 'Server Error', $e->getMessage());
