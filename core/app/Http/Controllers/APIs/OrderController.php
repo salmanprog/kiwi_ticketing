@@ -600,7 +600,7 @@ class OrderController extends BaseAPIController
                     $get_previous_order->user_id  = $get_previous_order->user_id;
                     $get_previous_order->save();
 
-                    print_r($data['data']);
+                    print_r($data);
                     die();
                     if (isset($data['data']['tickets']) && is_array($data['data']['tickets'])) {
                         $tickets = mapTicketNamesFromApi($data['data']['tickets']);
