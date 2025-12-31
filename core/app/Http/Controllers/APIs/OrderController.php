@@ -76,7 +76,7 @@ class OrderController extends BaseAPIController
                     'authcode' => $authCode,
                 ]);
                 $get_order = $get_order->json();
-                $orderData = $data['data'] ?? [];
+                $orderData = $data['data'][0];
                 //$get_user = User::where('id',$request->user_id)->first();
                 $get_user = User::firstOrCreate(
                     ['email' => $request->email],
