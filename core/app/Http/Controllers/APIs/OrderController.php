@@ -677,7 +677,7 @@ class OrderController extends BaseAPIController
 
                     $order_type =  OrdersHelper::order_types($get_previous_order->type);
                     $get_order = Order::with(['customer','purchases','apply_coupon','transaction',$order_type])->where('id',$get_previous_order->id)->first();
-                    $emailSent = MailHelper::orderConfirmationEmail($get_order,'regenerate_order');
+                    //$emailSent = MailHelper::orderConfirmationEmail($get_order,'regenerate_order');
                     $resource = OrderResource::make($get_order);
                     ApiLog::create([
                         'type' => 'order',
