@@ -636,6 +636,7 @@ class OrderController extends BaseAPIController
                                 $ordertickets->isSeasonPass = $ticket['isSeasonPass'] ?? null;
                                 $ordertickets->totalOrderRefundedAmount = $ticket['totalOrderRefundedAmount'] ?? null;
                                 $ordertickets->ticket_status = 'ticket_paid';
+                                $ordertickets->save();
                             }
                         }
                     }
