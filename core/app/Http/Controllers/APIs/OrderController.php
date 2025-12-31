@@ -583,7 +583,7 @@ class OrderController extends BaseAPIController
                     $get_previous_order->lastName = $get_previous_order->lastName;;
                     $get_previous_order->email = $get_previous_order->email;
                     $get_previous_order->phone = $get_previous_order->phone;
-                    $get_previous_order->orderTotal = $get_previous_order->addonAmount;
+                    $get_previous_order->orderTotal = $get_previous_order->orderTotal;
                     $get_previous_order->tax = $get_previous_order->tax;
                     $get_previous_order->serviceCharges = $get_previous_order->serviceCharges;
                     $get_previous_order->orderTip  = $get_previous_order->orderTip;
