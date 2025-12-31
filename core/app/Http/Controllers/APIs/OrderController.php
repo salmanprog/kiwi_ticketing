@@ -600,10 +600,8 @@ class OrderController extends BaseAPIController
                     $get_previous_order->user_id  = $get_previous_order->user_id;
                     $get_previous_order->save();
 
-                    print_r($data['tickets']);
-                    die();
-                    if (isset($data['data']['tickets']) && is_array($data['data']['tickets'])) {
-                        $tickets = mapTicketNamesFromApi($data['data']['tickets']);
+                    if (isset($data['tickets']) && is_array($data['tickets'])) {
+                        $tickets = mapTicketNamesFromApi($data['tickets']);
                         foreach ($tickets as $ticket) {
                             
                             $existing_ticket = OrderTickets::where('order_id', $get_previous_order->id)->where('visualId', $ticket['visualId'])->first();
