@@ -571,7 +571,7 @@ class OrderController extends BaseAPIController
                 ]);
                 $get_order = $get_order->json();
                 //$data = $get_order['data'] ?? [];
-                $data = $get_order['data'][0];
+                $data = $get_order['data'] ?? [];
                 if($data){
                     $get_previous_order = Order::where('slug',$data['orderNumber'])->first();
                     $get_previous_order->parent_order = $get_previous_order->slug;
@@ -600,6 +600,8 @@ class OrderController extends BaseAPIController
                     $get_previous_order->user_id  = $get_previous_order->user_id;
                     $get_previous_order->save();
 
+                    print_r($data['data']['tickets']);
+                    die();
                     if (isset($data['data']['tickets']) && is_array($data['data']['tickets'])) {
                         $tickets = mapTicketNamesFromApi($data['data']['tickets']);
                         foreach ($tickets as $ticket) {
