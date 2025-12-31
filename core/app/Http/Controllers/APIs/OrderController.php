@@ -651,9 +651,33 @@ class OrderController extends BaseAPIController
                     $transaction->amount = $data['orderTotal'];
                     $transaction->save();
 
+                    if (isset($get_previous_order->promoCode) && $get_previous_order->promoCode > 0) {
+                        $coupons = Coupons::find($get_previous_order->promoCode);
+                        
+                        if ($coupons->discount_type === 'percentage') {
+                            $discount = ($get_previous_order->orderTotal * $coupons->discount) / 100;
+                        } elseif ($coupons->discount_type === 'flat_rate') {
+                            $discount = $coupons->discount;
+                        }
+                        $discount = min($discount, $get_previous_order->orderTotal);
+                        $finalAmount = $get_previous_order->orderTotal - $discount;
+                        
+                        $coupons->coupon_use_limit += 1;
+                        $coupons->save();
+
+                        $orderCoupon = OrderCoupon::where('order_id',$get_previous_order->id)->where('coupon_id',$coupons->id)->first();;
+                        $orderCoupon->order_id = $get_previous_order->id;
+                        $orderCoupon->coupon_id = $coupons->id;
+                        $orderCoupon->original_amount = $get_previous_order->orderTotal;
+                        $orderCoupon->discount_type = $coupons->discount_type;
+                        $orderCoupon->discount = $discount;
+                        $orderCoupon->final_amount = $finalAmount;
+                        $orderCoupon->save();
+                    }
+
                     $order_type =  OrdersHelper::order_types($get_previous_order->type);
                     $get_order = Order::with(['customer','purchases','apply_coupon','transaction',$order_type])->where('id',$get_previous_order->id)->first();
-                    //$emailSent = MailHelper::orderConfirmationEmail($get_order,'update_order');
+                    $emailSent = MailHelper::orderConfirmationEmail($get_order,'regenerate_order');
                     $resource = OrderResource::make($get_order);
                     ApiLog::create([
                         'type' => 'order',
