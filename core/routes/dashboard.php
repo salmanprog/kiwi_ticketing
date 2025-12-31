@@ -266,6 +266,9 @@ Route::get('/users/permissions/{id}/edit', [UsersController::class, 'permissions
 Route::post('/users/permissions/{id}/update', [UsersController::class, 'permissions_update'])->name('permissionsUpdate');
 Route::post('/users/permissions/{id}/save', [UsersController::class, 'update_custom_home'])->name('permissionsHomePageUpdate');
 Route::get('/users/permissions/destroy/{id}', [UsersController::class, 'permissions_destroy'])->name('permissionsDestroy');
+Route::get('/users/{id}/password-edit', [UsersController::class, 'passwordEdit'])
+    ->name('users.password.edit');
+Route::post('/users/{id}/change-password', [UsersController::class, 'usersUpdatePassword'])->name('usersUpdatePassword');
 
 Route::post('/permissions-links/store', [UsersController::class, 'links_store'])->name('customLinksStore');
 Route::post('/permissions-links/update', [UsersController::class, 'links_update'])->name('customLinksUpdate');

@@ -125,6 +125,11 @@
                                 <i class="material-icons mr-2 text-muted">&#xe853;</i>
                                 <span>{{ __('backend.profile') }}</span>
                             </a>
+                            <a class="dropdown-item d-flex align-items-center"
+                                href="{{ route('users.password.edit', Auth::user()->id) }}">
+                                <i class="material-icons mr-2 text-muted">&#xe853;</i>
+                                <span>{{ __('Change Password') }}</span>
+                            </a>
                         @endif
 
                         <div class="dropdown-divider"></div>
