@@ -651,7 +651,7 @@ class OrderController extends BaseAPIController
                     $transaction->amount = $data['orderTotal'];
                     $transaction->save();
 
-                    if (isset($get_previous_order->promoCode) && $get_previous_order->promoCode > 0) {
+                    if (isset($get_previous_order->promoCode) && is_numeric($get_previous_order->promoCode)) {
                         $coupons = Coupons::find($get_previous_order->promoCode);
                         
                         if ($coupons->discount_type === 'percentage') {
