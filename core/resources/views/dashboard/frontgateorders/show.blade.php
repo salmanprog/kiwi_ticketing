@@ -185,8 +185,8 @@
                                 ${{ number_format($get_cabana_orders->tax, 2) }}
                             </div>
                             <div class="col-md-3 p-3 text-center">
-                                <strong>Order Tip</strong><br>
-                                ${{ number_format($get_cabana_orders->orderTip, 2) }}
+                                <strong>Order Service Charges</strong><br>
+                                ${{ number_format($get_cabana_orders->serviceCharges, 2) }}
                             </div>
                             <div class="col-md-3 p-3 text-center">
                                 <strong>Order Date</strong><br>
