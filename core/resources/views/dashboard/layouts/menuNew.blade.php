@@ -229,7 +229,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
             </div>
         </div>
 
-        <div class="navbar navbar-md no-radius for-dest-show" style="display:none;">
+        <div class="navbar navbar-md no-radius for-dest-show">
             <a class="hidden-folded inline folded-toggle m-t p-t-xs pull-right">
                 <svg class="toggle-sidebar d-lg-block d-none" xmlns="http://www.w3.org/2000/svg" width="20"
                     height="20" viewBox="0 0 24 24" fill="none">
