@@ -89,8 +89,8 @@
 
         .form-group-modern {
             margin-bottom: 1.8rem;
-            display: flex;
-            align-items: flex-start;
+            /* display: flex;
+            align-items: flex-start; */
         }
 
         .form-label-modern {
