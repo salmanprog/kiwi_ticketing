@@ -294,8 +294,9 @@
 
         .form-navigation {
             display: flex;
-            justify-content: space-between;
+            justify-content: end;
             margin-top: 20px;
+            gap: 20px;
         }
 
         /* Modal styles */
@@ -521,7 +522,7 @@
                         </label>
                         <div class="col-sm-9">
                             <input type="text" name="title" placeholder="Enter package title" class="form-control"
-                                id="title" required>
+                                id="title" required maxlength="35">
                             <div class="invalid-feedback">Please enter package title</div>
                         </div>
                     </div>

@@ -154,8 +154,8 @@
 @push('after-styles')
     <link href="{{ asset('assets/dashboard/js/iconpicker/fontawesome-iconpicker.min.css') }}" rel="stylesheet">
     <!--[if lt IE 9]>
-        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+            <![endif]-->
     <style>
         .box-header.dker {
             background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%) !important;
@@ -244,8 +244,9 @@
 
         .form-navigation {
             display: flex;
-            justify-content: space-between;
+            justify-content: end;
             margin-top: 20px;
+            gap: 20px;
         }
 
         /* Modal styles */
@@ -411,7 +412,7 @@
                         </label>
                         <div class="col-sm-9">
                             <input type="text" name="title" placeholder="Enter package title" class="form-control"
-                                id="title" required>
+                                id="title" required maxlength="35">
                             <div class="invalid-feedback">Please enter package title</div>
                         </div>
                     </div>

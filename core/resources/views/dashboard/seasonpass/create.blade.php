@@ -165,8 +165,8 @@
 @push('after-styles')
     <link href="{{ asset('assets/dashboard/js/iconpicker/fontawesome-iconpicker.min.css') }}" rel="stylesheet">
     <!--[if lt IE 9]>
-        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+            <![endif]-->
     <style>
         .box-header.dker {
             background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%) !important;
@@ -255,8 +255,9 @@
 
         .form-navigation {
             display: flex;
-            justify-content: space-between;
+            justify-content: end;
             margin-top: 20px;
+            gap: 20px;
         }
 
         /* Modal styles */
@@ -422,7 +423,7 @@
                         </label>
                         <div class="col-sm-9">
                             <input type="text" name="title" placeholder="Enter pass title" class="form-control"
-                                id="title" required>
+                                id="title" required maxlength="35">
                             <div class="invalid-feedback">Please enter pass title</div>
                         </div>
                     </div>
@@ -436,7 +437,7 @@
                             @foreach (Helper::languagesList() as $ActiveLanguage)
                                 @if ($ActiveLanguage->box_status)
                                     <div class="m-b-1">
-                                        {!!  __('backend.customFieldsType99') !!} {!! @Helper::languageName($ActiveLanguage) !!}
+                                        {!! __('backend.customFieldsType99') !!} {!! @Helper::languageName($ActiveLanguage) !!}
                                         <div class="box p-a-xs">
                                             {!! Form::textarea(
                                                 'description',
@@ -446,8 +447,8 @@
                                                     'placeholder' => '',
                                                     'class' => 'form-control summernote_' . @$ActiveLanguage->code,
                                                     'dir' => @$ActiveLanguage->direction,
-                                                    'ui-options' => '{height: 150}'
-                                                ]
+                                                    'ui-options' => '{height: 150}',
+                                                ],
                                             ) !!}
                                         </div>
                                     </div>

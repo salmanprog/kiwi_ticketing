@@ -32,6 +32,7 @@
         padding: 0;
         margin: 0;
         font-size: 0.9rem;
+        display: none;
     }
 
     .breadcrumb-modern a {
@@ -58,7 +59,7 @@
         background: #f8f9fa;
         border-bottom: 2px solid #dee2e6;
         font-weight: 600;
-        color: #2c3e50;
+        color: #95b83d;
         padding: 1rem 1.2rem;
         vertical-align: middle;
     }

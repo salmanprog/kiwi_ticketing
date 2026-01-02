@@ -270,8 +270,9 @@
 
         .form-navigation {
             display: flex;
-            justify-content: space-between;
+            justify-content: end;
             margin-top: 20px;
+            gap: 20px;
         }
 
         /* Modal styles */

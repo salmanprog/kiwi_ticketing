@@ -12,7 +12,7 @@
     .email-template-header {
         background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%);
         color: white;
-        padding: 20px 25px;
+        padding: 35px 25px;
         border-bottom: none;
     }
     .email-template-header h3 {
@@ -26,7 +26,7 @@
     .email-template-header small {
         opacity: 0.9;
         margin-top: 5px;
-        display: block;
+        display: none;
     }
     .email-template-header small a {
         color: rgba(255,255,255,0.9);
