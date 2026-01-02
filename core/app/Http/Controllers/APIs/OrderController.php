@@ -479,15 +479,7 @@ class OrderController extends BaseAPIController
                 $requestPayload
             );
 
-            if ($response->failed()) {
-                $errorData = $response->json();
-
-                return $this->sendResponse(
-                    $response->status(),
-                    $errorData['message'] ?? 'External API Error',
-                    $errorData
-                );
-            }
+            dd($response->body());
 
             $order_number = strtolower($request->orderNumber);
             $update_order = Order::where('slug',$order_number)->first();
