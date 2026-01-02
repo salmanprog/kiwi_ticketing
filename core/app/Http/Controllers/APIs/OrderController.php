@@ -479,7 +479,12 @@ class OrderController extends BaseAPIController
                 $requestPayload
             );
 
-            dd($response->body());
+            dd([
+                'status'  => $response->status(),
+                'headers' => $response->headers(),
+                'body'    => $response->body(),
+                'json'    => $response->json(),
+            ]);
 
             $order_number = strtolower($request->orderNumber);
             $update_order = Order::where('slug',$order_number)->first();
