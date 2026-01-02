@@ -479,10 +479,16 @@ class OrderController extends BaseAPIController
                 $requestPayload
             );
 
-            if (!$response->successful()) {
-                throw new \Exception($response->body());
+            if ($response->failed()) {
+                $errorData = $response->json();
+
+                return $this->sendResponse(
+                    $response->status(),
+                    $errorData['message'] ?? 'External API Error',
+                    $errorData
+                );
             }
-            
+
             $order_number = strtolower($request->orderNumber);
             $update_order = Order::where('slug',$order_number)->first();
             $update_order->transactionId  = $request->transactionId;
