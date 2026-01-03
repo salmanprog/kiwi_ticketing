@@ -52,11 +52,11 @@
                     <table class="table table-bordered m-a-0" id="general_ticket_addon">
                         <thead class="dker">
                         <tr>
-                            <th class="width20 dker">
+                            <!-- <th class="width20 dker">
                                 <label class="ui-check m-a-0">
                                     <input id="checkAll" type="checkbox"><i></i>
                                 </label>
-                            </th>
+                            </th> -->
                             <th>{{ __('venueId') }}</th>
                             <th>{{ __('General Ticket') }}</th>
                             <th>{{ __('Addon') }}</th>
@@ -191,7 +191,7 @@
                 },
                dom: '<"row"<"col-sm-6"f><"col-sm-6"l>>rtip',
                 columns: [
-                    { data: 'check', orderable: false, searchable: false },
+                    //{ data: 'check', orderable: false, searchable: false },
                     { data: 'venueId' },
                     { data: 'generalTicketType' },
                     { data: 'ticketType' },
@@ -214,7 +214,12 @@
                             <div>{!! __('backend.loading') !!}</div>
                         </div>`
                     }
-                )
+                ),
+                initComplete: function () {
+                    // Add placeholder to search input
+                    var $searchInput = $('#general_ticket_addon_filter input');
+                    $searchInput.attr('placeholder', 'Search by general ticket');
+                }
             });
 
             dataTable.on('page.dt', function () {

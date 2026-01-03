@@ -51,14 +51,13 @@ class GeneralTicketPackagesController extends Controller
 
     public function getData(Request $request)
     {
+        
         $authCode = Helper::GeneralSiteSettings('auth_code_en');
         $query = GeneralTicketPackages::with(['media_slider','general_addons','createdBy','updatedBy'])->where('auth_code',$authCode);
         if ($request->has('search') && $request->search['value'] != '') {
             $search = $request->search['value'];
-            $order_status = strtolower(str_replace(' ', '_', $search));
-            $query->where(function ($q) use ($search, $order_status) {
-                        $q->where('title', 'like', "%{$search}%")
-                        ->orWhere('order_status', 'like', "%{$order_status}%");
+            $query->where(function ($q) use ($search) {
+                        $q->where('title', 'like', "%{$search}%");
                     });
         }
 
@@ -83,10 +82,10 @@ class GeneralTicketPackagesController extends Controller
         foreach ($data as $row) {
             $result[] = [
                 'id' => $row->id,
-                'check' => '<label class="ui-check m-a-0">
-                                <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
-                                <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
-                            </label>',
+                // 'check' => '<label class="ui-check m-a-0">
+                //                 <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
+                //                 <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
+                //             </label>',
                 'title' => '<a class="dropdown-item" href="' . route('generalticketpackagesEdit', $row->slug) . '">'.$row->title.'</a>',
                 'slug' => $row->slug,
                 'addons' => '<div class="text-center">'.count($row->general_addons).'</div>',

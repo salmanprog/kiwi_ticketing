@@ -285,6 +285,12 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                     $transactionActive = in_array($current, ['transactionorders', 'updatetransactionorders']);
                     $LogsActive = in_array($current, ['ordersLogs', 'ordersfailedLogs', 'paymentLogs', 'paymentfailLogs', 'ordersLogsShow']);
                     $emailTemplateActive = in_array($current, ['emailTemplate', 'emailTemplateCreate', 'emailTemplateEdit', 'emailTemplateStore', 'emailTemplateUpdate', 'emailTemplateDestroy', 'smtpConfigure', 'emailLogs']);
+                    $ticketMenuActive = in_array($current, [
+                        'tickets', 'generaltickets', 'generalticketpackages', 'generalticketsaddon', 'generalticketsorders',
+                        'cabanas', 'cabana', 'kabanaddons', 'kabanaorders',
+                        'seasonpass', 'seasonpassaddon', 'seasonpassorders',
+                        'birthdaypackages', 'birthdayaddon', 'birthdayorders'
+                    ]);
                     ?>
 
                     <!-- Ticket / Pass Management Dropdown -->
@@ -293,8 +299,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                             style="color: #6c757d !important;">{{ __('Ticket / Pass Management') }}</small>
                     </li> --}}
 
-                    <li class="{{ in_array($current, ['tickets', 'cabanas', 'seasonpass', 'birthdaypackages']) ? 'active menue-hie' : '' }}"
-                        style="border-left: 3px solid transparent;">
+                    <li class="{{ $ticketMenuActive ? 'active menue-hie' : '' }}" style="border-left: 3px solid transparent;">
                         <a style="color: #495057;">
                             <span class="nav-caret no-mrgn">
                                 <i class="cust-arrow-icon"></i>
@@ -308,7 +313,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                             <!-- Tickets -->
                             @if ($userRole == 'Webmaster' || in_array(18, $dataSections))
                                 <li
-                                    class="{{ in_array($current, ['generaltickets', 'generalticketpackages']) ? 'active cust-act' : '' }}">
+                                    class="{{ in_array($current, ['generaltickets', 'generalticketpackages', 'generalticketsaddon', 'generalticketsorders']) ? 'active cust-act' : '' }}">
                                     <a style="color: #495057;">
                                         <span class="nav-caret no-mrgn">
                                             <i class="cust-arrow-icon"></i>

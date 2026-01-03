@@ -464,3 +464,22 @@
         </div> -->
     </div>
 </div>
+<script>
+document.getElementById('style_fav').addEventListener('change', function (e) {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    // Only images
+    if (!file.type.startsWith('image/')) {
+        alert('Please select an image file');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function (event) {
+        document.getElementById('style_fav_prv').src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+});
+</script>

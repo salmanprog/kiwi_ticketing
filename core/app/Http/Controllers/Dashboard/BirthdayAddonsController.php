@@ -93,10 +93,6 @@ class BirthdayAddonsController extends Controller
             $get_bday_addon = BirthdayAddon::with(['createdBy','updatedBy'])->where('birthday_slug', $row->slug)->first();
             $result[] = [
                 'id' => $row->id,
-                'check' => '<label class="ui-check m-a-0">
-                                <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
-                                <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
-                            </label>',
                 'title' => '<a class="dropdown-item" href="' . route('birthdayaddonEdit', $row->slug) . '">'.$row->title.'</a>',
                 'slug' => $row->slug,
                 'price' => '$' . number_format($row->price, 2),

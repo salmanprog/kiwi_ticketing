@@ -70,10 +70,7 @@ class SeasonPassAddonsController extends Controller
         if ($request->has('search') && $request->search['value'] != '') {
             $search = $request->search['value'];
             $query->where(function ($q) use ($search) {
-                $q->where('ticketType', 'like', "%{$search}%")
-                ->orWhereHas('season_pass', function ($q2) use ($search) {
-                    $q2->where('title', 'like', "%{$search}%");
-                });
+                $q->where('ticketType', 'like', "%{$search}%");
             });
         }
 
@@ -100,10 +97,6 @@ class SeasonPassAddonsController extends Controller
             $external = $externalMap[$row->ticketSlug] ?? null;
             $result[] = [
                 'id' => $row->id,
-                'check' => '<label class="ui-check m-a-0">
-                                <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
-                                <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
-                            </label>',
                 'seasonpass' => '<a class="dropdown-item" href="' . route('seasonpass') . '">'.$row->season_pass->title.'</a>',
                 'title' => '<a class="dropdown-item" href="' . route('seasonpassaddonEdit', $row->slug) . '">'.$row->ticketType.'</a>',
                 'slug' => $row->ticketSlug,

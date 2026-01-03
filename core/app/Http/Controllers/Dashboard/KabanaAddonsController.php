@@ -184,10 +184,6 @@ class KabanaAddonsController extends Controller
 
             $result[] = [
                 'venueId' => $row['venueId'],
-                'check' => '<label class="ui-check m-a-0">
-                                <input type="checkbox" name="ids[]" value="' . $row['ticketSlug'] . '"><i></i>
-                                <input type="hidden" name="row_ids[]" value="' . $row['ticketSlug'] . '" class="form-control row_no">
-                            </label>',
                 'ticketType' => '<a class="dropdown-item" href="' . route('kabanaaddonEdit', $row['ticketSlug']) . '">' . e($row['ticketType']) . '</a>',
                 'ticketSlug' => $row['ticketSlug'],
                 'ticketCategory' => $row['ticketCategory'],

@@ -69,11 +69,6 @@
                     <table class="table table-bordered m-a-0" id="birthday_addons">
                         <thead class="dker">
                         <tr>
-                            <th class="width20 dker">
-                                <label class="ui-check m-a-0">
-                                    <input id="checkAll" type="checkbox"><i></i>
-                                </label>
-                            </th>
                             <th>{{ __('ID') }}</th>
                             <th>{{ __('Package Title') }}</th>
                             <th>{{ __('Slug') }}</th>
@@ -157,7 +152,6 @@
                 },
                dom: '<"row"<"col-sm-6"f><"col-sm-6"l>>rtip',
                 columns: [
-                    { data: 'check', orderable: false, searchable: false },
                     { data: 'id' },
                     { data: 'title' },
                     { data: 'slug' },
@@ -178,7 +172,12 @@
                             <div>{!! __('backend.loading') !!}</div>
                         </div>`
                     }
-                )
+                ),
+                initComplete: function () {
+                    // Add placeholder to search input
+                    var $searchInput = $('#birthday_addons_filter input');
+                    $searchInput.attr('placeholder', 'Search by package title');
+                }
             });
 
             dataTable.on('page.dt', function () {

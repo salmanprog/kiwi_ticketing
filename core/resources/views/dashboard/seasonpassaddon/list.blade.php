@@ -70,11 +70,6 @@
             <table class="table table-bordered m-a-0" id="season_pass_addon">
                 <thead class="dker">
                 <tr>
-                    <th class="width20 dker">
-                        <label class="ui-check m-a-0">
-                            <input id="checkAll" type="checkbox"><i></i>
-                        </label>
-                    </th>
                     <th>{{ __('Id') }}</th>
                     <th>{{ __('Season Pass') }}</th>
                     <th>{{ __('Product Name') }}</th>
@@ -180,7 +175,6 @@
                 },
                dom: '<"row"<"col-sm-6"f><"col-sm-6"l>>rtip',
                 columns: [
-                    { data: 'check', orderable: false, searchable: false },
                     { data: 'id' },
                     { data: 'seasonpass' },
                     { data: 'title' },
@@ -193,7 +187,7 @@
                     { data: 'updated_at', orderable: false, searchable: false },
                     { data: 'options', orderable: false, searchable: false }
                 ],
-                order: [[1, 'desc']],
+                //order: [[1, 'desc']],
                 language: $.extend(
                     {!! json_encode(__('backend.dataTablesTranslation')) !!},
                     {
@@ -202,7 +196,12 @@
                             <div>{!! __('backend.loading') !!}</div>
                         </div>`
                     }
-                )
+                ),
+                initComplete: function () {
+                    // Add placeholder to search input
+                    var $searchInput = $('#season_pass_addon_filter input');
+                    $searchInput.attr('placeholder', 'Search by product name');
+                }
             });
 
             dataTable.on('page.dt', function () {
