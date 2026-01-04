@@ -547,7 +547,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                             <small class="text-muted" style="color: #6c757d !important;">{{ __('Settings') }}</small>
                         </li>
 
-                        <li class="{{ in_array($current, ['ordersLogs', 'users', 'settings', 'emailTemplate']) ? 'active menue-hie' : '' }}"
+                        <li class="{{ in_array($current, ['ordersLogs', 'users', 'settings', 'emailTemplate', 'permissionsCreate', 'permissionsEdit', 'usersEdit', 'usersCreate', 'emailTemplateCreate', 'emailTemplateEdit', 'smtp-configure', 'smtpConfigure', 'emailsLogs', 'ordersfailedLogs', 'paymentLogs', 'paymentfailLogs']) ? 'active menue-hie' : '' }}"
                             style="border-left: 3px solid transparent;">
                             <a class="kiwi-pd" style="color: #495057;">
                                 <span class="nav-caret no-mrgn">
@@ -561,7 +561,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                             <ul class="nav-sub" style="background: #f8f9fa;">
                                 <!-- User Permission -->
                                 @if (@Auth::user()->permissionsGroup->roles_status)
-                                    <li class="{{ $PathCurrentFolder == 'users' ? 'active cust-act' : '' }}">
+                                    <li class="{{ $PathCurrentFolder == 'users' || Str::startsWith($current, 'permissionsCreate') || Str::startsWith($current, 'permissionsEdit') || Str::startsWith($current, 'usersEdit') || Str::startsWith($current, 'usersCreate') ? 'active cust-act' : '' }}">
                                         <a href="{{ route('users') }}" style="color: #495057;">
                                             <span class="nav-text dashlogo">{{ __('User Permission') }}</span>
                                         </a>
@@ -570,7 +570,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
 
                                 <!-- Email Management -->
                                 @if ($userRole == 'Webmaster')
-                                    <li class="{{ $current === 'emailTemplate' || Str::startsWith($current, 'smtp-email') ? 'active cust-act' : '' }}">
+                                    <li class="{{ $current === 'emailTemplate' || Str::startsWith($current, 'emailTemplateEdit') || Str::startsWith($current, 'emailTemplateCreate') ? 'active cust-act' : '' }}">
                                         <a href="{{ route('emailTemplate') }}" style="color: #495057;">
                                             <span class="nav-text dashlogo">{{ __('Email Templates') }}</span>
                                         </a>

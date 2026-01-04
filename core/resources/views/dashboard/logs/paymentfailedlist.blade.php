@@ -186,7 +186,12 @@
                             <div>{!! __('backend.loading') !!}</div>
                         </div>`
                     }
-                )
+                ),
+                initComplete: function () {
+                    // Add placeholder to search input
+                    var $searchInput = $('#logs_filter input');
+                    $searchInput.attr('placeholder', 'Search by order number');
+                }
             });
 
             dataTable.on('page.dt', function () {

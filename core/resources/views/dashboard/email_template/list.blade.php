@@ -287,11 +287,6 @@
                 <table class="table table-bordered m-a-0" id="email_templates">
                     <thead class="dker">
                         <tr>
-                            <th class="width20 dker">
-                                <label class="ui-check m-a-0">
-                                    <input id="checkAll" type="checkbox"><i></i>
-                                </label>
-                            </th>
                             <th>{{ __('ID') }}</th>
                             <th>{{ __('Identifier') }}</th>
                             <th>{{ __('Subject') }}</th>
@@ -444,7 +439,6 @@
             },
             dom: '<"row"<"col-sm-6"f><"col-sm-6"l>>rtip',
             columns: [
-                { data: 'check', orderable: false, searchable: false },
                 { data: 'id' },
                 { data: 'identifier' },
                 { data: 'Subject' },
@@ -463,6 +457,8 @@
             ),
             initComplete: function() {
                 // Hide skeleton loader when table is initialized
+                var $searchInput = $('#email_templates_filter input');
+                $searchInput.attr('placeholder', 'Search by identifier');
                 $('.skeleton-loader').hide();
             },
             drawCallback: function(settings) {
