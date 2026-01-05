@@ -229,7 +229,7 @@
             </div>
             
             <h1 class="welcome-title animate__animated animate__fadeInUp">
-                Welcome to <span style="color: var(--primary-green);">kiwi Ticketing</span>
+                Welcome to <span style="color: var(--primary-green);">Kiwi Ticketing</span>
             </h1>
             
             {{-- <div class="date-badge animate__animated animate__fadeInUp animate__delay-1s">
