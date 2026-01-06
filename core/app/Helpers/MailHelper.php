@@ -153,7 +153,7 @@ class MailHelper
                                             <td style="padding:5px">Total</td>
                                         </tr>
                                         <tr>
-                                            <td style="padding:5px">'.$package->title.'</td>
+                                            <td style="padding:5px">'.($package->title ?? 'N/A').'</td>
                                             <td style="padding:5px">'.count($data->purchases).'</td>
                                             <td style="padding:5px">$'.$data->orderTotal.'</td>
                                         </tr>
