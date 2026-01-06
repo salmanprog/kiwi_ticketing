@@ -479,69 +479,70 @@ class OrderController extends BaseAPIController
                 $requestPayload
             );
 
-            dd(
-                $response->status(),
-                $response->body(),
-                $response->json()
-            );
-            $order_number = strtolower($request->orderNumber);
-            $update_order = Order::where('slug',$order_number)->first();
-            $update_order->transactionId  = $request->transactionId;
-            $update_order->order_status  = $request->order_status;
-            $update_order->updated_at  = Carbon::now();
-            $update_order->save();
+            $data = $response->json();
+            if (isset($data['status']['errorCode']) && $data['status']['errorCode'] == 1) {
+                return $this->sendResponse(400, 'Order Error', ['error' => $data['status']['errorMessage']]);
+            }else{
 
-            $update_ticket_status = OrderTickets::where('order_id',$update_order->id)->update(['ticket_status'=>'ticket_paid']);
+                $order_number = strtolower($request->orderNumber);
+                $update_order = Order::where('slug',$order_number)->first();
+                $update_order->transactionId  = $request->transactionId;
+                $update_order->order_status  = $request->order_status;
+                $update_order->updated_at  = Carbon::now();
+                $update_order->save();
 
-            $transaction_update = Transaction::where('order_id',$update_order->id)->first();
-            $transaction_update->transactionId = $request->transactionId;
-            $transaction_update->save();
+                $update_ticket_status = OrderTickets::where('order_id',$update_order->id)->update(['ticket_status'=>'ticket_paid']);
 
-            $order_type =  OrdersHelper::order_types($update_order->type);
-            $get_order = Order::with(['customer','purchases','apply_coupon','transaction',$order_type])->where('id',$update_order->id)->first();
-            $emailSent = MailHelper::orderConfirmationEmail($get_order,'new_order');
-            if($update_order->type == 'season_pass'){
-                //Send Email
-                $get_mail_content = Email::where('identifier', 'Season_Pass')
-                ->where('status', '1')
-                ->first();
-                $raw_content = $get_mail_content->content;
-                $placeholders = [
-                    '{ERROR_INFORMATION}'    => $request->body_content ?? 'No Issue Found'
-                ];
-                $raw_content = preg_replace('/\{(?:<[^>]+>)*(\w+)(?:<\/[^>]+>)*\}/', '{$1}', $raw_content);
-                $parsed_content = str_replace(array_keys($placeholders), array_values($placeholders), $raw_content);
-                $email_subject = $get_mail_content->subject;
-                $from_email = config('mail.from.address');
-                $from_name = 'BolderAdventurePark';
-                $to_email = $update_order->email;
-                $get_emails = array_map('trim', explode(',', $get_mail_content->to_reciever));
-                if (!in_array($to_email, $get_emails)) {
-                        $get_emails[] = $to_email;
+                $transaction_update = Transaction::where('order_id',$update_order->id)->first();
+                $transaction_update->transactionId = $request->transactionId;
+                $transaction_update->save();
+
+                $order_type =  OrdersHelper::order_types($update_order->type);
+                $get_order = Order::with(['customer','purchases','apply_coupon','transaction',$order_type])->where('id',$update_order->id)->first();
+                $emailSent = MailHelper::orderConfirmationEmail($get_order,'new_order');
+                if($update_order->type == 'season_pass'){
+                    //Send Email
+                    $get_mail_content = Email::where('identifier', 'Season_Pass')
+                    ->where('status', '1')
+                    ->first();
+                    $raw_content = $get_mail_content->content;
+                    $placeholders = [
+                        '{ERROR_INFORMATION}'    => $request->body_content ?? 'No Issue Found'
+                    ];
+                    $raw_content = preg_replace('/\{(?:<[^>]+>)*(\w+)(?:<\/[^>]+>)*\}/', '{$1}', $raw_content);
+                    $parsed_content = str_replace(array_keys($placeholders), array_values($placeholders), $raw_content);
+                    $email_subject = $get_mail_content->subject;
+                    $from_email = config('mail.from.address');
+                    $from_name = 'BolderAdventurePark';
+                    $to_email = $update_order->email;
+                    $get_emails = array_map('trim', explode(',', $get_mail_content->to_reciever));
+                    if (!in_array($to_email, $get_emails)) {
+                            $get_emails[] = $to_email;
+                        }
+                    foreach ($get_emails as $email) {
+                        Mail::send('emails.template', [
+                            'title' => $email_subject,
+                            'details' => $parsed_content
+                        ], function ($message) use ($email_subject, $email, $from_email, $from_name) {
+                            $message->from($from_email, $from_name);
+                            $message->to($email);
+                            $message->replyTo($from_email, $from_name);
+                            $message->subject($email_subject);
+                        });
                     }
-                foreach ($get_emails as $email) {
-                    Mail::send('emails.template', [
-                        'title' => $email_subject,
-                        'details' => $parsed_content
-                    ], function ($message) use ($email_subject, $email, $from_email, $from_name) {
-                        $message->from($from_email, $from_name);
-                        $message->to($email);
-                        $message->replyTo($from_email, $from_name);
-                        $message->subject($email_subject);
-                    });
                 }
+                $resource = OrderResource::make($get_order);
+                ApiLog::create([
+                    'type' => 'order',
+                    'order_number' => $get_order->slug,
+                    'endpoint' => 'order-create',
+                    'status' => 'success',
+                    'request' => $request->all(),
+                    'response' => $resource,
+                    'message' => 'Order has been successfully paid',
+                ]);
+                return $this->sendResponse(200, 'Your Order has been successfully paid', $resource);
             }
-            $resource = OrderResource::make($get_order);
-            ApiLog::create([
-                'type' => 'order',
-                'order_number' => $get_order->slug,
-                'endpoint' => 'order-create',
-                'status' => 'success',
-                'request' => $request->all(),
-                'response' => $resource,
-                'message' => 'Order has been successfully paid',
-            ]);
-            return $this->sendResponse(200, 'Your Order has been successfully paid', $resource);
 
         } catch (\Exception $e) {
             ApiLog::create([
