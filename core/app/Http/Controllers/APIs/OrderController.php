@@ -478,14 +478,21 @@ class OrderController extends BaseAPIController
                 $baseUrl . '/OrderCreation/UpdateOrderTransactionId',
                 $requestPayload
             );
-            dd(
-                $response->status(),
-                $response->body(),
-                $response->json()
-            );
+            // dd(
+            //     $response->status(),
+            //     $response->body(),
+            //     $response->json()
+            // );
             $data = $response->json();
-            if (isset($data['status']['errorCode']) && $data['status']['errorCode'] == 1) {
-                return $this->sendResponse(400, 'Order Error', ['error' => $data['status']['errorMessage']]);
+            if (
+                isset($data['errorCode']) &&
+                $data['errorCode'] == 1
+            ) {
+                return $this->sendResponse(
+                    400,
+                    'External Api Error',
+                    ['error' => $data['errorMessage']]
+                );
             }else{
 
                 $order_number = strtolower($request->orderNumber);
