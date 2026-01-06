@@ -463,21 +463,23 @@ class OrderController extends BaseAPIController
             return $this->sendResponse(400, 'Validation Error', $validator->errors());
         }
         try {
-            // $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
-            // $authCode = Helper::GeneralSiteSettings('auth_code_en');
+            $baseUrl = Helper::GeneralSiteSettings('external_api_link_en');
+            $authCode = Helper::GeneralSiteSettings('auth_code_en');
 
-            // $requestPayload = [
-            //     'authCode'      => $authCode,
-            //     'orderNumber'   => $request->orderNumber,
-            //     'transactionId' => $request->transactionId,
-            // ];
+            $requestPayload = [
+                'authCode'      => $authCode,
+                'orderNumber'   => $request->orderNumber,
+                'transactionId' => $request->transactionId,
+            ];
 
-            // $response = Http::withHeaders([
-            //     'accept' => '*/*',
-            // ])->post(
-            //     $baseUrl . '/OrderCreation/UpdateOrderTransactionId',
-            //     $requestPayload
-            // );
+            $response = Http::withHeaders([
+                'accept' => '*/*',
+            ])->post(
+                $baseUrl . '/OrderCreation/UpdateOrderTransactionId',
+                $requestPayload
+            );
+
+            dd($response);
 
             $order_number = strtolower($request->orderNumber);
             $update_order = Order::where('slug',$order_number)->first();
