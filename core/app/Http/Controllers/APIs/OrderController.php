@@ -747,4 +747,69 @@ class OrderController extends BaseAPIController
             return $this->sendResponse(400, 'Server Error', $e->getMessage());
         }
     }
+
+    public function orderDelete(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'order_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendResponse(400, 'Validation Error', $validator->errors());
+        }
+
+        $baseUrl  = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
+
+        try {
+           $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+            ])
+            ->withOptions([
+                'query' => [
+                    'authCode'       => $authCode,
+                    'UserId'         => 'Website3dsIssue',
+                    'isForceDeleted' => 'false',
+                ],
+            ])
+            ->post(
+                $baseUrl . '/Pricing/DeleteOrdersAPI',
+                [$request->order_id]
+            );
+
+            $data = $response->json();
+
+
+            if (
+                isset($data['status']) &&
+                is_array($data['status']) &&
+                ($data['status']['errorCode'] ?? 0) == 1
+            ) {
+                return $this->sendResponse(
+                    400,
+                    'Order Deleted Error',
+                    [
+                        'message' => $data['status']['errorMessages']
+                    ]
+                );
+            }
+
+            if (isset($data['status']) && $data['status'] === 400) {
+                return $this->sendResponse(
+                    400,
+                    'Order Deleted Error',
+                    $data['errors']
+                );
+            }
+
+            return $this->sendResponse(
+                200,
+                'Bolder - Order Deleted Successfully',
+                $data
+            );
+
+        } catch (\Exception $e) {
+            return $this->sendResponse(500, 'Server Error', $e->getMessage());
+        }
+    }
 }

@@ -72,6 +72,8 @@ Route::post('/coupon-discount', 'CouponController@store');
 Route::post('/order-payment', 'StripeController@createPaymentIntent');
 //Waiver
 Route::post('/waiver-form', 'WaiverController@store');
+//Order Delete
+Route::post('/order-delete', 'OrderController@orderDelete');
 
 Route::post('/order-create', 'OrderController@OrderCreate');
 Route::post('/order-update', 'OrderController@OrderUpdate');
