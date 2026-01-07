@@ -812,4 +812,39 @@ class OrderController extends BaseAPIController
             return $this->sendResponse(500, 'Server Error', $e->getMessage());
         }
     }
+
+    public function getOrderQuery2(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'order_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendResponse(400, 'Validation Error', $validator->errors());
+        }
+
+        $baseUrl  = Helper::GeneralSiteSettings('external_api_link_en');
+        $authCode = Helper::GeneralSiteSettings('auth_code_en');
+
+        try {
+           $response = Http::get(
+                $baseUrl . '/Pricing/QueryOrder2',
+                [
+                    'orderId'  => $request->order_id,
+                    'authcode' => $authCode, // lowercase is IMPORTANT
+                ]
+            );
+
+            $data = $response->json();
+
+            return $this->sendResponse(
+                200,
+                'Bolder - get Order Successfully',
+                $data['data']
+            );
+
+        } catch (\Exception $e) {
+            return $this->sendResponse(500, 'Server Error', $e->getMessage());
+        }
+    }
 }
