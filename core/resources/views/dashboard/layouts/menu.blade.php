@@ -287,6 +287,12 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                     $LogsActive = in_array($current, ['ordersLogs', 'ordersfailedLogs', 'paymentLogs', 'paymentfailLogs', 'ordersLogsShow']);
                     $emailTemplateActive = in_array($current, ['emailTemplate', 'emailTemplateCreate', 'emailTemplateEdit', 'emailTemplateStore', 'emailTemplateUpdate', 'emailTemplateDestroy', 'smtpConfigure', 'emailLogs']);
                     $waiverTemplateActive = in_array($current, ['waiver']);
+                    $ticketMenuActive = in_array($current, [
+                        'tickets', 'generaltickets', 'generalticketpackages', 'generalticketsaddon', 'generalticketsorders',
+                        'cabanas', 'cabana', 'kabanaddons', 'kabanaorders',
+                        'seasonpass', 'seasonpassaddon', 'seasonpassorders',
+                        'birthdaypackages', 'birthdayaddon', 'birthdayorders'
+                    ]);
                     ?>
 
                     <!-- Ticket / Pass Management Dropdown -->
@@ -310,7 +316,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                             <!-- Tickets -->
                             @if ($userRole == 'Webmaster' || in_array(18, $dataSections))
                                 <li
-                                    class="{{ in_array($current, ['generaltickets', 'generalticketpackages']) ? 'active cust-act' : '' }}">
+                                    class="{{ in_array($current, ['generaltickets', 'generalticketpackages', 'generalticketsaddon', 'generalticketsorders']) ? 'active cust-act' : '' }}">
                                     <a style="color: #495057;">
                                         <span class="nav-caret no-mrgn">
                                             <i class="cust-arrow-icon"></i>
@@ -518,7 +524,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                                     </li>
                                 @endif
                                 @if ($userRole == 'Webmaster' || in_array(46, $dataSections))
-                                    <li class="{{ $current === 'offeraddon' ? 'active cust-act' : '' }}">
+                                    <li class="{{ $current === 'productsaleaddon' ? 'active cust-act' : '' }}">
                                         <a href="{{ route('productsaleaddon') }}" style="color: #495057;">
                                             <span class="nav-text dashlogo">{{ __('Addon Control') }}</span>
                                         </a>
@@ -610,7 +616,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                             <small class="text-muted" style="color: #6c757d !important;">{{ __('Settings') }}</small>
                         </li>
 
-                        <li class="{{ in_array($current, ['ordersLogs', 'users', 'settings', 'emailTemplate']) ? 'active menue-hie' : '' }}"
+                        <li class="{{ in_array($current, ['ordersLogs', 'users', 'settings', 'emailTemplate', 'permissionsCreate', 'permissionsEdit', 'usersEdit', 'usersCreate', 'emailTemplateCreate', 'emailTemplateEdit', 'smtp-configure', 'smtpConfigure', 'emailsLogs', 'ordersfailedLogs', 'paymentLogs', 'paymentfailLogs']) ? 'active menue-hie' : '' }}"
                             style="border-left: 3px solid transparent;">
                             <a class="kiwi-pd" style="color: #495057;">
                                 <span class="nav-caret no-mrgn">
@@ -624,7 +630,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                             <ul class="nav-sub" style="background: #f8f9fa;">
                                 <!-- User Permission -->
                                 @if (@Auth::user()->permissionsGroup->roles_status)
-                                    <li class="{{ $PathCurrentFolder == 'users' ? 'active cust-act' : '' }}">
+                                    <li class="{{ $PathCurrentFolder == 'users' || Str::startsWith($current, 'permissionsCreate') || Str::startsWith($current, 'permissionsEdit') || Str::startsWith($current, 'usersEdit') || Str::startsWith($current, 'usersCreate') ? 'active cust-act' : '' }}">
                                         <a href="{{ route('users') }}" style="color: #495057;">
                                             <span class="nav-text dashlogo">{{ __('User Permission') }}</span>
                                         </a>
