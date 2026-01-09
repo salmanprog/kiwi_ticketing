@@ -226,10 +226,7 @@ class OrderController extends Controller
             $order_type =  OrdersHelper::order_types($row->type);
             $result[] = [
                 'id' => strtoupper($row->slug),
-                'check' => '<label class="ui-check m-a-0">
-                                <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
-                                <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
-                            </label>',
+                'check' => $row->id,
                 'package' => $row->$order_type
                                 ? '<a class="dropdown-item" href="' . route($request->route, $row->slug) . '">' . $row->$order_type->title . '</a>'
                                 : '<span class="dropdown-item text-muted">N/A</span>',
