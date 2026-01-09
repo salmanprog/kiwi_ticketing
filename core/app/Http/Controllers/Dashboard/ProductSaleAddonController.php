@@ -94,7 +94,9 @@ class ProductSaleAddonController extends Controller
                 'offerType' => '<a class="dropdown-item" href="' . route('productsaleaddonEdit', $row->slug) . '">'.$row->offerType.'</a>',
                 'ticketType' => $row->ticketType,
                 'ticketCategory' => $row->ticketCategory,
-                'price' => '$' . number_format($external['price'], 2),
+                'price' => $external && isset($external['price']) && $external['price'] !== null 
+              ? '$' . number_format($external['price'], 2) 
+              : '$0.00',
                 'is_featured' => '<div class="text-center"><i class="fa ' . ($row->is_featured ? 'fa-check text-success' : 'fa-times text-danger') . ' inline"></i></div>',
                 'created_by' => $row->createdBy->name,
                 'updated_by' => $row->updatedBy->name ?? 'N/A',
