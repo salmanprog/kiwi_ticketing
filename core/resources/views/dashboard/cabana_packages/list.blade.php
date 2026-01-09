@@ -71,11 +71,6 @@
             <table class="table table-bordered m-a-0" id="cabana_packages">
                 <thead class="dker">
                 <tr>
-                    <th class="width20 dker">
-                        <label class="ui-check m-a-0">
-                            <input id="checkAll" type="checkbox"><i></i>
-                        </label>
-                    </th>
                     <th>{{ __('ID') }}</th>
                     <th>{{ __('venueId') }}</th>
                     <th>{{ __('Name') }}</th>
@@ -205,7 +200,6 @@
                 },
                dom: '<"row"<"col-sm-6"f><"col-sm-6"l>>rtip',
                 columns: [
-                    { data: 'check', orderable: false, searchable: false },
                     { data: 'id' },
                     { data: 'venueId' },
                     { data: 'ticketType' },
@@ -229,7 +223,12 @@
                             <div>{!! __('backend.loading') !!}</div>
                         </div>`
                     }
-                )
+                ),
+                initComplete: function () {
+                    // Add placeholder to search input
+                    var $searchInput = $('#cabana_packages_filter input');
+                    $searchInput.attr('placeholder', 'Search by name');
+                }
             });
 
             dataTable.on('page.dt', function () {

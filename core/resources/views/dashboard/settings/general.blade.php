@@ -12,14 +12,14 @@
             <div class="form-group" style="margin-bottom: 1.5rem;">
                 <label style="font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem; display: block;">
                     {!! __('backend.websiteTitle') !!}
-                    <span style="background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%); color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 8px;">
+                    <!-- <span style="background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%); color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 8px;">
                         {!! @Helper::languageName($ActiveLanguage) !!}
-                    </span>
+                    </span> -->
                 </label>
                 {!! Form::text('site_title_'.@$ActiveLanguage->code, $Setting->{'site_title_'.@$ActiveLanguage->code}, array(
                     'placeholder' => '',
                     'class' => 'form-control',
-                    'maxlength' => 191, 
+                    'maxlength' => 50, 
                     'dir' => @$ActiveLanguage->direction,
                     'style' => 'border: 2px solid #e9ecef; border-radius: 8px; padding: 0.75rem 1rem; font-size: 1rem; transition: all 0.3s ease;'
                 )) !!}
@@ -27,16 +27,23 @@
         @endforeach
         <div class="form-group">
             <label>{!!  __('backend.websiteUrl') !!}</label>
-            {!! Form::text('site_url',$Setting->site_url, array('placeholder' => 'http//:www.sitename.com/','class' => 'form-control', 'dir'=>'ltr')) !!}
+            {!! Form::text('site_url', $Setting->site_url, [
+                'placeholder' => 'https://www.sitename.com/',
+                'class' => 'form-control',
+                'dir' => 'ltr',
+                'pattern' => 'https?://.+', // Must start with http:// or https://
+                'title' => 'Please enter a valid URL starting with http:// or https://',
+                'required' => true
+            ]) !!}
         </div>
         <!-- Description for Each Language -->
         @foreach(Helper::languagesList() as $ActiveLanguage)
             <div class="form-group" style="margin-bottom: 1.5rem;">
                 <label style="font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem; display: block;">
                     {!! __('Description') !!}
-                    <span style="background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%); color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 8px;">
+                    <!-- <span style="background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%); color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 8px;">
                         {!! @Helper::languageName($ActiveLanguage) !!}
-                    </span>
+                    </span> -->
                 </label>
                 {!! Form::textarea('site_desc_'.@$ActiveLanguage->code, $Setting->{'site_desc_'.@$ActiveLanguage->code}, array(
                     'placeholder' => '',
@@ -54,14 +61,14 @@
             <div class="form-group" style="margin-bottom: 1.5rem;">
                 <label style="font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem; display: block;">
                     {!! __('External API Url') !!}
-                    <span style="background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%); color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 8px;">
+                    <!-- <span style="background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%); color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 8px;">
                         {!! @Helper::languageName($ActiveLanguage) !!}
-                    </span>
+                    </span> -->
                 </label>
                 {!! Form::text('external_api_link_'.@$ActiveLanguage->code, $Setting->{'external_api_link_'.@$ActiveLanguage->code}, array(
                     'placeholder' => '',
                     'class' => 'form-control',
-                    'maxlength' => 191, 
+                    'maxlength' => 150, 
                     'dir' => @$ActiveLanguage->direction,
                     'style' => 'border: 2px solid #e9ecef; border-radius: 8px; padding: 0.75rem 1rem; font-size: 1rem; transition: all 0.3s ease;'
                 )) !!}
@@ -73,14 +80,14 @@
             <div class="form-group" style="margin-bottom: 1.5rem;">
                 <label style="font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem; display: block;">
                     {!! __('Auth-Code') !!}
-                    <span style="background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%); color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 8px;">
+                    <!-- <span style="background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%); color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 8px;">
                         {!! @Helper::languageName($ActiveLanguage) !!}
-                    </span>
+                    </span> -->
                 </label>
                 {!! Form::text('auth_code_'.@$ActiveLanguage->code, $Setting->{'auth_code_'.@$ActiveLanguage->code}, array(
                     'placeholder' => '',
                     'class' => 'form-control',
-                    'maxlength' => 191, 
+                    'maxlength' => 100, 
                     'dir' => @$ActiveLanguage->direction,
                     'style' => 'border: 2px solid #e9ecef; border-radius: 8px; padding: 0.75rem 1rem; font-size: 1rem; transition: all 0.3s ease;'
                 )) !!}

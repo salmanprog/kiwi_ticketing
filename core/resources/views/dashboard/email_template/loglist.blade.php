@@ -239,11 +239,6 @@
             <table class="table table-bordered m-a-0 table-modern" id="email_logs">
                 <thead class="dker">
                     <tr>
-                        <th class="width20 dker">
-                            <label class="ui-check m-a-0">
-                                <input id="checkAll" type="checkbox"><i></i>
-                            </label>
-                        </th>
                         <th>{{ __('ID') }}</th>
                         <th>{{ __('Order Number') }}</th>
                         <th>{{ __('Email To') }}</th>
@@ -375,11 +370,11 @@
                         </button>
                     @endif -->
                 </div>
-                <div class="col-sm-3 text-center">
+                <!-- <div class="col-sm-3 text-center">
                     <small class="text-muted inline m-t-sm m-b-sm" id="table-info">
                         {{ __('backend.showing') }} 0 - 0 {{ __('backend.of') }} <strong>0</strong> {{ __('backend.records') }}
                     </small>
-                </div>
+                </div> -->
                 <div class="col-sm-6 text-right text-center-xs">
                     <div id="pagination-container">
                         <!-- Pagination will be added by DataTables -->
@@ -444,14 +439,6 @@
             },
             dom: '<"row"<"col-sm-6"f><"col-sm-6"l>>rtip',
             columns: [
-                { 
-                    data: 'check', 
-                    orderable: false, 
-                    searchable: false,
-                    render: function(data, type, row) {
-                        return data; // Return original checkbox HTML
-                    }
-                },
                 { data: 'id' },
                 { data: 'order_number' },
                 { data: 'email' },
@@ -496,6 +483,8 @@
                 $('.dataTables_paginate').appendTo('#pagination-container');
             },
             initComplete: function() {
+                var $searchInput = $('#email_logs_filter input');
+                    $searchInput.attr('placeholder', 'Search by order number');
                 hideSkeletonLoader();
             }
         });

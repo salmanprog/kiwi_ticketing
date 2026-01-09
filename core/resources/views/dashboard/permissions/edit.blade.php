@@ -456,7 +456,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group-modern">
+                        <div class="form-group-modern" style="display:none;">
                             <label class="form-label-modern">
                                 <i class="fas fa-toggle-on"></i>
                                 {!! __('backend.status') !!}
@@ -512,8 +512,18 @@
                                             <!-- Parent Section Box -->
                                             <div class="section-box"
                                                 style="border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: #f9f9f9;">
-                                                <label class="checkbox-item-modern {{ $isChecked ? 'checked' : '' }}" style="margin-bottom: 10px; font-weight: bold;">
-                                                    {!! Form::checkbox('data_sections[]', $WebSection->id, $isChecked, ['id' => 'data_sections' . $i]) !!}
+                                                <label class="checkbox-item-modern {{ $isChecked ? 'checked' : '' }}"
+                                                    style="margin-bottom: 10px; font-weight: bold;">
+                                                    {!! Form::checkbox(
+                                                        'data_sections[]',
+                                                        $WebSection->id,
+                                                        $isChecked,
+                                                        [
+                                                            'id' => 'data_sections' . $i,
+                                                            'class' => 'section-checkbox parent',
+                                                            'data-id' => $WebSection->id
+                                                        ]
+                                                    ) !!}
                                                     <span class="checkmark"></span>
                                                     <span class="checkbox-label">{!! $WSectionTitle !!}</span>
                                                 </label>
@@ -531,10 +541,18 @@
                                                                     $data_sections_arr,
                                                                 );
                                                             @endphp
-                                                            <label
-                                                                class="checkbox-item-modern {{ $childChecked ? 'checked' : '' }}"
-                                                                style="">
-                                                                {!! Form::checkbox('data_sections[]', $ChildSection->id, $childChecked, ['id' => 'data_sections' . $i]) !!}
+                                                            <label class="checkbox-item-modern {{ $childChecked ? 'checked' : '' }}">
+                                                                {!! Form::checkbox(
+                                                                    'data_sections[]',
+                                                                    $ChildSection->id,
+                                                                    $childChecked,
+                                                                    [
+                                                                        'id' => 'data_sections' . $i,
+                                                                        'class' => 'section-checkbox child',
+                                                                        'data-id' => $ChildSection->id,
+                                                                        'data-parent' => $WebSection->id
+                                                                    ]
+                                                                ) !!}
                                                                 <span class="checkmark"></span>
                                                                 <span class="checkbox-label">{!! $ChildSectionTitle !!}</span>
                                                             </label>
@@ -598,10 +616,10 @@
                             <i class="fas fa-save"></i>
                             {!! __('backend.update') !!}
                         </button>
-                        <a href="{{ route('users') }}" class="btn-modern-default">
+                        <!-- <a href="{{ route('users') }}" class="btn-modern-default">
                             <i class="fas fa-times"></i>
                             {!! __('backend.cancel') !!}
-                        </a>
+                        </a> -->
                     </div>
 
                     {{ Form::close() }}
@@ -703,6 +721,46 @@
                     submitBtn.innerHTML = originalText;
                 }
             }, 3000);
+        });
+
+        document.addEventListener('click', function (e) {
+            const item = e.target.closest('.checkbox-item-modern');
+            if (!item) return;
+
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            if (!checkbox) return;
+
+            // Toggle checkbox
+            checkbox.checked = !checkbox.checked;
+
+            const isParent = checkbox.classList.contains('parent');
+            const isChild = checkbox.classList.contains('child');
+
+            // 🔹 Parent → toggle all children
+            if (isParent) {
+                const parentId = checkbox.dataset.id;
+                document.querySelectorAll(`input[data-parent="${parentId}"]`).forEach(child => {
+                    child.checked = checkbox.checked;
+                });
+            }
+
+            // 🔹 Child → toggle parent
+            if (isChild) {
+                const parentId = checkbox.dataset.parent;
+                const parent = document.querySelector(`input[data-id="${parentId}"]`);
+                if (!parent) return;
+
+                const siblings = document.querySelectorAll(`input[data-parent="${parentId}"]`);
+                const anyChecked = [...siblings].some(c => c.checked);
+
+                parent.checked = anyChecked;
+            }
+
+            // Animation (keep your effect)
+            item.style.transform = 'translateY(-2px)';
+            setTimeout(() => {
+                item.style.transform = 'translateY(0)';
+            }, 150);
         });
     </script>
 @endpush

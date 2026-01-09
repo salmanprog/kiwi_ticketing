@@ -471,10 +471,6 @@
                                     @endforeach
                                 </div>
                             </div>
-                            <div class="help-text">
-                                <i class="fas fa-lightbulb"></i>
-                                Select Sections Help
-                            </div>
                         </div>
                         <div style="flex: 1;">
                             <div class="checkbox-modern-group">
@@ -500,7 +496,16 @@
                                             <!-- Parent Checkbox -->
                                             <label class="checkbox-item-modern"
                                                 style="margin-bottom: 10px; font-weight: bold;">
-                                                {!! Form::checkbox('data_sections[]', $WebSection->id, false, ['id' => 'data_sections' . $i]) !!}
+                                                {!! Form::checkbox(
+                                                    'data_sections[]',
+                                                    $WebSection->id,
+                                                    false,
+                                                    [
+                                                        'id' => 'data_sections' . $i,
+                                                        'class' => 'section-checkbox parent',
+                                                        'data-id' => $WebSection->id
+                                                    ]
+                                                ) !!}
                                                 <span class="checkmark"></span>
                                                 <span class="checkbox-label">{!! $WSectionTitle !!}</span>
                                             </label>
@@ -515,9 +520,18 @@
                                                                 $ChildSection->$title_var ?: $ChildSection->$title_var2;
                                                         @endphp
 
-                                                        <label class="checkbox-item-modern"
-                                                            style="margin-bottom: 8px;">
-                                                            {!! Form::checkbox('data_sections[]', $ChildSection->id, false, ['id' => 'data_sections' . $i]) !!}
+                                                        <label class="checkbox-item-modern" style="margin-bottom: 8px;">
+                                                            {!! Form::checkbox(
+                                                                'data_sections[]',
+                                                                $ChildSection->id,
+                                                                false,
+                                                                [
+                                                                    'id' => 'data_sections' . $i,
+                                                                    'class' => 'section-checkbox child',
+                                                                    'data-id' => $ChildSection->id,
+                                                                    'data-parent' => $WebSection->id
+                                                                ]
+                                                            ) !!}
                                                             <span class="checkmark"></span>
                                                             <span class="checkbox-label">{!! $ChildSectionTitle !!}</span>
                                                         </label>
@@ -532,12 +546,19 @@
                                                                             $SubChild->$title_var ?:
                                                                             $SubChild->$title_var2;
                                                                     @endphp
-                                                                    <label class="checkbox-item-modern"
-                                                                        style="display: block; margin-bottom: 5px;">
-                                                                        {!! Form::checkbox('data_sections[]', $SubChild->id, false, ['id' => 'data_sections' . $i]) !!}
+                                                                    <label class="checkbox-item-modern" style="display: block; margin-bottom: 5px;">
+                                                                        {!! Form::checkbox(
+                                                                            'data_sections[]',
+                                                                            $SubChild->id,
+                                                                            false,
+                                                                            [
+                                                                                'id' => 'data_sections' . $i,
+                                                                                'class' => 'section-checkbox child',
+                                                                                'data-parent' => $ChildSection->id
+                                                                            ]
+                                                                        ) !!}
                                                                         <span class="checkmark"></span>
-                                                                        <span
-                                                                            class="checkbox-label">{!! $SubChildTitle !!}</span>
+                                                                        <span class="checkbox-label">{!! $SubChildTitle !!}</span>
                                                                     </label>
                                                                     <?php $i++; ?>
                                                                 @endforeach
@@ -550,10 +571,7 @@
                                     @endforeach
                                 </div>
                             </div>
-                            <div class="help-text">
-                                <i class="fas fa-lightbulb"></i>
-                                Select Sections Help
-                            </div>
+                           
                         </div>
                     </div>
                 </div>
@@ -788,6 +806,46 @@
             if (radio.checked) {
                 radio.closest('.radio-item-modern').classList.add('checked');
             }
+        });
+        
+        document.addEventListener('click', function (e) {
+            const item = e.target.closest('.checkbox-item-modern');
+            if (!item) return;
+
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            if (!checkbox) return;
+
+            // Toggle checkbox
+            checkbox.checked = !checkbox.checked;
+
+            const isParent = checkbox.classList.contains('parent');
+            const isChild = checkbox.classList.contains('child');
+
+            // 🔹 Parent → toggle all children
+            if (isParent) {
+                const parentId = checkbox.dataset.id;
+                document.querySelectorAll(`input[data-parent="${parentId}"]`).forEach(child => {
+                    child.checked = checkbox.checked;
+                });
+            }
+
+            // 🔹 Child → toggle parent
+            if (isChild) {
+                const parentId = checkbox.dataset.parent;
+                const parent = document.querySelector(`input[data-id="${parentId}"]`);
+                if (!parent) return;
+
+                const siblings = document.querySelectorAll(`input[data-parent="${parentId}"]`);
+                const anyChecked = [...siblings].some(c => c.checked);
+
+                parent.checked = anyChecked;
+            }
+
+            // Animation (keep your effect)
+            item.style.transform = 'translateY(-2px)';
+            setTimeout(() => {
+                item.style.transform = 'translateY(0)';
+            }, 150);
         });
     </script>
 @endpush

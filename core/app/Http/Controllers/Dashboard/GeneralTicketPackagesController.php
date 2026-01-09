@@ -83,10 +83,6 @@ class GeneralTicketPackagesController extends Controller
         foreach ($data as $row) {
             $result[] = [
                 'id' => $row->id,
-                'check' => '<label class="ui-check m-a-0">
-                                <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
-                                <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
-                            </label>',
                 'title' => '<a class="dropdown-item" href="' . route('generalticketpackagesEdit', $row->slug) . '">'.$row->title.'</a>',
                 'slug' => $row->slug,
                 'addons' => '<div class="text-center">'.count($row->general_addons).'</div>',

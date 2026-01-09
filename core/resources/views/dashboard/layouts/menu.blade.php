@@ -282,10 +282,10 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                     $seasonpassActive = in_array($current, ['seasonpass', 'seasonpassEdit', 'seasonpassCreate', 'seasonpassStore', 'seasonpassDestroy', 'seasonpassaddon', 'seasonpassaddonEdit', 'seasonpassaddonStore', 'seasonpassaddonCreate', 'seasonpassaddonUpdate', 'seasonpassorders', 'seasonpassordersdetail']);
                     $couponActive = in_array($current, ['coupon', 'couponCreate', 'couponEdit', 'couponStore', 'couponUpdate', 'couponDestroy']);
                     $offerCreationActive = in_array($current, ['offercreationpackages', 'offercreationpackagesEdit', 'offercreationpackagesCreate', 'offercreationpackagesStore', 'offercreationpackagesUpdate', 'offercreationpackagesDestroy', 'offeraddon', 'offeraddonCreate', 'offeraddonStore', 'offeraddonEdit', 'offeraddonUpdate', 'offeraddonDestroy', 'offercreationpackagesorders', 'offercreationpackagesordersdetail']);
-                    $productSaleActive = in_array($current, ['productsalecreationpackages', 'productsalecreationpackagesEdit', 'productsalecreationpackagesCreate', 'productsalecreationpackagesStore', 'productsalecreationpackagesUpdate', 'productsalecreationpackagesDestroy', 'productsaleaddon', 'productsaleaddonCreate', 'productsaleaddonStore', 'productsaleaddonEdit', 'productsaleaddonUpdate', 'productsaleaddonDestroy']);
+                    $productSaleActive = in_array($current, ['productsalecreationpackages', 'productsalecreationpackagesEdit', 'productsalecreationpackagesCreate', 'productsalecreationpackagesStore', 'productsalecreationpackagesUpdate', 'productsalecreationpackagesDestroy', 'productsaleaddon', 'productsaleaddonCreate', 'productsaleaddonStore', 'productsaleaddonEdit', 'productsaleaddonUpdate', 'productsaleaddonDestroy', 'productsalepackagesorders']);
                     $transactionActive = in_array($current, ['transactionorders', 'updatetransactionorders']);
                     $LogsActive = in_array($current, ['ordersLogs', 'ordersfailedLogs', 'paymentLogs', 'paymentfailLogs', 'ordersLogsShow']);
-                    $emailTemplateActive = in_array($current, ['emailTemplate', 'emailTemplateCreate', 'emailTemplateEdit', 'emailTemplateStore', 'emailTemplateUpdate', 'emailTemplateDestroy', 'smtpConfigure', 'emailLogs']);
+                    $emailTemplateActive = in_array($current, ['emailTemplate', 'emailTemplateCreate', 'emailTemplateEdit', 'emailTemplateStore', 'emailTemplateUpdate', 'emailTemplateDestroy', 'emailLogs']);
                     $waiverTemplateActive = in_array($current, ['waiver']);
                     $ticketMenuActive = in_array($current, [
                         'tickets', 'generaltickets', 'generalticketpackages', 'generalticketsaddon', 'generalticketsorders',
@@ -301,7 +301,7 @@ $mnu_title_var2 = 'title_' . config('smartend.default_language');
                             style="color: #6c757d !important;">{{ __('Ticket / Pass Management') }}</small>
                     </li> --}}
 
-                    <li class="{{ in_array($current, ['tickets', 'cabanas', 'seasonpass', 'birthdaypackages']) ? 'active menue-hie' : '' }}"
+                    <li class="{{ $ticketMenuActive ? 'active menue-hie' : '' }}"
                         style="border-left: 3px solid transparent;">
                         <a style="color: #495057;">
                             <span class="nav-caret no-mrgn">

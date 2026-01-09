@@ -12,9 +12,9 @@
             <div class="form-group" style="margin-bottom: 1.5rem;">
                 <label style="font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem; display: block;">
                     {!! __('backend.contactAddress') !!}
-                    <span style="background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%); color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 8px;">
+                    <!-- <span style="background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%); color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 8px;">
                         {!! @Helper::languageName($ActiveLanguage) !!}
-                    </span>
+                    </span> -->
                 </label>
                 {!! Form::text('contact_t1_'.@$ActiveLanguage->code, $Setting->{'contact_t1_'.@$ActiveLanguage->code}, array(
                     'placeholder' => __('backend.enterAddress'),
@@ -31,12 +31,16 @@
                 <i class="fas fa-phone" style="color: #A0C242;"></i>
                 {!! __('backend.contactPhone') !!}
             </label>
-            {!! Form::text('contact_t3', $Setting->contact_t3, array(
+            {!! Form::text('contact_t3', $Setting->contact_t3, [
                 'placeholder' => __('backend.contactPhone'),
                 'class' => 'form-control',
                 'dir' => 'ltr',
-                'style' => 'border: 2px solid #e9ecef; border-radius: 8px; padding: 0.75rem 1rem; font-size: 1rem; transition: all 0.3s ease;'
-            )) !!}
+                'style' => 'border: 2px solid #e9ecef; border-radius: 8px; padding: 0.75rem 1rem; font-size: 1rem; transition: all 0.3s ease;',
+                'pattern' => '^\+\(\d{1,3}\) \d{6,10}$',
+                'title' => 'Phone number format should be +(123) 01234567',
+                'maxlength' => 15,
+                'required' => true
+            ]) !!}
         </div>
 
         <!-- Fax Field -->
@@ -49,6 +53,9 @@
                 'placeholder' => __('backend.contactFax'),
                 'class' => 'form-control',
                 'dir' => 'ltr',
+                'pattern' => '^\+\(\d{1,3}\) \d{6,10}$',
+                'maxlength' => 15,
+                'required' => true,
                 'style' => 'border: 2px solid #e9ecef; border-radius: 8px; padding: 0.75rem 1rem; font-size: 1rem; transition: all 0.3s ease;'
             )) !!}
         </div>
@@ -63,6 +70,9 @@
                 'placeholder' => __('backend.contactMobile'),
                 'class' => 'form-control',
                 'dir' => 'ltr',
+                'pattern' => '^\+\(\d{1,3}\) \d{6,10}$',
+                'maxlength' => 15,
+                'required' => true,
                 'style' => 'border: 2px solid #e9ecef; border-radius: 8px; padding: 0.75rem 1rem; font-size: 1rem; transition: all 0.3s ease;'
             )) !!}
         </div>
@@ -73,12 +83,15 @@
                 <i class="fas fa-envelope" style="color: #A0C242;"></i>
                 {!! __('backend.contactEmail') !!}
             </label>
-            {!! Form::text('contact_t6', $Setting->contact_t6, array(
+            {!! Form::text('contact_t6', $Setting->contact_t6, [
                 'placeholder' => __('backend.contactEmail'),
                 'class' => 'form-control',
                 'dir' => 'ltr',
+                'type' => 'email',
+                'required' => true,
+                'maxlength' => 50,
                 'style' => 'border: 2px solid #e9ecef; border-radius: 8px; padding: 0.75rem 1rem; font-size: 1rem; transition: all 0.3s ease;'
-            )) !!}
+            ]) !!}
         </div>
 
         <!-- Working Hours for Each Language -->
@@ -86,9 +99,9 @@
             <div class="form-group" style="margin-bottom: 1.5rem;">
                 <label style="font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem; display: block;">
                     {!! __('backend.worksTime') !!}
-                    <span style="background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%); color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 8px;">
+                    <!-- <span style="background: linear-gradient(135deg, #A0C242 0%, #8AAE38 100%); color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 8px;">
                         {!! @Helper::languageName($ActiveLanguage) !!}
-                    </span>
+                    </span> -->
                 </label>
                 {!! Form::text('contact_t7_'.@$ActiveLanguage->code, $Setting->{'contact_t7_'.@$ActiveLanguage->code}, array(
                     'placeholder' => __('backend.enterWorkingHours'),

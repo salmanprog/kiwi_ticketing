@@ -17,23 +17,13 @@
                 'placeholder' => 'https://facebook.com/yourpage',
                 'class' => 'form-control',
                 'dir' => 'ltr',
+                'pattern' => 'https?://.+', // Must start with http:// or https://
+                'title' => 'Please enter a valid URL starting with http:// or https://',
                 'style' => 'border: 2px solid #e9ecef; border-radius: 8px; padding: 0.75rem 1rem; font-size: 1rem; transition: all 0.3s ease;'
             )) !!}
         </div>
 
-        <!-- Twitter -->
-        <div class="form-group" style="margin-bottom: 1.5rem;">
-            <label style="font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 10px; padding: 0.75rem 1rem; background: rgba(29, 161, 242, 0.05); border-radius: 8px; border-left: 4px solid #1da1f2;">
-                <i class="fab fa-twitter" style="color: #1da1f2; font-size: 1.2rem;"></i>
-                {!! __('backend.twitter') !!}
-            </label>
-            {!! Form::text('social_link2', $Setting->social_link2, array(
-                'placeholder' => 'https://twitter.com/yourprofile',
-                'class' => 'form-control',
-                'dir' => 'ltr',
-                'style' => 'border: 2px solid #e9ecef; border-radius: 8px; padding: 0.75rem 1rem; font-size: 1rem; transition: all 0.3s ease;'
-            )) !!}
-        </div>
+        
 
         <!-- LinkedIn -->
         <div class="form-group" style="margin-bottom: 1.5rem;">
@@ -45,6 +35,8 @@
                 'placeholder' => 'https://linkedin.com/company/yourcompany',
                 'class' => 'form-control',
                 'dir' => 'ltr',
+                'pattern' => 'https?://.+', // Must start with http:// or https://
+                'title' => 'Please enter a valid URL starting with http:// or https://',
                 'style' => 'border: 2px solid #e9ecef; border-radius: 8px; padding: 0.75rem 1rem; font-size: 1rem; transition: all 0.3s ease;'
             )) !!}
         </div>
@@ -59,6 +51,8 @@
                 'placeholder' => 'https://youtube.com/c/yourchannel',
                 'class' => 'form-control',
                 'dir' => 'ltr',
+                'pattern' => 'https?://.+', // Must start with http:// or https://
+                'title' => 'Please enter a valid URL starting with http:// or https://',
                 'style' => 'border: 2px solid #e9ecef; border-radius: 8px; padding: 0.75rem 1rem; font-size: 1rem; transition: all 0.3s ease;'
             )) !!}
         </div>
@@ -73,65 +67,12 @@
                 'placeholder' => 'https://instagram.com/yourprofile',
                 'class' => 'form-control',
                 'dir' => 'ltr',
+                'pattern' => 'https?://.+', // Must start with http:// or https://
+                'title' => 'Please enter a valid URL starting with http:// or https://',
                 'style' => 'border: 2px solid #e9ecef; border-radius: 8px; padding: 0.75rem 1rem; font-size: 1rem; transition: all 0.3s ease;'
             )) !!}
         </div>
 
-        <!-- Pinterest -->
-        <div class="form-group" style="margin-bottom: 1.5rem;">
-            <label style="font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 10px; padding: 0.75rem 1rem; background: rgba(189, 8, 28, 0.05); border-radius: 8px; border-left: 4px solid #bd081c;">
-                <i class="fab fa-pinterest" style="color: #bd081c; font-size: 1.2rem;"></i>
-                {!! __('backend.pinterest') !!}
-            </label>
-            {!! Form::text('social_link7', $Setting->social_link7, array(
-                'placeholder' => 'https://pinterest.com/yourprofile',
-                'class' => 'form-control',
-                'dir' => 'ltr',
-                'style' => 'border: 2px solid #e9ecef; border-radius: 8px; padding: 0.75rem 1rem; font-size: 1rem; transition: all 0.3s ease;'
-            )) !!}
-        </div>
-
-        <!-- Threads -->
-        <div class="form-group" style="margin-bottom: 1.5rem;">
-            <label style="font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 10px; padding: 0.75rem 1rem; background: rgba(0, 0, 0, 0.05); border-radius: 8px; border-left: 4px solid #000000;">
-                <i class="fab fa-threads" style="color: #000000; font-size: 1.2rem;"></i>
-                Threads
-            </label>
-            {!! Form::text('social_link8', $Setting->social_link8, array(
-                'placeholder' => 'https://threads.net/yourprofile',
-                'class' => 'form-control',
-                'dir' => 'ltr',
-                'style' => 'border: 2px solid #e9ecef; border-radius: 8px; padding: 0.75rem 1rem; font-size: 1rem; transition: all 0.3s ease;'
-            )) !!}
-        </div>
-
-        <!-- Snapchat -->
-        <div class="form-group" style="margin-bottom: 1.5rem;">
-            <label style="font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 10px; padding: 0.75rem 1rem; background: rgba(255, 252, 0, 0.05); border-radius: 8px; border-left: 4px solid #fffc00;">
-                <i class="fab fa-snapchat" style="color: #fffc00; font-size: 1.2rem;"></i>
-                {!! __('backend.snapchat') !!}
-            </label>
-            {!! Form::text('social_link9', $Setting->social_link9, array(
-                'placeholder' => 'https://snapchat.com/add/yourusername',
-                'class' => 'form-control',
-                'dir' => 'ltr',
-                'style' => 'border: 2px solid #e9ecef; border-radius: 8px; padding: 0.75rem 1rem; font-size: 1rem; transition: all 0.3s ease;'
-            )) !!}
-        </div>
-
-        <!-- WhatsApp -->
-        <div class="form-group" style="margin-bottom: 1.5rem;">
-            <label style="font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 10px; padding: 0.75rem 1rem; background: rgba(37, 211, 102, 0.05); border-radius: 8px; border-left: 4px solid #25d366;">
-                <i class="fab fa-whatsapp" style="color: #25d366; font-size: 1.2rem;"></i>
-                {!! __('backend.whatapp') !!}
-            </label>
-            {!! Form::text('social_link10', $Setting->social_link10, array(
-                'placeholder' => 'https://wa.me/yournumber',
-                'class' => 'form-control',
-                'dir' => 'ltr',
-                'style' => 'border: 2px solid #e9ecef; border-radius: 8px; padding: 0.75rem 1rem; font-size: 1rem; transition: all 0.3s ease;'
-            )) !!}
-        </div>
     </div>
 </div>
 

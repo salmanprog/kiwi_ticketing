@@ -87,10 +87,6 @@ class GeneralTicketAddonController extends Controller
             $external = $externalMap[$row->ticketSlug] ?? null;
             $result[] = [
                 'id' => $row->id,
-                'check' => '<label class="ui-check m-a-0">
-                                <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
-                                <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
-                            </label>',
                 'venueId' => $row->venueId,            
                 'generalTicketType' => '<a class="dropdown-item" href="' . route('generalticketsaddonEdit', $row->slug) . '">'.$row->generalTicketType.'</a>',
                 'ticketType' => $row->ticketType,

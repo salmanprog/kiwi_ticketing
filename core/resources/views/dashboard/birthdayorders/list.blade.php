@@ -85,12 +85,8 @@
                 <table class="table table-bordered m-a-0" id="birthday_orders">
                     <thead class="dker">
                     <tr>
-                        <th class="width20 dker">
-                            <label class="ui-check m-a-0">
-                                <input id="checkAll" type="checkbox"><i></i>
-                            </label>
-                        </th>
-                        <th>{{ __('ID') }}</th>
+                        <th>{{ __('Entry Id') }}</th>
+                        <th>{{ __('Order Number') }}</th>
                         <th>{{ __('Package') }}</th>
                         <th>{{ __('Customer Name') }}</th>
                         <th>{{ __('Customer Email') }}</th>
@@ -224,7 +220,12 @@
                             <div>{!! __('backend.loading') !!}</div>
                         </div>`
                     }
-                )
+                ),
+                initComplete: function () {
+                    // Add placeholder to search input
+                    var $searchInput = $('#birthday_orders_filter input');
+                    $searchInput.attr('placeholder', 'Search by order number');
+                }
             });
 
             dataTable.on('page.dt', function () {

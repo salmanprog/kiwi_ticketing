@@ -90,10 +90,6 @@ class CabanaPackagesController extends Controller
             $result[] = [
                 'id' => $row->id,
                 'venueId' => $external['venueId'],
-                'check' => '<label class="ui-check m-a-0">
-                                <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
-                                <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
-                            </label>',
                 'ticketType' => '<a class="dropdown-item" href="' . route('cabanaEdit', $row->slug) . '">'.$row->ticketType.'</a>',
                 'ticketSlug' => $row->ticketSlug,
                 'ticketCategory' => $row->ticketCategory,

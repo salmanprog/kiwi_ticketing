@@ -86,11 +86,7 @@ class WaiverController extends Controller
         foreach ($data as $row) {
             $result[] = [
                 'id' => $row->id,
-                'check' => '<label class="ui-check m-a-0">
-                                <input type="checkbox" name="ids[]" value="' . $row->id . '"><i></i>
-                                <input type="hidden" name="row_ids[]" value="' . $row->id . '" class="form-control row_no">
-                            </label>',
-                'order_id' => $row->order_id,
+                'order_id' => strtoupper($row->order_id),
                 'qr_code' => $row->qr_code,
                 'waiver_type' => $row->waiver_type,
                 'email' => $row->email,

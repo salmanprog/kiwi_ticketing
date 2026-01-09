@@ -75,13 +75,8 @@
                 <table class="table table-bordered m-a-0" id="waiver_forms_entries">
                     <thead class="dker">
                         <tr>
-                            <th class="width20 dker">
-                                <label class="ui-check m-a-0">
-                                    <input id="checkAll" type="checkbox"><i></i>
-                                </label>
-                            </th>
                             <th>{{ __('ID') }}</th>
-                            <th>{{ __('OrderId') }}</th>
+                            <th>{{ __('Order Number') }}</th>
                             <th>{{ __('VisualId') }}</th>
                             <th>{{ __('Type') }}</th>
                             <th>{{ __('Email') }}</th>
@@ -192,7 +187,6 @@
                 },
                 dom: '<"row"<"col-sm-6"f><"col-sm-6"l>>rtip',
                 columns: [
-                    { data: 'check', orderable: false, searchable: false },
                     { data: 'id' },
                     { data: 'order_id' },
                     { data: 'qr_code' },
@@ -215,7 +209,12 @@
                             <div>{!! __('backend.loading') !!}</div>
                         </div>`
                     }
-                )
+                ),
+                initComplete: function () {
+                    // Add placeholder to search input
+                    var $searchInput = $('#waiver_forms_entries_filter input');
+                    $searchInput.attr('placeholder', 'Search by order number');
+                }
             });
 
             dataTable.on('page.dt', function() {
